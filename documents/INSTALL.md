@@ -19,8 +19,8 @@ curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scr
 ## Pinned Version
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/v0.1.0/scripts/install.sh \
-  | bash -s -- /path/to/your-project --version 0.1.0
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/v0.1.1/scripts/install.sh \
+  | bash -s -- /path/to/your-project --version 0.1.1
 ```
 
 ## Auditable Install

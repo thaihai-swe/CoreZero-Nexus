@@ -78,6 +78,13 @@ If you are introducing the harness to an established codebase, run the archaeolo
 ```
 *Effect*: Creates the brownfield map, dependency graph, and seeds risk heuristics under `memories/repo/brownfield/`.
 
+### Step 2: Run Starter Bootstrap
+
+After brownfield archaeology, continue with the normal bootstrap:
+```text
+/starter-init
+```
+
 ### Step 2: Initialize the Harness
 Run the initialization command:
 ```text

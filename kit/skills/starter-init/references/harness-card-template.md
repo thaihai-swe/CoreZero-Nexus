@@ -43,7 +43,7 @@ Mark each `Active` (fully wired), `Partial` (wired with known gaps), or `Off` (i
 | State (per-feature) | Active | `artifacts/features/<slug>/` |
 | Verification (mechanical gate) | Active | `harness-verify` + `harness-config.md` test command |
 | Scope (one task at a time) | Active | `tasks.md` focused, independently-verifiable tasks |
-| Lifecycle (init → spec/research → session → verify) | Active | `starter-init`, `spec-requirements` / `spec-research`, `context-session`, `harness-verify` |
+| Lifecycle (init → spec/research → session → verify) | Active | `brownfield-init` (brownfield only), `starter-init`, `spec-requirements` / `spec-research`, `context-session`, `harness-verify` |
 | Security (permission tiers) | Active \| Partial \| Off | `memories/repo/security-policy.md` + `skills/harness-maintain/hooks/git-guardrails.sh` |
 | Context Engineering (tiered) | Active | `context-session/references/context-assembly.md` |
 
@@ -52,6 +52,7 @@ Mark each `Active` (fully wired), `Partial` (wired with known gaps), or `Off` (i
 | Tier | Files | Status |
 |---|---|---|
 | Instruction | `memories/repo/{constitution,security-policy,learned-heuristics,project-knowledge-base,harness-config}.md`, `docs/architecture.md` | Active |
+| Brownfield Risk | `memories/repo/brownfield/{README,brownfield-map,dependency-graph}.md` | Active \| Empty \| Off |
 | Auto | `memories/repo/observability-log.md` | Active \| Empty \| Off |
 | Extracted | `artifacts/features/<slug>/session-extracts.md` | Active \| Empty \| Off |
 
@@ -80,6 +81,7 @@ Mark each `Active` (fully wired), `Partial` (wired with known gaps), or `Off` (i
 ## Context Engineering (required)
 
 - **Tiered assembly:** Active per `context-session/references/context-assembly.md`
+- **Brownfield routing:** If the repo is inherited, `INDEX.md` routes `memories/repo/brownfield/*`
 - **JIT loading:** Yes — only the immediate task's files load into Tier 5
 - **Compaction triggers:** <link to `harness-config.md` `## Session Defaults`>
 - **Subagent-driven exploration:** <Yes / No>
@@ -91,6 +93,7 @@ List honestly what the harness does NOT cover. Examples:
 - The harness does not gate production deploys.
 - `visualize` is opt-in; not all features have diagrams.
 - Brownfield map is current as of <date>; rerun if the layout shifts.
+- Brownfield repos must run `/brownfield-init` before `/starter-init`.
 - The auto-tier observability log is empty — no failures captured yet.
 
 ## Customizations (optional)

@@ -10,7 +10,7 @@ compatibility: Designed for Claude, Codex, and other Agent Skills-compatible too
 
 ## Overview
 
-Establishes the repository baseline for the harness before feature work begins. It scans the repo, determines if greenfield or brownfield, interviews for defaults in `harness-config.md`, tests repository health, reconciles the installer-seeded files, and hands off to `/spec-requirements` or `/spec-research`.
+Establishes the repository baseline for the harness before feature work begins. It scans the repo, determines if greenfield, brownfield, or vibe-coded, interviews for defaults in `harness-config.md`, tests repository health, reconciles the installer-seeded files, and hands off to `/spec-requirements` or `/spec-research`.
 
 ## Read First
 
@@ -27,36 +27,40 @@ Establishes the repository baseline for the harness before feature work begins. 
 ## Workflow
 
 1. **Context Load**: Identify tech stack, test runners, linters, and CI pipelines.
-2. **Greenfield vs Brownfield vs Vibe-Coded**: Detect repository type:
+2. **Greenfield vs Brownfield vs Vibe-Coded**: Detect repository type and record it in `HARNESS_CARD.md` and `memories/repo/project-knowledge-base.md`:
    - **Greenfield**: New or near-empty repo. Run standard init flow.
-   - **Brownfield**: Has existing code, tests, CI, or history. Activate Brownfield Mode (see [references/brownfield-mode.md](references/brownfield-mode.md)).
+   - **Brownfield**: Has existing code, tests, CI, or history. Require `/brownfield-init` artifacts before continuing. Activate Brownfield Mode (see [references/brownfield-mode.md](references/brownfield-mode.md)).
    - **Vibe-Coded**: Has code but lacks tests, CI, documented architecture, and consistent conventions (3+ vibe-coded indicators). Activate Vibe-Coded Mode (see [references/vibecoded-mode.md](references/vibecoded-mode.md)). Requires explicit user acknowledgment before proceeding to feature work.
-3. **Repo-Config Interview**: Capture tracker mode, artifact paths, verification commands, and compaction triggers in `memories/repo/harness-config.md`.
-4. **Repo Readiness Check**: Run canonical tests/lint/build baseline checks. If tests do not exist, document the best available proof surface.
-5. **Installer Surface Check**: Confirm the installer-seeded files exist (`AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/*`, seeded `docs/*.md`, `docs/generated/*`). If the surface is incomplete, stop and route to `bash scripts/doctor.sh` or re-run `install.sh`.
-6. **Required Bootstrap**: Reconcile the existing entrypoints and update `memories/repo/harness-config.md`.
-7. **Template Pre-Fill**: Fill only the seeded `docs/*.md` files and `docs/architecture.md` from code evidence (Tier 1) or user feedback (Tier 2), marking judgment fields with `[USER REVIEW NEEDED]`.
-8. **Memory Fill**: Populate the seeded memory files (`constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`) with repository-specific content.
-9. **Optional Enrichment**: Update the seeded `docs/generated/codemap.md` and `docs/generated/references-index.md` for non-trivial repositories.
-10. **Failure Log Bootstrap**: Fill the seeded `memories/repo/observability-log.md` baseline if it is still template-empty.
-11. **Handoff**: State readiness status, name any gaps, and route the first feature to `/spec-requirements` or `/spec-research`.
+3. **Brownfield Gate**: If the repo is brownfield and `memories/repo/brownfield/brownfield-map.md` or `memories/repo/brownfield/dependency-graph.md` is missing, stop immediately and route back to `/brownfield-init`.
+4. **Repo-Config Interview**: Capture tracker mode, artifact paths, verification commands, and compaction triggers in `memories/repo/harness-config.md`.
+5. **Repo Readiness Check**: Run canonical tests/lint/build baseline checks. If tests do not exist, document the best available proof surface.
+6. **Installer Surface Check**: Confirm the installer-seeded files exist (`AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/*`, seeded `docs/*.md`, `docs/generated/*`). If the surface is incomplete, stop and route to `bash scripts/doctor.sh` or re-run `install.sh`.
+7. **Required Bootstrap**: Reconcile the existing entrypoints and update `memories/repo/harness-config.md`.
+8. **Template Pre-Fill**: Fill only the seeded `docs/*.md` files and `docs/architecture.md` from code evidence (Tier 1) or user feedback (Tier 2), marking judgment fields with `[USER REVIEW NEEDED]`.
+9. **Memory Fill**: Populate the seeded memory files (`constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`) with repository-specific content and freshness metadata where the template expects it.
+10. **Optional Enrichment**: Update the seeded `docs/generated/codemap.md` and `docs/generated/references-index.md` for non-trivial repositories.
+11. **Failure Log Bootstrap**: Fill the seeded `memories/repo/observability-log.md` baseline if it is still template-empty.
+12. **Handoff**: State readiness status, name any gaps, and route the first feature to `/spec-requirements` or `/spec-research`.
 
 ## Stop Conditions
 
 - Repository build or test state is broken. Require user intervention first.
 - Required configurations cannot be determined.
 - Installer-seeded harness files are missing or the install surface is incomplete.
+- Repository is brownfield but `/brownfield-init` artifacts are missing.
 - Vibe-Coded Mode: security flags include hardcoded production credentials — halt before proceeding.
 - Vibe-Coded Mode: user does not acknowledge the baseline report — do not create feature artifacts.
 
 ## Preconditions
 
 - **Precondition Check**: `install.sh` has already seeded the harness surface. `starter-init` fills and reconciles those files; it is not a replacement for the installer.
+- **Brownfield Precondition**: Brownfield repos must already have `/brownfield-init` outputs before bootstrap continues.
 - **Phase sets**: Repository bootstrap only; feature lifecycle begins with `/spec-requirements` or `/spec-research`.
 
 ## Core Rules
 
 - **Router Entrypoint**: Keep one canonical router body. In the kit source, `AGENTS.md` is the canonical shipped router; downstream init seeds from that source instead of maintaining a forked duplicate template.
+- **Brownfield Is Required, Not Advisory**: If the repository is brownfield, `starter-init` must not substitute for `/brownfield-init`.
 - **No Shadow Installer**: Do not create new harness files during init that `install.sh` was responsible for seeding. If a seeded file is missing, stop and repair the install surface instead of silently creating it.
 - **Evidence-Extraction**: Extract PKB rules from code, do not invent them.
 - **Config First**: Always define commands and folders in `harness-config.md` before proceeding.
@@ -70,12 +74,14 @@ Establishes the repository baseline for the harness before feature work begins. 
 | "Fix broken baseline tests later." | Establish a clean, working build baseline first. |
 | "Let the agent guess test commands." | Guessing creates drift. Document exact mechanical commands. |
 | "Init can just create missing harness files." | Missing seeded files mean the install surface is broken. Repair the install first. |
+| "Brownfield can start at starter-init." | Brownfield bootstrap is two-step: `/brownfield-init` first, then `/starter-init`. |
 | "I'll create the first feature logs now." | Init is only for repository setup, not feature execution. |
 
 ## Red Flags
 
 - No baseline proof run or configured.
 - A seeded harness file is missing and init keeps going anyway.
+- Brownfield repo detected but no brownfield memory pack exists.
 - `harness-config.md` or `security-policy.md` are missing/empty.
 - Feature-local files (`progress.md`, `tasks.md`) created during init.
 
@@ -83,6 +89,7 @@ Establishes the repository baseline for the harness before feature work begins. 
 
 - [ ] `AGENTS.md` and `HARNESS_CARD.md` set up.
 - [ ] Installer-seeded harness files are present before any fill-in work starts.
+- [ ] Brownfield repos have `memories/repo/brownfield/brownfield-map.md` and `dependency-graph.md` before init continues.
 - [ ] `memories/repo/harness-config.md` captures all commands and defaults.
 - [ ] Memory seed files (`constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`) populated.
 - [ ] Baseline build/test checks pass.
