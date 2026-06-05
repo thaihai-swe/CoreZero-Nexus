@@ -1,6 +1,6 @@
 # End-to-End Tutorial
 
-This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 16 public commands across the 4 core packs and 5 specialist tools, walking you through the entire lifecycle from installation to closeout.
+This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 17 public commands across the 4 core packs and 5 specialist tools, walking you through the entire lifecycle from installation to closeout.
 
 ---
 
@@ -8,8 +8,11 @@ This tutorial provides a complete step-by-step guide for using the **CoreZero Ne
 
 ```mermaid
 graph TD
-    A[Install Kit] --> B["/starter-init"]
-    B --> C{"Brownfield or behavior unknown?"}
+    A[Install Kit] --> B1{"Is existing/established repo?"}
+    B1 -->|Yes| B2["/brownfield-init"]
+    B1 -->|No| B3["/starter-init"]
+    B2 --> B3
+    B3 --> C{"Is existing repo & behavior unknown?"}
 
     subgraph SDD [Spec-Driven Development Flow]
         C -->|Yes| D["/spec-research"]
@@ -34,7 +37,8 @@ graph TD
 
     M --> Q["/harness-maintain"]
 
-    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style B2 fill:#f9f,stroke:#333,stroke-width:2px
+    style B3 fill:#f9f,stroke:#333,stroke-width:2px
     style C fill:#bbf,stroke:#333,stroke-width:2px
     style H fill:#fbb,stroke:#333,stroke-width:2px
     style M fill:#bfb,stroke:#333,stroke-width:2px
@@ -63,21 +67,37 @@ curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scr
 
 ---
 
-## 3. Phase 1: Repository Bootstrapping (`/starter-init`)
+## 3. Phase 1: Repository Bootstrapping (`/brownfield-init` & `/starter-init`)
 
-Once installed, initialize your project's harness defaults and router rules.
+Once installed, bootstrap the CoreZero Nexus in your repository. For existing repositories, you must run the archaeology pass first.
 
-### Step 1: Run Initialization
-Run the initialization command:
+### Step 1: Run Brownfield Archaeology (Existing Repositories Only)
+If you are introducing the harness to an established codebase, run the archaeology pass:
+```text
+/brownfield-init
+```
+*Effect*: Creates the brownfield map, dependency graph, and seeds risk heuristics under `memories/repo/brownfield/`.
+
+### Step 2: Run Starter Bootstrap
+
+After brownfield archaeology, continue with the normal bootstrap:
 ```text
 /starter-init
 ```
 
-### Step 2: Verify Output Files
+### Step 2: Initialize the Harness
+Run the initialization command:
+```text
+/starter-init
+```
+*Effect*: Sets up active harness configuration, status, and verification settings.
+
+### Step 3: Verify Output Files
 Ensure the following files have been created in your repository root:
 - [`AGENTS.md`](../kit/AGENTS.md) — The agent router configuration.
 - [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) — Active harness status and verification settings.
 - [`memories/repo/harness-config.md`](../kit/memories/repo/harness-config.md) — Command and path configuration.
+- `memories/repo/brownfield/` (if run) — Brownfield archaeology map and dependency graph.
 - [`docs/architecture.md`](../kit/docs/architecture.md) — System architecture baseline.
 - [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md), [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md), and the other seeded adopter docs.
 
@@ -194,14 +214,14 @@ Save the final feature state, extract lessons, and clear the active boundary:
 
 ## 7. Phase 5: Harness Maintenance (`/harness-maintain`)
 
-When the environment itself needs assessment, repair, or evaluator auditing, run:
+When the environment itself needs assessment, repair, or triaging based on observability failure logs, run:
 ```text
 /harness-maintain [assess | create | improve | eval | doctor]
 ```
 *Effect*:
 - **assess**: Evaluates the repo harness against the 6 subsystems.
 - **create**: Generates harness configuration from scratch.
-- **improve**: Upgrades harness mechanisms based on observability failures.
+- **improve**: Upgrades harness mechanisms based on observability failures. Triages `status: open` entries in `observability-log.md` using the structured YAML schema, prioritizes them, designs/applies fixes, and updates the trend summary.
 - **eval**: Runs split-evaluator auditing passes.
 - **doctor**: Runs the shipped drift and repair checks.
 
@@ -245,6 +265,7 @@ Generate exact, machine-readable HTTP contract specifications:
 
 | Command | Category | Purpose | Input / Target Artifact |
 |---|---|---|---|
+| `/brownfield-init` | Project Starter | Run brownfield archaeology pass on existing repositories | `memories/repo/brownfield/` |
 | `/starter-init` | Project Starter | Initial setup and router configuration | [`AGENTS.md`](../kit/AGENTS.md), [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) |
 | `/context-session` | Context | Manage active session boundaries and checkpoints | `artifacts/features/<slug>/` |
 | `/context-memory` | Context | Maintain durable memory files | [`memories/repo/constitution.md`](../kit/memories/repo/constitution.md), [`INDEX.md`](../kit/memories/repo/INDEX.md) |

@@ -22,7 +22,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="CoreZero Nexus — Spec-Anchored AI Software Delivery">
     <meta name="twitter:description"
-        content="An engineering harness for AI coding agents. 16 skills, durable memory, mechanical verification gates, full traceability.">
+        content="An engineering harness for AI coding agents. 17 skills, durable memory, mechanical verification gates, full traceability.">
 
     <link rel="stylesheet" href="common.css">
     <link
@@ -138,7 +138,7 @@
 
     <main id="main" class="container">
         <div class="hero">
-            <span class="eyebrow-mono accent">v0.1.0 · Spec-Anchored Delivery</span>
+            <span class="eyebrow-mono accent">v0.1.1 · Spec-Anchored Delivery</span>
             <h1>CoreZero Nexus</h1>
             <p class="subtitle">An engineering harness for AI coding agents. Locks specs before code, plans every task,
                 verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
@@ -172,7 +172,7 @@
             <h2 id="about-heading" class="about-title">A personal R&amp;D project on agent-first software delivery</h2>
             <p>
                 I built this kit to answer a question I kept hitting in real work: <em>how do you make AI coding agents
-                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 16-skill
+                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 17-skill
                 harness that anchors every change to a locked spec, plans tasks in 2&ndash;5 minute units, gates
                 completion behind mechanical verification, and grows a durable memory tier over time so the next session
                 doesn't start from zero.
@@ -207,7 +207,7 @@
                 <li><a href="#architecture">4. System Architecture</a></li>
                 <li><a href="#harness-subsystems">5. Harness Subsystems</a></li>
                 <li><a href="#context-engineering">6. Context Engineering</a></li>
-                <li><a href="#workflow">7. Full Workflow (16 Skills)</a></li>
+                <li><a href="#workflow">7. Full Workflow (17 Skills)</a></li>
                 <li><a href="#profiles">8. Delivery Profiles</a></li>
                 <li><a href="#verify-gate">9. Verify Gate</a></li>
                 <li><a href="#operating-manual">10. How to Use (Playbooks)</a></li>
@@ -221,6 +221,7 @@
                 <li><a href="#adapters-catalog">12. Entrypoints and Integrations</a></li>
                 <li><a href="#maintenance-catalog">13. Maintenance and Governance</a></li>
                 <li><a href="#faq">14. FAQ and Common Mistakes</a></li>
+                <li><a href="#packs-taxonomy-reference">15. Packs Taxonomy and Reference</a></li>
             </ul>
         </div>
 
@@ -470,7 +471,7 @@
         <!-- 0. Non-negotiables -->
         <section id="non-negotiables">
             <div class="non-negotiables">
-                <div class="nn-title">1. The Non-negotiables (AGENTS.md Priority Rules)</div>
+                <h2 class="nn-title">1. The Non-negotiables (AGENTS.md Priority Rules)</h2>
                 <div class="nn-grid">
                     <div class="nn-item"><strong>No flattery, no filler.</strong> Start with the answer, action,
                         blocker, or decision. You <strong>MUST NOT</strong> add ceremonial openers.</div>
@@ -548,6 +549,16 @@
         <!-- 4. System Architecture -->
         <section id="architecture">
             <h2>4. System Architecture</h2>
+            <p class="node-desc">CoreZero Nexus standardizes developer actions into structured artifacts. Below is the System Context showing how the developer, the agent runtime, and the repository memory databases interact:</p>
+            <figure class="kit-diagram">
+                <div class="mermaid-render"
+                    data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-context.mmd" role="img"
+                    aria-label="C4 System Context diagram: developer, agent runtime, LLM, and Git repository boundaries.">
+                    <div class="mermaid-loading">Rendering corezero-context…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 2.0 &mdash; System context diagram.</figcaption>
+            </figure>
+            
             <div class="arch-grid">
                 <div class="arch-card">
                     <h3>A. The Skill Layer (Logic)</h3>
@@ -673,6 +684,14 @@ artifacts/features/</code></pre>
                     <code>memories/repo/</code>
                     content or <code>artifacts/</code>.
                 </p>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-mindmap.mmd" role="img"
+                        aria-label="Repository layout mindmap detailing skills, memories, artifacts, rules, and docs directories.">
+                        <div class="mermaid-loading">Rendering corezero-mindmap…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 2.1 &mdash; Repository structural layout mindmap.</figcaption>
+                </figure>
             </div>
             <div class="section-card">
                 <h3>Canonical Memory Files</h3>
@@ -829,45 +848,7 @@ artifacts/features/</code></pre>
                     artifacts
                     instead of chat history.</p>
             </div>
-            <div class="section-card">
-                <h3>Smart Context Routing</h3>
-                <p class="node-desc">A session never loads the whole memory layer. It reads <code>INDEX.md</code> first,
-                    then uses <strong>Confidence-Scored Loading</strong>: matching &le;2 keywords triggers a lightweight
-                    <em>partial-load</em> (headers only), while 3+ triggers a full load. Loaded and skipped groups
-                    are reported back &mdash; silent skipping is not allowed.
-                </p>
-                <div class="audience-grid">
-                    <div class="metric-card">
-                        <strong>Always</strong>
-                        <p><code>constitution.md</code>,</p>
-                        <p><code>security-policy.md</code>,</p>
-                        <p><code>harness-config.md</code></p>
-                        <p>&mdash; every session.</p>
-                    </div>
-                    <div class="metric-card">
-                        <strong>By Intent &mdash; Knowledge</strong>
-                        <p>PKB,</p>
-                        <p><code>domain-specs.md</code>,</p>
-                        <p>architecture &mdash; on</p>
-                        <p><em>architecture, pattern, stack, domain</em>.</p>
-                    </div>
-                    <div class="metric-card">
-                        <strong>By Intent &mdash; Learned</strong>
-                        <p><code>learned-heuristics.md</code></p>
-                        <p>&mdash; on</p>
-                        <p><em>recurring, "we always/never", "last time"</em>.</p>
-                    </div>
-                    <div class="metric-card">
-                        <strong>By Debug</strong>
-                        <p><code>observability-log.md</code>,</p>
-                        <p>prior <code>session-extracts.md</code></p>
-                        <p>&mdash; on</p>
-                        <p><em>debug, regression, retro, root cause</em>.</p>
-                    </div>
-                </div>
-                <p class="node-desc">If <code>INDEX.md</code> is missing or stale, the session falls back to loading
-                    every memory file and routes the gap to <code>/context-memory</code> for index repair.</p>
-            </div>
+
             <div class="section-card">
                 <h3>Harness Card</h3>
                 <p class="node-desc">Every adopted repo gets a <code>HARNESS_CARD.md</code> at its root &mdash; a
@@ -1058,6 +1039,49 @@ artifacts/features/</code></pre>
                 <figcaption class="kit-diagram-caption">Figure 3.5 &mdash; Six-tier context assembly. The router decides
                     which tiers load for a given intent.</figcaption>
             </figure>
+            
+            <div class="section-card">
+                <h3>Smart Context Routing</h3>
+                <p class="node-desc">Active sessions load only matching memories based on trigger keywords declared in the routing index. This keeps context windows lean, lowers token usage, and prevents LLM context fatigue. If <code>INDEX.md</code> is missing or stale, the session falls back to loading every memory file and routes the gap to <code>/context-memory</code> for index repair.</p>
+                <div class="audience-grid" style="margin-bottom: var(--space-6);">
+                    <div class="metric-card">
+                        <strong>Always</strong>
+                        <p><code>constitution.md</code>,</p>
+                        <p><code>security-policy.md</code>,</p>
+                        <p><code>harness-config.md</code></p>
+                        <p>&mdash; every session.</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>By Intent &mdash; Knowledge</strong>
+                        <p>PKB,</p>
+                        <p><code>domain-specs.md</code>,</p>
+                        <p>architecture &mdash; on</p>
+                        <p><em>architecture, pattern, stack, domain</em>.</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>By Intent &mdash; Learned</strong>
+                        <p><code>learned-heuristics.md</code></p>
+                        <p>&mdash; on</p>
+                        <p><em>recurring, "we always/never", "last time"</em>.</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>By Debug</strong>
+                        <p><code>observability-log.md</code>,</p>
+                        <p>prior <code>session-extracts.md</code></p>
+                        <p>&mdash; on</p>
+                        <p><em>debug, regression, retro, root cause</em>.</p>
+                    </div>
+                </div>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-context-routing.mmd" role="img"
+                        aria-label="Smart context routing flowchart detailing keywords match and intent group loading.">
+                        <div class="mermaid-loading">Rendering corezero-context-routing…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 3.5b &mdash; Intent-based smart context routing.</figcaption>
+                </figure>
+            </div>
+            
             <div class="section-card">
                 <h3>Subagent Fan-Out</h3>
                 <p class="node-desc">Heavy reads (codebase exploration, multi-file research, hallucination cross-checks)
@@ -1112,11 +1136,20 @@ artifacts/features/</code></pre>
         <!-- 4. Workflow -->
         <section id="workflow">
             <span class="eyebrow-mono">§04 · End-to-End Lifecycle</span>
-            <h2>7. Full Workflow — End-to-End Lifecycle (16 Skills)</h2>
-            <p class="node-desc">The full end-to-end flow across all 16 skills. Solid nodes are the required path;
+            <h2>7. Full Workflow — End-to-End Lifecycle (17 Skills)</h2>
+            <p class="node-desc">The full end-to-end flow across all 17 skills. Solid nodes are the required path;
                 dashed/optional nodes run only when their condition is met. Diamonds are routing decisions; blue nodes
                 are
                 mechanical gates.</p>
+            <p class="node-desc">First, here is the subsystems mapping diagram showing how skills are partitioned into Project Starter, Context Engineering, Spec-Driven Development, and Harness Engineering subsystems, alongside their relationships to evidence and terminology memory files:</p>
+            <figure class="kit-diagram">
+                <div class="mermaid-render"
+                    data-mmd="/CoreZero-Nexus/documents/diagrams/skills-repository-architecture.mmd" role="img"
+                    aria-label="Repository Subsystems and Transitions diagram grouping starter, context, SDD, and specialist documentation.">
+                    <div class="mermaid-loading">Rendering skills-repository-architecture…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 4.0 &mdash; Subsystems and Transitions diagram.</figcaption>
+            </figure>
             <div class="callout info diagram-serving-note">
                 <strong>Note:</strong> diagrams render live from <code>documents/diagrams/*.mmd</code>. If you cloned
                 the
@@ -1175,6 +1208,15 @@ artifacts/features/</code></pre>
                 </div>
                 <p class="node-desc">Each card lists the skill, its purpose, and the artifacts it writes. The routing
                     view above shows how skills connect; this view shows what they produce.</p>
+                <p class="node-desc">Here is the lifecycle dataflow mapping showing how artifacts are produced, validated, and promoted into durable memory:</p>
+                <figure class="kit-diagram" style="max-width: 90%; margin: 1.5rem auto;">
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-dataflow.mmd" role="img"
+                        aria-label="Artifact data flow diagram from analysis to proposal, spec, plan, code, review, extracts, and memory.">
+                        <div class="mermaid-loading">Rendering corezero-dataflow…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 4.1b &mdash; Artifact data flow lifecycle.</figcaption>
+                </figure>
                 <div class="diagram-container">
                     <!-- Step 0: Init -->
                     <div class="node-wrapper">
@@ -1727,88 +1769,61 @@ artifacts/features/</code></pre>
         <!-- 5. Profiles -->
         <section id="profiles">
             <h2>8. Delivery Profiles</h2>
-            <div class="data-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Profile</th>
-                            <th>Flow</th>
-                            <th>Use Case</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Tiny</strong></td>
-                            <td>Compact Spec → Lean Plan → Mechanical Verify</td>
-                            <td>Small bugs, minor improvements, or simple documentation changes.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Standard</strong></td>
-                            <td>Full Spec → Plan & Tasks → Gate + Alignment + Security Verify</td>
-                            <td>Standard feature slices or moderate complexity improvements.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Complex</strong></td>
-                            <td>Research (if needed) → Spec (Grilling Waves) → Plan (+ Design/ADR) → Full Verify
-                                (Traceability)</td>
-                            <td>High-risk, cross-boundary, brownfield systems, or major architecture modifications.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <figure class="kit-diagram">
                 <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-rigor-profiles.mmd"
                     role="img"
                     aria-label="Rigor profiles: Tiny, Standard, Complex, Ultra — each scaling spec, plan, and verify depth.">
                     <div class="mermaid-loading">Rendering corezero-rigor-profiles…</div>
                 </div>
-                <figcaption class="kit-diagram-caption">Figure 5.1 &mdash; Rigor profiles scale the same skills at four
-                    different depths. The flow is identical; the ceremony is not.</figcaption>
+                <figcaption class="kit-diagram-caption">Figure 5.1 &mdash; Rigor profiles scale the same skills at four different depths. The flow is identical; the ceremony is not.</figcaption>
             </figure>
             <div class="section-card">
                 <h3>Adaptive Rigor Profiles</h3>
                 <p class="node-desc">Profiles scale ceremony to the work. Set the repo default in
                     <code>harness-config.md</code>; override per feature in <code>status.md</code>. <strong>Profile
-                        cascading:</strong> once set in <code>status.md</code>, all downstream skills (spec, plan,
-                    implement,
-                    verify) load and adapt to the active profile. The same skills run at different depths.
+                        cascading:</strong> once set in <code>status.md</code>, all downstream skills (spec, plan, implement, verify) load and adapt to the active profile. The same skills run at different depths.
                 </p>
                 <div class="data-table-container">
                     <table>
                         <thead>
                             <tr>
                                 <th>Profile</th>
-                                <th>Use For</th>
-                                <th>Spec</th>
-                                <th>Plan</th>
-                                <th>Verify</th>
+                                <th>Use Case / Use For</th>
+                                <th>Flow / Phases</th>
+                                <th>Spec Depth</th>
+                                <th>Plan Depth</th>
+                                <th>Verify Depth</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><strong>Tiny</strong></td>
-                                <td>One-file fixes, doc updates</td>
+                                <td>One-file fixes, doc updates, small bugs</td>
+                                <td>Compact Spec &rarr; Lean Plan &rarr; Mechanical Verify</td>
                                 <td>1-2 questions</td>
                                 <td>Lean plan, inline tasks</td>
                                 <td>Mechanical + alignment</td>
                             </tr>
                             <tr>
                                 <td><strong>Standard</strong> (default)</td>
-                                <td>Most feature work</td>
+                                <td>Most feature slices or moderate complexity improvements</td>
+                                <td>Full Spec &rarr; Plan & Tasks &rarr; Gate + Alignment + Security Verify</td>
                                 <td>3-5 questions</td>
                                 <td>Full plan + tasks</td>
                                 <td>+ security lens</td>
                             </tr>
                             <tr>
                                 <td><strong>Complex</strong></td>
-                                <td>Cross-boundary, brownfield risk</td>
+                                <td>High-risk, cross-boundary, brownfield systems, or major architecture modifications</td>
+                                <td>Research (optional) &rarr; Spec &rarr; Plan &rarr; Full Verify (Traceability)</td>
                                 <td>5+ questions, decisions locked</td>
                                 <td>+ design, subagent stress-test</td>
                                 <td>+ traceability + scenarios</td>
                             </tr>
                             <tr>
                                 <td><strong>Complex + System Spec Mode</strong></td>
-                                <td>Cross-cutting policy, harness changes</td>
+                                <td>Cross-cutting policy, harness changes, or infrastructure upgrades</td>
+                                <td>Research &rarr; System Spec &rarr; ADR + Plan &rarr; Full Verify + Eval Mode</td>
                                 <td>System Spec Mode + adversarial pass</td>
                                 <td>+ adversarial plan review</td>
                                 <td>+ <code>/harness-maintain</code> Eval Mode</td>
@@ -1970,6 +1985,14 @@ artifacts/features/</code></pre>
                 <figcaption class="kit-diagram-caption">Figure 5.5 &mdash; Verify gate flow. Failure at any step routes
                     back to <code>Implementing</code>; only Post-Ship Sync moves to <code>Done</code>.</figcaption>
             </figure>
+            <figure class="kit-diagram">
+                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-post-ship-sync.mmd"
+                    role="img"
+                    aria-label="Post-ship sync sequence: sweep INDEX.md, check file diffs, apply updates to learned heuristics.">
+                    <div class="mermaid-loading">Rendering corezero-post-ship-sync…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 5.6 &mdash; Post-ship knowledge sync sequence. Validates and promotes learnings to durables before closing the feature.</figcaption>
+            </figure>
         </section>
 
         <!-- 6. Operating Manual -->
@@ -2004,7 +2027,7 @@ artifacts/features/</code></pre>
                 <p>Installer output looks like this:</p>
                 <pre><code>CoreZero Nexus installer
   Target:   /path/to/your/project
-  Version:  0.1.0
+  Version:  0.1.1
 
 Installing kit content (overwrite)...
 Seeding user content (copyIfMissing)...
@@ -2202,6 +2225,17 @@ Feature slug: my-first-feature</code></pre>
                     </table>
                 </div>
 
+                <h3>Onboarding Entrypoint</h3>
+                <p class="node-desc">When starting a new project, the kit auto-detects the repository state and routes the onboarding process accordingly (Greenfield vs Brownfield Mode):</p>
+                <figure class="kit-diagram" style="max-width: 80%; margin: 1.5rem auto;">
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-onboarding.mmd" role="img"
+                        aria-label="Onboarding router flowchart: Greenfield vs Brownfield routes to guided loop.">
+                        <div class="mermaid-loading">Rendering corezero-onboarding…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 6.0 &mdash; Onboarding entrypoint router flowchart.</figcaption>
+                </figure>
+
                 <p class="node-desc"><strong>Greenfield Example (new platform module)</strong></p>
                 <p>1. Capture principles, constraints, and the coding contract with <code>/context-memory</code>.</p>
                 <p>2. Run <code>/spec-research</code> to explore domain unknowns and constraints.</p>
@@ -2215,27 +2249,7 @@ Feature slug: my-first-feature</code></pre>
                 <p>7. End the work window with <code>/context-session</code> and publish continuity in
                     <code>handoff.md</code>.
                 </p>
-                <div class="flow-diagram" aria-label="Greenfield workflow diagram">
-                    <div class="flow-track">
-                        <span class="flow-node">Memory</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Research</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Spec</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Diagram</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">ADR</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Plan</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Implement</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Verify</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Session End</span>
-                    </div>
-                </div>
+
                 <figure class="kit-diagram">
                     <div class="mermaid-render"
                         data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-greenfield-flow.mmd" role="img"
@@ -2259,35 +2273,7 @@ Feature slug: my-first-feature</code></pre>
                 <p>6. Run <code>/harness-verify</code>, including the optional Fallow Pass when cleanup is
                     behavior-neutral.</p>
                 <p>7. End with <code>/context-session</code> so the next session can resume safely.</p>
-                <div class="flow-diagram" aria-label="Brownfield workflow diagram">
-                    <div class="flow-track">
-                        <span class="flow-node">Memory</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Research</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Spec</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Plan</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Implement Slice</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Verify Slice</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node flow-decision">More Slices?</span>
-                    </div>
-                    <div class="flow-branch-row">
-                        <span class="flow-branch-chip">Yes</span>
-                        <span class="flow-branch-text">loop back to Implement Slice</span>
-                        <span class="flow-loop">↺</span>
-                    </div>
-                    <div class="flow-track flow-track-tail">
-                        <span class="flow-branch-chip flow-branch-no">No</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Session End</span>
-                        <span class="flow-arrow">→</span>
-                        <span class="flow-node">Harness Lesson?</span>
-                    </div>
-                </div>
+
                 <figure class="kit-diagram">
                     <div class="mermaid-render"
                         data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-brownfield-flow.mmd" role="img"
@@ -2309,15 +2295,7 @@ Feature slug: my-first-feature</code></pre>
                     <div class="loop-step">Mark Done</div>
                 </div>
             </div>
-            <div class="section-card">
-                <h3>Delivery Tutorial Snapshot</h3>
-                <p class="node-desc">Reference feature flow:</p>
-                <p>1. <strong>Research:</strong> use <code>/spec-research</code> when root cause is unknown.</p>
-                <p>2. <strong>Spec:</strong> use <code>/spec-requirements</code> with clarifying questions.</p>
-                <p>3. <strong>Plan:</strong> use <code>/spec-plan</code> for atomic traceable tasks.</p>
-                <p>4. <strong>Implement:</strong> run <code>/spec-implement</code> task-by-task.</p>
-                <p>5. <strong>Verify:</strong> run <code>/harness-verify</code> for drift and evidence audit.</p>
-            </div>
+
             <div class="section-card">
                 <h3>Session Handoff Pattern</h3>
                 <ol>
@@ -2669,7 +2647,22 @@ Feature slug: my-first-feature</code></pre>
         <section id="skills-catalog">
             <span class="eyebrow-mono">§07 · Skill Catalog</span>
             <h2>11. Complete Skill Catalog</h2>
+            <p class="node-desc">CoreZero Nexus provides 17 specialized skills to handle the end-to-end lifecycle. The sequence diagram below shows how the agent runtime interacts with the user, skill files, and memories during execution:</p>
+            <figure class="kit-diagram" style="max-width: 80%; margin: 1.5rem auto;">
+                <div class="mermaid-render"
+                    data-mmd="/CoreZero-Nexus/documents/diagrams/skills-end-to-end-execution.mmd" role="img"
+                    aria-label="Skills end-to-end execution sequence diagram.">
+                    <div class="mermaid-loading">Rendering skills-end-to-end-execution…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 7.0 &mdash; Agent skill execution sequence diagram.</figcaption>
+            </figure>
             <div class="skill-grid">
+                <div class="skill-card">
+                    <h4>brownfield-init</h4>
+                    <p>Performs a pre-feature deep, read-only archaeology sweep for repositories with existing code, tests, CI, or history. Maps module dependencies, technical debt, and entrypoints. Generates the brownfield map (<code>brownfield-map.md</code>) and dependency graph (<code>dependency-graph.md</code>), seeds repo-specific heuristics, updates known limits on the harness card, and defines rigor auto-promotion rules.
+                    </p>
+                    <p><strong>References:</strong> brownfield map, dependency graph, heuristics seeding, known limits annotation, profile promotion rules.</p>
+                </div>
                 <div class="skill-card">
                     <h4>starter-init</h4>
                     <p>Bootstraps repo routing, AGENTS.md router, workflow defaults, starter memory, and verifies
@@ -2859,67 +2852,7 @@ Feature slug: my-first-feature</code></pre>
                     </table>
                 </div>
             </div>
-            <div class="data-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Skill</th>
-                            <th>Example Trigger</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>/starter-init</code></td>
-                            <td>"Run /starter-init to bootstrap repo defaults and starter memory for this project."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/context-status</code></td>
-                            <td>"Run /context-status to see active blockers across all features."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/harness-maintain</code></td>
-                            <td>"Run /harness-maintain to assess where this repository is weak across the 6 subsystems."
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><code>/context-memory</code></td>
-                            <td>"Run /context-memory and promote this auth middleware pattern into repo memory."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/spec-research</code></td>
-                            <td>"Use /spec-research to trace the first failing boundary in the signup flow."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/spec-requirements</code></td>
-                            <td>"Run /spec-requirements for 'auth-fix' and draft the alignment proposal."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/visualize</code></td>
-                            <td>"Use /visualize to create a sequence diagram for the login flow."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/spec-adr</code></td>
-                            <td>"Use /spec-adr to record why this feature uses a queue instead of direct writes."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/spec-plan</code></td>
-                            <td>"Run /spec-plan and create the technical design for this feature."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/spec-implement</code></td>
-                            <td>"Run /spec-implement TASK-001 and record the proving command before editing."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/context-session</code></td>
-                            <td>"Run /context-session for 'auth-fix' and generate the next-step resume prompt."</td>
-                        </tr>
-                        <tr>
-                            <td><code>/harness-verify</code></td>
-                            <td>"Use /harness-verify to check for spec drift in the latest PR."</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
             <div class="section-card">
                 <h3>Power-User Tips</h3>
                 <ul>
@@ -3085,10 +3018,13 @@ Feature slug: my-first-feature</code></pre>
                 <h3>Entrypoint Rules</h3>
                 <ul>
                     <li>Entrypoints remain thin and point to skill files rather than duplicating full instructions.</li>
+                    <li>Do not duplicate whole skill bodies in entrypoints.</li>
                     <li>Every runtime should load memory files before execution phases.</li>
                     <li>Bootstrap is non-destructive and copies <code>skills/</code> while only creating
                         <code>AGENTS.md</code> when no runtime entrypoint exists.
                     </li>
+                    <li>Feature-specific commands should keep the feature slug explicit.</li>
+                    <li>Entrypoints should reinforce that completion requires verification evidence, not just a plausible diff.</li>
                     <li>MCP integration is supported through shell-based server configurations.</li>
                 </ul>
             </div>
@@ -3133,17 +3069,7 @@ Feature slug: my-first-feature</code></pre>
                 </div>
             </div>
 
-            <div class="section-card">
-                <h3>Entry Point Rules</h3>
-                <ul>
-                    <li>Do not duplicate whole skill bodies in entrypoints.</li>
-                    <li>Feature-specific commands should keep the feature slug explicit.</li>
-                    <li>Entrypoints should reinforce that completion requires verification evidence, not just a
-                        plausible
-                        diff.
-                    </li>
-                </ul>
-            </div>
+
             <div class="section-card">
                 <h3>Discovery Order</h3>
                 <ol>
@@ -3161,41 +3087,20 @@ Feature slug: my-first-feature</code></pre>
         <!-- 13. Maintenance -->
         <section id="maintenance-catalog">
             <h2>13. Maintenance and Governance</h2>
-            <div class="data-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Area</th>
-                            <th>Canonical Rule</th>
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                        <tr>
-                            <td><strong>Install / Upgrade</strong></td>
-                            <td>Use <code>scripts/install.sh /path/to/project</code> (or the curl-piped form). It
-                                applies
-                                <code>manifest.json</code>: overwrites kit content (<code>skills/</code>,
-                                <code>rules/</code>), seeds
-                                memory and templates only if missing, and preserves <code>memories/repo/</code> and
-                                <code>artifacts/</code>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Contributing</strong></td>
-                            <td>Any new skill must include a complete SKILL.md contract and references as needed.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Release</strong></td>
-                            <td>Dry-run the first-feature flow and validate entrypoint references.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Architecture</strong></td>
-                            <td>Keep the model clear: skills, entrypoint, memory, and artifacts.</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="section-card">
+                <h3>Harness Maintenance Workflows</h3>
+                <p>The <code>/harness-maintain</code> command operates in two distinct modes to maintain the system's policy integrity and failure observability:</p>
+                <div class="kit-diagram-container">
+                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-harness-maintenance.mmd"
+                        data-aspect-ratio="1.2">
+                        <div class="mermaid-loading">Rendering corezero-harness-maintenance…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 13.1 &mdash; Harness maintenance workflows (Assess vs Improve modes).</figcaption>
+                </div>
             </div>
+
             <div class="section-card anchor-target" id="maintainer-guide">
                 <h3>Consistency Loop</h3>
                 <ul>
@@ -3366,7 +3271,204 @@ Feature slug: my-first-feature</code></pre>
             </div>
         </section>
 
+        <!-- 15. Packs Taxonomy and Reference -->
+        <section id="packs-taxonomy-reference">
+            <span class="eyebrow-mono">§15 · Value Proposition</span>
+            <h2>15. Packs Taxonomy and Reference</h2>
+            
+            <div class="section-card">
+                <h3>The Core Value Proposition</h3>
+                <p>Generative AI code generation is fast but often suffers from "AI slop," code bloat, context amnesia, and silent regressions. CoreZero Nexus addresses these challenges through four foundational pillars:</p>
+                
+                <div class="callout info">
+                    <strong>The Four Pillars:</strong>
+                    <ol>
+                        <li><strong>Spec-Driven Discipline:</strong> No code is written until a granular specification (<code>spec.md</code>) is locked and mapped to concrete acceptance criteria (<code>AC-*</code>).</li>
+                        <li><strong>Continuous Verification:</strong> Every code change is gated behind an automated mechanical verification commands loop (lints, builds, tests) to guarantee zero broken baselines.</li>
+                        <li><strong>Zero Amnesia Context:</strong> Active sessions are checkpointed, compacted, and handed off seamlessly, ensuring the agent never "forgets" requirements in large codebases.</li>
+                        <li><strong>Durable Knowledge Compounding:</strong> After every successful feature deployment, the kit sweeps session logs to update a central repository memory tier, making future agent runs progressively smarter.</li>
+                    </ol>
+                </div>
+            </div>
 
+            <div class="section-card">
+                <h3>The 4 Core Packs</h3>
+                <p>CoreZero Nexus organizes its capabilities into 4 Core Packs containing 17 public commands. Below is the taxonomy mapping:</p>
+                <div class="kit-diagram-container">
+                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-packs-taxonomy.mmd"
+                        data-aspect-ratio="0.8">
+                        <div class="mermaid-loading">Rendering corezero-packs-taxonomy…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 15.1 &mdash; CoreZero Nexus mindmap of commands.</figcaption>
+                </div>
+                
+                <div class="packs-description-container" style="margin-top: 2rem;">
+                    <h4>📦 Pack 1: Project Starter (Onboarding & Baselines)</h4>
+                    <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">Prepares the codebase for AI-agent delivery.</p>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li><strong><code>/brownfield-init</code>:</strong> Analyzes existing legacy repositories. Generates a module dependency graph and tech debt map to identify high-blast-radius risk zones.</li>
+                        <li><strong><code>/starter-init</code>:</strong> Bootstraps the harness defaults, active card, and operating configs.</li>
+                    </ul>
+
+                    <h4>📦 Pack 2: Context Engineering (Session Management)</h4>
+                    <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">Keeps the agent oriented and context windows lean.</p>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li><strong><code>/context-session</code>:</strong> Starts, checkpoints, and cleanly exits feature boundaries (START/CHECKPOINT/END).</li>
+                        <li><strong><code>/context-status</code>:</strong> Orchestrates multiple concurrent features and gives a high-level progress report.</li>
+                        <li><strong><code>/context-memory</code>:</strong> Triages and promotes candidate heuristics into durable instruction-tier memory.</li>
+                    </ul>
+
+                    <h4>📦 Pack 3: Spec-Driven Development (The Delivery Engine)</h4>
+                    <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">Translates feature requests into surgical code modifications.</p>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li><strong><code>/spec-research</code>:</strong> Spawns subagents to study unknown codebase behavior.</li>
+                        <li><strong><code>/spec-requirements</code>:</strong> Batches Socratic grilling questions to clarify user intent, locking requirements into <code>spec.md</code>.</li>
+                        <li><strong><code>/spec-adr</code>:</strong> Records formal Architectural Decision Records for technical trade-offs.</li>
+                        <li><strong><code>/spec-plan</code>:</strong> Designs the solution and breaks it down into granular, 2-to-5 minute tasks (<code>tasks.md</code>).</li>
+                        <li><strong><code>/spec-implement</code>:</strong> Surgical task-by-task code implementation with mandatory pre-change proofs.</li>
+                    </ul>
+
+                    <h4>📦 Pack 4: Harness Engineering (Verification & Reviews)</h4>
+                    <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">Guarantees delivery quality and continuously improves the harness.</p>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li><strong><code>/harness-verify</code>:</strong> Audits implementation code against mechanical gates and alignment matrices.</li>
+                        <li><strong><code>/harness-maintain</code>:</strong> Triages observability logs and improves the harness based on agent failures.</li>
+                        <li><strong><code>/code-review</code>:</strong> Audits changes against Google's Engineering Practices.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Command Reference Table</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>Subsystem</th>
+                                <th>Customer Value / Purpose</th>
+                                <th>Key Artifacts</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>/brownfield-init</code></td>
+                                <td>Project Starter</td>
+                                <td>Sweeps legacy code to locate risks before changing it</td>
+                                <td><code>brownfield-map.md</code>, <code>dependency-graph.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/starter-init</code></td>
+                                <td>Project Starter</td>
+                                <td>Configures linter, build, and test verification baselines</td>
+                                <td><code>harness-config.md</code>, <code>HARNESS_CARD.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/context-session</code></td>
+                                <td>Context</td>
+                                <td>Minimizes token costs and prevents LLM context fatigue</td>
+                                <td><code>handoff.md</code>, <code>session-extracts.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/context-status</code></td>
+                                <td>Context</td>
+                                <td>Monitors feature progression and flags implementation blockers</td>
+                                <td><code>progress.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/context-memory</code></td>
+                                <td>Context</td>
+                                <td>Updates shared conventions so the agent gets smarter over time</td>
+                                <td><code>constitution.md</code>, <code>learned-heuristics.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/spec-research</code></td>
+                                <td>SDD</td>
+                                <td>Investigates codebase boundaries before specifying requirements</td>
+                                <td><code>analysis.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/spec-requirements</code></td>
+                                <td>SDD</td>
+                                <td>Locks down Socratic specifications and acceptance criteria</td>
+                                <td><code>spec.md</code>, <code>proposal.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/spec-adr</code></td>
+                                <td>SDD</td>
+                                <td>Documents structural decisions and alternatives formally</td>
+                                <td><code>adr-NNN.md</code>, <code>adr-log.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/spec-plan</code></td>
+                                <td>SDD</td>
+                                <td>Maps designs to micro-tasks with dedicated proof commands</td>
+                                <td><code>plan.md</code>, <code>tasks.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/spec-implement</code></td>
+                                <td>SDD</td>
+                                <td>Implements code surgically task-by-task with pre-change proofs</td>
+                                <td>Touches target source files</td>
+                            </tr>
+                            <tr>
+                                <td><code>/harness-verify</code></td>
+                                <td>Harness</td>
+                                <td>Performs mechanical build gates and spec alignment audits</td>
+                                <td><code>review.md</code>, <code>testing-scenarios.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/harness-maintain</code></td>
+                                <td>Harness</td>
+                                <td>Evaluates and improves harness rules based on logged errors</td>
+                                <td><code>observability-log.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/code-review</code></td>
+                                <td>Specialist</td>
+                                <td>Audits code health against Google's Engineering Practices</td>
+                                <td>Integrated reviews in <code>review.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/visualize</code></td>
+                                <td>Specialist</td>
+                                <td>Generates visual SVG/Mermaid flowcharts and class diagrams</td>
+                                <td><code>.svg</code>, <code>.mermaid</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/codebase-documenter</code></td>
+                                <td>Specialist</td>
+                                <td>Compiles complete technical onboarding guides for new teams</td>
+                                <td><code>README.md</code>, <code>CONTRIBUTING.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>/system-flow-docs</code></td>
+                                <td>Specialist</td>
+                                <td>Explains multi-component interactions and workflow paths</td>
+                                <td>Workflow documentation logs</td>
+                            </tr>
+                            <tr>
+                                <td><code>/api-endpoint-docs</code></td>
+                                <td>Specialist</td>
+                                <td>Generates exact, machine-readable HTTP contract specs</td>
+                                <td>API contract documentation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Direct Benefits for Customers</h3>
+                <ul>
+                    <li><strong>Zero Slop Code:</strong> Code is written strictly in response to planned, small micro-tasks. No bloated, unused, or speculative code reaches the codebase.</li>
+                    <li><strong>Clear Traceability:</strong> Every line of committed code is traceable back to a micro-task, a planned design, and an acceptance criteria (<code>AC-*</code>) approved during the specification stage.</li>
+                    <li><strong>Continuous Safety:</strong> Integrated verification gates ensure that existing tests and compilation checks must pass at 100% on the agent's machine before code submission.</li>
+                    <li><strong>Predictable Velocity:</strong> Socratic requirements grilling flags ambiguities and structural decisions early, avoiding costly rework in the middle of implementation.</li>
+                    <li><strong>Durable Knowledge Base:</strong> The agent reads the codebase's constitution, policies, and domain glossaries dynamically, ensuring it respects existing architectural patterns and vocabulary.</li>
+                </ul>
+            </div>
+        </section>
 
     </main> <!-- End container -->
 

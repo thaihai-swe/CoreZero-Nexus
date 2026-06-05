@@ -17,7 +17,7 @@ Living architecture doc for the installed CoreZero Nexus surface.
 | Router and policy entrypoints | Load-order and operating defaults | `AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/*` | Router stays thin; durable rules live in memory files |
 | Installed docs | User-facing operating guidance | `docs/*.md`, `docs/generated/*`, `docs/system-specs/README.md` | Must match shipped files exactly |
 | Skill contracts | Canonical workflow behavior | `skills/*/SKILL.md`, `skills/*/references/` | Behavioral source of truth |
-| Maintenance scripts | Install, repair, and surface validation | `scripts/install.sh`, `scripts/doctor.sh`, `scripts/check-surface-truth.py`, `scripts/test-install.sh` | Used for install, drift checks, and smoke tests |
+| Maintenance scripts | Install, repair, and surface validation | `scripts/install.sh`, `scripts/doctor.sh`, `scripts/check-surface-truth.py` | Used for install, drift checks, and smoke tests |
 | Verification workflow | Continuous consistency checks | `.github/workflows/harness-check.yml` | Same workflow contract as the source repository |
 
 ## Runtime Boundaries

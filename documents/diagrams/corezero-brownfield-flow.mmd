@@ -1,26 +1,23 @@
 flowchart TD
-    %% Brownfield Reverse Flow — understand before changing
+    %% Brownfield Flow — archaeology before bootstrap
 
-    CODE[(Existing Codebase<br/>code + tests + history)] --> INIT[starter-init<br/>Brownfield Mode]
+    CODE[(Existing Codebase<br/>code + tests + history)] --> INIT[brownfield-init<br/>read-only archaeology sweep]
 
-    INIT --> PRESERVE[Preserve existing<br/>AGENTS.md / CLAUDE.md / GEMINI.md]
-    INIT --> BROKEN[Run tests<br/>record Known Broken Tests<br/>do NOT fix silently]
-    INIT --> FLAG[Flag security paths<br/>auth / payments / secrets]
+    INIT --> MAP[Brownfield Map<br/>risky paths + implicit contracts]
+    INIT --> GRAPH[Dependency Graph<br/>fan-in / blast radius]
+    INIT --> HEUR[Seed heuristics<br/>with file-backed watchouts]
 
-    PRESERVE --> RESEARCH
-    BROKEN --> RESEARCH
-    FLAG --> RESEARCH[spec-research<br/>Brownfield Map]
+    MAP --> START[starter-init<br/>bootstrap harness after archaeology]
+    GRAPH --> START
+    HEUR --> START
 
-    RESEARCH --> MAP[Map: entry points, boundaries,<br/>fragile areas, test coverage]
-    MAP --> INV[Preserved Behavior Inventory<br/>what must NOT change]
-    INV --> MEM[context-memory<br/>capture into project-knowledge-base]
-
-    MEM --> SPEC[spec-requirements<br/>Current Context section<br/>brownfield risk rating]
+    START --> READ[Read brownfield map<br/>manually when planning work]
+    READ --> SPEC[spec-requirements<br/>Current Context section<br/>brownfield risk rating]
     SPEC --> SAFE([Pick smallest safe<br/>first-touch surface])
     SAFE --> LOOP([Standard per-feature loop<br/>spec to verify])
 
-    INV -.->|becomes constraint| SPEC
-    INV -.->|verified preserved| LOOP
+    NOTE[Router caveat:<br/>brownfield artifacts live in memories/repo/brownfield/<br/>but are not auto-loaded by INDEX.md yet]
+    NOTE -.-> READ
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef brown fill:#f59e0b,stroke:#b45309,color:#fff
@@ -28,6 +25,6 @@ flowchart TD
     classDef preserve fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
 
     class CODE,SAFE,LOOP terminal
-    class INIT,RESEARCH,MAP,SPEC brown
-    class PRESERVE,BROKEN,FLAG,MEM step
-    class INV preserve
+    class INIT,MAP,GRAPH,HEUR,START,SPEC brown
+    class READ step
+    class NOTE preserve

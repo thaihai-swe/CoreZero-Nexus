@@ -8,6 +8,21 @@ This is the canonical maintainer documentation surface for the CoreZero Nexus so
 
 ---
 
+## The Core Value Proposition
+
+Generative AI code generation is fast but often suffers from "AI slop," code bloat, context amnesia, and silent regressions. CoreZero Nexus addresses these challenges through four foundational pillars:
+
+> [!IMPORTANT]
+> **1. Spec-Driven Discipline**: No code is written until a granular specification (`spec.md`) is locked and mapped to concrete acceptance criteria (`AC-*`).
+>
+> **2. Continuous Verification**: Every code change is gated behind an automated mechanical verification commands loop (lints, builds, tests) to guarantee zero broken baselines.
+>
+> **3. Zero Amnesia Context**: Active sessions are checkpointed, compacted, and handed off seamlessly, ensuring the agent never "forgets" requirements in large codebases.
+>
+> **4. Durable Knowledge Compounding**: After every successful feature deployment, the kit sweeps session logs to update a central repository memory tier, making future agent runs progressively smarter.
+
+---
+
 ## 1. Document Architecture & Navigation
 
 The documentation set is organized into three tiers to allow maintainers to progress from high-level workflows to deep architectural specs.
@@ -15,7 +30,7 @@ The documentation set is organized into three tiers to allow maintainers to prog
 ### Tier 1: Core Guides
 * **[skills-guide.md](skills-guide.md)** — The command taxonomy, guided learning flow, and internal lineages.
 * **[packs.md](packs.md)** — Breakdown of the 4 core packs: Project Starter, Context Engineering, Spec-Driven Development, and Harness Engineering.
-* **[end-to-end-tutorial.md](end-to-end-tutorial.md)** — Step-by-step developer tutorial walking through all 16 commands in a sample lifecycle.
+* **[end-to-end-tutorial.md](end-to-end-tutorial.md)** — Step-by-step developer tutorial walking through all 17 commands in a sample lifecycle.
 * **[INSTALL.md](INSTALL.md)** — Requirements, installation steps, upgrade mechanics, and rollback instructions.
 
 ### Tier 2: Technical & Context Systems

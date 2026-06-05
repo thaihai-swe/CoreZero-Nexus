@@ -1,0 +1,29 @@
+flowchart TD
+    %% Harness Maintenance Loop — Assess vs Improve modes
+
+    START([Invoke /harness-maintain]) --> MODE{Select Mode}
+
+    %% Assess Mode Path
+    MODE -->|Assess Mode| ASSESS_SWEEP[Scan repository configuration<br/>rules, lints, policy docs]
+    ASSESS_SWEEP --> ASSESS_AUDIT[Audit alignment vs quality metrics]
+    ASSESS_AUDIT --> ASSESS_REPORT[Generate harness-assessment.md<br/>& eval-report.md]
+    ASSESS_REPORT --> ASSESS_RECOM[Identify governance gaps / rules drift]
+    ASSESS_RECOM --> ENDS([Harness baseline verified])
+
+    %% Improve Mode Path
+    MODE -->|Improve Mode| OBS_READ[Read memories/repo/observability-log.md]
+    OBS_READ --> OBS_TRIAGE[Triage failures: mechanical, alignment, or LLM limits]
+    OBS_TRIAGE --> OBS_IDENTIFY[Identify repeating patterns / trends]
+    OBS_IDENTIFY --> OBS_FIX[Formulate durable rule or policy fix]
+    OBS_FIX --> OBS_UPDATE[Promote fix to constitution.md / harness-config.md]
+    OBS_UPDATE --> ENDS
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
+    classDef assess fill:#eef2ff,stroke:#c7d2fe,color:#3730a3
+    classDef improve fill:#fff3cd,stroke:#ffc107,color:#b45309
+
+    class START,ENDS terminal
+    class MODE decision
+    class ASSESS_SWEEP,ASSESS_AUDIT,ASSESS_REPORT,ASSESS_RECOM assess
+    class OBS_READ,OBS_TRIAGE,OBS_IDENTIFY,OBS_FIX,OBS_UPDATE improve

@@ -9,12 +9,10 @@ flowchart TD
     GINIT --> GMEM[context-memory<br/>Seed constitution / security<br/>/ project-knowledge-base]
     GMEM --> GFEAT[Pick first feature]
 
-    BROWN --> BPRES[Preserve existing<br/>AGENTS.md / CLAUDE.md / GEMINI.md]
-    BPRES --> BTEST[Run tests + record<br/>broken-test inventory]
-    BTEST --> BFLAG[Flag security paths<br/>auth / payments / secrets]
-    BFLAG --> BMAP[spec-research<br/>Brownfield Map<br/>Preserved Behavior Inventory]
-    BMAP --> BMEM[context-memory<br/>Capture map into PKB]
-    BMEM --> BSAFE[Pick smallest safe<br/>first feature]
+    BROWN --> BARCH[brownfield-init<br/>map debt + dependencies<br/>+ risky paths]
+    BARCH --> BINIT[starter-init<br/>bootstrap harness after archaeology]
+    BINIT --> BREAD[Read brownfield map<br/>before first feature]
+    BREAD --> BSAFE[Pick smallest safe<br/>first feature]
 
     GFEAT --> LOOP[Guided per-feature loop]
     BSAFE --> LOOP
@@ -28,6 +26,6 @@ flowchart TD
 
     class START,SHIP terminal
     class GREEN,GINIT,GMEM,GFEAT green
-    class BROWN,BPRES,BTEST,BFLAG,BMAP,BMEM,BSAFE brown
+    class BROWN,BARCH,BINIT,BREAD,BSAFE brown
     class BOOT,LOOP common
     class DETECT decision

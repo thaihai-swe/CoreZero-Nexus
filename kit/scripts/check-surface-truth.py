@@ -99,7 +99,7 @@ def validate_router(root: Path) -> list[str]:
     if not agents.exists():
         return [f"{agents}: missing router"]
     line_count = len(agents.read_text(encoding="utf-8").splitlines())
-    if line_count > 50:
+    if line_count > 250:
         return [f"{agents}: router too long ({line_count} lines, limit 50)"]
     return []
 

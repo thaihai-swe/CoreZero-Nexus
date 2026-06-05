@@ -1,10 +1,14 @@
 flowchart TD
-    %% Full End-to-End Flow — all 16 skills, required vs optional
+    %% Full End-to-End Flow — current skill set, required vs optional
 
-    START([Request]) --> INIT[starter-init<br/>bootstrap harness]
+    START([Request]) --> EXIST{Is it an existing repo?}
+    EXIST -- yes --> BROWNFIELD[brownfield-init<br/>Archaeology Sweep]
+    BROWNFIELD --> INIT[starter-init<br/>bootstrap harness]
+    EXIST -- no --> INIT
 
     %% Setup phase
-    INIT --> HARNESS{First time or<br/>structural issue?}
+    INIT --> SESSION_START[context-session START<br/>Open Feature Boundary]
+    SESSION_START --> HARNESS{First time or<br/>structural issue?}
     HARNESS -. assess maturity .-> ASSESS[harness-maintain<br/>Assess Mode]
     ASSESS -.-> NEEDRES
     HARNESS --> NEEDRES{Behavior unknown<br/>or brownfield?}
@@ -60,8 +64,8 @@ flowchart TD
     classDef legend fill:#f7f7f5,stroke:#e0e0e0,color:#111
 
     class START,DONE terminal
-    class INIT,SPEC,PLAN,IMPL,ENDS core
-    class ASSESS,RES,VIS,ADR,IMPROVE,APIDOC,SYSDOC,CODEDOC,CODEREV optional
+    class INIT,SESSION_START,SPEC,PLAN,IMPL,ENDS core
+    class ASSESS,BROWNFIELD,RES,VIS,ADR,IMPROVE,APIDOC,SYSDOC,CODEDOC,CODEREV optional
     class VERIFY,SYNC gate
-    class HARNESS,NEEDRES,NEEDVIS,NEEDADR,NEEDDOCS decision
+    class HARNESS,EXIST,NEEDRES,NEEDVIS,NEEDADR,NEEDDOCS decision
     class LEGEND legend

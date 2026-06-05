@@ -23,6 +23,12 @@ flowchart TD
         IDX[INDEX.md<br/>Always-loaded routing index]
     end
 
+    subgraph PACKS["Domain Packs — Adopter-Owned"]
+        DPACK[memories/domains/&lt;name&gt;/<br/>glossary + patterns + anti-patterns + boundary-rules]
+    end
+
+    BROWN[Brownfield artifacts<br/>memories/repo/brownfield/*<br/>manual load for now]
+
     %% Routing
     IDX -->|Always group| CONST
     IDX -->|Always group| SEC
@@ -31,6 +37,7 @@ flowchart TD
     IDX -->|By-Intent: Knowledge| DOM
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
+    IDX -->|By Domain Packs| DPACK
     IDX -->|By-Debug| OBS
     IDX -->|By-Debug| EXT
 
@@ -43,17 +50,20 @@ flowchart TD
 
     %% Writers
     AIDV[harness-verify<br/>Post-Ship Sync] -->|writes record| EXT
-    AIHN[harness<br/>Improve Mode] -->|appends| OBS
+    AIHN[harness-maintain<br/>Improve Mode] -->|appends| OBS
     AIDS[context-session END] -->|appends candidates| EXT
+    AIBR[brownfield-init] -->|creates map + graph| BROWN
 
     classDef instr fill:#10b981,stroke:#047857,color:#fff
     classDef auto fill:#f59e0b,stroke:#b45309,color:#fff
     classDef extr fill:#8b5cf6,stroke:#6d28d9,color:#fff
     classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
+    classDef packs fill:#eef2ff,stroke:#c7d2fe,color:#3730a3
 
     class CONST,SEC,HARN,PKB,DOM,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router
-    class AIDV,AIHN,AIDS writer
+    class DPACK,BROWN packs
+    class AIDV,AIHN,AIDS,AIBR writer

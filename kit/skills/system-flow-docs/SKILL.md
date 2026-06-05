@@ -70,3 +70,12 @@ Produce Markdown explaining how a system behaves end-to-end. Focuses on 2-5 high
 - [ ] Every flow claim verified against source files.
 - [ ] Diagrams match the written narrative.
 - [ ] Document structure complies with `../_shared/doc-conventions.md`.
+
+## Core Rules
+
+- Ground all system flows in actual code files. Do not describe speculative behavior.
+
+## Output Rules
+
+- Follow `../_shared/doc-conventions.md` guidelines.
+- Save documentation to the specified output folder.

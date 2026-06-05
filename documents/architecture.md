@@ -10,7 +10,7 @@ CoreZero Nexus implements **Harness Engineering** — the discipline of designin
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin router → skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 5 specialist (16 total)
+│  2. Skill Layer (skills/*/SKILL.md)         │  12 core delivery + 5 specialist (17 total)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (6 subsystems)            │  Environment control
 ├─────────────────────────────────────────────┤
@@ -66,15 +66,16 @@ Per-feature state lives in `artifacts/features/<slug>/`:
 ### Layer 5: Memory
 
 Durable cross-feature guidance in `memories/repo/`:
-- `INDEX.md` — Memory router; lists Always / By-Intent / By-Debug groups so sessions load only what the task needs
+- `INDEX.md` — Memory router; lists Always / By-Intent / By Domain Packs / By-Debug groups so sessions load only what the task needs
 - `constitution.md` — Normative rules (CC-* identifiers)
 - `security-policy.md` — Permission model and trust boundaries
 - `learned-heuristics.md` — Evidence-backed execution patterns
 - `project-knowledge-base.md` — Durable facts and conventions
 - `domain-specs.md` — Bounded-context vocabulary and domain rules
 - `harness-config.md` — Operational defaults (commands, paths, trackers)
-- `observability-log.md` — Auto-tier failure log (harness/model/spec classifications)
+- `observability-log.md` — Auto-tier failure log with structured YAML entries and trend summary
 - `adr-log.md` — ADR index (lazy-created on first ADR)
+- `memories/domains/<name>/` — Adopter-owned domain packs (glossary, patterns, anti-patterns, boundary rules)
 
 **3-Tier Memory Architecture:**
 - **Instruction tier** (human-curated): constitution, security-policy, learned-heuristics, project-knowledge-base, domain-specs, harness-config, docs/architecture.md
@@ -90,7 +91,7 @@ User Request
 AGENTS.md (router) → loads skill
     │
     ▼
-Skill reads: INDEX.md (memory router) → Always/By-Intent/By-Debug groups → feature artifacts → references/
+Skill reads: INDEX.md (memory router) → Always/By-Intent/By Domain Packs/By-Debug groups → feature artifacts → references/
     │
     ▼
 Skill produces: feature artifacts (spec, plan, tasks, code, review)
@@ -138,14 +139,15 @@ CoreZero-Nexus/
 │   │   ├── TECH_STACK_REFERENCE.md
 │   │   ├── PROJECT_CONSTRAINTS.md
 │   │   └── generated/           # Codemap and reference index placeholders
-│   ├── skills/                  # 16 core/utility skills for coding agents
+│   ├── skills/                  # 17 core/utility skills for coding agents
 │   │   └── <skill>/
 │   │       ├── SKILL.md         # Compressed token-efficient skill card
 │   │       └── references/      # Templates and checklist references
 │   ├── memories/                # Scaffolding memory layer
-│   │   └── repo/                # Templates for the 3 memory tiers
+│   │   ├── repo/                # Templates for the 3 memory tiers
+│   │   └── domains/             # Seeded domain-pack schema + example pack
 │   ├── rules/                   # Shipped coding and security standards
-│   └── scripts/                 # Shipped install, repair, and truth-check helpers
+│   └── scripts/                 # Shipped install, repair, eval, and truth-check helpers
 ├── documents/                   # Maintainer-only project documents (not shipped)
 │   ├── architecture.md          # Maintainer architecture map (this file)
 │   ├── diagrams/                # Mermaid source diagrams
@@ -174,7 +176,8 @@ This is the layout created in a downstream project after running the installer s
 ├── scripts/
 │   ├── install.sh               # Shipped installer script for easy upgrades
 │   ├── doctor.sh                # Shipped repair and drift-check entrypoint
-│   └── check-surface-truth.py   # Shipped structural truth validator
+│   ├── check-surface-truth.py   # Shipped structural truth validator
+│   └── evals/                   # Shipped structural eval suite
 ├── memories/repo/               # Durable repository memory (3 tiers)
 │   ├── INDEX.md                 # Intent-based memory router
 │   ├── constitution.md          # Core repository operating rules
@@ -184,6 +187,9 @@ This is the layout created in a downstream project after running the installer s
 │   ├── domain-specs.md          # Ubiquitous language definition
 │   ├── harness-config.md        # Commands, tools, and thresholds
 │   └── observability-log.md     # Failure logs
+├── memories/domains/            # Adopter-owned domain context packs
+│   ├── README.md                # Domain-pack schema and trigger rules
+│   └── example/                 # Seeded example pack
 └── artifacts/features/          # Per-feature specs, plans, tasks, and reviews
 ```
 
@@ -195,7 +201,8 @@ Full file/folder structure the kit ships and the artifacts it produces during wo
 mindmap
   root((CoreZero Nexus))
     skills/
-      Core 11
+      Core 12
+        brownfield-init
         starter-init
         context-session
         context-status
@@ -222,6 +229,13 @@ mindmap
       domain-specs.md
       learned-heuristics.md
       observability-log.md
+    memories/domains/
+      README.md
+      example/
+        glossary.md
+        patterns.md
+        anti-patterns.md
+        boundary-rules.md
     artifacts/features/slug/
       status.md
       spec.md
@@ -241,11 +255,13 @@ mindmap
 
 ## Skill Grouping
 
-The 16 skills (11 core delivery + 5 specialist tools) cluster into three groups by purpose: orchestration + context, delivery pipeline, and specialist tools.
+The 17 skills (12 core delivery + 5 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
 
 ```mermaid
 flowchart TB
-    subgraph OC["Orchestration + Context"]
+    subgraph OC["Bootstrap + Context"]
+        BROWN["brownfield-init"]
+        START["starter-init"]
         STATUS["context-status"]
         MEMORY["context-memory"]
         RESEARCH["spec-research"]
@@ -268,6 +284,8 @@ flowchart TB
         CODE["codebase-documenter"]
     end
 
+    BROWN --> START
+    START --> STATUS
     STATUS --> MEMORY
     MEMORY --> RESEARCH
     RESEARCH --> SPEC
@@ -286,7 +304,7 @@ flowchart TB
     classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     classDef internal fill:#ffffff,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px,stroke-dasharray:4 2;
-    class MEMORY,SPEC,PLAN primary;
+    class BROWN,START,MEMORY,SPEC,PLAN primary;
     class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,API,SYS,CODE neutral;
     class CR internal;
 ```

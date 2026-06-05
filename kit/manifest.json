@@ -1,6 +1,6 @@
 {
   "name": "harness-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Spec-anchored AI software delivery framework with adaptive rigor, durable memory tiers, and a mechanical verification gate.",
   "homepage": "https://github.com/thaihai-swe/CoreZero-Nexus",
   "files": {
@@ -40,7 +40,12 @@
       "docs/TECH_STACK_REFERENCE.md",
       "docs/generated/codemap.md",
       "docs/generated/dashboard.html",
-      "docs/generated/references-index.md"
+      "docs/generated/references-index.md",
+      "memories/domains/README.md",
+      "memories/domains/example/glossary.md",
+      "memories/domains/example/patterns.md",
+      "memories/domains/example/anti-patterns.md",
+      "memories/domains/example/boundary-rules.md"
     ],
     "preserve": [
       "memories/repo/",
@@ -63,11 +68,18 @@
     "docs/architecture.md": "skills/context-memory/references/architecture-template.md",
     "docs/generated/codemap.md": "skills/harness-maintain/references/codemap-template.md",
     "docs/generated/dashboard.html": "skills/context-status/references/dashboard-template.html",
-    "docs/generated/references-index.md": "skills/harness-maintain/references/references-index-template.md"
+    "docs/generated/references-index.md": "skills/harness-maintain/references/references-index-template.md",
+    "memories/domains/README.md": "memories/domains/README.md",
+    "memories/domains/example/glossary.md": "memories/domains/example/glossary.md",
+    "memories/domains/example/patterns.md": "memories/domains/example/patterns.md",
+    "memories/domains/example/anti-patterns.md": "memories/domains/example/anti-patterns.md",
+    "memories/domains/example/boundary-rules.md": "memories/domains/example/boundary-rules.md"
   },
   "directories": [
     "skills",
     "memories/repo",
+    "memories/domains",
+    "memories/domains/example",
     "artifacts/features",
     "docs",
     "docs/generated",

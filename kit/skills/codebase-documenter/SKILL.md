@@ -51,9 +51,31 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 - Layered architecture diagram showing system structure.
 - Supporting sequence flow, ERD, or microservices maps per `../_shared/diagram-catalog.md` and `references/diagram-patterns.md`.
 
-## Output Rules & conventions
+## Output Rules
 
 - Follow `../_shared/doc-conventions.md` rules.
 - Multi-file output format (README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md).
 - Setup instructions must be actionable with exact commands.
 - Verify that a fresh developer can onboard using the docs.
+
+## Stop Conditions
+
+- Codebase is unreadable or access-denied.
+
+## Core Rules
+
+- Ground all claims in source code. Do not guess structure.
+
+## Rationalization vs. Reality
+
+| Rationalization | Reality |
+|---|---|
+| "I can generate setup steps based on standard stack assumptions." | Config files often have custom variables. Real commands must be cited. |
+
+## Red Flags
+
+- Outdated setup steps or dependencies listed in documentation.
+
+## Verification
+
+- [ ] Every directory listed in folder structure matches actual layout.
