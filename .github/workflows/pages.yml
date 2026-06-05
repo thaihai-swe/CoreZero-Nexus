@@ -16,6 +16,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -R kit/docs/* _site/
+          cp -R page-document/* _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
