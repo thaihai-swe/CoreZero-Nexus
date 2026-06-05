@@ -45,6 +45,7 @@ It handles:
    - Blockers (Yes/No)
 4. **Detailing:** For each feature, provide a 1-line summary of the "Next Step" using the public slash-command format (e.g., `/spec-plan`, `/harness-verify`), reading the current phase from its `status.md` to determine the correct command.
 5. **Guidance:** If a feature is missing a `status.md`, recommend running `/spec-requirements` (or the appropriate initialization skill) to fix the process drift.
+6. **Dashboard Generation:** Execute `python3 scripts/generate-dashboard.py` to compile the visual interactive status report at `docs/generated/dashboard.html`.
 
 ## Stop Conditions
 
@@ -77,9 +78,11 @@ Before finalizing the report, verify:
 - All active feature folders were scanned.
 - The "Next Step" commands are syntactically correct (e.g., `/spec-plan`).
 - Blockers are clearly highlighted.
+- Visual dashboard was generated at `docs/generated/dashboard.html`.
 
 ## Output Rules
 
 - Produce a summary report in the chat using `references/status-report-template.md` format.
 - Include: summary table, phase/profile definitions, blockers (if any), next-step guidance.
-- Do not modify any files.
+- Update the visual dashboard file: `docs/generated/dashboard.html`.
+- Do not modify other files.

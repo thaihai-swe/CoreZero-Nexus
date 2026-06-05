@@ -58,7 +58,7 @@
     <header class="main-header">
         <nav class="main-nav container" aria-label="Primary">
             <a href="#start-here" class="nav-brand" aria-label="CoreZero Nexus home">
-                <span class="nav-brand-mark">HK</span>
+                <span class="nav-brand-mark">CoZeNe</span>
                 <span class="nav-brand-text">CoreZero Nexus</span>
             </a>
 
@@ -643,7 +643,12 @@
 HARNESS_CARD.md
 skills/
 rules/
-scripts/install.sh
+scripts/
+  install.sh
+  doctor.sh
+  check-surface-truth.py
+  parse-observability.py
+  generate-dashboard.py
 memories/repo/
   INDEX.md
   constitution.md
@@ -656,6 +661,9 @@ memories/repo/
   adr-log.md
 docs/architecture.md
 docs/generated/
+  codemap.md
+  references-index.md
+  dashboard.html
 artifacts/features/</code></pre>
                 <p class="node-desc">The installer copies <code>skills/</code> and <code>rules/</code> into the target
                     repository, seeds
@@ -739,8 +747,8 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><code>docs/generated/</code></td>
                                 <td>Generated references</td>
-                                <td><code>codemap.md</code> and <code>references-index.md</code> give the harness
-                                    reusable structural references.</td>
+                                <td><code>codemap.md</code>, <code>references-index.md</code>, and <code>dashboard.html</code> give the harness
+                                    reusable structural references and visual pipelines.</td>
                             </tr>
                             <tr>
                                 <td><code>artifacts/features/&lt;slug&gt;/session-extracts.md</code></td>
@@ -1042,7 +1050,8 @@ artifacts/features/</code></pre>
                 </div>
             </div>
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-context-assembly.mmd" role="img"
+                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-context-assembly.mmd"
+                    role="img"
                     aria-label="Six-tier context assembly: router, always memory, by-intent memory, feature artifacts, raw code, transient logs.">
                     <div class="mermaid-loading">Rendering corezero-context-assembly…</div>
                 </div>
@@ -1056,7 +1065,8 @@ artifacts/features/</code></pre>
                     not
                     raw output; only the summary enters the parent context.</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-subagent-fanout.mmd" role="img"
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-subagent-fanout.mmd" role="img"
                         aria-label="Subagent fan-out: parent agent delegates parallel read tasks to child agents and receives summaries.">
                         <div class="mermaid-loading">Rendering corezero-subagent-fanout…</div>
                     </div>
@@ -1140,7 +1150,8 @@ artifacts/features/</code></pre>
             </div>
 
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-full-flow.mmd" role="img"
+                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-full-flow.mmd"
+                    role="img"
                     aria-label="corezero-full-flow: end-to-end lifecycle across 12 core and 4 utility skills with required, optional, decision, and gate nodes">
                     <div class="mermaid-loading">Rendering corezero-full-flow…</div>
                 </div>
@@ -1528,6 +1539,12 @@ artifacts/features/</code></pre>
                                 </td>
                             </tr>
                             <tr>
+                                <td><code>docs/generated/dashboard.html</code></td>
+                                <td>Visual interactive dashboard</td>
+                                <td>Displays real-time pipeline status, active claims, task progress, and open observability log tasks.
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><code>status.md</code></td>
                                 <td>Process state</td>
                                 <td>Eliminates session amnesia by tracking current phase and blockers.</td>
@@ -1666,8 +1683,8 @@ artifacts/features/</code></pre>
                     </div>
                 </div>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-self-improving-kb.mmd"
-                        role="img"
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-self-improving-kb.mmd" role="img"
                         aria-label="Self-improving knowledge base loop: ship, sweep, triage, compound, with promotion thresholds.">
                         <div class="mermaid-loading">Rendering corezero-self-improving-kb…</div>
                     </div>
@@ -1740,7 +1757,8 @@ artifacts/features/</code></pre>
                 </table>
             </div>
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-rigor-profiles.mmd" role="img"
+                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-rigor-profiles.mmd"
+                    role="img"
                     aria-label="Rigor profiles: Tiny, Standard, Complex, Ultra — each scaling spec, plan, and verify depth.">
                     <div class="mermaid-loading">Rendering corezero-rigor-profiles…</div>
                 </div>
@@ -1944,7 +1962,8 @@ artifacts/features/</code></pre>
                 </table>
             </div>
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-verify-gate.mmd" role="img"
+                <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-verify-gate.mmd"
+                    role="img"
                     aria-label="Verify gate: eight ordered steps from mechanical gate to post-ship knowledge sync, with reopen loops on failure.">
                     <div class="mermaid-loading">Rendering harness-verify-gate…</div>
                 </div>
@@ -2218,7 +2237,8 @@ Feature slug: my-first-feature</code></pre>
                     </div>
                 </div>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-greenfield-flow.mmd" role="img"
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-greenfield-flow.mmd" role="img"
                         aria-label="Greenfield delivery flow: install, init, memory seeding, research, spec, plan, implement, verify, session end.">
                         <div class="mermaid-loading">Rendering corezero-greenfield-flow…</div>
                     </div>
@@ -2269,7 +2289,8 @@ Feature slug: my-first-feature</code></pre>
                     </div>
                 </div>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-brownfield-flow.mmd" role="img"
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-brownfield-flow.mmd" role="img"
                         aria-label="Brownfield delivery flow: brownfield map, scope, slice, verify slice, optional fallow, session end.">
                         <div class="mermaid-loading">Rendering corezero-brownfield-flow…</div>
                     </div>
@@ -2426,7 +2447,8 @@ Feature slug: my-first-feature</code></pre>
                     folder.
                 </p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-traceability.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-traceability.mmd"
+                        role="img"
                         aria-label="Traceability chain: scenario, requirement, acceptance criterion, task, code, proof, review.">
                         <div class="mermaid-loading">Rendering corezero-traceability…</div>
                     </div>
@@ -2596,7 +2618,8 @@ Feature slug: my-first-feature</code></pre>
                     Triage decides whether one wave is enough or three are required; gray-area decisions are recorded
                     rather than silently resolved.</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-spec-lifecycle.mmd" role="img"
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-spec-lifecycle.mmd" role="img"
                         aria-label="Spec lifecycle: grilling waves, triage, lock decisions, verification surface, ready-for-plan.">
                         <div class="mermaid-loading">Rendering spec-requirements-lifecycle…</div>
                     </div>
@@ -2613,7 +2636,8 @@ Feature slug: my-first-feature</code></pre>
                     <code>Specifying</code> depending on the failure class.
                 </p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-status-machine.mmd" role="img"
+                    <div class="mermaid-render"
+                        data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-status-machine.mmd" role="img"
                         aria-label="Status state machine: Backlog, Specifying, Planning, Implementing, Verifying, Done, Blocked.">
                         <div class="mermaid-loading">Rendering context-status-machine…</div>
                     </div>
@@ -2630,7 +2654,8 @@ Feature slug: my-first-feature</code></pre>
                     candidates. Promotion thresholds (≥800/1200 lines, 3+ subtopics, 5+ refs) keep durable memory from
                     bloating context every session.</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-memory.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-memory.mmd"
+                        role="img"
                         aria-label="Memory tiers: instruction, auto, extracted — with promotion thresholds and triage flow.">
                         <div class="mermaid-loading">Rendering context-memory…</div>
                     </div>

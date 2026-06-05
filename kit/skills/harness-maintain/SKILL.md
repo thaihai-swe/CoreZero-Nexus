@@ -46,9 +46,10 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 3. Create `codemap.md` and `references-index.md` for non-trivial repositories.
 
 ### Improve Mode
-1. Check failure reports or `observability-log.md`.
+1. Run `python3 scripts/parse-observability.py` to identify and triage open failure entries in `observability-log.md`.
 2. Classify: **Harness** (environment caused error), **Model** (poor execution), or **Spec** (contradictory contract).
-3. If harness issue, design fix for one subsystem. Record in `observability-log.md` and `learned-heuristics.md`. Route rule changes to `/context-memory`.
+3. Generate prioritized remediation tasks based on the parser's recommended actions.
+4. If harness issue, design fix for one subsystem. Record in `observability-log.md` and `learned-heuristics.md`. Route rule changes to `/context-memory`.
 
 ### Eval Mode
 1. Run evaluations per `references/eval-modes.md` (Mechanical, Alignment, Adversarial/Security, Continuity).

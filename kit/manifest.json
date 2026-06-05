@@ -39,6 +39,7 @@
       "docs/TECH_DEBT_REGISTER.md",
       "docs/TECH_STACK_REFERENCE.md",
       "docs/generated/codemap.md",
+      "docs/generated/dashboard.html",
       "docs/generated/references-index.md"
     ],
     "preserve": [
@@ -61,6 +62,7 @@
     "memories/repo/adr-log.md": "skills/context-memory/references/adr-log-template.md",
     "docs/architecture.md": "skills/context-memory/references/architecture-template.md",
     "docs/generated/codemap.md": "skills/harness-maintain/references/codemap-template.md",
+    "docs/generated/dashboard.html": "skills/context-status/references/dashboard-template.html",
     "docs/generated/references-index.md": "skills/harness-maintain/references/references-index-template.md"
   },
   "directories": [

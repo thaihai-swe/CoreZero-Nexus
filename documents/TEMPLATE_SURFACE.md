@@ -17,6 +17,7 @@ When installed into an empty project directory, the folder structure looks like 
 ├── docs/
 │   ├── generated/
 │   │   ├── codemap.md                # Generated structural map of your codebase
+│   │   ├── dashboard.html            # [New] Visual interactive dashboard
 │   │   └── references-index.md       # Generated cross-file reference index
 │   ├── system-specs/                 # Cross-cutting system specs (output of /spec-requirements System Spec Mode)
 │   │   └── README.md                 # Explains system specs purpose and workflow
@@ -50,7 +51,9 @@ When installed into an empty project directory, the folder structure looks like 
 ├── scripts/
 │   ├── check-surface-truth.py        # Validates shipped paths and router constraints
 │   ├── doctor.sh                     # Repair and drift-check entrypoint
+│   ├── generate-dashboard.py         # Dashboard generator script
 │   ├── install.sh                    # Idempotent manifest-driven installer script
+│   ├── parse-observability.py        # Observability log parser script
 │   └── test-install.sh               # Installer smoke test helper
 ├── skills/
 │   ├── _shared/                      # Shared rigor profiles, status definitions, diagrams
@@ -107,6 +110,7 @@ This section defines the ownership lifecycle of files under the `docs/` director
 | `docs/architecture.md` | Collaborative | Init + Knowledge Sweep | `/starter-init` / `/context-memory` |
 | `docs/generated/codemap.md` | Tool-Generated | Repo structure change | `/harness-maintain` |
 | `docs/generated/references-index.md` | Tool-Generated | Reference mapping update | `/harness-maintain` |
+| `docs/generated/dashboard.html` | Tool-Generated | Status update | `/context-status` |
 
 ### Detailed Ownership Lifecycles
 
@@ -117,6 +121,7 @@ These documents serve as standard guides and routers for the CoreZero Nexus. The
 #### 2. Tool-Generated Indexes
 These are codebase index files. They are **written and updated exclusively by automation skills** and should not be modified manually:
 - `docs/generated/codemap.md` and `docs/generated/references-index.md` (Updated via the codebase indexers in `/harness-maintain`).
+- `docs/generated/dashboard.html` (Updated via status runner in `/context-status`).
 
 #### 3. Collaborative Architecture Map
 - `docs/architecture.md` is initialized and pre-filled from code structure analysis during `/starter-init`. During feature delivery, if a verification passes and triggers a knowledge sync, the `/context-memory` Post-Ship Sync will offer diff proposals. Humans can refine, edit, or customize the file at any time.

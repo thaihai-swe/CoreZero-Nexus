@@ -133,6 +133,8 @@ def validate_installed_specific(root: Path) -> list[str]:
         root / "scripts" / "install.sh",
         root / "scripts" / "doctor.sh",
         root / "scripts" / "check-surface-truth.py",
+        root / "scripts" / "parse-observability.py",
+        root / "scripts" / "generate-dashboard.py",
     ]
     errors = [
         f"{path}: missing required installed file" for path in required if not path.exists()

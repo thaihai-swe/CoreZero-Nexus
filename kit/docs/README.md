@@ -29,6 +29,7 @@ This folder is the installed documentation surface for downstream projects using
 
 - [architecture.md](architecture.md)
 - [generated/codemap.md](generated/codemap.md)
+- [generated/dashboard.html](generated/dashboard.html)
 - [generated/references-index.md](generated/references-index.md)
 - `memories/repo/*`
 
