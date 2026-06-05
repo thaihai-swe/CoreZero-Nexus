@@ -18,4 +18,4 @@ fi
 
 echo "Running CoreZero doctor in $MODE mode..."
 python3 "$CHECKER" --mode "$MODE" --root "$TARGET_DIR"
-echo "Doctor check completed without structural errors."
+echo "Doctor check completed without structural or lifecycle errors."

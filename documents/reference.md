@@ -9,7 +9,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/starter-init` | Bootstrap repository | First session, after major structural changes |
-| `/context-session` | Begin, checkpoint, or end a working session | Every session boundary |
+| `/context-session` | Begin, checkpoint, or end a working session for an existing feature slug | After `status.md` exists |
 | `/context-memory` | Manage durable knowledge and routing | When findings deserve promotion |
 | `/context-status` | Report on active features | Multi-feature visibility |
 | `/spec-research` | Investigate existing behavior | Before changing brownfield behavior |

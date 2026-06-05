@@ -12,11 +12,12 @@ Adopters follow a canonical path when executing software changes. Start with the
 
 ```text
 starter-init
-  ──> context-session
-        ──> spec-requirements
-              ──> spec-plan
-                    ──> spec-implement
-                          ──> harness-verify
+  ──> spec-research (brownfield / unknown behavior)
+  ──> spec-requirements
+        ──> spec-plan
+              ──> spec-implement
+                    ──> harness-verify
+                          ──> context-session END
 ```
 
 ### Contextual Commands (Invoke as needed)
@@ -88,17 +89,18 @@ flowchart TB
 
 #### `/starter-init`
 Bootstraps a repository for agent-assisted delivery.
-- Seeds memory indexes and rules.
-- Prepares templates and folders for downstream use.
+- Reconciles only the installer-seeded harness surface.
+- Prepares seeded docs and memory for downstream use.
 - Audits baseline project test and build states.
 
 ### Context Engineering Pack
 
 #### `/context-session`
-Manages session starts, checkpoints, and ends to restore state cleanly across context window resets.
+Manages session starts, checkpoints, and ends for an existing feature slug to restore state cleanly across context window resets.
 - RESTORE: Loads latest progress logs and updates context.
 - CHECKPOINT: Saves progress to `progress.md`.
 - END: Distills extracts and writes `handoff.md`.
+- It is not the first-feature bootstrap step; `/spec-requirements` or `/spec-research` creates the feature slug first.
 
 #### `/context-memory`
 Maintains instruction-tier repository memories and triages new findings.

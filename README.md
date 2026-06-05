@@ -20,7 +20,7 @@ Then in your AI agent:
 
 ```text
 /starter-init
-/context-session
+/spec-research     # brownfield or unknown behavior
 /spec-requirements
 /spec-plan
 /spec-implement

@@ -4,7 +4,7 @@
 
 | Stage | Scope | Skills Used | Duration |
 |-------|-------|-------------|----------|
-| **Solo Pilot** | One developer, one feature | `starter-init`, `context-session`, `spec-requirements`, `spec-plan`, `spec-implement`, `harness-verify` | 1-2 weeks |
+| **Solo Pilot** | One developer, one feature | `starter-init`, `spec-requirements`, `spec-plan`, `spec-implement`, `harness-verify` | 1-2 weeks |
 | **Team Trial** | Small team, 2-3 features | Guided pack flow across Starter, Context, Spec, and Harness | 2-4 weeks |
 | **Full Adoption** | Entire team, all new features | Full pack workflow + harness assessment | Ongoing |
 | **Advanced** | Governance, evaluation, multi-team | Advanced Pack templates + eval mode | Mature teams |
@@ -119,12 +119,10 @@ flowchart TD
     INIT --> TMPL[Pre-fill Tier 1 templates<br/>TECH_STACK / ARCHITECTURE<br/>from code evidence]
     INIT --> BASE[Clean-state check<br/>build + tests pass]
 
-    AGENTS --> SESS
-    MEMSEED --> SESS
-    TMPL --> SESS
-    BASE --> SESS[context-session START<br/>assemble tier 1-4 context via INDEX.md]
-
-    SESS --> SPEC[spec-requirements<br/>grilling waves + readiness score<br/>spec.md locked]
+    AGENTS --> SPEC
+    MEMSEED --> SPEC
+    TMPL --> SPEC
+    BASE --> SPEC[spec-requirements<br/>grilling waves + readiness score<br/>spec.md locked]
     SPEC --> PLAN[spec-plan<br/>design + tasks.md + mechanical gate]
     PLAN --> IMPL[spec-implement<br/>one task at a time + proof]
     IMPL --> VERIFY[harness-verify<br/>gate + alignment + security]
@@ -140,7 +138,7 @@ flowchart TD
     classDef gate fill:#3b82f6,stroke:#1d4ed8,color:#fff
 
     class NEW,DONE terminal
-    class BOOT,INIT,SESS,SPEC,PLAN green
+    class BOOT,INIT,SPEC,PLAN green
     class AGENTS,MEMSEED,TMPL,BASE,IMPL,ENDS step
     class VERIFY,SYNC gate
 ```

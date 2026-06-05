@@ -1,6 +1,11 @@
 # Session Start Flow
 
-Every session must follow this exact sequence to ensure context continuity.
+Every session for an existing feature slug must follow this exact sequence to ensure context continuity.
+
+If the feature slug does not exist yet or `artifacts/features/<slug>/status.md` is missing, stop immediately:
+
+- route to `/spec-requirements` when the behavior can be specified directly
+- route to `/spec-research` when the codebase is brownfield or the current behavior is still unknown
 
 1.  **Load Memory Router:** Read `memories/repo/INDEX.md` first. It declares which files are always loaded, which load by intent, and which load only on debug. If `INDEX.md` is missing, load every memory file and route the gap to `context-memory` for index repair.
 2.  **Load Always Group:** Read every file in the `INDEX.md` **Always** section. By default this is `constitution.md`, `harness-config.md`, and `security-policy.md` — they hold normative rules, canonical commands, and trust boundaries needed every session.

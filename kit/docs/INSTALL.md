@@ -40,8 +40,9 @@ After install:
 
 1. Read `docs/ADOPTION_GUIDE.md`
 2. Run `/starter-init`
-3. Run `/context-session`
-4. Run `bash scripts/doctor.sh` if the surface looks incomplete or drifted
+3. Start the first feature with `/spec-requirements`
+4. Use `/spec-research` first when the codebase is brownfield or the current behavior is unknown
+5. Run `bash scripts/doctor.sh` if the surface looks incomplete, drifted, or routes to the wrong next command
 
 ## Upgrade Behavior
 

@@ -106,7 +106,7 @@ Rationale: Vibe-Coded baseline — no test suite, increased discipline required 
 
 #### Step 5: Require User Acknowledgment
 
-Before handing off to `/context-session`, produce a **Vibe-Coded Baseline Report** and require explicit user acknowledgment:
+Before handing off to `/spec-requirements` or `/spec-research`, produce a **Vibe-Coded Baseline Report** and require explicit user acknowledgment:
 
 ```
 ## Vibe-Coded Baseline Report

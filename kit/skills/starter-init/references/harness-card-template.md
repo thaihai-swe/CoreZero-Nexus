@@ -43,7 +43,7 @@ Mark each `Active` (fully wired), `Partial` (wired with known gaps), or `Off` (i
 | State (per-feature) | Active | `artifacts/features/<slug>/` |
 | Verification (mechanical gate) | Active | `harness-verify` + `harness-config.md` test command |
 | Scope (one task at a time) | Active | `tasks.md` focused, independently-verifiable tasks |
-| Lifecycle (init → session → verify) | Active | `starter-init`, `context-session`, `harness-verify` |
+| Lifecycle (init → spec/research → session → verify) | Active | `starter-init`, `spec-requirements` / `spec-research`, `context-session`, `harness-verify` |
 | Security (permission tiers) | Active \| Partial \| Off | `memories/repo/security-policy.md` + `skills/harness-maintain/hooks/git-guardrails.sh` |
 | Context Engineering (tiered) | Active | `context-session/references/context-assembly.md` |
 

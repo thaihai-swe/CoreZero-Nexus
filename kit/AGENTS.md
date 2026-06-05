@@ -21,9 +21,9 @@ Read this file first. Use it as a router, not a full handbook.
 ## Core Workflow
 
 - `/starter-init` for bootstrap
-- `/context-session` for session start, checkpoint, and handoff
 - `/spec-research` for brownfield discovery
 - `/spec-requirements` -> `/spec-plan` -> `/spec-implement` for feature delivery
+- `/context-session` for session resume, checkpoint, and handoff after a feature slug exists
 - `/harness-verify` for proof and closeout
 - `/harness-maintain` or `scripts/doctor.sh` for harness repair
 

@@ -8,8 +8,7 @@ Read [INSTALL.md](INSTALL.md) first for installer mechanics. Use this guide for 
 
 1. Install the kit
 2. Run `/starter-init`
-3. Run `/context-session`
-4. Deliver the first feature with:
+3. Start the first feature with:
 
 ```text
 /spec-requirements
@@ -18,14 +17,18 @@ Read [INSTALL.md](INSTALL.md) first for installer mechanics. Use this guide for 
 /harness-verify
 ```
 
+4. Use `/context-session` only after the feature slug already exists and you need `START`, `CHECKPOINT`, or `END` session lifecycle management.
+
 ## Brownfield Adoption
 
 1. Install the kit
 2. Run `/starter-init`
 3. Run `/spec-research` before changing behavior
-4. Capture durable findings with `/context-memory`
-5. Open the active session with `/context-session`
-6. Deliver the smallest safe slice through the spec -> plan -> implement -> verify flow
+4. Produce a brownfield readiness map in `artifacts/features/<slug>/analysis.md` covering preserved behavior inventory, subsystem boundaries, reuse patterns, risk register, baseline proof surface, and migration constraints
+5. Capture durable findings with `/context-memory` when the map surfaces reusable repo knowledge
+6. Run `/spec-requirements` to lock the first safe slice against the brownfield constraints
+7. Deliver through `/spec-plan` -> `/spec-implement` -> `/harness-verify`
+8. Use `/context-session` only after the feature slug already exists and the work needs session resume, checkpoint, or handoff management
 
 ## Starter Surface
 
@@ -41,6 +44,6 @@ Review these files after install:
 ## Troubleshooting
 
 - If `/starter-init` stops midway, re-run it. Seeded files are copied only when missing.
-- If the harness surface looks incomplete or drifted, run `bash scripts/doctor.sh`.
+- If the harness surface looks incomplete, drifted, or the lifecycle guidance contradicts the skills, run `bash scripts/doctor.sh`.
 - If durable memory is stale, run `/context-memory`.
 - If the installer behavior looks wrong, re-run `bash scripts/install.sh /path/to/your/project --dry-run`.

@@ -6,16 +6,10 @@ flowchart TD
     %% Setup phase
     INIT --> HARNESS{First time or<br/>structural issue?}
     HARNESS -. assess maturity .-> ASSESS[harness-maintain<br/>Assess Mode]
-    ASSESS -.-> SESS
-    HARNESS --> SESS[context-session START<br/>route context via INDEX.md]
-
-    SESS --> STATUS{Multiple<br/>active features?}
-    STATUS -. yes .-> STAT[context-status<br/>project-wide view]
-    STAT -.-> MEM
-    STATUS --> MEM[context-memory<br/>load + tighten durable rules]
+    ASSESS -.-> NEEDRES
+    HARNESS --> NEEDRES{Behavior unknown<br/>or brownfield?}
 
     %% Investigation phase
-    MEM --> NEEDRES{Behavior unknown<br/>or brownfield?}
     NEEDRES -. yes .-> RES[spec-research<br/>analysis.md / brownfield map]
     RES --> SPEC
     NEEDRES --> SPEC[spec-requirements<br/>grilling waves + spec.md]
@@ -39,7 +33,7 @@ flowchart TD
 
     %% Learning loop
     VERIFY -. harness lesson .-> IMPROVE[harness-maintain<br/>Improve Mode]
-    IMPROVE -. durable fix .-> MEM
+    IMPROVE -. durable fix .-> INIT
 
     %% Documentation and Review phase (optional utility skills)
     SYNC --> NEEDDOCS{Refresh docs<br/>or review PR?}
@@ -66,8 +60,8 @@ flowchart TD
     classDef legend fill:#f7f7f5,stroke:#e0e0e0,color:#111
 
     class START,DONE terminal
-    class INIT,SESS,MEM,SPEC,PLAN,IMPL,ENDS core
-    class ASSESS,STAT,RES,VIS,ADR,IMPROVE,APIDOC,SYSDOC,CODEDOC,CODEREV optional
+    class INIT,SPEC,PLAN,IMPL,ENDS core
+    class ASSESS,RES,VIS,ADR,IMPROVE,APIDOC,SYSDOC,CODEDOC,CODEREV optional
     class VERIFY,SYNC gate
-    class HARNESS,STATUS,NEEDRES,NEEDVIS,NEEDADR,NEEDDOCS decision
+    class HARNESS,NEEDRES,NEEDVIS,NEEDADR,NEEDDOCS decision
     class LEGEND legend

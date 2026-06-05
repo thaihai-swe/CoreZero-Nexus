@@ -3,7 +3,7 @@
 > Standardized summary of this repository's agent harness. See `skills/starter-init/references/harness-card-template.md` for the template.
 
 - **Repo:** AI Agents Development Kit (CoreZero Nexus) / CoreZero Nexus
-- **Harness version:** 0.2.0 (2026-06-04)
+- **Harness version:** 0.1.0 (2026-06-04)
 - **Card last updated:** 2026-06-04
 - **Maintainer:** swe (solo)
 
@@ -22,7 +22,7 @@
 | State (per-feature) | Active | `artifacts/features/<slug>/` (status, progress, handoff) |
 | Verification (mechanical gate) | Active | `harness-verify`  |
 | Scope (one task at a time) | Active | `spec-plan` focused, independently-verifiable tasks |
-| Lifecycle (init → session → verify) | Active | `starter-init`, `context-session`, `harness-verify` |
+| Lifecycle (init → spec/research → session → verify) | Active | `starter-init`, `spec-requirements` / `spec-research`, `context-session`, `harness-verify` |
 | Security (permission tiers) | Active | `memories/repo/security-policy.md` |
 | Context Engineering (tiered) | Active | `skills/context-session/references/context-assembly.md` |
 | Memory Router (intent-based load) | Active | `memories/repo/INDEX.md` |

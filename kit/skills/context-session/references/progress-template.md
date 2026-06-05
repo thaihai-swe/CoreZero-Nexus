@@ -1,7 +1,7 @@
 # Session Progress: [Feature Slug]
 
 **Session ID:** [Date/Time or UUID]
-**Phase:** [e.g., Init, Spec, Plan, Implement, Verify]
+**Phase:** [e.g., Spec, Plan, Implement, Verify]
 
 ## Current Status
 

@@ -43,5 +43,5 @@ The `code-review` skill is dual-purpose:
 
 ## Feature Lifecycle Handoff Patterns
 
-- Every work session must open with `/context-session` to load JIT context and end with `/context-session` (using the `END` workflow) to produce a `handoff.md` and update `progress.md`.
+- The first feature starts with `/spec-requirements` or `/spec-research`. `/context-session` is the session-boundary skill only after a feature slug and `status.md` already exist, and it still closes long work sessions with `handoff.md` and `progress.md`.
 - Mismatches between handoff claims and actual disk state at session start must be routed to `/harness-maintain assess` to repair the state before delivery work commences.

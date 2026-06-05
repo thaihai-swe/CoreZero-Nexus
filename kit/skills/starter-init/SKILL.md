@@ -10,7 +10,7 @@ compatibility: Designed for Claude, Codex, and other Agent Skills-compatible too
 
 ## Overview
 
-Establishes the repository baseline for the harness before feature work begins. It scans the repo, determines if greenfield or brownfield, interviews for defaults in `harness-config.md`, tests repository health, reconciles the installer-seeded files, and hands off to `/context-session`.
+Establishes the repository baseline for the harness before feature work begins. It scans the repo, determines if greenfield or brownfield, interviews for defaults in `harness-config.md`, tests repository health, reconciles the installer-seeded files, and hands off to `/spec-requirements` or `/spec-research`.
 
 ## Read First
 
@@ -39,7 +39,7 @@ Establishes the repository baseline for the harness before feature work begins. 
 8. **Memory Fill**: Populate the seeded memory files (`constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`) with repository-specific content.
 9. **Optional Enrichment**: Update the seeded `docs/generated/codemap.md` and `docs/generated/references-index.md` for non-trivial repositories.
 10. **Failure Log Bootstrap**: Fill the seeded `memories/repo/observability-log.md` baseline if it is still template-empty.
-10. **Handoff**: State readiness status, name any gaps, and instruct user to run `/context-session`.
+11. **Handoff**: State readiness status, name any gaps, and route the first feature to `/spec-requirements` or `/spec-research`.
 
 ## Stop Conditions
 
@@ -52,7 +52,7 @@ Establishes the repository baseline for the harness before feature work begins. 
 ## Preconditions
 
 - **Precondition Check**: `install.sh` has already seeded the harness surface. `starter-init` fills and reconciles those files; it is not a replacement for the installer.
-- **Phase sets**: Creates progress logs; lifecycle begins with `/spec-requirements` or `/spec-research`.
+- **Phase sets**: Repository bootstrap only; feature lifecycle begins with `/spec-requirements` or `/spec-research`.
 
 ## Core Rules
 

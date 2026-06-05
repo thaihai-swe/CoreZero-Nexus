@@ -36,9 +36,10 @@ Investigate system behaviors and produce an analysis artifact (`artifacts/featur
 1. **Initialization**: Create `status.md` if missing (set phase to `Researching`).
 2. **Reproduce**: For bugs, recreate the failure with a script or concrete steps before investigating. Follow: Reproduce -> Hypothesize -> Instrument -> Observe.
 3. **Brownfield Map**: Identify target files, dependencies, unchanged behavior to preserve, and local patterns to reuse.
-4. **Trace**: Follow the request path from symptoms to the first failing boundary.
-5. **Document**: Write findings, risks, and next steps in `analysis.md`.
-6. **Handoff**: Update `status.md` to `Research Complete` and recommend the next core command (usually `/spec-requirements`).
+4. **Brownfield Readiness Artifact**: When mapping inherited or unfamiliar systems, structure `analysis.md` as a brownfield readiness artifact including preserved behavior inventory, subsystem boundaries, reuse patterns, risk register, baseline proof surface, and migration constraints.
+5. **Trace**: Follow the request path from symptoms to the first failing boundary.
+6. **Document**: Write findings, risks, and next steps in `analysis.md`.
+7. **Handoff**: Update `status.md` to `Research Complete` and recommend the next core command (usually `/spec-requirements`).
 
 ## Stop Conditions
 

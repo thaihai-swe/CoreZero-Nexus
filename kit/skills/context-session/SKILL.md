@@ -11,7 +11,7 @@ compatibility: Designed for Claude, Codex, and other Agent Skills-compatible too
 
 ## Overview
 
-Governs active feature session continuity. It ensures clean resume, progress logging, context pruning, and clear delegation/handoff to the next session window.
+Governs active feature session continuity after a feature slug already exists. It ensures clean resume, progress logging, context pruning, and clear delegation/handoff to the next session window.
 
 ## Read First
 
@@ -26,6 +26,7 @@ Governs active feature session continuity. It ensures clean resume, progress log
 - **Start**: Begin a new conversation window and resume feature work.
 - **Checkpoint**: Save progress mid-session and prune context.
 - **End**: Conclude the session, document state, and write handoff notes.
+- Use it only after `/spec-requirements` or `/spec-research` has created the feature slug and `status.md`.
 
 ## Workflow
 
@@ -50,11 +51,13 @@ Governs active feature session continuity. It ensures clean resume, progress log
 ## Stop Conditions
 
 - `starter-init` has not been run (no `AGENTS.md` or `harness-config.md` present).
+- No feature slug is selected or `artifacts/features/<slug>/status.md` does not exist yet. In plain terms: status.md does not exist yet for this feature. Route to `/spec-requirements` when requirements can be defined directly, or `/spec-research` when brownfield behavior or root cause is unknown.
 
 ## Preconditions
 
 - **Required files**: `AGENTS.md`, `memories/repo/harness-config.md`, `memories/repo/constitution.md`.
-- **Phase sets**: Manages lifecycle across all phases.
+- **Required feature state**: Existing `artifacts/features/<slug>/status.md` created by `/spec-requirements` or `/spec-research`.
+- **Phase sets**: Manages lifecycle across existing feature phases.
 
 ## Core Rules
 
@@ -94,5 +97,6 @@ Governs active feature session continuity. It ensures clean resume, progress log
 - [references/context-assembly.md](references/context-assembly.md)
 - [references/session-start-flow.md](references/session-start-flow.md)
 - [references/session-handoff-template.md](references/session-handoff-template.md)
+- [references/progress-template.md](references/progress-template.md)
 - [references/context-condensation.md](references/context-condensation.md)
 - [references/multi-agent-protocol.md](references/multi-agent-protocol.md)

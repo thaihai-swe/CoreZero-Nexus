@@ -118,6 +118,7 @@ def validate_source_specific(root: Path) -> list[str]:
             errors.append(
                 f"{kit_workflow}: shipped workflow drifted from source workflow"
             )
+    errors.extend(validate_lifecycle_contract(root, mode="source-repo"))
     return errors
 
 
@@ -133,7 +134,93 @@ def validate_installed_specific(root: Path) -> list[str]:
         root / "scripts" / "doctor.sh",
         root / "scripts" / "check-surface-truth.py",
     ]
-    return [f"{path}: missing required installed file" for path in required if not path.exists()]
+    errors = [
+        f"{path}: missing required installed file" for path in required if not path.exists()
+    ]
+    errors.extend(validate_lifecycle_contract(root, mode="installed"))
+    return errors
+
+
+def ordered_contains(text: str, snippets: list[str]) -> bool:
+    position = -1
+    for snippet in snippets:
+        position = text.find(snippet, position + 1)
+        if position == -1:
+            return False
+    return True
+
+
+def validate_lifecycle_contract(root: Path, mode: str) -> list[str]:
+    if mode == "source-repo":
+        base = root / "kit"
+        docs = {
+            "install": base / "docs" / "INSTALL.md",
+            "adoption": base / "docs" / "ADOPTION_GUIDE.md",
+            "readme": base / "docs" / "README.md",
+            "starter": base / "skills" / "starter-init" / "SKILL.md",
+            "session": base / "skills" / "context-session" / "SKILL.md",
+            "session_flow": base
+            / "skills"
+            / "context-session"
+            / "references"
+            / "session-start-flow.md",
+            "requirements": base / "skills" / "spec-requirements" / "SKILL.md",
+            "research": base / "skills" / "spec-research" / "SKILL.md",
+        }
+    else:
+        docs = {
+            "install": root / "docs" / "INSTALL.md",
+            "adoption": root / "docs" / "ADOPTION_GUIDE.md",
+            "readme": root / "docs" / "README.md",
+            "starter": root / "skills" / "starter-init" / "SKILL.md",
+            "session": root / "skills" / "context-session" / "SKILL.md",
+            "session_flow": root
+            / "skills"
+            / "context-session"
+            / "references"
+            / "session-start-flow.md",
+            "requirements": root / "skills" / "spec-requirements" / "SKILL.md",
+            "research": root / "skills" / "spec-research" / "SKILL.md",
+        }
+
+    errors: list[str] = []
+    missing = [str(path) for path in docs.values() if not path.exists()]
+    if missing:
+        return [f"{path}: missing lifecycle contract surface" for path in missing]
+
+    install_text = docs["install"].read_text(encoding="utf-8")
+    adoption_text = docs["adoption"].read_text(encoding="utf-8")
+    readme_text = docs["readme"].read_text(encoding="utf-8")
+    starter_text = docs["starter"].read_text(encoding="utf-8")
+    session_text = docs["session"].read_text(encoding="utf-8")
+    session_flow_text = docs["session_flow"].read_text(encoding="utf-8")
+    requirements_text = docs["requirements"].read_text(encoding="utf-8")
+    research_text = docs["research"].read_text(encoding="utf-8")
+
+    if "Run `/context-session`" in install_text or "Open work with /context-session" in install_text:
+        errors.append(f"{docs['install']}: advertises /context-session before first-feature creation")
+    if not ordered_contains(
+        adoption_text,
+        ["Run `/starter-init`", "/spec-requirements", "/spec-plan", "/spec-implement", "/harness-verify"],
+    ):
+        errors.append(f"{docs['adoption']}: greenfield flow is missing the spec-first delivery order")
+    if "Run `/context-session`" in adoption_text.split("## Brownfield Adoption", 1)[0]:
+        errors.append(f"{docs['adoption']}: greenfield flow still routes directly to /context-session")
+    if "/context-session` only after the feature slug already exists" not in readme_text:
+        errors.append(f"{docs['readme']}: does not state that /context-session requires an existing feature slug")
+    if "Creates progress logs" in starter_text:
+        errors.append(f"{docs['starter']}: starter-init still claims ownership of progress logs")
+    if "instruct user to run `/context-session`" in starter_text:
+        errors.append(f"{docs['starter']}: starter-init still hands off the first feature to /context-session")
+    if "status.md does not exist yet" not in session_text:
+        errors.append(f"{docs['session']}: context-session is missing the explicit no-status stop condition")
+    if "/spec-requirements" not in session_flow_text or "/spec-research" not in session_flow_text:
+        errors.append(f"{docs['session_flow']}: missing explicit reroute guidance for first-feature bootstrap")
+    if "Create `status.md` if missing" not in requirements_text:
+        errors.append(f"{docs['requirements']}: requirements no longer owns first status.md creation")
+    if "Create `status.md` if missing" not in research_text:
+        errors.append(f"{docs['research']}: research no longer owns first status.md creation")
+    return errors
 
 
 def main() -> int:

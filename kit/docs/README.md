@@ -7,9 +7,10 @@ This folder is the installed documentation surface for downstream projects using
 1. Install the kit
 2. Read [INSTALL.md](INSTALL.md)
 3. Run `/starter-init`
-4. Run `/context-session`
-5. Deliver through `/spec-requirements`, `/spec-plan`, `/spec-implement`
-6. Close out with `/harness-verify`
+4. Start the first feature with `/spec-requirements` or `/spec-research`
+5. Use `/context-session` only after the feature slug already exists
+6. Deliver through `/spec-plan`, `/spec-implement`
+7. Close out with `/harness-verify`
 
 ## Core Docs
 

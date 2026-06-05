@@ -1,9 +1,6 @@
 flowchart TD
     START([New Request]) --> INIT[starter-init<br/>Bootstrap harness]
-    INIT --> SESS[context-session START<br/>Route context via INDEX.md]
-    SESS --> STATUS[context-status<br/>Read active features]
-    STATUS --> MEM[context-memory<br/>Load durable rules]
-    MEM --> AMBIG{Behavior<br/>understood?}
+    INIT --> AMBIG{Behavior<br/>understood?}
 
     AMBIG -- No --> RES[spec-research<br/>Investigate / brownfield map]
     RES --> SPEC[spec-requirements<br/>Grilling waves + spec.md]
@@ -24,7 +21,7 @@ flowchart TD
     ENDS --> DONE([Done])
 
     VER -. harness lesson .-> HARN[harness<br/>Improve Mode]
-    HARN -. durable fix .-> MEM
+    HARN -. durable fix .-> INIT
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef primary fill:#fff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px
@@ -32,6 +29,6 @@ flowchart TD
     classDef loop fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
 
     class START,DONE terminal
-    class SPEC,PLAN,MEM,SYNC primary
-    class INIT,SESS,STATUS,RES,VIS,ADR,IMPL,VER,ENDS,HARN neutral
+    class SPEC,PLAN,SYNC primary
+    class INIT,RES,VIS,ADR,IMPL,VER,ENDS,HARN neutral
     class AMBIG loop

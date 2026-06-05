@@ -84,7 +84,7 @@ When uncertain between two profiles, pick the higher one. Over-ceremony costs ti
 
 ### Automated Profile Selection Routine
 
-At the start of the feature lifecycle (during `/starter-init` or `/context-session` resume), the agent **MUST** automatically compute the profile by:
+At the start of the feature lifecycle (during `/spec-requirements`, `/spec-research`, or `/context-session` resume), the agent **MUST** automatically compute the profile by:
 1. Listing the target files to be modified (either from the issue/proposal, or from a `git diff` if resuming work).
 2. Checking intersections against:
    - Security-sensitive paths declared in `security-policy.md`

@@ -4,6 +4,8 @@ Use this template when running `spec-research` in brownfield mapping mode — be
 
 Output path: `artifacts/features/<slug>/analysis.md` or `docs/brownfield-map.md` for repo-wide mapping.
 
+This template doubles as the kit's brownfield readiness artifact for the first safe feature in an inherited codebase.
+
 ---
 
 ## Metadata
@@ -39,6 +41,7 @@ Map the major subsystem boundaries. For each, note what it owns, what it depends
 - Test runner: `[command]`
 - Current pass rate: `[X/Y tests passing]`
 - Known broken tests: list them explicitly — do not fix silently
+- Baseline proof surface: `[best available command, script, or manual proof]`
 - Areas with no test coverage:
 - Areas with strong coverage:
 
@@ -47,6 +50,14 @@ Map the major subsystem boundaries. For each, note what it owns, what it depends
 List subsystems, files, or integrations that are risky to touch.
 
 | Area | Why Fragile | Evidence | Recommended Approach |
+|---|---|---|---|
+| | | | |
+
+## Brownfield Risk Register
+
+List the highest-risk areas that could cause regressions or stalled delivery during the first feature.
+
+| Risk | Trigger | Blast Radius | Mitigation |
 |---|---|---|---|
 | | | | |
 
@@ -65,6 +76,12 @@ List coding patterns, conventions, or utilities already in the codebase that new
 | Pattern | Location | When To Use |
 |---|---|---|
 | | | |
+
+## Migration Constraints
+
+- Existing migrations or data contracts to preserve:
+- Rollback limits:
+- Compatibility promises:
 
 ## Security And Permission Watchouts
 

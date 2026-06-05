@@ -138,7 +138,7 @@
 
     <main id="main" class="container">
         <div class="hero">
-            <span class="eyebrow-mono accent">v0.2.0 · Spec-Anchored Delivery</span>
+            <span class="eyebrow-mono accent">v0.1.0 · Spec-Anchored Delivery</span>
             <h1>CoreZero Nexus</h1>
             <p class="subtitle">An engineering harness for AI coding agents. Locks specs before code, plans every task,
                 verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
@@ -475,18 +475,21 @@
                     <div class="nn-item"><strong>No flattery, no filler.</strong> Start with the answer, action,
                         blocker, or decision. You <strong>MUST NOT</strong> add ceremonial openers.</div>
                     <div class="nn-item"><strong>Correct false premises.</strong> If the user’s premise is wrong, you
-                        <strong>MUST</strong> say so before continuing.</div>
+                        <strong>MUST</strong> say so before continuing.
+                    </div>
                     <div class="nn-item"><strong>Never fabricate.</strong> You <strong>MUST NOT</strong> invent file
                         paths, commit hashes, test results, API names, library functions, or repository behavior.</div>
                     <div class="nn-item"><strong>Unknown stays unknown.</strong> When information is unavailable, you
                         <strong>MUST</strong> mark it explicitly as <code>[UNKNOWN]</code>. Do not fill gaps with
-                        guesses.</div>
+                        guesses.
+                    </div>
                     <div class="nn-item"><strong>Ask only when needed.</strong> <strong>SHOULD</strong> ask before
                         proceeding when ambiguity materially changes the result; otherwise resolve by inspecting the
                         repo.</div>
                     <div class="nn-item"><strong>Touch only the request.</strong> Every changed line
                         <strong>MUST</strong> directly support the user’s request. No drive-by refactors or formatting
-                        churn.</div>
+                        churn.
+                    </div>
                     <div class="nn-item"><strong>Fail loud.</strong> You <strong>MUST NOT</strong> mark work complete if
                         verification was skipped, failed, or only partially run. State exactly what was and was not
                         verified.</div>
@@ -496,10 +499,12 @@
                         principles when changing or adding software design.</div>
                     <div class="nn-item"><strong>Apply code-design rules.</strong> Check
                         <code>docs/code-design.md</code> for cross-cutting pitfalls (hidden coupling, swallowed errors,
-                        etc.).</div>
+                        etc.).
+                    </div>
                     <div class="nn-item"><strong>Read the Harness Card.</strong> Before non-trivial work,
                         <strong>SHOULD</strong> skim <code>HARNESS_CARD.md</code> at the repo root for profiles, status,
-                        and limits.</div>
+                        and limits.
+                    </div>
                 </div>
             </div>
         </section>
@@ -767,7 +772,8 @@ artifacts/features/</code></pre>
                         durable, evidence-backed, and useful
                         beyond one feature. If an execution pattern hits <strong>3+ features</strong>, the system
                         automatically drafts a CC-* proposal to promote it to the Constitution; a security finding
-                        escalates immediately.</li>
+                        escalates immediately.
+                    </li>
                     <li><strong>Extraction triage:</strong> <code>/context-session</code> END appends candidates to
                         <code>session-extracts.md</code>. <code>/context-memory</code> then classifies each candidate:
                         <strong>promote</strong> (move to instruction tier when durable and evidence-backed),
@@ -820,7 +826,8 @@ artifacts/features/</code></pre>
                 <p class="node-desc">A session never loads the whole memory layer. It reads <code>INDEX.md</code> first,
                     then uses <strong>Confidence-Scored Loading</strong>: matching &le;2 keywords triggers a lightweight
                     <em>partial-load</em> (headers only), while 3+ triggers a full load. Loaded and skipped groups
-                    are reported back &mdash; silent skipping is not allowed.</p>
+                    are reported back &mdash; silent skipping is not allowed.
+                </p>
                 <div class="audience-grid">
                     <div class="metric-card">
                         <strong>Always</strong>
@@ -1295,7 +1302,8 @@ artifacts/features/</code></pre>
                             <span class="node-title">/spec-implement</span>
                             <div class="node-desc">Execute bounded tasks: run baseline proof command
                                 <strong>before</strong> editing files, record proof targets, match patterns, validate
-                                fresh. Unit tests are opt-in only.</div>
+                                fresh. Unit tests are opt-in only.
+                            </div>
                         </div>
                         <!-- <div class="loop-back"><span class="loop-text">DRIFT DETECTED</span></div> -->
                         <div class="arrow"></div>
@@ -1808,7 +1816,8 @@ artifacts/features/</code></pre>
                                 <td>Research → Spec → Plan → Implement → Verify</td>
                                 <td>Use the full path: <code>/spec-research</code> (optional discovery) →
                                     <code>/spec-requirements</code> → <code>/spec-plan</code> →
-                                    <code>/spec-implement</code> → <code>/harness-verify</code>.</td>
+                                    <code>/spec-implement</code> → <code>/harness-verify</code>.
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>Brownfield feature</strong></td>
@@ -1821,13 +1830,15 @@ artifacts/features/</code></pre>
                                 <td>Research → Spec → Implement → Verify</td>
                                 <td>Use <code>/spec-research</code> to analyze/reproduce,
                                     <code>/spec-requirements</code> to lock acceptance criteria, then implement and
-                                    verify.</td>
+                                    verify.
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>Tiny change</strong></td>
                                 <td>Spec → Implement → Verify</td>
                                 <td>Use <code>/spec-requirements</code> (1-2 questions) → <code>/spec-implement</code> →
-                                    <code>/harness-verify</code>. Keep it extremely lean.</td>
+                                    <code>/harness-verify</code>. Keep it extremely lean.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1974,7 +1985,7 @@ artifacts/features/</code></pre>
                 <p>Installer output looks like this:</p>
                 <pre><code>CoreZero Nexus installer
   Target:   /path/to/your/project
-  Version:  0.2.0
+  Version:  0.1.0
 
 Installing kit content (overwrite)...
 Seeding user content (copyIfMissing)...
@@ -2685,7 +2696,8 @@ Feature slug: my-first-feature</code></pre>
                         Standard, 5+ for Complex/Ultra) paired with recommended answers. Checks for domain specs first.
                         Includes Complexity Triage and locks decisions directly in <code>spec.md</code>, including
                         Gray-Area Decisions and the Verification Surface. <strong>System Spec Mode:</strong> for
-                        cross-cutting requests, outputs to <code>docs/system-specs/&lt;name&gt;.md</code>.</p>
+                        cross-cutting requests, outputs to <code>docs/system-specs/&lt;name&gt;.md</code>.
+                    </p>
                     <p><strong>Grilling rules:</strong> send questions as batched list, pair every question with
                         recommended answer, don't ask what codebase can answer (grep first), walk decision tree in
                         dependency order.</p>
@@ -2718,7 +2730,8 @@ Feature slug: my-first-feature</code></pre>
                         selected task, touched callers/interfaces). <strong>TDD (Opt-In Only):</strong> unit tests are
                         not mandatory unless requested. <strong>Caveman Mode:</strong> uses ultra-concise,
                         token-efficient communication during technical turns. Refactor tasks load
-                        <code>module-design.md</code> for the deep-modules principle.</p>
+                        <code>module-design.md</code> for the deep-modules principle.
+                    </p>
                     <p><strong>References:</strong> design standards, implementation standards, tasks template,
                         proof-before-code workflow, module-design.</p>
                 </div>

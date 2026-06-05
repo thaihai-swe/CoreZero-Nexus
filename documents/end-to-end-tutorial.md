@@ -9,10 +9,11 @@ This tutorial provides a complete step-by-step guide for using the **CoreZero Ne
 ```mermaid
 graph TD
     A[Install Kit] --> B["/starter-init"]
-    B --> C["/context-session START"]
+    B --> C{"Brownfield or behavior unknown?"}
 
     subgraph SDD [Spec-Driven Development Flow]
-        C --> D["/spec-research"]
+        C -->|Yes| D["/spec-research"]
+        C -->|No| E["/spec-requirements"]
         D --> E["/spec-requirements"]
         E --> F["/spec-adr"]
         E --> G["/spec-plan"]
@@ -87,7 +88,7 @@ Ensure the following files have been created in your repository root:
 Manage active feature boundaries and keep context lean.
 
 ### Step 1: Start a Session (`/context-session`)
-Before beginning work on any feature, boot the context window with the feature's unique slug:
+After `/spec-requirements` or `/spec-research` has created the feature slug and `status.md`, boot the context window with the feature's unique slug:
 ```text
 /context-session START --slug <feature-slug>
 ```
@@ -124,7 +125,7 @@ For brownfield codebases, bug investigations, or unknown behavior, run research 
 ```text
 /spec-research
 ```
-*Effect*: Spawns parallel subagents to explore files, compacts context, and writes `artifacts/features/<slug>/analysis.md`.
+*Effect*: Spawns parallel subagents to explore files, compacts context, and writes `artifacts/features/<slug>/analysis.md`, which doubles as the brownfield readiness artifact for inherited systems.
 
 ### Step 2: Author Requirements (`/spec-requirements`)
 Specify what the feature must do and lock the acceptance criteria:
