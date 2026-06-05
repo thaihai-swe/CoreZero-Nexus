@@ -1,6 +1,6 @@
 ## Template Pre-Fill Mode
 
-The bootstrap script copies 8 fillable documents to `docs/` plus `docs/architecture.md` as a living doc. This skill pre-fills them so the user starts from evidence-based drafts instead of empty files. The goal is to reduce manual fill-in work, especially in brownfield repos where the answers already live in the code.
+The installer seeds 8 fillable documents to `docs/` plus `docs/architecture.md` as a living doc. This skill pre-fills those seeded files so the user starts from evidence-based drafts instead of empty files. The goal is to reduce manual fill-in work, especially in brownfield repos where the answers already live in the code.
 
 **Tier 1 — AI Pre-Fills From Code Evidence (user refines later):**
 
@@ -30,9 +30,9 @@ These need product, business, or policy context that is not reliably inferable f
 
 **Pre-Fill Rules:**
 
+- **Operate only on seeded files:** If a target doc is missing, stop and repair the install surface. Do not create ad-hoc replacements during init.
 - **Brownfield:** Pre-fill Tier 1 aggressively from code. The repository is the system of record.
 - **Greenfield:** Tier 1 evidence is thin. Fill what config exists, mark the rest `[USER REVIEW NEEDED]`.
 - **No fabrication:** If a value is not in the code and the user has not stated it, mark it `[USER REVIEW NEEDED]`. Do not guess product vision, SLOs, or compliance requirements.
 - **Idempotent:** If a template already has user content (not the original template body), do not overwrite it. Append observations under a clearly marked section instead.
 - **Report:** After pre-fill, list which templates were filled, which need user review, and where `[USER REVIEW NEEDED]` markers remain.
-

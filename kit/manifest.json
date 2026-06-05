@@ -6,10 +6,12 @@
   "files": {
     "overwrite": [
       "skills/**",
+      "scripts/*.sh",
+      "scripts/*.py",
       "rules/*.md",
       "rules/README.md",
-      "scripts/install.sh",
       "docs/ADOPTION_GUIDE.md",
+      "docs/INSTALL.md",
       "docs/README.md",
       "docs/code-design.md",
       "docs/system-specs/README.md",
@@ -46,7 +48,7 @@
     ]
   },
   "templateMap": {
-    "AGENTS.md": "skills/starter-init/references/agents-md-template.md",
+    "AGENTS.md": "AGENTS.md",
     "HARNESS_CARD.md": "skills/starter-init/references/harness-card-template.md",
     "memories/repo/INDEX.md": "skills/context-memory/references/index-template.md",
     "memories/repo/constitution.md": "skills/context-memory/references/constitution-template.md",

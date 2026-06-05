@@ -133,7 +133,10 @@ CoreZero-Nexus/
 │   │   ├── ADOPTION_GUIDE.md
 │   │   ├── INSTALL.md
 │   │   ├── architecture.md
-│   │   ├── templates/           # 9 fillable project templates
+│   │   ├── PRODUCT_SENSE.md     # Seeded adopter-owned project doc
+│   │   ├── GLOSSARY.md          # Seeded adopter-owned glossary
+│   │   ├── TECH_STACK_REFERENCE.md
+│   │   ├── PROJECT_CONSTRAINTS.md
 │   │   └── generated/           # Codemap and reference index placeholders
 │   ├── skills/                  # 16 core/utility skills for coding agents
 │   │   └── <skill>/
@@ -141,7 +144,8 @@ CoreZero-Nexus/
 │   │       └── references/      # Templates and checklist references
 │   ├── memories/                # Scaffolding memory layer
 │   │   └── repo/                # Templates for the 3 memory tiers
-│   └── rules/                   # Shipped coding and security standards
+│   ├── rules/                   # Shipped coding and security standards
+│   └── scripts/                 # Shipped install, repair, and truth-check helpers
 ├── documents/                   # Maintainer-only project documents (not shipped)
 │   ├── architecture.md          # Maintainer architecture map (this file)
 │   ├── diagrams/                # Mermaid source diagrams
@@ -161,12 +165,16 @@ This is the layout created in a downstream project after running the installer s
 ├── docs/                        # Installed documentation surface
 │   ├── README.md, ADOPTION_GUIDE.md, INSTALL.md
 │   ├── architecture.md          # Adopter-specific architecture map
-│   ├── templates/               # Adopter-facing project templates
+│   ├── PRODUCT_SENSE.md, GLOSSARY.md, TECH_STACK_REFERENCE.md
+│   ├── PROJECT_CONSTRAINTS.md, GOVERNANCE.md, QUALITY_POLICY.md
+│   ├── RELIABILITY_POLICY.md, TECH_DEBT_REGISTER.md
 │   └── generated/               # Project codemap and index (regenerated)
 ├── skills/                      # Shipped skills (kit-managed)
 ├── rules/                       # Shipped rules and standards (kit-managed)
 ├── scripts/
-│   └── install.sh               # Shipped installer script for easy upgrades
+│   ├── install.sh               # Shipped installer script for easy upgrades
+│   ├── doctor.sh                # Shipped repair and drift-check entrypoint
+│   └── check-surface-truth.py   # Shipped structural truth validator
 ├── memories/repo/               # Durable repository memory (3 tiers)
 │   ├── INDEX.md                 # Intent-based memory router
 │   ├── constitution.md          # Core repository operating rules

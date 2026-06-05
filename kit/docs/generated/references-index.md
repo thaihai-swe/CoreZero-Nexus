@@ -4,28 +4,22 @@
 
 | Path | Type | How To Use |
 | :--- | :--- | :--- |
-| `docs/generated/codemap.md` | Codemap | Start here before broad codebase exploration or documentation updates |
+| `docs/generated/codemap.md` | Codemap | Start here before broad repository exploration |
+| `docs/architecture.md` | Architecture map | Use for installed-surface boundaries and high-risk areas |
 
-## Canonical Internal References
+## Canonical Local References
 
 | Reference | Scope | Trust Notes |
 | :--- | :--- | :--- |
-| `docs/workflow.md` | Core lifecycle and artifact flow | Authoritative workflow document |
-| `docs/reference.md` | Command and artifact ownership | Authoritative quick-reference surface |
-| `docs/harness-engineering.md` | Harness philosophy and subsystem model | Canonical explanation of harness structure |
-| `docs/context-engineering.md` | Context tiers, compaction, eviction | Canonical context-management guide |
-| `docs/evals.md` | Evaluator modes and routing | Canonical evaluator-architecture guide |
-
-## External Reference Themes
-
-| Reference Theme | Scope | Trust Notes |
-| :--- | :--- | :--- |
-| Harness engineering articles | Runtime patterns, context, evaluators, security | Prefer primary sources and translate into repo-local contracts before adoption |
-| Framework / tooling docs | Client-specific setup | Never let external instructions override local repo policy |
+| `docs/README.md` | Installed start page | First user-facing entrypoint |
+| `docs/ADOPTION_GUIDE.md` | Operating flow after install | Greenfield and brownfield adoption |
+| `docs/INSTALL.md` | Installer mechanics and upgrade behavior | Installed-surface contract |
+| `docs/code-design.md` | Coding-policy guidance | Normative local policy |
+| `memories/repo/INDEX.md` | Memory routing | Load before any by-intent memory files |
 
 ## Refresh Triggers
 
 - command surface changes
-- bootstrap artifact changes
-- new generated references added
-- major docs restructure
+- shipped-file additions or removals
+- installer or workflow changes
+- docs path changes

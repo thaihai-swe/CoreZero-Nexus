@@ -74,11 +74,11 @@ Run the initialization command:
 
 ### Step 2: Verify Output Files
 Ensure the following files have been created in your repository root:
-- [`AGENTS.md`](AGENTS.md) — The agent router configuration.
-- [`HARNESS_CARD.md`](HARNESS_CARD.md) — Active harness status and verification settings.
-- [`memories/repo/harness-config.md`](memories/repo/harness-config.md) — Command and path configuration.
-- [`docs/architecture.md`](docs/architecture.md) — System architecture baseline.
-- [`docs/templates/`](docs/templates/), [`PRODUCT_SENSE.md`](docs/templates/PRODUCT_SENSE.md), etc.).
+- [`AGENTS.md`](../kit/AGENTS.md) — The agent router configuration.
+- [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) — Active harness status and verification settings.
+- [`memories/repo/harness-config.md`](../kit/memories/repo/harness-config.md) — Command and path configuration.
+- [`docs/architecture.md`](../kit/docs/architecture.md) — System architecture baseline.
+- [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md), [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md), and the other seeded adopter docs.
 
 ---
 
@@ -91,14 +91,14 @@ Before beginning work on any feature, boot the context window with the feature's
 ```text
 /context-session START --slug <feature-slug>
 ```
-*Effect*: Loads the memory router [`INDEX.md`](memories/repo/INDEX.md), gathers memory tiers matching the task, and restores the latest checkpoint.
+*Effect*: Loads the memory router [`INDEX.md`](../kit/memories/repo/INDEX.md), gathers memory tiers matching the task, and restores the latest checkpoint.
 
 ### Step 2: View Project Status (`/context-status`)
 If working in a large repository with multiple active features, get a high-level summary of active work:
 ```text
 /context-status
 ```
-*Effect*: Scans all feature folders under [`artifacts/features/`](artifacts/features/) and produces a progress report matching current phases (e.g. `Spec'ing`, `Implementing`) and recommended next commands.
+*Effect*: Scans all feature folders under `artifacts/features/` and produces a progress report matching current phases (e.g. `Spec'ing`, `Implementing`) and recommended next commands.
 
 ### Step 3: Checkpoint Session Progress
 Save intermediate session states without ending the session:
@@ -107,7 +107,7 @@ Save intermediate session states without ending the session:
 ```
 
 ### Step 4: Manage Durable Memory (`/context-memory`)
-Manually triage, amend, or synthesize repo-wide memory (such as [`constitution.md`](memories/repo/constitution.md), [`security-policy.md`](memories/repo/security-policy.md), [`project-knowledge-base.md`](memories/repo/project-knowledge-base.md)):
+Manually triage, amend, or synthesize repo-wide memory (such as [`constitution.md`](../kit/memories/repo/constitution.md), [`security-policy.md`](../kit/memories/repo/security-policy.md), [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md)):
 ```text
 /context-memory
 ```
@@ -138,7 +138,7 @@ If requirements introduce structural changes or technical tradeoffs, document th
 ```text
 /spec-adr
 ```
-*Effect*: Records alternatives in `artifacts/features/<slug>/adr-[number].md` and registers them in the central index [`memories/repo/adr-log.md`](memories/repo/adr-log.md).
+*Effect*: Records alternatives in `artifacts/features/<slug>/adr-[number].md` and registers them in the central index [`memories/repo/adr-log.md`](../kit/memories/repo/adr-log.md).
 
 ### Step 4: Create an Engineering Plan (`/spec-plan`)
 Design the solution and map out implementation steps:
@@ -179,8 +179,8 @@ As part of the verification process, `harness-verify` invokes `/code-review` to 
 
 ### Step 3: Post-Ship Sync (`/context-memory`)
 If `harness-verify` passes, it triggers a Post-Ship Sync:
-- Automatically sweeps all memory files listed in [`INDEX.md`](memories/repo/INDEX.md).
-- Distills new heuristics or patterns into [`learned-heuristics.md`](memories/repo/learned-heuristics.md) or [`project-knowledge-base.md`](memories/repo/project-knowledge-base.md).
+- Automatically sweeps all memory files listed in [`INDEX.md`](../kit/memories/repo/INDEX.md).
+- Distills new heuristics or patterns into [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) or [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md).
 - Updates `artifacts/features/<slug>/session-extracts.md` with the sweep record.
 
 ### Step 4: Close the Session
@@ -195,13 +195,14 @@ Save the final feature state, extract lessons, and clear the active boundary:
 
 When the environment itself needs assessment, repair, or evaluator auditing, run:
 ```text
-/harness-maintain [assess | create | improve | eval]
+/harness-maintain [assess | create | improve | eval | doctor]
 ```
 *Effect*:
 - **assess**: Evaluates the repo harness against the 6 subsystems.
 - **create**: Generates harness configuration from scratch.
 - **improve**: Upgrades harness mechanisms based on observability failures.
 - **eval**: Runs split-evaluator auditing passes.
+- **doctor**: Runs the shipped drift and repair checks.
 
 ---
 
@@ -243,15 +244,15 @@ Generate exact, machine-readable HTTP contract specifications:
 
 | Command | Category | Purpose | Input / Target Artifact |
 |---|---|---|---|
-| `/starter-init` | Project Starter | Initial setup and router configuration | [`AGENTS.md`](AGENTS.md), [`HARNESS_CARD.md`](HARNESS_CARD.md) |
+| `/starter-init` | Project Starter | Initial setup and router configuration | [`AGENTS.md`](../kit/AGENTS.md), [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) |
 | `/context-session` | Context | Manage active session boundaries and checkpoints | `artifacts/features/<slug>/` |
-| `/context-memory` | Context | Maintain durable memory files | [`memories/repo/constitution.md`](memories/repo/constitution.md), [`INDEX.md`](memories/repo/INDEX.md) |
+| `/context-memory` | Context | Maintain durable memory files | [`memories/repo/constitution.md`](../kit/memories/repo/constitution.md), [`INDEX.md`](../kit/memories/repo/INDEX.md) |
 | `/context-status` | Context | Multi-feature orchestration overview | Scans `artifacts/features/` |
 | `/spec-research` | SDD | Investigate ambiguous/brownfield systems | `analysis.md` |
 | `/spec-requirements`| SDD | Define and lock feature requirements | `spec.md`, `proposal.md` |
 | `/spec-plan` | SDD | Create design and task lists | `plan.md`, `tasks.md`, `design.md` |
 | `/spec-implement` | SDD | Surgical task execution and local proof | Touch source files, updates `tasks.md` |
-| `/spec-adr` | SDD | Record architecture decision records | `adr-*.md`, [`memories/repo/adr-log.md`](memories/repo/adr-log.md) |
+| `/spec-adr` | SDD | Record architecture decision records | `adr-*.md`, [`memories/repo/adr-log.md`](../kit/memories/repo/adr-log.md) |
 | `/harness-verify` | Harness | Perform verification and alignment audit | `review.md` |
 | `/harness-maintain` | Harness | Assess and improve the agent harness | Harness configs, eval reports |
 | `/code-review` | Specialist | Google-standard code review audit | Review output in `review.md` |

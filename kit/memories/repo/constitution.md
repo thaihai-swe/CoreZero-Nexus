@@ -36,7 +36,7 @@ When a public command, artifact contract, or skill workflow changes, update `doc
 Promote only what the repository or artifacts already support. Speculative rules and unverified observations do not belong in instruction-tier memory.
 
 ### CC-010 — Domain specs are descriptive; the constitution is normative
-Domain specs (under `specs/`) describe current subsystem behavior. The constitution enforces repo-wide mandates. Do not put repo-wide rules in domain specs or project facts in the constitution.
+The durable domain-spec baseline lives in `memories/repo/domain-specs.md`. Large repositories may split detailed subsystem specs into `specs/` later, but the routed baseline still starts from `memories/repo/domain-specs.md`. Do not put repo-wide rules in domain specs or project facts in the constitution.
 
 ## Release Guardrails
 

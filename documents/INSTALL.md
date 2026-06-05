@@ -35,18 +35,18 @@ bash CoreZero-Nexus/scripts/install.sh /path/to/your-project
 The installer applies three categories:
 
 - `overwrite` for kit-managed docs, scripts, rules, skills, and shipped checks
-- `copyIfMissing` for bootstrap files, memories, templates, architecture, and generated references
+- `copyIfMissing` for bootstrap files, memories, adopter-owned docs, architecture, and generated references
 - `preserve` for downstream state such as `memories/repo/` content, `artifacts/`, and local settings
 
 The adopted project receives:
 
 - adopter-facing docs under `docs/`
-- project templates under `docs/templates/`
+- adopter-owned project-policy docs under `docs/*.md`
 - generated references under `docs/generated/`
 - runtime and memory scaffolding in the repo root and `memories/repo/`
 - public skills, rules, installer, and the harness consistency workflow
 
-For a detailed breakdown of file mappings and ownership rules, see [TEMPLATE_SURFACE.md](../../documents/TEMPLATE_SURFACE.md#file-categories--installation-posture) in the CoreZero Nexus source repository.
+For a detailed breakdown of file mappings and ownership rules, see [TEMPLATE_SURFACE.md](TEMPLATE_SURFACE.md#file-categories--installation-posture).
 
 Maintainer docs under `documents/` remain in this source repository only. They are not part of the default installed surface.
 
@@ -62,7 +62,7 @@ Re-running the installer:
 
 ## Next Steps
 
-After install, follow [ADOPTION_GUIDE.md](ADOPTION_GUIDE.md) for the full adoption flow.
+After install, follow [ADOPTION_GUIDE.md](../kit/docs/ADOPTION_GUIDE.md) for the full adoption flow.
 
 ## Rollback
 

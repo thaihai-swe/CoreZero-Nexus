@@ -15,6 +15,10 @@ jobs:
 
       - name: Verify done features have passing review
         run: |
+          if [ ! -d "artifacts/features" ] || [ -z "$(ls -A artifacts/features 2>/dev/null)" ]; then
+            echo "WARNING: No feature artifacts found; skipping review check." >&2
+            exit 0
+          fi
           failed=0
           for status_file in artifacts/features/*/status.md; do
             [ -f "$status_file" ] || continue
@@ -38,11 +42,12 @@ jobs:
             echo "Skipping manifest check: not in kit source repository"
             exit 0
           fi
-          failed=0
-          # Check every file listed in manifest.json files.overwrite and files.copyIfMissing
           python3 - <<'PY'
-          import json, os, sys, glob
-          root = os.path.dirname(os.path.abspath("kit/manifest.json"))
+          import glob
+          import json
+          import os
+          import sys
+
           manifest = json.load(open("kit/manifest.json"))
           errors = []
           for pattern in manifest["files"]["overwrite"]:
@@ -52,8 +57,7 @@ jobs:
                   if not os.path.isdir(base):
                       errors.append(f"MISSING overwrite source dir: {base}")
               elif "*" in pattern:
-                  matches = glob.glob(full_pattern)
-                  if not matches:
+                  if not glob.glob(full_pattern):
                       errors.append(f"MISSING overwrite source (no glob matches): {full_pattern}")
               else:
                   if not os.path.exists(os.path.join("kit", pattern)):
@@ -67,20 +71,36 @@ jobs:
               else:
                   if not os.path.exists(os.path.join("kit", rel)):
                       errors.append(f"MISSING copyIfMissing source: kit/{rel}")
-          for e in errors:
-              print("ERROR:", e, file=sys.stderr)
+          for error in errors:
+              print("ERROR:", error, file=sys.stderr)
           sys.exit(1 if errors else 0)
           PY
 
+      - name: Check documented surface truth
+        run: |
+          if [ -f "kit/scripts/check-surface-truth.py" ]; then
+            python3 kit/scripts/check-surface-truth.py --mode source-repo --root .
+          elif [ -f "scripts/check-surface-truth.py" ]; then
+            python3 scripts/check-surface-truth.py --mode installed --root .
+          else
+            echo "ERROR: missing scripts/check-surface-truth.py" >&2
+            exit 1
+          fi
+
+      - name: Check installer smoke path
+        run: |
+          if [ ! -f "kit/scripts/test-install.sh" ]; then
+            echo "Skipping install smoke test: not in kit source repository"
+            exit 0
+          fi
+          bash kit/scripts/test-install.sh
+
       - name: Check for stale command name references
         run: |
-          # Flag bare "/spec " references (old pre-taxonomy command) in docs and skill files
-          failed=0
           if grep -rn --include="*.md" '/spec [a-z]' kit/docs/ kit/skills/ documents/ 2>/dev/null | grep -v 'spec-' | grep -v 'spec_' | grep -v '#' | grep -q .; then
             echo "WARNING: possible stale bare '/spec' command reference found (should be '/spec-requirements', '/spec-plan', etc.)" >&2
             grep -rn --include="*.md" '/spec [a-z]' kit/docs/ kit/skills/ documents/ 2>/dev/null | grep -v 'spec-' | grep -v 'spec_' | grep -v '#' >&2 || true
           fi
-          # Non-fatal: warn only
           exit 0
 
       - name: Check VERSION and manifest.json version are in sync
@@ -113,4 +133,3 @@ jobs:
             fi
           done
           exit $failed
-

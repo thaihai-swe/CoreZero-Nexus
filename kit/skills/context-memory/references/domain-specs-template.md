@@ -25,7 +25,7 @@ Domain specs are descriptive. They do not replace the constitution and should no
 
 ## Recommended Location
 
-When a repository grows large enough to need them, add domain specs under a dedicated top-level `specs/` directory such as:
+Keep the routed baseline in this file. When a repository grows large enough to need deeper per-domain detail, link out to a dedicated top-level `specs/` directory such as:
 
 ```text
 specs/
@@ -34,7 +34,7 @@ specs/
   notifications/spec.md
 ```
 
-Keep this `memories/repo/domain-specs.md` file as the explanation of the pattern, not the storage location for all domain content.
+Keep `memories/repo/domain-specs.md` as the stable entrypoint and index for domain behavior even when detailed specs move into `specs/`.
 
 ## What Belongs In A Domain Spec
 

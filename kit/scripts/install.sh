@@ -266,7 +266,7 @@ done < <(read_manifest_array "$MANIFEST" files.copyIfMissing)
 
 detect_stack_and_prefill_config() {
   local config_file="$TARGET_DIR/memories/repo/harness-config.md"
-  [[ -f "$config_file" ]] || return
+  [[ -f "$config_file" ]] || return 0
   if ! grep -qE '^- Test:[[:space:]]*$|^- Test command:[[:space:]]*$' "$config_file"; then
     return 0
   fi
@@ -317,7 +317,7 @@ detect_stack_and_prefill_config() {
 detect_stack_and_prefill_config
 
 if [[ "$DRY_RUN" != "true" ]]; then
-  [[ -f "$TARGET_DIR/scripts/install.sh" ]] && chmod +x "$TARGET_DIR/scripts/install.sh"
+  find "$TARGET_DIR/scripts" -maxdepth 1 -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} +
   printf '%s   ' "$KIT_VERSION" > "$TARGET_DIR/.corezero-version"
 fi
 

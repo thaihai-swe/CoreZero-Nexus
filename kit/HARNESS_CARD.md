@@ -18,7 +18,7 @@
 
 | Subsystem | Status | Owner File |
 |---|---|---|
-| Instructions (router) | Active | `AGENTS.md` (thin router pointing to memory; full file ~200 lines, routing section under 50) |
+| Instructions (router) | Active | `AGENTS.md` (thin router under 50 lines that points to memory and skills) |
 | State (per-feature) | Active | `artifacts/features/<slug>/` (status, progress, handoff) |
 | Verification (mechanical gate) | Active | `harness-verify`  |
 | Scope (one task at a time) | Active | `spec-plan` focused, independently-verifiable tasks |
@@ -93,6 +93,7 @@
 - Architecture: `docs/architecture.md`
 - Constitution: `memories/repo/constitution.md`
 - Security policy: `memories/repo/security-policy.md`
+- Repair utility: `scripts/doctor.sh`
 - Rigor profiles: `skills/_shared/rigor-profiles.md`
 - Memory tiers: `skills/context-memory/SKILL.md` `## Memory Tiers`
 - Harness card template: `skills/starter-init/references/harness-card-template.md`

@@ -11,11 +11,12 @@ compatibility: Designed for Claude, Codex, and other Agent Skills-compatible too
 
 ## Overview
 
-Meta-skill for harness engineering. It evaluates or repairs the harness environment itself. Four modes:
+Meta-skill for harness engineering. It evaluates or repairs the harness environment itself. Five modes:
 1. **Assess Mode**: Score the repository against the 6 harness subsystems.
 2. **Create Mode**: Generate a harness from scratch for a new project.
 3. **Improve Mode**: Apply fixes to a harness based on failure evidence or logs.
 4. **Eval Mode**: Run split evaluator passes over a feature execution flow.
+5. **Doctor Mode**: Run structural repair checks and surface drift diagnostics.
 
 ## Read First
 
@@ -53,6 +54,11 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 1. Run evaluations per `references/eval-modes.md` (Mechanical, Alignment, Adversarial/Security, Continuity).
 2. Write findings to `artifacts/features/<slug>/eval-report.md`. Route outcomes to owning skills.
 
+### Doctor Mode
+1. Run `scripts/doctor.sh` to validate the installed surface, router size, workflow sync, and path truth.
+2. Classify failures as missing shipped files, path drift, or workflow drift.
+3. Route fixes to the owning surface (`manifest.json`, `docs/`, `skills/`, or workflows) and re-run the doctor pass before closing.
+
 ## Stop Conditions
 
 - Attempting to use this skill to write feature code. (This skill only writes infrastructure/docs).
@@ -78,12 +84,14 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 - Fixes are text rules in `AGENTS.md` without mechanical enforcement.
 - Security-sensitive flows lack documented permission structures.
 - Observability logs are written but never triaged.
+- Installed docs or generated references point at files that do not exist.
 
 ## Verification
 
 - [ ] Assess covers all 6 subsystems with 1-5 scores.
 - [ ] Subsystem fixes address a documented failure category.
 - [ ] Evaluation findings are explicit.
+- [ ] Doctor mode ends with a clean `scripts/doctor.sh` pass.
 
 ## Output Rules
 

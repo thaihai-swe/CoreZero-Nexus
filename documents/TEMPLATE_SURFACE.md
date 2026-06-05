@@ -21,6 +21,7 @@ When installed into an empty project directory, the folder structure looks like 
 │   ├── system-specs/                 # Cross-cutting system specs (output of /spec-requirements System Spec Mode)
 │   │   └── README.md                 # Explains system specs purpose and workflow
 │   ├── ADOPTION_GUIDE.md             # Greenfield and brownfield onboarding guide
+│   ├── INSTALL.md                    # Installer behavior, upgrades, and rollback
 │   ├── README.md                     # Start page and entrypoint for the adopter surface
 │   ├── architecture.md               # System architecture baseline
 │   ├── code-design.md                # Shipped normative coding-policy guidance
@@ -47,7 +48,10 @@ When installed into an empty project directory, the folder structure looks like 
 │   ├── python.md                     # Language-specific coding standards for Python
 │   ├── security.md                   # Project security and sanitization standards
 ├── scripts/
-│   └── install.sh                    # Idempotent manifest-driven installer script
+│   ├── check-surface-truth.py        # Validates shipped paths and router constraints
+│   ├── doctor.sh                     # Repair and drift-check entrypoint
+│   ├── install.sh                    # Idempotent manifest-driven installer script
+│   └── test-install.sh               # Installer smoke test helper
 ├── skills/
 │   ├── _shared/                      # Shared rigor profiles, status definitions, diagrams
 │   ├── api-endpoint-docs/            # HTTP API reference generation skill
@@ -77,7 +81,7 @@ When installed into an empty project directory, the folder structure looks like 
 Files copied during installation belong to one of three categories defined in `manifest.json`:
 
 ### 1. Kit-Managed Content (`overwrite`)
-*Folders/Files:* `skills/**`, `rules/*.md`, `scripts/install.sh`, `docs/ADOPTION_GUIDE.md`, `docs/README.md`, `docs/system-specs/README.md`, `.github/workflows/harness-check.yml`
+*Folders/Files:* `skills/**`, `rules/*.md`, `scripts/*.sh`, `scripts/*.py`, `docs/{README,ADOPTION_GUIDE,INSTALL,code-design}.md`, `docs/system-specs/README.md`, `.github/workflows/harness-check.yml`
 *Posture:* Overwritten on install. These are core kit tools and guides that update automatically when upgrading the CoreZero Nexus.
 
 ### 2. Seeding Content (`copyIfMissing`)
@@ -98,6 +102,7 @@ This section defines the ownership lifecycle of files under the `docs/` director
 |---|---|---|---|
 | `docs/README.md` | Static (Read-Only) | Upgrades only | Kit Installer |
 | `docs/ADOPTION_GUIDE.md` | Static (Read-Only) | Upgrades only | Kit Installer |
+| `docs/INSTALL.md` | Static (Read-Only) | Upgrades only | Kit Installer |
 | `docs/code-design.md` | Static (Read-Only) | Upgrades only | Kit Installer |
 | `docs/architecture.md` | Collaborative | Init + Knowledge Sweep | `/starter-init` / `/context-memory` |
 | `docs/generated/codemap.md` | Tool-Generated | Repo structure change | `/harness-maintain` |
@@ -107,7 +112,7 @@ This section defines the ownership lifecycle of files under the `docs/` director
 
 #### 1. Static Documents
 These documents serve as standard guides and routers for the CoreZero Nexus. They are written by kit maintainers and **should never be edited manually or by local project skills**:
-- `README.md` and `ADOPTION_GUIDE.md`.
+- `README.md`, `ADOPTION_GUIDE.md`, and `INSTALL.md`.
 
 #### 2. Tool-Generated Indexes
 These are codebase index files. They are **written and updated exclusively by automation skills** and should not be modified manually:

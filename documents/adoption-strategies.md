@@ -13,7 +13,7 @@
 
 Don't adopt everything at once. Start with:
 
-1. **Week 1:** Bootstrap the kit, fill in `docs/templates/PRODUCT_SENSE.md` and refine `docs/architecture.md`
+1. **Week 1:** Bootstrap the kit, fill in `docs/PRODUCT_SENSE.md` and refine `docs/architecture.md`
 2. **Week 2:** Use `/spec-requirements` + `/spec-plan` for one real feature
 3. **Week 3:** Add `/spec-implement` + `/harness-verify` to close the loop
 4. **Week 4:** Evaluate — did it help? What was friction?

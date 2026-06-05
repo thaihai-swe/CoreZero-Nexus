@@ -22,7 +22,7 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 - `HARNESS_CARD.md` (harness summary card)
 - `memories/repo/*` (memory router and seed instruction files)
 - `docs/architecture.md` (durable architecture baseline)
-- `docs/templates/*` (project reference templates)
+- `docs/*.md` project-policy docs seeded for the adopter to refine
 - `docs/generated/*` (index & codemap artifacts)
 
 ---
@@ -86,10 +86,10 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`
 - `memories/repo/adr-log.md`
-- [`docs/templates/PRODUCT_SENSE.md`](../docs/templates/PRODUCT_SENSE.md)
-- [`docs/templates/GLOSSARY.md`](../docs/templates/GLOSSARY.md)
-- [`docs/templates/TECH_STACK_REFERENCE.md`](../docs/templates/TECH_STACK_REFERENCE.md)
-- [`docs/templates/PROJECT_CONSTRAINTS.md`](../docs/templates/PROJECT_CONSTRAINTS.md)
+- [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md)
+- [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md)
+- [`docs/TECH_STACK_REFERENCE.md`](../kit/docs/TECH_STACK_REFERENCE.md)
+- [`docs/PROJECT_CONSTRAINTS.md`](../kit/docs/PROJECT_CONSTRAINTS.md)
 
 ---
 
@@ -109,10 +109,10 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 
 ### Key Files Touched
 - `docs/code-design.md`
-- [`docs/templates/GOVERNANCE.md`](../docs/templates/GOVERNANCE.md)
-- [`docs/templates/QUALITY_POLICY.md`](../docs/templates/QUALITY_POLICY.md)
-- [`docs/templates/RELIABILITY_POLICY.md`](../docs/templates/RELIABILITY_POLICY.md)
-- [`docs/templates/TECH_DEBT_REGISTER.md`](../docs/templates/TECH_DEBT_REGISTER.md)
+- [`docs/GOVERNANCE.md`](../kit/docs/GOVERNANCE.md)
+- [`docs/QUALITY_POLICY.md`](../kit/docs/QUALITY_POLICY.md)
+- [`docs/RELIABILITY_POLICY.md`](../kit/docs/RELIABILITY_POLICY.md)
+- [`docs/TECH_DEBT_REGISTER.md`](../kit/docs/TECH_DEBT_REGISTER.md)
 - `artifacts/features/<slug>/review.md`
 - `artifacts/features/<slug>/testing-scenarios.md`
 - `artifacts/features/<slug>/harness-assessment.md`

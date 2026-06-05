@@ -1,23 +1,15 @@
 # CoreZero Nexus
 
-CoreZero Nexus is a pack-based framework for teams that want AI-assisted delivery without drift, context loss, or vague workflow glue.
+CoreZero Nexus is a starter kit for coding-agent workflows that need durable context, specification-driven delivery, and a mechanical verification harness.
 
-It combines four capabilities in one install:
+It combines four packs in one install:
 
-- `Project Starter` for bootstrapping AI-ready project structure and operating defaults
-- `Context Engineering` for session continuity, memory routing, and durable context
-- `Spec-Driven Development` for turning requests into researched, specified, planned, and implemented work
-- `Harness Engineering` for verification, evaluation, constraints, and reliability
+- `Project Starter` for bootstrap and baseline capture
+- `Context Engineering` for session continuity and durable memory
+- `Spec-Driven Development` for research, requirements, planning, and implementation
+- `Harness Engineering` for verification, drift detection, and repair
 
 ## Guided Start
-
-Use this public workflow first:
-
-1. Install the kit
-2. Run `starter-init`
-3. Open or resume work with `context-session`
-4. Deliver through `spec-requirements`, `spec-plan`, and `spec-implement`
-5. Close out with `harness-verify`
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
@@ -37,23 +29,25 @@ Then in your AI agent:
 
 ## Choose Your Surface
 
-- Adopting the kit into a project: [docs/README.md](kit/docs/README.md)
+- Adopting the kit into a project: [kit/docs/README.md](kit/docs/README.md)
 - Maintaining or evolving the kit itself: [documents/README.md](documents/README.md)
 
 ## What Ships Into Adopter Projects
 
-The default installed surface is the adopter-facing package under `kit/docs/`, plus the runtime and workflow assets the kit needs:
+The installed surface comes from `kit/` and includes:
 
-- `kit/docs/README.md`, `kit/docs/ADOPTION_GUIDE.md`, `kit/docs/INSTALL.md`
-- `kit/docs/templates/*`
-- `kit/docs/generated/*`
-- `kit/docs/architecture.md`
+- `kit/AGENTS.md` and `kit/HARNESS_CARD.md`
+- `kit/docs/README.md`, `kit/docs/ADOPTION_GUIDE.md`, `kit/docs/INSTALL.md`, `kit/docs/code-design.md`, and `kit/docs/system-specs/README.md`
+- seeded project docs under `kit/docs/*.md`
+- generated-reference placeholders under `kit/docs/generated/*`
+- `kit/memories/repo/*`
 - `kit/skills/**`
 - `kit/rules/*.md`
-- `kit/AGENTS.md`, `kit/HARNESS_CARD.md`, and `kit/memories/repo/*`
-- `kit/scripts/install.sh` and `kit/.github/workflows/harness-check.yml`
+- `kit/scripts/install.sh`, `kit/scripts/doctor.sh`, `kit/scripts/check-surface-truth.py`, and `kit/scripts/test-install.sh`
+- `kit/.github/workflows/harness-check.yml`
 
 Maintainer documentation under `documents/` stays in this source repository and is not part of the default installed package.
+
 
 ## The Four Packs
 
@@ -68,10 +62,8 @@ Full workflow, command taxonomy, and internal skill mapping: [documents/skills-g
 
 ## Learn More
 
-- Adopter docs: [docs/README.md](kit/docs/README.md)
-- Installation details: [docs/INSTALL.md](kit/docs/INSTALL.md)
+- Adopter docs: [kit/docs/README.md](kit/docs/README.md)
+- Installation details: [kit/docs/INSTALL.md](kit/docs/INSTALL.md)
 - Maintainer docs: [documents/README.md](documents/README.md)
-- Workflow and command taxonomy: [documents/skills-guide.md](documents/skills-guide.md)
-- End-to-end lifecycle walkthrough: [documents/end-to-end-tutorial.md](documents/end-to-end-tutorial.md)
-
-python3 -m http.server 8080
+- Workflow taxonomy: [documents/skills-guide.md](documents/skills-guide.md)
+- Shipped surface map: [documents/TEMPLATE_SURFACE.md](documents/TEMPLATE_SURFACE.md)

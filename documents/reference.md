@@ -55,32 +55,32 @@ The memory layer is structured in a **3-Tier Memory Architecture**:
 
 | File | Public Owner | Type | Tier | Lifecycle |
 |------|-------------|------|------|-----------|
-| [`INDEX.md`](memories/repo/INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
-| [`constitution.md`](memories/repo/constitution.md) | `/context-memory` | Normative | Instruction | Created at init |
-| [`security-policy.md`](memories/repo/security-policy.md) | `/context-memory` | Normative | Instruction | Created at init |
-| [`learned-heuristics.md`](memories/repo/learned-heuristics.md) | `/context-memory` | Descriptive | Instruction | Created at init |
-| [`project-knowledge-base.md`](memories/repo/project-knowledge-base.md) | `/context-memory` | Descriptive | Instruction | Created at init |
-| [`harness-config.md`](memories/repo/harness-config.md) | `/starter-init` | Operational | Instruction | Created at init |
-| [`domain-specs.md`](memories/repo/domain-specs.md) | `/context-memory` | Descriptive | Instruction | Created at init |
-| [`observability-log.md`](memories/repo/observability-log.md) | `/harness-maintain` | Operational | Auto | Created at init, written by Improve Mode |
-| [`adr-log.md`](memories/repo/adr-log.md) | `/spec-adr` | Registry | Instruction | Lazy-created on first ADR |
+| [`INDEX.md`](../kit/memories/repo/INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
+| [`constitution.md`](../kit/memories/repo/constitution.md) | `/context-memory` | Normative | Instruction | Created at init |
+| [`security-policy.md`](../kit/memories/repo/security-policy.md) | `/context-memory` | Normative | Instruction | Created at init |
+| [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) | `/context-memory` | Descriptive | Instruction | Created at init |
+| [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md) | `/context-memory` | Descriptive | Instruction | Created at init |
+| [`harness-config.md`](../kit/memories/repo/harness-config.md) | `/starter-init` | Operational | Instruction | Created at init |
+| [`domain-specs.md`](../kit/memories/repo/domain-specs.md) | `/context-memory` | Descriptive | Instruction | Created at init |
+| [`observability-log.md`](../kit/memories/repo/observability-log.md) | `/harness-maintain` | Operational | Auto | Created at init, written by Improve Mode |
+| [`adr-log.md`](../kit/memories/repo/adr-log.md) | `/spec-adr` | Registry | Instruction | Lazy-created on first ADR |
 
 ---
 
-## 4. Shipped Configuration Templates (`docs/templates/`)
+## 4. Shipped Adopter-Owned Docs (`docs/*.md`)
 
-These templates are copied to adopter repositories for customization:
+These docs are copied to adopter repositories for customization:
 
 | File | Purpose | Primary Public Consumers |
 |------|---------|--------------------------|
-| [`PRODUCT_SENSE.md`](docs/templates/PRODUCT_SENSE.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
-| [`PROJECT_CONSTRAINTS.md`](docs/templates/PROJECT_CONSTRAINTS.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
-| [`GLOSSARY.md`](docs/templates/GLOSSARY.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |
-| [`TECH_STACK_REFERENCE.md`](docs/templates/TECH_STACK_REFERENCE.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
-| [`GOVERNANCE.md`](docs/templates/GOVERNANCE.md) | Approval gates, ownership | `/spec-requirements`, `/harness-verify` |
-| [`RELIABILITY_POLICY.md`](docs/templates/RELIABILITY_POLICY.md) | SLOs, incident response | `/harness-verify`, `/spec-plan` |
-| [`QUALITY_POLICY.md`](docs/templates/QUALITY_POLICY.md) | Quality gates, review standards | `/harness-verify`, `/spec-plan` |
-| [`TECH_DEBT_REGISTER.md`](docs/templates/TECH_DEBT_REGISTER.md) | Tracked debt items | `/harness-verify` |
+| [`PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
+| [`PROJECT_CONSTRAINTS.md`](../kit/docs/PROJECT_CONSTRAINTS.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
+| [`GLOSSARY.md`](../kit/docs/GLOSSARY.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |
+| [`TECH_STACK_REFERENCE.md`](../kit/docs/TECH_STACK_REFERENCE.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
+| [`GOVERNANCE.md`](../kit/docs/GOVERNANCE.md) | Approval gates, ownership | `/spec-requirements`, `/harness-verify` |
+| [`RELIABILITY_POLICY.md`](../kit/docs/RELIABILITY_POLICY.md) | SLOs, incident response | `/harness-verify`, `/spec-plan` |
+| [`QUALITY_POLICY.md`](../kit/docs/QUALITY_POLICY.md) | Quality gates, review standards | `/harness-verify`, `/spec-plan` |
+| [`TECH_DEBT_REGISTER.md`](../kit/docs/TECH_DEBT_REGISTER.md) | Tracked debt items | `/harness-verify` |
 
 
 ---
