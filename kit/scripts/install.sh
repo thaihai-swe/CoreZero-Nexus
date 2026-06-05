@@ -20,7 +20,7 @@
 
 set -euo pipefail
 
-REPO_URL="${HARNESS_KIT_REPO_URL:-https://github.com/thaihai-swe/AI-agents-dev-kits.git}"
+REPO_URL="${HARNESS_KIT_REPO_URL:-https://github.com/thaihai-swe/CoreZero-Nexus.git}"
 
 err() { printf 'ERROR: %s   ' "$*" >&2; exit 1; }
 log() { printf '%s   ' "$*"; }

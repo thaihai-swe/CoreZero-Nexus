@@ -20,7 +20,7 @@ Use this public workflow first:
 5. Close out with `harness-verify`
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your/project
 ```
 

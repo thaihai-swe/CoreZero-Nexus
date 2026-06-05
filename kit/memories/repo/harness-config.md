@@ -11,7 +11,7 @@
 ## Work Tracking
 
 - Issue tracker mode: GitHub
-- Issue/project location: https://github.com/thaihai-swe/AI-agents-dev-kits/issues
+- Issue/project location: https://github.com/thaihai-swe/CoreZero-Nexus/issues
 - Default work item format: GitHub Issues
 - Required labels or states: `breaking-change` for skill name or artifact schema changes
 - Escalation / blocker handling: Stop and ask user

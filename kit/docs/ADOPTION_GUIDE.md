@@ -24,7 +24,7 @@ Use this when the target repo is new or near-empty.
 ### Step 1: Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your/project
 ```
 
@@ -60,7 +60,7 @@ Use this when the target repo already has real code, tests, or history.
 ### Step 1: Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your/project
 ```
 

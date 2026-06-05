@@ -33,7 +33,7 @@ Choose the path that matches what you need right now:
 ## Core Docs
 
 - [ADOPTION_GUIDE.md](ADOPTION_GUIDE.md) — detailed greenfield and brownfield adoption flows
-- [INSTALL.md](https://github.com/thaihai-swe/AI-agents-dev-kits/blob/main/documents/INSTALL.md) — installer behavior, upgrade behavior, and shipped surface (source repo; not installed by default)
+- [INSTALL.md](https://github.com/thaihai-swe/CoreZero-Nexus/blob/main/documents/INSTALL.md) — installer behavior, upgrade behavior, and shipped surface (source repo; not installed by default)
 - [code-design.md](code-design.md) — shipped normative coding-policy guidance
 
 ## Key Surfaces

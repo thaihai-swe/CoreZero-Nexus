@@ -120,7 +120,7 @@ Failures are classified by `harness-maintain` Improve Mode and recorded in `memo
 This is the structure of the CoreZero Nexus repository during development. All adopter-facing assets are grouped under `kit/` to isolate them from project-specific maintainer documents and scripts.
 
 ```
-AI-agents-dev-kits/
+CoreZero-Nexus/
 ├── README.md                    # Maintainer/Adopter orientation page
 ├── CHANGELOG.md                 # Project version history
 ├── kit/                         # Isolated surface shipped to adopter projects

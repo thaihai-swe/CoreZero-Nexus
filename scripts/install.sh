@@ -6,7 +6,7 @@
 #
 set -euo pipefail
 
-REPO_URL="${HARNESS_KIT_REPO_URL:-https://github.com/thaihai-swe/AI-agents-dev-kits.git}"
+REPO_URL="${HARNESS_KIT_REPO_URL:-https://github.com/thaihai-swe/CoreZero-Nexus.git}"
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || { echo "ERROR: required command not found: $1" >&2; exit 1; }

@@ -12,22 +12,22 @@ CoreZero Nexus installs one adopter-facing package surface for downstream teams.
 ## Quick Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your-project
 ```
 
 ## Pinned Version
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/v0.2.0/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/v0.2.0/scripts/install.sh \
   | bash -s -- /path/to/your-project --version 0.2.0
 ```
 
 ## Auditable Install
 
 ```bash
-git clone --depth 1 https://github.com/thaihai-swe/AI-agents-dev-kits.git
-bash AI-agents-dev-kits/scripts/install.sh /path/to/your-project
+git clone --depth 1 https://github.com/thaihai-swe/CoreZero-Nexus.git
+bash CoreZero-Nexus/scripts/install.sh /path/to/your-project
 ```
 
 ## What Gets Installed

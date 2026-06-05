@@ -49,13 +49,13 @@ The tag push fires `release.yml` → consistency check → GitHub release page.
 ### 6. Watch and verify
 
 - GitHub → Actions → Release should turn green
-- Release page lives at `https://github.com/<user>/AI-agents-dev-kits/releases/tag/v0.1.0`
+- Release page lives at `https://github.com/<user>/CoreZero-Nexus/releases/tag/v0.1.0`
 - Branch `release/0.1.x` exists on origin
 
 ### 7. Public install smoke test
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<user>/AI-agents-dev-kits/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/<user>/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /tmp/post-release-test
 cat /tmp/post-release-test/.corezero-version    # should print: 0.1.0
 ```
@@ -297,7 +297,7 @@ Use this when you want to:
 
 7. **Verify the public install works** (optional, from a clean target):
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/<user>/AI-agents-dev-kits/main/scripts/install.sh \
+   curl -fsSL https://raw.githubusercontent.com/<user>/CoreZero-Nexus/main/scripts/install.sh \
      | bash -s -- /tmp/post-release-test
    cat /tmp/post-release-test/.corezero-version
    ```

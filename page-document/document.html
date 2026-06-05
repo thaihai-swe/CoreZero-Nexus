@@ -15,7 +15,7 @@
     <meta property="og:title" content="CoreZero Nexus — Spec-Anchored AI Software Delivery">
     <meta property="og:description"
         content="An engineering harness for AI coding agents. Locks specs before code, plans every task, verifies every claim, and keeps memory durable across sessions.">
-    <meta property="og:url" content="https://github.com/thaihai-swe/AI-agents-dev-kits">
+    <meta property="og:url" content="https://github.com/thaihai-swe/CoreZero-Nexus">
     <meta property="og:site_name" content="CoreZero Nexus">
 
     <!-- Twitter / X -->
@@ -49,7 +49,7 @@
         <div class="js-warning">
             <strong>Diagrams need JavaScript.</strong> The kit itself doesn't &mdash; this page renders 12 mermaid
             diagrams from <code>documents/diagrams/</code> at runtime. Enable JS to see them, or browse the source on
-            <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" rel="noopener">GitHub</a>.
+            <a href="https://github.com/thaihai-swe/CoreZero-Nexus" rel="noopener">GitHub</a>.
         </div>
     </noscript>
 
@@ -123,7 +123,7 @@
                 </li>
                 <li class="nav-divider" aria-hidden="true"></li>
                 <li>
-                    <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" target="_blank" rel="noopener"
+                    <a href="https://github.com/thaihai-swe/CoreZero-Nexus" target="_blank" rel="noopener"
                         class="nav-link nav-cta">GitHub ↗</a>
                 </li>
                 <li>
@@ -144,15 +144,14 @@
                 verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
                 reproducible, evidence-backed delivery.</p>
             <div class="hero-author">
-                Built by <strong>Thai Hai</strong> &middot; <a href="https://github.com/thaihai-swe/AI-agents-dev-kits"
+                Built by <strong>Thai Hai</strong> &middot; <a href="https://github.com/thaihai-swe/CoreZero-Nexus"
                     target="_blank" rel="noopener">GitHub</a> &middot; <a
-                    href="https://github.com/thaihai-swe/AI-agents-dev-kits/issues" target="_blank"
-                    rel="noopener">Issues
+                    href="https://github.com/thaihai-swe/CoreZero-Nexus/issues" target="_blank" rel="noopener">Issues
                     &amp; Feedback</a>
             </div>
             <div
                 style="margin-top: var(--space-8); display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
-                <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" target="_blank" rel="noopener"
+                <a href="https://github.com/thaihai-swe/CoreZero-Nexus" target="_blank" rel="noopener"
                     class="btn btn-primary btn-pill btn-lg">View on GitHub</a>
                 <a href="#fast-start" class="btn btn-secondary btn-pill btn-lg">Get Started in 10 Min</a>
                 <a href="#workflow" class="btn btn-secondary btn-pill btn-lg">See the Workflow</a>
@@ -181,7 +180,7 @@
             <p>
                 Everything on this page &mdash; the lifecycle, the verify gate, the memory tiers, the failure
                 taxonomy &mdash; is implemented in the
-                <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" target="_blank" rel="noopener">repo</a>
+                <a href="https://github.com/thaihai-swe/CoreZero-Nexus" target="_blank" rel="noopener">repo</a>
                 and shipped as installable skills you can drop into any codebase. The diagrams render live from
                 <code>documents/diagrams/*.mmd</code> &mdash; the same source of truth used by the kit itself.
             </p>
@@ -296,7 +295,7 @@
                     <div class="quickstart-step">
                         <strong>2. Install the kit</strong>
                         Run
-                        <code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh | bash -s -- /path/to/project</code>.
+                        <code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh | bash -s -- /path/to/project</code>.
                         The installer applies <code>manifest.json</code>: it copies <code>skills/</code> and
                         <code>rules/</code>, seeds the memory router and starter memory, and stamps
                         <code>.corezero-version</code>.
@@ -473,17 +472,34 @@
             <div class="non-negotiables">
                 <div class="nn-title">1. The Non-negotiables (AGENTS.md Priority Rules)</div>
                 <div class="nn-grid">
-                    <div class="nn-item"><strong>No flattery, no filler.</strong> Start with the answer, action, blocker, or decision. You <strong>MUST NOT</strong> add ceremonial openers.</div>
-                    <div class="nn-item"><strong>Correct false premises.</strong> If the user’s premise is wrong, you <strong>MUST</strong> say so before continuing.</div>
-                    <div class="nn-item"><strong>Never fabricate.</strong> You <strong>MUST NOT</strong> invent file paths, commit hashes, test results, API names, library functions, or repository behavior.</div>
-                    <div class="nn-item"><strong>Unknown stays unknown.</strong> When information is unavailable, you <strong>MUST</strong> mark it explicitly as <code>[UNKNOWN]</code>. Do not fill gaps with guesses.</div>
-                    <div class="nn-item"><strong>Ask only when needed.</strong> <strong>SHOULD</strong> ask before proceeding when ambiguity materially changes the result; otherwise resolve by inspecting the repo.</div>
-                    <div class="nn-item"><strong>Touch only the request.</strong> Every changed line <strong>MUST</strong> directly support the user’s request. No drive-by refactors or formatting churn.</div>
-                    <div class="nn-item"><strong>Fail loud.</strong> You <strong>MUST NOT</strong> mark work complete if verification was skipped, failed, or only partially run. State exactly what was and was not verified.</div>
-                    <div class="nn-item"><strong>Preserve behavior.</strong> Existing observable behavior is a contract. You <strong>MUST NOT</strong> change it unless the user explicitly asks.</div>
-                    <div class="nn-item"><strong>Keep design SOLID.</strong> <strong>SHOULD</strong> follow SOLID principles when changing or adding software design.</div>
-                    <div class="nn-item"><strong>Apply code-design rules.</strong> Check <code>docs/code-design.md</code> for cross-cutting pitfalls (hidden coupling, swallowed errors, etc.).</div>
-                    <div class="nn-item"><strong>Read the Harness Card.</strong> Before non-trivial work, <strong>SHOULD</strong> skim <code>HARNESS_CARD.md</code> at the repo root for profiles, status, and limits.</div>
+                    <div class="nn-item"><strong>No flattery, no filler.</strong> Start with the answer, action,
+                        blocker, or decision. You <strong>MUST NOT</strong> add ceremonial openers.</div>
+                    <div class="nn-item"><strong>Correct false premises.</strong> If the user’s premise is wrong, you
+                        <strong>MUST</strong> say so before continuing.</div>
+                    <div class="nn-item"><strong>Never fabricate.</strong> You <strong>MUST NOT</strong> invent file
+                        paths, commit hashes, test results, API names, library functions, or repository behavior.</div>
+                    <div class="nn-item"><strong>Unknown stays unknown.</strong> When information is unavailable, you
+                        <strong>MUST</strong> mark it explicitly as <code>[UNKNOWN]</code>. Do not fill gaps with
+                        guesses.</div>
+                    <div class="nn-item"><strong>Ask only when needed.</strong> <strong>SHOULD</strong> ask before
+                        proceeding when ambiguity materially changes the result; otherwise resolve by inspecting the
+                        repo.</div>
+                    <div class="nn-item"><strong>Touch only the request.</strong> Every changed line
+                        <strong>MUST</strong> directly support the user’s request. No drive-by refactors or formatting
+                        churn.</div>
+                    <div class="nn-item"><strong>Fail loud.</strong> You <strong>MUST NOT</strong> mark work complete if
+                        verification was skipped, failed, or only partially run. State exactly what was and was not
+                        verified.</div>
+                    <div class="nn-item"><strong>Preserve behavior.</strong> Existing observable behavior is a contract.
+                        You <strong>MUST NOT</strong> change it unless the user explicitly asks.</div>
+                    <div class="nn-item"><strong>Keep design SOLID.</strong> <strong>SHOULD</strong> follow SOLID
+                        principles when changing or adding software design.</div>
+                    <div class="nn-item"><strong>Apply code-design rules.</strong> Check
+                        <code>docs/code-design.md</code> for cross-cutting pitfalls (hidden coupling, swallowed errors,
+                        etc.).</div>
+                    <div class="nn-item"><strong>Read the Harness Card.</strong> Before non-trivial work,
+                        <strong>SHOULD</strong> skim <code>HARNESS_CARD.md</code> at the repo root for profiles, status,
+                        and limits.</div>
                 </div>
             </div>
         </section>
@@ -554,9 +570,13 @@
                 <div class="arch-card">
                     <h3>E. The Memory Layer (Durable Guidance)</h3>
                     <p class="node-desc">Located in <code>memories/repo/</code>. Organized into three tiers behind a
-                        routing index (<code>INDEX.md</code>). The knowledge base operates as a <strong>Semantic Memory Knowledge Graph</strong> using Markdown links to bind heuristics to domain specs. The tiers are: the <strong>Instruction tier</strong> (human-curated
-                        rules and knowledge), the <strong>Auto tier</strong> (failure-driven <code>observability-log.md</code>),
-                        and the <strong>Extracted tier</strong> (per-feature <code>session-extracts.md</code> candidates).
+                        routing index (<code>INDEX.md</code>). The knowledge base operates as a <strong>Semantic Memory
+                            Knowledge Graph</strong> using Markdown links to bind heuristics to domain specs. The tiers
+                        are: the <strong>Instruction tier</strong> (human-curated
+                        rules and knowledge), the <strong>Auto tier</strong> (failure-driven
+                        <code>observability-log.md</code>),
+                        and the <strong>Extracted tier</strong> (per-feature <code>session-extracts.md</code>
+                        candidates).
                     </p>
                 </div>
             </div>
@@ -571,12 +591,14 @@
                     </li>
                     <li><strong>Auto tier (agent-written):</strong> <code>observability-log.md</code> &mdash;
                         failure-driven
-                        lessons appended by <code>/harness-maintain</code> Improve Mode and <code>/harness-verify</code>.
+                        lessons appended by <code>/harness-maintain</code> Improve Mode and
+                        <code>/harness-verify</code>.
                     </li>
                     <li><strong>Extracted tier (session distillation):</strong>
                         <code>artifacts/features/&lt;slug&gt;/session-extracts.md</code> &mdash; candidate lessons
                         written by
-                        <code>/context-session</code> END and the post-ship sync, triaged by <code>/context-memory</code>.
+                        <code>/context-session</code> END and the post-ship sync, triaged by
+                        <code>/context-memory</code>.
                     </li>
                 </ul>
                 <p>Flow: <strong>session extracts &rarr; triage &rarr; instruction tier (or discard)</strong>, with the
@@ -701,7 +723,8 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><code>memories/repo/adr-log.md</code></td>
                                 <td>ADR Registry</td>
-                                <td>Registry index for all Architectural Decision Records (ADRs). Lazy-created on first ADR.</td>
+                                <td>Registry index for all Architectural Decision Records (ADRs). Lazy-created on first
+                                    ADR.</td>
                             </tr>
                             <tr>
                                 <td><code>docs/architecture.md</code></td>
@@ -734,12 +757,17 @@ artifacts/features/</code></pre>
             </div>
             <div class="section-card">
                 <h3>Memory Promotion Rules</h3>
-                <p>Two promotion paths feed durable memory: <strong>manual</strong> (via <code>/context-memory</code>) and
+                <p>Two promotion paths feed durable memory: <strong>manual</strong> (via <code>/context-memory</code>)
+                    and
                     <strong>automatic</strong> (the post-ship sync after every passing verify).
                 </p>
                 <ul>
-                    <li><strong>Cross-Feature Pattern Surfacing:</strong> Heuristics track a <code>recurrence-count</code>. Promote a finding into the instruction tier only when it is durable, evidence-backed, and useful
-                        beyond one feature. If an execution pattern hits <strong>3+ features</strong>, the system automatically drafts a CC-* proposal to promote it to the Constitution; a security finding escalates immediately.</li>
+                    <li><strong>Cross-Feature Pattern Surfacing:</strong> Heuristics track a
+                        <code>recurrence-count</code>. Promote a finding into the instruction tier only when it is
+                        durable, evidence-backed, and useful
+                        beyond one feature. If an execution pattern hits <strong>3+ features</strong>, the system
+                        automatically drafts a CC-* proposal to promote it to the Constitution; a security finding
+                        escalates immediately.</li>
                     <li><strong>Extraction triage:</strong> <code>/context-session</code> END appends candidates to
                         <code>session-extracts.md</code>. <code>/context-memory</code> then classifies each candidate:
                         <strong>promote</strong> (move to instruction tier when durable and evidence-backed),
@@ -790,7 +818,8 @@ artifacts/features/</code></pre>
             <div class="section-card">
                 <h3>Smart Context Routing</h3>
                 <p class="node-desc">A session never loads the whole memory layer. It reads <code>INDEX.md</code> first,
-                    then uses <strong>Confidence-Scored Loading</strong>: matching &le;2 keywords triggers a lightweight <em>partial-load</em> (headers only), while 3+ triggers a full load. Loaded and skipped groups
+                    then uses <strong>Confidence-Scored Loading</strong>: matching &le;2 keywords triggers a lightweight
+                    <em>partial-load</em> (headers only), while 3+ triggers a full load. Loaded and skipped groups
                     are reported back &mdash; silent skipping is not allowed.</p>
                 <div class="audience-grid">
                     <div class="metric-card">
@@ -896,7 +925,9 @@ artifacts/features/</code></pre>
                 <div class="subsystem-card">
                     <span class="subsystem-num">2</span>
                     <h4>State</h4>
-                    <p>Durable artifacts that capture what was decided, planned, and proven. Includes <strong>Decision Provenance Records</strong> in <code>progress.md</code> to strictly trace the "why" behind mid-flight deviations back to the plan.</p>
+                    <p>Durable artifacts that capture what was decided, planned, and proven. Includes <strong>Decision
+                            Provenance Records</strong> in <code>progress.md</code> to strictly trace the "why" behind
+                        mid-flight deviations back to the plan.</p>
                     <div class="solves">What it solves</div>
                     <p>Amnesia across sessions; lost context after compaction or restart.</p>
                     <div class="mechanisms"><strong>Mechanisms:</strong> <code>artifacts/features/&lt;slug&gt;/</code>,
@@ -1053,7 +1084,8 @@ artifacts/features/</code></pre>
                         <h4>Spec Problem</h4>
                         <p class="meaning">The requirements were ambiguous, contradictory, or missing &mdash; agent
                             implemented the wrong thing correctly.</p>
-                        <p class="fix"><strong>Fix:</strong> return to <code>/spec-requirements</code>, run another grilling
+                        <p class="fix"><strong>Fix:</strong> return to <code>/spec-requirements</code>, run another
+                            grilling
                             wave, lock open decisions.</p>
                     </div>
                 </div>
@@ -1069,7 +1101,8 @@ artifacts/features/</code></pre>
                 are
                 mechanical gates.</p>
             <div class="callout info diagram-serving-note">
-                <strong>Note:</strong> diagrams render live from <code>documents/diagrams/*.mmd</code>. If you cloned the
+                <strong>Note:</strong> diagrams render live from <code>documents/diagrams/*.mmd</code>. If you cloned
+                the
                 repo, serve it over HTTP &mdash; <code>python3 -m http.server</code> from the repo root, then open
                 <code>/document-publishing-page/document.html</code>. Opening the file directly via
                 <code>file://</code> blocks <code>fetch()</code> on local files and the diagrams will fail to load.
@@ -1199,7 +1232,10 @@ artifacts/features/</code></pre>
                         <div class="node required">
                             <span class="status-badge">Delivery</span>
                             <span class="node-title">/spec-requirements</span>
-                            <div class="node-desc">Define what and why. Mandates <strong>Intake Classification</strong> before grilling. Checks for domain specs. Uses the <strong>Grilling Phase</strong> (1-2 questions for Tiny, 3-5 for Standard, 5+ for Complex/Ultra) with batched questions paired with recommended answers. Locks requirements in <code>spec.md</code>.</div>
+                            <div class="node-desc">Define what and why. Mandates <strong>Intake Classification</strong>
+                                before grilling. Checks for domain specs. Uses the <strong>Grilling Phase</strong> (1-2
+                                questions for Tiny, 3-5 for Standard, 5+ for Complex/Ultra) with batched questions
+                                paired with recommended answers. Locks requirements in <code>spec.md</code>.</div>
                             <div class="artifacts-list">
                                 <span class="artifact-item" data-tooltip="Initial alignment proposal">proposal.md</span>
                                 <span class="artifact-item" data-tooltip="Source of Truth requirements">spec.md</span>
@@ -1257,7 +1293,9 @@ artifacts/features/</code></pre>
                         <div class="node required">
                             <span class="status-badge">Delivery</span>
                             <span class="node-title">/spec-implement</span>
-                            <div class="node-desc">Execute bounded tasks: run baseline proof command <strong>before</strong> editing files, record proof targets, match patterns, validate fresh. Unit tests are opt-in only.</div>
+                            <div class="node-desc">Execute bounded tasks: run baseline proof command
+                                <strong>before</strong> editing files, record proof targets, match patterns, validate
+                                fresh. Unit tests are opt-in only.</div>
                         </div>
                         <!-- <div class="loop-back"><span class="loop-text">DRIFT DETECTED</span></div> -->
                         <div class="arrow"></div>
@@ -1285,7 +1323,9 @@ artifacts/features/</code></pre>
                         <div class="node required">
                             <span class="status-badge">Continuity</span>
                             <span class="node-title">/context-session</span>
-                            <div class="node-desc">Start, checkpoint, and end sessions with durable continuity, explicit context assembly tiers, compaction triggers, stale-context eviction, and subagent delegation tracking.</div>
+                            <div class="node-desc">Start, checkpoint, and end sessions with durable continuity, explicit
+                                context assembly tiers, compaction triggers, stale-context eviction, and subagent
+                                delegation tracking.</div>
                             <div class="artifacts-list">
                                 <span class="artifact-item"
                                     data-tooltip="Linear session log and checkpoints">progress.md</span>
@@ -1587,11 +1627,13 @@ artifacts/features/</code></pre>
             </div>
             <div class="section-card">
                 <h3>Self-Improving Knowledge</h3>
-                <p class="node-desc">The knowledge base compounds as features ship. A passing <code>/harness-verify</code>
+                <p class="node-desc">The knowledge base compounds as features ship. A passing
+                    <code>/harness-verify</code>
                     verdict triggers a <strong>mandatory post-ship sync</strong>: every file in <code>INDEX.md</code> is
                     either
                     updated or named with a one-line reason it was untouched. The sweep distills lessons into
-                    <code>session-extracts.md</code> candidates, which <code>/context-memory</code> then promotes, defers,
+                    <code>session-extracts.md</code> candidates, which <code>/context-memory</code> then promotes,
+                    defers,
                     or
                     discards. Generic "no updates needed" fails the gate.
                 </p>
@@ -1616,7 +1658,8 @@ artifacts/features/</code></pre>
                     </div>
                 </div>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-self-improving-kb.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-self-improving-kb.mmd"
+                        role="img"
                         aria-label="Self-improving knowledge base loop: ship, sweep, triage, compound, with promotion thresholds.">
                         <div class="mermaid-loading">Rendering corezero-self-improving-kb…</div>
                     </div>
@@ -1641,14 +1684,16 @@ artifacts/features/</code></pre>
                     plan decisions without silent reinterpretation.
                 </p>
                 <ul>
-                    <li><strong>spec-requirements:</strong> Records product decisions, user-facing choices, and brownfield
+                    <li><strong>spec-requirements:</strong> Records product decisions, user-facing choices, and
+                        brownfield
                         preservation rules in <code>spec.md</code>.</li>
                     <li><strong>spec-plan:</strong> Treats locked spec decisions as approved inputs. Does not re-open
                         them silently.</li>
                     <li><strong>spec-implement:</strong> Enforces Decision Fidelity: follow locked decisions from
                         <code>spec.md</code> without silent reinterpretation.
                     </li>
-                    <li><strong>harness-verify:</strong> Checks for decision drift: when implementation changes a behavior
+                    <li><strong>harness-verify:</strong> Checks for decision drift: when implementation changes a
+                        behavior
                         spec had locked, it's a drift violation.</li>
                 </ul>
             </div>
@@ -1679,7 +1724,8 @@ artifacts/features/</code></pre>
                         </tr>
                         <tr>
                             <td><strong>Complex</strong></td>
-                            <td>Research (if needed) → Spec (Grilling Waves) → Plan (+ Design/ADR) → Full Verify (Traceability)</td>
+                            <td>Research (if needed) → Spec (Grilling Waves) → Plan (+ Design/ADR) → Full Verify
+                                (Traceability)</td>
                             <td>High-risk, cross-boundary, brownfield systems, or major architecture modifications.</td>
                         </tr>
                     </tbody>
@@ -1760,22 +1806,28 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><strong>New feature</strong></td>
                                 <td>Research → Spec → Plan → Implement → Verify</td>
-                                <td>Use the full path: <code>/spec-research</code> (optional discovery) → <code>/spec-requirements</code> → <code>/spec-plan</code> → <code>/spec-implement</code> → <code>/harness-verify</code>.</td>
+                                <td>Use the full path: <code>/spec-research</code> (optional discovery) →
+                                    <code>/spec-requirements</code> → <code>/spec-plan</code> →
+                                    <code>/spec-implement</code> → <code>/harness-verify</code>.</td>
                             </tr>
                             <tr>
                                 <td><strong>Brownfield feature</strong></td>
                                 <td>Research → Spec → Plan → Implement → Verify</td>
-                                <td>Start with discovery (<code>/spec-research</code>) to map legacy boundaries and prevent regressions.</td>
+                                <td>Start with discovery (<code>/spec-research</code>) to map legacy boundaries and
+                                    prevent regressions.</td>
                             </tr>
                             <tr>
                                 <td><strong>Bug fix</strong></td>
                                 <td>Research → Spec → Implement → Verify</td>
-                                <td>Use <code>/spec-research</code> to analyze/reproduce, <code>/spec-requirements</code> to lock acceptance criteria, then implement and verify.</td>
+                                <td>Use <code>/spec-research</code> to analyze/reproduce,
+                                    <code>/spec-requirements</code> to lock acceptance criteria, then implement and
+                                    verify.</td>
                             </tr>
                             <tr>
                                 <td><strong>Tiny change</strong></td>
                                 <td>Spec → Implement → Verify</td>
-                                <td>Use <code>/spec-requirements</code> (1-2 questions) → <code>/spec-implement</code> → <code>/harness-verify</code>. Keep it extremely lean.</td>
+                                <td>Use <code>/spec-requirements</code> (1-2 questions) → <code>/spec-implement</code> →
+                                    <code>/harness-verify</code>. Keep it extremely lean.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1874,7 +1926,8 @@ artifacts/features/</code></pre>
                         <tr>
                             <td><strong>Fail</strong></td>
                             <td>Failing mechanical gate, spec drift, security gaps, or missing proof.</td>
-                            <td>Reopen affected tasks; status &rarr; <code>Implementing</code> (or return to spec/planning).</td>
+                            <td>Reopen affected tasks; status &rarr; <code>Implementing</code> (or return to
+                                spec/planning).</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1916,7 +1969,7 @@ artifacts/features/</code></pre>
             <div class="section-card">
                 <h3>First Commands</h3>
                 <p>Install the kit into a target repository (idempotent &mdash; re-run to upgrade):</p>
-                <pre><code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+                <pre><code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your/project</code></pre>
                 <p>Installer output looks like this:</p>
                 <pre><code>CoreZero Nexus installer
@@ -2077,7 +2130,8 @@ Feature slug: my-first-feature</code></pre>
                             <tr>
                                 <td>Repo memory</td>
                                 <td>Observed codebase reality</td>
-                                <td>Promote corrected knowledge with <code>/context-memory</code>; do not let stale memory
+                                <td>Promote corrected knowledge with <code>/context-memory</code>; do not let stale
+                                    memory
                                     govern new work.</td>
                             </tr>
                         </tbody>
@@ -2438,7 +2492,8 @@ Feature slug: my-first-feature</code></pre>
                         directory layout. A typed registry would let one skill compose another at runtime instead of
                         sequencing them by convention.</li>
                     <li><strong>Spec quality scoring earlier in the loop.</strong> The 30-point rubric runs in the
-                        evaluator pass; pulling part of it into <code>/spec-requirements</code> itself would catch weak specs
+                        evaluator pass; pulling part of it into <code>/spec-requirements</code> itself would catch weak
+                        specs
                         before they enter planning.</li>
                     <li><strong>First-class subagent orchestration.</strong> Subagent fan-out works, but the
                         orchestration
@@ -2485,7 +2540,8 @@ Feature slug: my-first-feature</code></pre>
                         the kit itself degraded. <strong>Agent behavior regression</strong> &mdash; quality metrics
                         fell.
                         Each level routes to a different fix.</p>
-                    <div class="eval-ref">Reference: <code>skills/harness-maintain/references/regression-testing.md</code>
+                    <div class="eval-ref">Reference:
+                        <code>skills/harness-maintain/references/regression-testing.md</code>
                     </div>
                 </div>
                 <div class="eval-card">
@@ -2514,9 +2570,11 @@ Feature slug: my-first-feature</code></pre>
         <!-- Inside the Key Skills (lifecycle diagrams) -->
         <section id="key-skill-lifecycles">
             <h2>Inside the Key Skills</h2>
-            <p class="node-desc">Three skills carry most of the harness's load &mdash; <code>/spec-requirements</code> defines
+            <p class="node-desc">Three skills carry most of the harness's load &mdash; <code>/spec-requirements</code>
+                defines
                 what to build, <code>/context-status</code> tracks where every feature sits in the lifecycle, and
-                <code>/context-memory</code> decides what knowledge persists. Each has its own internal flow worth seeing
+                <code>/context-memory</code> decides what knowledge persists. Each has its own internal flow worth
+                seeing
                 in
                 full. Pan and zoom inside any diagram to inspect details.
             </p>
@@ -2538,7 +2596,8 @@ Feature slug: my-first-feature</code></pre>
 
             <div class="lifecycle-block">
                 <h3>Status State Machine &mdash; <code>/context-status</code></h3>
-                <p class="node-desc">Every feature slug moves through these states. Only <code>/harness-verify</code> can
+                <p class="node-desc">Every feature slug moves through these states. Only <code>/harness-verify</code>
+                    can
                     move a slug to <code>Done</code>; any failed gate routes it back to <code>Implementing</code> or
                     <code>Specifying</code> depending on the failure class.
                 </p>
@@ -2620,9 +2679,18 @@ Feature slug: my-first-feature</code></pre>
                 </div>
                 <div class="skill-card">
                     <h4>spec-requirements</h4>
-                    <p>Starts with the mandatory <strong>Intake Phase</strong> (classifying input type and risk flags to decide the execution lane directly in <code>status.md</code>), then resolves ambiguity via the <strong>Grilling Phase</strong> with batched clarifying questions (1-2 for Tiny, 3-5 for Standard, 5+ for Complex/Ultra) paired with recommended answers. Checks for domain specs first. Includes Complexity Triage and locks decisions directly in <code>spec.md</code>, including Gray-Area Decisions and the Verification Surface. <strong>System Spec Mode:</strong> for cross-cutting requests, outputs to <code>docs/system-specs/&lt;name&gt;.md</code>.</p>
-                    <p><strong>Grilling rules:</strong> send questions as batched list, pair every question with recommended answer, don't ask what codebase can answer (grep first), walk decision tree in dependency order.</p>
-                    <p><strong>References:</strong> intake reference, grilling waves, proposal template, spec template, requirements review, complexity classification, system spec template.</p>
+                    <p>Starts with the mandatory <strong>Intake Phase</strong> (classifying input type and risk flags to
+                        decide the execution lane directly in <code>status.md</code>), then resolves ambiguity via the
+                        <strong>Grilling Phase</strong> with batched clarifying questions (1-2 for Tiny, 3-5 for
+                        Standard, 5+ for Complex/Ultra) paired with recommended answers. Checks for domain specs first.
+                        Includes Complexity Triage and locks decisions directly in <code>spec.md</code>, including
+                        Gray-Area Decisions and the Verification Surface. <strong>System Spec Mode:</strong> for
+                        cross-cutting requests, outputs to <code>docs/system-specs/&lt;name&gt;.md</code>.</p>
+                    <p><strong>Grilling rules:</strong> send questions as batched list, pair every question with
+                        recommended answer, don't ask what codebase can answer (grep first), walk decision tree in
+                        dependency order.</p>
+                    <p><strong>References:</strong> intake reference, grilling waves, proposal template, spec template,
+                        requirements review, complexity classification, system spec template.</p>
                 </div>
                 <div class="skill-card">
                     <h4>visualize</h4>
@@ -2644,13 +2712,23 @@ Feature slug: my-first-feature</code></pre>
                 </div>
                 <div class="skill-card">
                     <h4>spec-implement</h4>
-                    <p>Executes bounded tasks task-by-task. Mandates the **Baseline Execution** rule: the implementer must execute the proving command in the shell *before* making any code edits. Enforces surgical focus, explicit proof targets, and Anti-AI Slop standards. Loads minimal context (spec, plan, selected task, touched callers/interfaces). <strong>TDD (Opt-In Only):</strong> unit tests are not mandatory unless requested. <strong>Caveman Mode:</strong> uses ultra-concise, token-efficient communication during technical turns. Refactor tasks load <code>module-design.md</code> for the deep-modules principle.</p>
-                    <p><strong>References:</strong> design standards, implementation standards, tasks template, proof-before-code workflow, module-design.</p>
+                    <p>Executes bounded tasks task-by-task. Mandates the **Baseline Execution** rule: the implementer
+                        must execute the proving command in the shell *before* making any code edits. Enforces surgical
+                        focus, explicit proof targets, and Anti-AI Slop standards. Loads minimal context (spec, plan,
+                        selected task, touched callers/interfaces). <strong>TDD (Opt-In Only):</strong> unit tests are
+                        not mandatory unless requested. <strong>Caveman Mode:</strong> uses ultra-concise,
+                        token-efficient communication during technical turns. Refactor tasks load
+                        <code>module-design.md</code> for the deep-modules principle.</p>
+                    <p><strong>References:</strong> design standards, implementation standards, tasks template,
+                        proof-before-code workflow, module-design.</p>
                 </div>
                 <div class="skill-card">
                     <h4>context-session</h4>
-                    <p>Packages session state for <strong>Zero Amnesia</strong> transitions with context tiers (entry, spec, work), compaction triggers (token budgets, staleness), next-step prompts, and subagent delegation tracking.</p>
-                    <p><strong>References:</strong> handoff template, progress log, context assembly, context condensation, validation state.</p>
+                    <p>Packages session state for <strong>Zero Amnesia</strong> transitions with context tiers (entry,
+                        spec, work), compaction triggers (token budgets, staleness), next-step prompts, and subagent
+                        delegation tracking.</p>
+                    <p><strong>References:</strong> handoff template, progress log, context assembly, context
+                        condensation, validation state.</p>
                 </div>
                 <div class="skill-card">
                     <h4>harness-verify</h4>
@@ -2810,7 +2888,8 @@ Feature slug: my-first-feature</code></pre>
                     <li>Ask research and planning phases to use subagents when the repo is large or the exploration
                         surface
                         is broad.</li>
-                    <li>Force <code>/spec-requirements</code> to ask clarifying questions before drafting requirements.</li>
+                    <li>Force <code>/spec-requirements</code> to ask clarifying questions before drafting requirements.
+                    </li>
                     <li>Use handoff aggressively when sessions grow long enough to reduce answer quality.</li>
                 </ul>
             </div>

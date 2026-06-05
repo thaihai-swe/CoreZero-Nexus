@@ -56,7 +56,7 @@ Ensure your system has the following tools installed:
 Pipe the installer script into `bash`, specifying the path to your target project:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your-project
 ```
 
