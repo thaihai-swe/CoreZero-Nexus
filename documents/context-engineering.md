@@ -14,7 +14,7 @@ flowchart TB
 
     T1["Tier 1 — Router<br/>AGENTS.md + INDEX.md"]:::t1
     T2["Tier 2 — Repo Memory (Always)<br/>constitution + security + harness-config"]:::t2
-    T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Architecture / Debug groups"]:::t3
+    T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Domain Packs / Debug groups"]:::t3
     T4["Tier 4 — Feature Artifacts<br/>status / spec / plan / tasks / handoff"]:::t4
     T5["Tier 5 — Raw Code<br/>only files for the immediate task (JIT)"]:::t5
     T6["Tier 6 — Transient Logs<br/>command output, traces (summarize + evict)"]:::t6
@@ -45,7 +45,7 @@ flowchart TB
 |------|---------|---------------|
 | 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
 | 2 | Always group: `constitution.md`, `harness-config.md`, `security-policy.md` | Always — every session |
-| 3 | By-Intent groups: Knowledge / Learned / Debug | Only when trigger keywords match the task |
+| 3 | By-Intent groups: Knowledge / Learned / Domain Packs / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
@@ -53,6 +53,7 @@ flowchart TB
 **Intent groups (Tier 3) — defined in `memories/repo/INDEX.md`:**
 - **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, domain-specs, `adr-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
+- **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domains/<name>/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `observability-log.md` and per-feature `session-extracts.md`)
 
 ## Assembly Rules
@@ -84,11 +85,13 @@ flowchart TD
 
     MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + domain-specs + architecture]
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
+    MATCH -->|domain glossary triggers| DOMAIN[Load Domain Pack<br/>glossary only or full pack]
     MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
     MATCH -->|no trigger matches| SKIP[Load Always tier only<br/>record 'no groups matched']
 
     KNOW --> FEAT[Load Feature artifacts<br/>spec / plan / tasks / handoff]
     LEARN --> FEAT
+    DOMAIN --> FEAT
     DEBUG --> FEAT
     SKIP --> FEAT
 
@@ -106,7 +109,7 @@ flowchart TD
 
     class START,WORK terminal
     class IDX,ALWAYS router
-    class KNOW,LEARN,DEBUG,SKIP,FEAT group
+    class KNOW,LEARN,DOMAIN,DEBUG,SKIP,FEAT group
     class MATCH decision
     class STALE,ALL fallback
 ```
@@ -203,3 +206,49 @@ flowchart TD
     class R1,R2,R3 report
     class DECIDE decision
 ```
+
+## Domain Packs
+
+Domain packs extend the memory router with project-specific semantic context. Each pack
+captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for
+a specific business or technical domain.
+
+### Where They Live
+
+```
+memories/domains/<name>/
+├── glossary.md       — ubiquitous language + trigger keywords
+├── patterns.md       — proven domain patterns
+├── anti-patterns.md  — failure modes to avoid
+└── boundary-rules.md — domain ownership and integration contracts
+```
+
+### How Loading Works
+
+Domain packs use confidence-scored loading (same principle as Tier 3 intent groups):
+- **3+ keyword matches** → full pack load (all 4 files)
+- **1–2 keyword matches** → partial load (glossary.md only)
+- **0 matches** → pack skipped
+
+Trigger keywords are declared in each pack's `glossary.md` frontmatter:
+```yaml
+domain: payments
+triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
+```
+
+### Authoring a Pack
+
+1. Create `memories/domains/<name>/` with the 4 required files.
+2. Declare triggers in `glossary.md` frontmatter.
+3. Register the pack in `memories/repo/INDEX.md` under `## By Domain Packs`.
+4. See `memories/domains/README.md` for the full schema.
+
+### Lifecycle
+
+Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content.
+During `/context-memory` Post-Ship Sync, promote durable patterns from
+`session-extracts.md` into the appropriate domain pack file.
+
+Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs.
+As of the current kit revision, they are produced by `/brownfield-init` but are not yet
+auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.

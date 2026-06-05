@@ -11,7 +11,8 @@ Adopters follow a canonical path when executing software changes. Start with the
 ### Canonical Workflow
 
 ```text
-starter-init
+brownfield-init (existing repos only)
+  ──> starter-init
   ──> spec-research (brownfield / unknown behavior)
   ──> spec-requirements
         ──> spec-plan
@@ -21,6 +22,7 @@ starter-init
 ```
 
 ### Contextual Commands (Invoke as needed)
+- `/brownfield-init`: Before `/starter-init` on established repositories with existing code, tests, or CI.
 - `/spec-research`: Prior to specifying requirements for brownfield or complex changes.
 - `/context-memory`: To promote, amend, or synthesize repo-wide memory.
 - `/context-status`: For multi-feature orchestration reports.
@@ -31,11 +33,13 @@ starter-init
 
 ## 2. Skill Grouping & Architecture
 
-The 16 skills (11 core delivery + 5 specialist tools) cluster into three groups: Orchestration + Context, Delivery Pipeline, and Specialist Tools.
+The 17 skills (12 core delivery + 5 specialist tools) cluster into three groups: Bootstrap + Context, Delivery Pipeline, and Specialist Tools.
 
 ```mermaid
 flowchart TB
-    subgraph OC["Orchestration + Context"]
+    subgraph OC["Bootstrap + Context"]
+        BROWN["brownfield-init"]
+        START["starter-init"]
         STATUS["context-status"]
         MEMORY["context-memory"]
         RESEARCH["spec-research"]
@@ -58,6 +62,8 @@ flowchart TB
         CODE["codebase-documenter"]
     end
 
+    BROWN --> START
+    START --> STATUS
     STATUS --> MEMORY
     MEMORY --> RESEARCH
     RESEARCH --> SPEC
@@ -76,7 +82,7 @@ flowchart TB
     classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     classDef internal fill:#ffffff,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px,stroke-dasharray:4 2;
-    class MEMORY,SPEC,PLAN primary;
+    class BROWN,START,MEMORY,SPEC,PLAN primary;
     class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,API,SYS,CODE neutral;
     class CR internal;
 ```
@@ -86,6 +92,12 @@ flowchart TB
 ## 3. Command Taxonomy Reference
 
 ### Project Starter Pack
+
+#### `/brownfield-init`
+Runs the brownfield archaeology pass before bootstrap on existing repositories.
+- Produces `memories/repo/brownfield/` artifacts such as the brownfield map and dependency graph.
+- Seeds file-backed heuristics for risky or high-blast-radius areas.
+- Should be run before `/starter-init` when the repo already has meaningful code or history.
 
 #### `/starter-init`
 Bootstraps a repository for agent-assisted delivery.
@@ -159,6 +171,7 @@ The public command taxonomy is implemented via underlying skill files. Commands 
 | Command | Mode | Skill File |
 |---------|------|------------|
 | `/starter-init` | Public | [`skills/starter-init/SKILL.md`](../kit/skills/starter-init/SKILL.md) |
+| `/brownfield-init` | Public | [`skills/brownfield-init/SKILL.md`](../kit/skills/brownfield-init/SKILL.md) |
 | `/context-session` | Public | [`skills/context-session/SKILL.md`](../kit/skills/context-session/SKILL.md) |
 | `/context-memory` | Public | [`skills/context-memory/SKILL.md`](../kit/skills/context-memory/SKILL.md) |
 | `/context-status` | Public | [`skills/context-status/SKILL.md`](../kit/skills/context-status/SKILL.md) |

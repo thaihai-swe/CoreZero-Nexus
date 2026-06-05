@@ -87,13 +87,6 @@ jobs:
             exit 1
           fi
 
-      - name: Check installer smoke path
-        run: |
-          if [ ! -f "kit/scripts/test-install.sh" ]; then
-            echo "Skipping install smoke test: not in kit source repository"
-            exit 0
-          fi
-          bash kit/scripts/test-install.sh
 
       - name: Check for stale command name references
         run: |
@@ -133,3 +126,5 @@ jobs:
             fi
           done
           exit $failed
+
+

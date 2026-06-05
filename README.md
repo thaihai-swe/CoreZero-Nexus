@@ -43,7 +43,7 @@ The installed surface comes from `kit/` and includes:
 - `kit/memories/repo/*`
 - `kit/skills/**`
 - `kit/rules/*.md`
-- `kit/scripts/install.sh`, `kit/scripts/doctor.sh`, `kit/scripts/check-surface-truth.py`, and `kit/scripts/test-install.sh`
+- `kit/scripts/install.sh`, `kit/scripts/doctor.sh`, and `kit/scripts/check-surface-truth.py`
 - `kit/.github/workflows/harness-check.yml`
 
 Maintainer documentation under `documents/` stays in this source repository and is not part of the default installed package.

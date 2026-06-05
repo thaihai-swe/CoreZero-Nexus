@@ -12,6 +12,8 @@ compatibility: Designed for all Agent Skills-compatible tools.
 
 # CoreZero Nexus Visualize
 
+## Overview
+
 Generate production-quality technical diagrams from natural language.
 This is a specialist helper skill for plans, specs, and docs when a visual artifact genuinely improves clarity; it is not part of the default delivery loop.
 Supported outputs in this repo: **SVG** (polished, deterministic) and **Mermaid** (editable text diagrams).
@@ -221,3 +223,13 @@ python3 ./skills/visualize/scripts/validate_mermaid.py path/to/diagram.mmd
 
 - Ask for clarification when the description is too vague to resolve into nodes and edges.
 - Do not generate a one-box diagram with no relationships.
+
+## Rationalization vs. Reality
+
+| Rationalization | Reality |
+|---|---|
+| "I can make a diagram without reading the code." | Diagrams must map to actual code structures and variables. |
+
+## Red Flags
+
+- Diagrams that have generic, non-semantic shapes for every element.

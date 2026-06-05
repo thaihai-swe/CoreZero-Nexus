@@ -1,50 +1,69 @@
 # Observability Log
 
-Auto-tier memory. Append-only record of harness, model, and spec failures observed during agent execution. 
+Auto-tier memory. Structured failure ledger for harness, model, and spec failures observed during agent execution.
+
+## Trend Summary
+
+> Updated by `harness-maintain` Improve Mode after each triage run.
+
+| Classification | Last 10 entries | Open | Promoted | Retired |
+|---|---|---|---|---|
+| harness | 0 | 0 | 0 | 0 |
+| model | 0 | 0 | 0 | 0 |
+| spec | 0 | 0 | 0 | 0 |
+
+**Promotion queue** (entries where `promotion_candidate: true` and status is `open`):
+- _none_
 
 ## The Harness Governance (GC) Loop
 
 This file acts as the repository's failure ledger, enabling continuous self-repair via a 3-step loop:
-1. **Log (Identify)**: When a feature verification fails, or an agent experiences severe friction, the failure is logged here (classified as a Harness, Model, or Spec problem).
+1. **Log (Identify)**: When a feature verification fails, or an agent experiences severe friction, the failure is logged here as a structured YAML entry.
 2. **Maintain (Repair)**: `/harness-maintain improve` is run to apply a proposed durable fix to a harness subsystem or rules.
-3. **Promote (Refine)**: `/context-memory` Post-Ship Sync is run to triage open entries. The lessons are promoted to instruction-tier files (`constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`) and the entry status is updated.
+3. **Promote (Refine)**: `/context-memory` Post-Ship Sync triages open entries. Lessons promoted to instruction-tier files (`constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`); entry status updated to `promoted`.
 
 ## How To Use This File
 
 - One entry per discrete failure or near-miss. Do not batch unrelated observations.
-- Classify every entry as **Harness**, **Model**, or **Spec** problem before writing the fix proposal.
-- Keep entries terse. Link to the source artifact (review, session log, or commit) instead of re-narrating it.
-- Mark each entry's status: `open`, `promoted`, or `retired`. `context-memory` updates this field during triage.
+- Append entries in `OBS-NNN` order (OBS-001, OBS-002, …). Newest at the bottom.
+- Every entry is a fenced `yaml` block — machine-parseable, human-readable.
+- `harness-maintain` updates `## Trend Summary` after each Improve Mode run.
 - Do not use this file for feature-local notes. Those belong in `artifacts/features/<slug>/`.
 
-## Entry Template
+## Entry Schema
 
+Required fields for every entry:
+
+```yaml
+- id: OBS-NNN
+  date: YYYY-MM-DD
+  classification: harness | model | spec
+  severity: low | medium | high | critical
+  skill: <skill-name-that-was-active>
+  description: "One sentence: what went wrong."
+  root_cause: "One sentence: why it happened."
+  fix_applied: "What was changed to prevent recurrence. 'none yet' if open."
+  recurrence_risk: low | medium | high
+  promotion_candidate: true | false
+  status: open | promoted | retired
 ```
-### OBS-<NNN> — <one-line summary>
 
-- Date: YYYY-MM-DD
-- Source: <path/to/review.md, handoff.md, or commit hash>
-- Class: Harness | Model | Spec
-- Status: open | promoted | retired
-- Promotion target: <constitution.md | security-policy.md | learned-heuristics.md | project-knowledge-base.md | none>
+**Classification guide:**
+- `harness` — The environment allowed or encouraged the mistake (missing gate, bad template, weak rule)
+- `model` — The environment was adequate but execution was poor (agent ignored a clear rule)
+- `spec` — The artifact contract was underspecified or contradictory
 
-**What happened**
-<2-4 sentences describing the failure mode. Cite evidence.>
-
-**Why it matters**
-<Why this would recur without a durable fix.>
-
-**Proposed durable fix**
-<Concrete change to a memory file, skill, gate, or rule. Not a session note.>
-
-**Triage notes**
-<context-memory's promotion decision and rationale, if processed.>
-```
+**Severity guide:**
+- `low` — Minor friction, no incorrect output
+- `medium` — Incorrect output caught by verification gate
+- `high` — Incorrect output reached a review artifact; required rework
+- `critical` — Incorrect output reached production or caused data loss
 
 ## Entries
 
-<!-- Append new entries below in OBS-001, OBS-002, ... order. Newest at the bottom. -->
+<!-- Append new entries below in OBS-001, OBS-002, ... order. -->
 
 ## Retired Entries
 
-<!-- When an entry has been promoted into instruction memory and the lesson is durable, move it here with a one-line summary and the destination file. -->
+<!-- When an entry has been promoted into instruction memory and the lesson is durable,
+     move it here with status: retired and a one-line note of the destination file. -->

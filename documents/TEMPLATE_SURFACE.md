@@ -35,6 +35,13 @@ When installed into an empty project directory, the folder structure looks like 
 │   ├── TECH_DEBT_REGISTER.md         # Tech debt tracking template
 │   └── TECH_STACK_REFERENCE.md       # LLM-friendly dependencies and tool reference
 ├── memories/
+│   ├── domains/
+│   │   ├── README.md                 # Domain-pack schema and trigger rules
+│   │   └── example/
+│   │       ├── anti-patterns.md
+│   │       ├── boundary-rules.md
+│   │       ├── glossary.md
+│   │       └── patterns.md
 │   └── repo/
 │       ├── adr-log.md                # Index registry of Architecture Decision Records (ADRs)
 │       ├── constitution.md           # Repository normative rules and agent guidelines
@@ -42,7 +49,7 @@ When installed into an empty project directory, the folder structure looks like 
 │       ├── harness-config.md         # Commands, paths, and adaptive rigor settings
 │       ├── INDEX.md                  # Always-loaded memory router and phase matrix
 │       ├── learned-heuristics.md     # Evidence-backed developer/agent instincts
-│       ├── observability-log.md      # Auto-tier failure log for capturing harness regressions
+│       ├── observability-log.md      # Auto-tier YAML failure log + trend summary
 │       ├── project-knowledge-base.md # Durable patterns, boundaries, and reusable knowledge
 │       └── security-policy.md        # Trust boundaries, permissions, and sandbox policies
 ├── rules/
@@ -54,12 +61,12 @@ When installed into an empty project directory, the folder structure looks like 
 │   ├── generate-dashboard.py         # Dashboard generator script
 │   ├── install.sh                    # Idempotent manifest-driven installer script
 │   ├── parse-observability.py        # Observability log parser script
-│   └── test-install.sh               # Installer smoke test helper
 ├── skills/
 │   ├── _shared/                      # Shared rigor profiles, status definitions, diagrams
 │   ├── api-endpoint-docs/            # HTTP API reference generation skill
 │   ├── code-review/                  # Google-standard code review skill
 │   ├── codebase-documenter/          # Onboarding README generation skill
+│   ├── brownfield-init/              # Brownfield archaeology and dependency mapping skill
 │   ├── context-memory/               # Memory triage, post-ship sync, and router skill
 │   ├── context-session/              # Session START, CHECKPOINT, and END lifecycle skill
 │   ├── context-status/               # Multi-feature project-wide reporting skill
@@ -84,16 +91,19 @@ When installed into an empty project directory, the folder structure looks like 
 Files copied during installation belong to one of three categories defined in `manifest.json`:
 
 ### 1. Kit-Managed Content (`overwrite`)
-*Folders/Files:* `skills/**`, `rules/*.md`, `scripts/*.sh`, `scripts/*.py`, `docs/{README,ADOPTION_GUIDE,INSTALL,code-design}.md`, `docs/system-specs/README.md`, `.github/workflows/harness-check.yml`
+*Folders/Files:* `skills/**`, `rules/*.md`, `scripts/*.sh`, `scripts/*.py`, `scripts/evals/**`, `docs/{README,ADOPTION_GUIDE,INSTALL,code-design}.md`, `docs/system-specs/README.md`, `.github/workflows/harness-check.yml`
 *Posture:* Overwritten on install. These are core kit tools and guides that update automatically when upgrading the CoreZero Nexus.
 
 ### 2. Seeding Content (`copyIfMissing`)
-*Folders/Files:* `AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/INDEX.md`, `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/harness-config.md`, `memories/repo/domain-specs.md`, `memories/repo/observability-log.md`, `memories/repo/adr-log.md`, `docs/architecture.md`, `docs/{PRODUCT_SENSE,PROJECT_CONSTRAINTS,GLOSSARY,GOVERNANCE,RELIABILITY_POLICY,QUALITY_POLICY,TECH_DEBT_REGISTER,TECH_STACK_REFERENCE}.md`, `docs/generated/*`
+*Folders/Files:* `AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/INDEX.md`, `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/harness-config.md`, `memories/repo/domain-specs.md`, `memories/repo/observability-log.md`, `memories/repo/adr-log.md`, `memories/domains/README.md`, `memories/domains/example/*`, `docs/architecture.md`, `docs/{PRODUCT_SENSE,PROJECT_CONSTRAINTS,GLOSSARY,GOVERNANCE,RELIABILITY_POLICY,QUALITY_POLICY,TECH_DEBT_REGISTER,TECH_STACK_REFERENCE}.md`, `docs/generated/*`
 *Posture:* Copied only if they do not already exist in the target project. If they exist, they are preserved so you can customize them for your specific project.
 
 ### 3. User Content & Workspaces (`preserve`)
 *Folders/Files:* `memories/repo/` content, `artifacts/` features state, `.corezero-version`
 *Posture:* Never modified or deleted by the installer. These files contain your active feature branches, development artifacts, and custom configuration settings.
+
+Files under `memories/repo/brownfield/` are not seeded by install. They are created later by
+`/brownfield-init` when a repository needs the archaeology pass.
 
 ---
 

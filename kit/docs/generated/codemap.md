@@ -11,7 +11,7 @@
 | `docs/` | Installed operating docs | Includes `README.md`, `ADOPTION_GUIDE.md`, `INSTALL.md`, policy docs, generated refs, and `architecture.md` |
 | `memories/repo/` | Durable rules, commands, and knowledge | `INDEX.md` routes memory loading |
 | `skills/` | Canonical workflow contracts | Public commands map to these skill folders |
-| `scripts/` | Install, repair, and validation helpers | Includes `install.sh`, `doctor.sh`, `check-surface-truth.py`, `test-install.sh` |
+| `scripts/` | Install, repair, and validation helpers | Includes `install.sh`, `doctor.sh`, `check-surface-truth.py` |
 | `.github/workflows/` | Consistency automation | `harness-check.yml` |
 
 ## Key Entrypoints

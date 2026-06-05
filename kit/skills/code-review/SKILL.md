@@ -52,7 +52,7 @@ Favor approving any CL that improves overall code health, even if imperfect.
 - Optimize for team velocity: respond within 1 business day.
 - Approve with comments (LGTM with comments) for minor or optional items.
 
-## Navigating the Review
+## Workflow
 
 1. **Broad View**: Check if the change makes sense overall. If not, reject immediately.
 2. **Main Parts**: Inspect core files first. Provide design feedback immediately.

@@ -46,8 +46,30 @@ Produce Markdown documentation detailing HTTP API endpoints: method, path, reque
 - **Primary**: Sequence diagram mapping Client → Gateway → Middleware → Handler → Service → DB.
 - Use readable labels; include code identifiers only for developer mapping.
 
-## Output Rules & conventions
+## Output Rules
 
 - Follow formatting guidelines in `../_shared/doc-conventions.md`.
 - Group endpoints logically (by resource/feature, not source path).
 - Do not invent hypothetical endpoints; document only what exists in source code.
+
+## Stop Conditions
+
+- Route files, handlers, schemas, or OpenAPI definitions are missing or unreadable.
+
+## Core Rules
+
+- Ground all facts in code. Do not speculate or invent endpoints.
+
+## Rationalization vs. Reality
+
+| Rationalization | Reality |
+|---|---|
+| "I can document endpoints from memory/docs." | Endpoint details must match active codebase handlers exactly. |
+
+## Red Flags
+
+- Inventing hypothetical endpoints or paths that do not exist in the source code.
+
+## Verification
+
+- [ ] Check every documented endpoint against the router/handler files on disk.

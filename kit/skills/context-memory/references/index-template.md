@@ -33,6 +33,22 @@ Trigger keywords: `heuristic`, `instinct`, `recurring`, `lesson`, `we always`, `
 
 - `learned-heuristics.md` — evidence-backed instincts that improve future execution.
 
+## By Domain Packs
+
+Domain packs live in `memories/domains/<name>/`. Each pack declares its trigger keywords
+in `glossary.md` frontmatter.
+
+- **High confidence (3+ keyword matches):** Load all 4 files from the matching pack:
+  `glossary.md`, `patterns.md`, `anti-patterns.md`, `boundary-rules.md`.
+- **Low confidence (1–2 keyword matches):** Partial load — load `glossary.md` only.
+- **No match:** Skip all domain packs.
+- **No packs installed:** Skip this section entirely.
+
+Check `memories/domains/` for installed packs. List each pack and its trigger keywords here
+once installed:
+
+- _no domain packs installed_
+
 ## By Debug (load on debug, retro, or failure)
 
 Trigger keywords: `debug`, `failure`, `regression`, `incident`, `retro`, `flaky`, `why did`, `root cause`.

@@ -46,10 +46,12 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 3. Create `codemap.md` and `references-index.md` for non-trivial repositories.
 
 ### Improve Mode
-1. Run `python3 scripts/parse-observability.py` to identify and triage open failure entries in `observability-log.md`.
-2. Classify: **Harness** (environment caused error), **Model** (poor execution), or **Spec** (contradictory contract).
-3. Generate prioritized remediation tasks based on the parser's recommended actions.
-4. If harness issue, design fix for one subsystem. Record in `observability-log.md` and `learned-heuristics.md`. Route rule changes to `/context-memory`.
+1. Read `observability-log.md`. Identify all entries with `status: open`.
+2. For each open entry, confirm its `classification` (harness / model / spec) matches the described failure — correct if mis-classified.
+3. Generate prioritized remediation tasks ordered by `severity` then `recurrence_risk`.
+4. For harness issues: design and apply a fix to the owning subsystem file (skill, template, gate, or rule). Record `fix_applied` in the entry and set `status: promoted` or `status: open` depending on whether the fix is complete.
+5. If `promotion_candidate: true`: route to `/context-memory` Post-Ship Sync for instruction-tier promotion.
+6. Update `## Trend Summary` in `observability-log.md`: recount entries by classification and status for the last 10 entries. Update the promotion queue list.
 
 ### Eval Mode
 1. Run evaluations per `references/eval-modes.md` (Mechanical, Alignment, Adversarial/Security, Continuity).
@@ -86,6 +88,8 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 - Security-sensitive flows lack documented permission structures.
 - Observability logs are written but never triaged.
 - Installed docs or generated references point at files that do not exist.
+- Observability log entries use free-form prose instead of the required YAML schema.
+- `## Trend Summary` has never been updated (all zeros after real failures have been logged).
 
 ## Verification
 

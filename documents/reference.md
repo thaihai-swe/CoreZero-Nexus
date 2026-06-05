@@ -4,22 +4,27 @@ This reference catalog details the public commands, feature artifact schemas, re
 
 ---
 
-## 1. Public Command Lookup
+## 1. Command Reference Table
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/starter-init` | Bootstrap repository | First session, after major structural changes |
-| `/context-session` | Begin, checkpoint, or end a working session for an existing feature slug | After `status.md` exists |
-| `/context-memory` | Manage durable knowledge and routing | When findings deserve promotion |
-| `/context-status` | Report on active features | Multi-feature visibility |
-| `/spec-research` | Investigate existing behavior | Before changing brownfield behavior |
-| `/spec-requirements` | Define requirements | New feature or change request |
-| `/visualize` | Generate diagrams | Architecture, flow, sequence needs |
-| `/spec-adr` | Record architecture decision | Technology choices, design tradeoffs |
-| `/spec-plan` | Design and task breakdown | After the spec is approved |
-| `/spec-implement` | Execute tasks | After the plan is approved |
-| `/harness-verify` | Verify implementation | After build work completes |
-| `/harness-maintain` | Assess or improve the harness | After failures or for evaluation |
+| Command | Subsystem | Customer Value / Purpose | Key Artifacts |
+|---|---|---|---|
+| `/brownfield-init` | Project Starter | Sweeps legacy code to locate risks before changing it | `brownfield-map.md`, `dependency-graph.md` |
+| `/starter-init` | Project Starter | Configures linter, build, and test verification baselines | `harness-config.md`, `HARNESS_CARD.md` |
+| `/context-session` | Context | Minimizes token costs and prevents LLM context fatigue | `handoff.md`, `session-extracts.md` |
+| `/context-status` | Context | Monitors feature progression and flags implementation blockers | `progress.md` |
+| `/context-memory` | Context | Updates shared conventions so the agent gets smarter over time | `constitution.md`, `learned-heuristics.md` |
+| `/spec-research` | SDD | Investigates codebase boundaries before specifying requirements | `analysis.md` |
+| `/spec-requirements`| SDD | Locks down Socratic specifications and acceptance criteria | `spec.md`, `proposal.md` |
+| `/spec-adr` | SDD | Documents structural decisions and alternatives formally | `adr-NNN.md`, `adr-log.md` |
+| `/spec-plan` | SDD | Maps designs to micro-tasks with dedicated proof commands | `plan.md`, `tasks.md` |
+| `/spec-implement` | SDD | Implements code surgically task-by-task with pre-change proofs | Touches target source files |
+| `/harness-verify` | Harness | Performs mechanical build gates and spec alignment audits | `review.md`, `testing-scenarios.md` |
+| `/harness-maintain` | Harness | Evaluates and improves harness rules based on logged errors | `observability-log.md` |
+| `/code-review` | Specialist | Audits code health against Google's Engineering Practices | Integrated reviews in `review.md` |
+| `/visualize` | Specialist | Generates visual SVG/Mermaid flowcharts and class diagrams | `.svg`, `.mermaid` |
+| `/codebase-documenter`| Specialist | Compiles complete technical onboarding guides for new teams | `README.md`, `CONTRIBUTING.md` |
+| `/system-flow-docs` | Specialist | Explains multi-component interactions and workflow paths | Workflow documentation logs |
+| `/api-endpoint-docs` | Specialist | Generates exact, machine-readable HTTP contract specs | API contract documentation |
 
 ---
 

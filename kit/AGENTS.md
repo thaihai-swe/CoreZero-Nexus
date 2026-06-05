@@ -20,6 +20,7 @@ Read this file first. Use it as a router, not a full handbook.
 
 ## Core Workflow
 
+- `/brownfield-init` for brownfield/legacy repos — run before starter-init on repos with existing code
 - `/starter-init` for bootstrap
 - `/spec-research` for brownfield discovery
 - `/spec-requirements` -> `/spec-plan` -> `/spec-implement` for feature delivery

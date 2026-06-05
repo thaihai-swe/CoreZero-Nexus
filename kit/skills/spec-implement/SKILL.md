@@ -57,7 +57,7 @@ Use this skill to perform the coding work. Follow `tasks.md`, execute one approv
 - **No Swallowing Errors**: Follow backend/frontend coding policies.
 - **Stop at Scope Breaks**: If a requirement is missing or contradictory, return to `/spec-plan` rather than work-around coding.
 
-## Common Rationalizations
+## Rationalization vs. Reality
 
 | Rationalization | Reality |
 |---|---|
