@@ -1,0 +1,37 @@
+flowchart LR
+    %% Adaptive Rigor — ceremony scales with risk
+
+    REQ([Feature Request]) --> CLASSIFY{Triage<br/>Tiny / Standard / Complex}
+
+    CLASSIFY -->|reversible<br/>narrow surface| TINY[Tiny<br/>1-2 hours]
+    CLASSIFY -->|standard slice| STD[Standard<br/>4-8 hours]
+    CLASSIFY -->|cross-boundary<br/>ambiguity / brownfield risk| CMPX[Complex<br/>1+ days]
+    CLASSIFY -->|repo-wide policy<br/>harness change| CMPX_X[Complex + System Spec Mode<br/>cross-cutting work]
+
+    TINY --> T_SPEC[Spec: 1-2 questions]
+    TINY --> T_PLAN[Plan: lean, inline tasks]
+    TINY --> T_VER[Verify: gate + alignment]
+
+    STD --> S_SPEC[Spec: 3-5 questions]
+    STD --> S_PLAN[Plan: full + tasks]
+    STD --> S_VER[Verify: + security lens]
+
+    CMPX --> C_SPEC[Spec: 5+ questions<br/>all decisions locked]
+    CMPX --> C_PLAN[Plan: + design.md<br/>+ subagent stress-test]
+    CMPX --> C_VER[Verify: + traceability<br/>+ scenarios]
+
+    CMPX_X --> U_SPEC[System Spec Mode<br/>+ adversarial pass]
+    CMPX_X --> U_PLAN[Plan: + adversarial review<br/>+ phased rollout]
+    CMPX_X --> U_VER[Verify: + harness-maintain Eval Mode]
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef tiny fill:#10b981,stroke:#047857,color:#fff
+    classDef std fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef cmpx fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef cmpxx fill:#dc2626,stroke:#991b1b,color:#fff
+
+    class REQ terminal
+    class TINY,T_SPEC,T_PLAN,T_VER tiny
+    class STD,S_SPEC,S_PLAN,S_VER std
+    class CMPX,C_SPEC,C_PLAN,C_VER cmpx
+    class CMPX_X,U_SPEC,U_PLAN,U_VER cmpxx

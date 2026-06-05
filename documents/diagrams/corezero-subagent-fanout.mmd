@@ -1,0 +1,38 @@
+flowchart TD
+    %% Subagent-Driven Development (SDD) — broad work delegated, only summaries return
+
+    MAIN[Main Agent Loop<br/>lean context window]
+
+    MAIN --> DECIDE{Broad / parallel work?<br/>multi-file search, research,<br/>stress-test, repetitive edits}
+    DECIDE -- No --> INLINE[Handle inline<br/>in main context]
+    DECIDE -- Yes --> SPAWN[Spawn subagents]
+
+    SPAWN --> SA1[Subagent A<br/>isolated context]
+    SPAWN --> SA2[Subagent B<br/>isolated context]
+    SPAWN --> SA3[Subagent C<br/>isolated context]
+
+    SA1 -->|raw exploration<br/>stays isolated| R1[Summary Report A]
+    SA2 -->|raw exploration<br/>stays isolated| R2[Summary Report B]
+    SA3 -->|raw exploration<br/>stays isolated| R3[Summary Report C]
+
+    R1 --> MERGE[Merge ONLY summaries<br/>into main context]
+    R2 --> MERGE
+    R3 --> MERGE
+
+    MERGE --> STATUS[Each subagent ends with:<br/>DONE / DONE_WITH_CONCERNS<br/>/ BLOCKED / NEEDS_CONTEXT]
+    STATUS --> MAIN
+
+    INLINE --> MAIN
+
+    NOTE["Raw tool output never floods main loop.<br/>Main context stays lean and fast.<br/>BLOCKED / NEEDS_CONTEXT are never ignored."]:::note
+
+    classDef main fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef sub fill:#8b5cf6,stroke:#6d28d9,color:#fff
+    classDef report fill:#a78bfa,stroke:#7c3aed,color:#fff
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
+    classDef note fill:#f7f7f5,stroke:#e0e0e0,color:#111
+
+    class MAIN,MERGE,STATUS main
+    class SA1,SA2,SA3 sub
+    class R1,R2,R3 report
+    class DECIDE decision

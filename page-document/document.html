@@ -1,0 +1,3265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreZero Nexus — Spec-Anchored AI Software Delivery · Thai Hai</title>
+    <meta name="description"
+        content="An engineering harness for AI coding agents. Locks specs before code, plans every task, verifies every claim, and keeps memory durable across sessions — turning chat-driven drift into reproducible, evidence-backed delivery.">
+    <meta name="author" content="Thai Hai">
+    <meta name="theme-color" content="#635BFF">
+
+    <!-- Open Graph / LinkedIn / Slack / Discord -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CoreZero Nexus — Spec-Anchored AI Software Delivery">
+    <meta property="og:description"
+        content="An engineering harness for AI coding agents. Locks specs before code, plans every task, verifies every claim, and keeps memory durable across sessions.">
+    <meta property="og:url" content="https://github.com/thaihai-swe/AI-agents-dev-kits">
+    <meta property="og:site_name" content="CoreZero Nexus">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CoreZero Nexus — Spec-Anchored AI Software Delivery">
+    <meta name="twitter:description"
+        content="An engineering harness for AI coding agents. 16 skills, durable memory, mechanical verification gates, full traceability.">
+
+    <link rel="stylesheet" href="common.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- External Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        // FOUC guard: apply theme before first paint. Mirrors the THEME_KEY in common.js.
+        (function () {
+            var stored = localStorage.getItem('theme');
+            var theme = (stored === 'dark' || stored === 'light')
+                ? stored
+                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <noscript>
+        <div class="js-warning">
+            <strong>Diagrams need JavaScript.</strong> The kit itself doesn't &mdash; this page renders 12 mermaid
+            diagrams from <code>documents/diagrams/</code> at runtime. Enable JS to see them, or browse the source on
+            <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" rel="noopener">GitHub</a>.
+        </div>
+    </noscript>
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <header class="main-header">
+        <nav class="main-nav container" aria-label="Primary">
+            <a href="#start-here" class="nav-brand" aria-label="CoreZero Nexus home">
+                <span class="nav-brand-mark">HK</span>
+                <span class="nav-brand-text">CoreZero Nexus</span>
+            </a>
+
+            <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"
+                aria-label="Toggle navigation menu">
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+            </button>
+
+            <ul id="primary-nav" class="nav-list">
+                <li class="nav-group has-dropdown">
+                    <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false">Overview
+                        <span class="caret" aria-hidden="true">▾</span></button>
+                    <ul class="nav-dropdown">
+                        <li><a href="#start-here">Start Here</a></li>
+                        <li><a href="#proposal-summary">Proposal Summary</a></li>
+                        <li><a href="#vision">Vision</a></li>
+                        <li><a href="#purpose">Purpose &amp; Value</a></li>
+                        <li><a href="#non-negotiables">Non-negotiables</a></li>
+                    </ul>
+                </li>
+                <li class="nav-group has-dropdown">
+                    <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false">Architecture
+                        <span class="caret" aria-hidden="true">▾</span></button>
+                    <ul class="nav-dropdown">
+                        <li><a href="#architecture">System Architecture</a></li>
+                        <li><a href="#harness-subsystems">Harness Subsystems</a></li>
+                        <li><a href="#context-engineering">Context Engineering</a></li>
+                    </ul>
+                </li>
+                <li class="nav-group has-dropdown">
+                    <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false">Workflow
+                        <span class="caret" aria-hidden="true">▾</span></button>
+                    <ul class="nav-dropdown">
+                        <li><a href="#workflow">Full Flow</a></li>
+                        <li><a href="#profiles">Delivery Profiles</a></li>
+                        <li><a href="#verify-gate">Verify Gate</a></li>
+                        <li><a href="#operating-manual">Playbooks</a></li>
+                    </ul>
+                </li>
+                <li class="nav-group has-dropdown">
+                    <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false">Proof &amp;
+                        Quality <span class="caret" aria-hidden="true">▾</span></button>
+                    <ul class="nav-dropdown">
+                        <li><a href="#proof-of-workflow">Proof of Workflow</a></li>
+                        <li><a href="#limitations">Limitations &amp; Next</a></li>
+                        <li><a href="#evaluation">Evaluation</a></li>
+                    </ul>
+                </li>
+                <li class="nav-group has-dropdown">
+                    <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false">Skills &amp;
+                        Reference <span class="caret" aria-hidden="true">▾</span></button>
+                    <ul class="nav-dropdown">
+                        <li><a href="#key-skill-lifecycles">Inside the Key Skills</a></li>
+                        <li><a href="#skills-catalog">Skill Catalog</a></li>
+                        <li><a href="#standard-templates">Templates</a></li>
+                        <li><a href="#adapters-catalog">Entrypoints</a></li>
+                        <li><a href="#maintenance-catalog">Maintenance</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </li>
+                <li class="nav-divider" aria-hidden="true"></li>
+                <li>
+                    <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" target="_blank" rel="noopener"
+                        class="nav-link nav-cta">GitHub ↗</a>
+                </li>
+                <li>
+                    <button id="theme-toggle" class="btn btn-ghost nav-theme-toggle" type="button"
+                        aria-label="Toggle theme">
+                        <span class="theme-icon" aria-hidden="true">🌓</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main" class="container">
+        <div class="hero">
+            <span class="eyebrow-mono accent">v0.2.0 · Spec-Anchored Delivery</span>
+            <h1>CoreZero Nexus</h1>
+            <p class="subtitle">An engineering harness for AI coding agents. Locks specs before code, plans every task,
+                verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
+                reproducible, evidence-backed delivery.</p>
+            <div class="hero-author">
+                Built by <strong>Thai Hai</strong> &middot; <a href="https://github.com/thaihai-swe/AI-agents-dev-kits"
+                    target="_blank" rel="noopener">GitHub</a> &middot; <a
+                    href="https://github.com/thaihai-swe/AI-agents-dev-kits/issues" target="_blank"
+                    rel="noopener">Issues
+                    &amp; Feedback</a>
+            </div>
+            <div
+                style="margin-top: var(--space-8); display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+                <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" target="_blank" rel="noopener"
+                    class="btn btn-primary btn-pill btn-lg">View on GitHub</a>
+                <a href="#fast-start" class="btn btn-secondary btn-pill btn-lg">Get Started in 10 Min</a>
+                <a href="#workflow" class="btn btn-secondary btn-pill btn-lg">See the Workflow</a>
+            </div>
+            <div class="hero-meta">
+                <span class="hero-badge">For evaluators proposing the solution</span>
+                <span class="hero-badge">For teams adopting the workflow</span>
+                <span class="hero-badge">For developers shipping features</span>
+                <span class="hero-badge">For maintainers keeping the kit aligned</span>
+            </div>
+        </div>
+
+        <aside class="about-card" aria-labelledby="about-heading">
+            <div class="about-meta">
+                <span class="eyebrow-mono">About this project</span>
+                <span class="about-status"><span class="status-dot"></span> Actively maintained</span>
+            </div>
+            <h2 id="about-heading" class="about-title">A personal R&amp;D project on agent-first software delivery</h2>
+            <p>
+                I built this kit to answer a question I kept hitting in real work: <em>how do you make AI coding agents
+                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 16-skill
+                harness that anchors every change to a locked spec, plans tasks in 2&ndash;5 minute units, gates
+                completion behind mechanical verification, and grows a durable memory tier over time so the next session
+                doesn't start from zero.
+            </p>
+            <p>
+                Everything on this page &mdash; the lifecycle, the verify gate, the memory tiers, the failure
+                taxonomy &mdash; is implemented in the
+                <a href="https://github.com/thaihai-swe/AI-agents-dev-kits" target="_blank" rel="noopener">repo</a>
+                and shipped as installable skills you can drop into any codebase. The diagrams render live from
+                <code>documents/diagrams/*.mmd</code> &mdash; the same source of truth used by the kit itself.
+            </p>
+            <div class="about-tags">
+                <span class="about-tag">Agent harness</span>
+                <span class="about-tag">Spec-anchored delivery</span>
+                <span class="about-tag">Mechanical verification</span>
+                <span class="about-tag">Durable memory</span>
+                <span class="about-tag">12 core skills · 4 utilities</span>
+            </div>
+        </aside>
+
+        <div class="toc">
+            <h3>
+                <span>Contents</span>
+                <input type="text" id="toc-search" class="search-input" placeholder="Search documentation...">
+            </h3>
+            <ul id="toc-list">
+                <li><a href="#start-here">Start Here</a></li>
+                <li><a href="#proposal-summary">Proposal Summary</a></li>
+                <li><a href="#non-negotiables">1. Non-negotiables</a></li>
+                <li><a href="#vision">2. Strategic Vision</a></li>
+                <li><a href="#purpose">3. Purpose and Value</a></li>
+                <li><a href="#architecture">4. System Architecture</a></li>
+                <li><a href="#harness-subsystems">5. Harness Subsystems</a></li>
+                <li><a href="#context-engineering">6. Context Engineering</a></li>
+                <li><a href="#workflow">7. Full Workflow (16 Skills)</a></li>
+                <li><a href="#profiles">8. Delivery Profiles</a></li>
+                <li><a href="#verify-gate">9. Verify Gate</a></li>
+                <li><a href="#operating-manual">10. How to Use (Playbooks)</a></li>
+                <li><a href="#proof-of-workflow">Proof of Workflow</a></li>
+                <li><a href="#limitations">Limitations &amp; What's Next</a></li>
+                <li><a href="#evaluation">Evaluation &amp; Quality</a></li>
+                <li><a href="#key-skill-lifecycles">Inside the Key Skills</a></li>
+                <li><a href="#skills-catalog">11. Complete Skill Catalog</a></li>
+                <li><a href="#utility-skills">Utility Skills</a></li>
+                <li><a href="#standard-templates">Standard Templates</a></li>
+                <li><a href="#adapters-catalog">12. Entrypoints and Integrations</a></li>
+                <li><a href="#maintenance-catalog">13. Maintenance and Governance</a></li>
+                <li><a href="#faq">14. FAQ and Common Mistakes</a></li>
+            </ul>
+        </div>
+
+        <section id="start-here">
+            <h2>Start Here</h2>
+            <div class="section-card">
+                <h3>Choose Your Path</h3>
+                <div class="audience-grid">
+                    <div class="audience-card">
+                        <span class="audience-label">Evaluator</span>
+                        <h3>Understand the business case</h3>
+                        <p class="node-desc">Use this path when you need to explain why this kit is better than ad hoc
+                            AI
+                            coding.</p>
+                        <ul>
+                            <li>Read the proposal summary and before/after comparison.</li>
+                            <li>Use the adoption ladder to plan rollout risk.</li>
+                            <li>Use the proof section to show traceability.</li>
+                        </ul>
+                        <a class="btn btn-secondary audience-link" href="#proposal-summary">Go to proposal summary</a>
+                    </div>
+                    <div class="audience-card">
+                        <span class="audience-label">New User</span>
+                        <h3>Start using the kit quickly</h3>
+                        <p class="node-desc">Use this path when the question is "what do I run first and what does good
+                            look like?"</p>
+                        <ul>
+                            <li>Follow the 10-minute start steps.</li>
+                            <li>Use the first commands exactly as shown.</li>
+                            <li>Move to playbooks after the first feature starts.</li>
+                        </ul>
+                        <a class="btn btn-secondary audience-link" href="#fast-start">Go to fast start</a>
+                    </div>
+                    <div class="audience-card">
+                        <span class="audience-label">Developer</span>
+                        <h3>Implement safely</h3>
+                        <p class="node-desc">Use this path when you need the workflow contract, task boundaries, and
+                            validation rules.</p>
+                        <ul>
+                            <li>Read lifecycle and playbooks.</li>
+                            <li>Use the readiness and done criteria.</li>
+                            <li>Use the proof section to understand artifact flow.</li>
+                        </ul>
+                        <a class="btn btn-secondary audience-link" href="#developer-guide">Go to developer guide</a>
+                    </div>
+                    <div class="audience-card">
+                        <span class="audience-label">Maintainer</span>
+                        <h3>Keep the kit aligned</h3>
+                        <p class="node-desc">Use this path when you are changing skills, entrypoints, examples, or
+                            bootstrap
+                            behavior.</p>
+                        <ul>
+                            <li>Read maintenance rules and consistency checks.</li>
+                            <li>Use the change-impact checklist.</li>
+                            <li>Confirm canonical paths before release.</li>
+                        </ul>
+                        <a class="btn btn-secondary audience-link" href="#maintainer-guide">Go to maintainer
+                            guidance</a>
+                    </div>
+                </div>
+            </div>
+            <div class="section-card anchor-target" id="fast-start">
+                <h3>Start in 10 Minutes</h3>
+                <p class="node-desc">This is the minimum safe path for a team that wants to trial the kit without
+                    reading
+                    the entire document first.</p>
+                <div class="quickstart-strip">
+                    <div class="quickstart-step">
+                        <strong>1. Pick the target repo</strong>
+                        From the kit repository, decide which project path will receive the harness files.
+                    </div>
+                    <div class="quickstart-step">
+                        <strong>2. Install the kit</strong>
+                        Run
+                        <code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh | bash -s -- /path/to/project</code>.
+                        The installer applies <code>manifest.json</code>: it copies <code>skills/</code> and
+                        <code>rules/</code>, seeds the memory router and starter memory, and stamps
+                        <code>.corezero-version</code>.
+                    </div>
+                    <div class="quickstart-step">
+                        <strong>3. Run /starter-init</strong>
+                        Bootstrap the harness: auto-detect the stack, fill <code>harness-config.md</code>, seed the
+                        memory tiers, and run a clean-state check.
+                    </div>
+                    <div class="quickstart-step">
+                        <strong>4. Create durable context</strong>
+                        Run <code>/context-memory</code> and refine the starter memory files, including the split AI
+                        coding contract in repo memory.
+                    </div>
+                    <div class="quickstart-step">
+                        <strong>5. Start the first feature</strong>
+                        Run <code>/spec-requirements</code> with a real feature slug and lock the acceptance criteria.
+                    </div>
+                </div>
+                <div class="callout success">
+                    <strong>Success looks like:</strong> a real feature has <code>spec.md</code>, a traceable task
+                    breakdown, bounded implementation, and fresh verification evidence before merge.
+                </div>
+            </div>
+        </section>
+
+        <section id="proposal-summary">
+            <h2>Proposal Summary</h2>
+            <div class="vision-box">
+                Use this kit when you want AI coding to behave like a disciplined engineering workflow instead of a chat
+                session with weak memory and weak verification.
+            </div>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <strong>Problem</strong>
+                    Ad hoc AI coding drifts because intent, decisions, and proof are scattered across chat history.
+                </div>
+                <div class="metric-card">
+                    <strong>Mechanism</strong>
+                    The kit anchors work to skills, durable artifacts, and explicit verification rules.
+                </div>
+                <div class="metric-card">
+                    <strong>Outcome</strong>
+                    Teams get cleaner reviews, resumable sessions, and less ambiguity between request and code.
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Before vs After</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Area</th>
+                                <th>Ad Hoc AI Coding</th>
+                                <th>Harness Workflow</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Source of truth</strong></td>
+                                <td>Chat history and local assumptions</td>
+                                <td>Versioned artifacts and explicit skill contracts</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Change planning</strong></td>
+                                <td>Usually implicit, often invented during coding</td>
+                                <td>Locked requirements and task boundaries before implementation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Verification</strong></td>
+                                <td>Plausible diff or incomplete testing</td>
+                                <td>Fresh evidence recorded against requirements</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Session continuity</strong></td>
+                                <td>Breaks when context resets</td>
+                                <td>Handoff artifacts preserve intent and next action</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multi-agent safety</strong></td>
+                                <td>High collision risk</td>
+                                <td>Phase locking, task ownership, and artifact boundaries</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Who This Is For</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Audience</th>
+                                <th>Good Fit</th>
+                                <th>Why</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Solo engineer</strong></td>
+                                <td>Yes</td>
+                                <td>Gives structure and continuity without requiring a large team process.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Small product team</strong></td>
+                                <td>Yes</td>
+                                <td>Makes AI-assisted work reviewable, repeatable, and safer to share.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Brownfield organization</strong></td>
+                                <td>Yes</td>
+                                <td>Supports discovery-first work where hidden coupling and regressions matter.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>High-speed prototypes with no quality bar</strong></td>
+                                <td>No</td>
+                                <td>The kit adds rigor on purpose. It is not optimized for zero-process experimentation.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Adoption Ladder</h3>
+                <p class="node-desc">The safest rollout is staged. Start small, prove value, then widen the contract.
+                </p>
+                <div class="ladder">
+                    <div class="ladder-stage">
+                        <strong>Solo Pilot</strong>
+                        One engineer trials the workflow on a contained feature and tunes memory and entrypoint rules.
+                    </div>
+                    <div class="ladder-stage">
+                        <strong>Team Expansion</strong>
+                        A small squad shares artifacts and begins enforcing the workflow in reviews.
+                    </div>
+                    <div class="ladder-stage">
+                        <strong>Brownfield Standard</strong>
+                        Discovery, spec, plan, and verification become the default path for risky changes.
+                    </div>
+                    <div class="ladder-stage">
+                        <strong>Production Governance</strong>
+                        Consistency checks, examples, and release rules keep the kit stable across contributors.
+                    </div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Key Differentiators</h3>
+                <div class="audience-grid">
+                    <div class="metric-card">
+                        <h3>Spec-Anchoring</h3>
+                        Requirements are locked into artifacts before coding begins, which removes a large class of
+                        chat-driven drift.
+                    </div>
+                    <div class="metric-card">
+                        <h3>Durable Memory</h3>
+                        Rules, decisions, and feature state live in files that survive session resets, handoffs, and
+                        code
+                        review.
+                    </div>
+                    <div class="metric-card">
+                        <h3>Verification Discipline</h3>
+                        Completion is gated by fresh evidence, not by whether the implementation sounds reasonable in
+                        chat.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 0. Non-negotiables -->
+        <section id="non-negotiables">
+            <div class="non-negotiables">
+                <div class="nn-title">1. The Non-negotiables (AGENTS.md Priority Rules)</div>
+                <div class="nn-grid">
+                    <div class="nn-item"><strong>No flattery, no filler.</strong> Start with the answer, action, blocker, or decision. You <strong>MUST NOT</strong> add ceremonial openers.</div>
+                    <div class="nn-item"><strong>Correct false premises.</strong> If the user’s premise is wrong, you <strong>MUST</strong> say so before continuing.</div>
+                    <div class="nn-item"><strong>Never fabricate.</strong> You <strong>MUST NOT</strong> invent file paths, commit hashes, test results, API names, library functions, or repository behavior.</div>
+                    <div class="nn-item"><strong>Unknown stays unknown.</strong> When information is unavailable, you <strong>MUST</strong> mark it explicitly as <code>[UNKNOWN]</code>. Do not fill gaps with guesses.</div>
+                    <div class="nn-item"><strong>Ask only when needed.</strong> <strong>SHOULD</strong> ask before proceeding when ambiguity materially changes the result; otherwise resolve by inspecting the repo.</div>
+                    <div class="nn-item"><strong>Touch only the request.</strong> Every changed line <strong>MUST</strong> directly support the user’s request. No drive-by refactors or formatting churn.</div>
+                    <div class="nn-item"><strong>Fail loud.</strong> You <strong>MUST NOT</strong> mark work complete if verification was skipped, failed, or only partially run. State exactly what was and was not verified.</div>
+                    <div class="nn-item"><strong>Preserve behavior.</strong> Existing observable behavior is a contract. You <strong>MUST NOT</strong> change it unless the user explicitly asks.</div>
+                    <div class="nn-item"><strong>Keep design SOLID.</strong> <strong>SHOULD</strong> follow SOLID principles when changing or adding software design.</div>
+                    <div class="nn-item"><strong>Apply code-design rules.</strong> Check <code>docs/code-design.md</code> for cross-cutting pitfalls (hidden coupling, swallowed errors, etc.).</div>
+                    <div class="nn-item"><strong>Read the Harness Card.</strong> Before non-trivial work, <strong>SHOULD</strong> skim <code>HARNESS_CARD.md</code> at the repo root for profiles, status, and limits.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Strategic Vision -->
+        <section id="vision">
+            <span class="eyebrow-mono">§01 · Strategic Vision</span>
+            <h2>2. Strategic Vision</h2>
+            <div class="vision-box">
+                "Transforming AI-assisted coding from vibe-based chat into a rigorous harness for spec-anchored AI
+                software delivery."
+            </div>
+            <p class="node-desc" style="text-align: center;">Solving the Agent Drift problem by anchoring every action
+                to
+                durable, verified artifacts.</p>
+        </section>
+
+        <!-- 3. Purpose and Value -->
+        <section id="purpose">
+            <h2>3. Purpose and Value</h2>
+            <div class="section-card">
+                <h3>What Problem This Kit Solves</h3>
+                <ul>
+                    <li><strong>Agent Drift:</strong> AI implementation diverges from real user intent.</li>
+                    <li><strong>Context Loss:</strong> long sessions lose rationale and decisions.</li>
+                    <li><strong>Weak Verifiability:</strong> changes look plausible but are not evidence-backed.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>What Users Get</h3>
+                <ul>
+                    <li><strong>Clear intent:</strong> requirements are locked before implementation.</li>
+                    <li><strong>Traceability:</strong> requirement -> task -> validation remains explicit.</li>
+                    <li><strong>Durability:</strong> artifacts survive chat/session resets.</li>
+                    <li><strong>Operational discipline:</strong> completion requires fresh evidence, not assumptions.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 4. System Architecture -->
+        <section id="architecture">
+            <h2>4. System Architecture</h2>
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <h3>A. The Skill Layer (Logic)</h3>
+                    <p class="node-desc">Located in <code>skills/</code>. Defines the <strong>Engineering
+                            Contract</strong>—the "Brain" of the workflow telling agents what to read, how to operate,
+                        and when to stop.</p>
+                </div>
+                <div class="arch-card">
+                    <h3>B. The Entrypoint Layer</h3>
+                    <p class="node-desc">Root entrypoints (<code>AGENTS.md</code>, etc.). A <strong>Thin
+                            Wrapper</strong> that enforces the "Skill-First" rule and operating principles such as goal
+                        framing and search-before-building.</p>
+                </div>
+                <div class="arch-card">
+                    <h3>C. The Harness Layer (Environment)</h3>
+                    <p class="node-desc">Implements the six Harness Engineering subsystems: Instructions, State,
+                        Verification, Scope, Lifecycle, and Security. Controls agent runtime environment and establishes
+                        structural guardrails.</p>
+                </div>
+                <div class="arch-card">
+                    <h3>D. The Artifact Layer (State)</h3>
+                    <p class="node-desc">Located in <code>artifacts/features/&lt;slug&gt;/</code>. The <strong>Source of
+                            Truth</strong>—a durable record of decisions surviving session resets and window limits.</p>
+                </div>
+                <div class="arch-card">
+                    <h3>E. The Memory Layer (Durable Guidance)</h3>
+                    <p class="node-desc">Located in <code>memories/repo/</code>. Organized into three tiers behind a
+                        routing index (<code>INDEX.md</code>). The knowledge base operates as a <strong>Semantic Memory Knowledge Graph</strong> using Markdown links to bind heuristics to domain specs. The tiers are: the <strong>Instruction tier</strong> (human-curated
+                        rules and knowledge), the <strong>Auto tier</strong> (failure-driven <code>observability-log.md</code>),
+                        and the <strong>Extracted tier</strong> (per-feature <code>session-extracts.md</code> candidates).
+                    </p>
+                </div>
+            </div>
+            <div class="coordination-list">
+                <p><strong>Three Memory Tiers:</strong></p>
+                <ul>
+                    <li><strong>Instruction tier (human-curated):</strong> durable rules and knowledge &mdash;
+                        <code>constitution.md</code>, <code>security-policy.md</code>, <code>harness-config.md</code>,
+                        <code>project-knowledge-base.md</code>, <code>domain-specs.md</code>,
+                        <code>learned-heuristics.md</code>,
+                        and <code>docs/architecture.md</code>. Edited by humans and <code>/context-memory</code>.
+                    </li>
+                    <li><strong>Auto tier (agent-written):</strong> <code>observability-log.md</code> &mdash;
+                        failure-driven
+                        lessons appended by <code>/harness-maintain</code> Improve Mode and <code>/harness-verify</code>.
+                    </li>
+                    <li><strong>Extracted tier (session distillation):</strong>
+                        <code>artifacts/features/&lt;slug&gt;/session-extracts.md</code> &mdash; candidate lessons
+                        written by
+                        <code>/context-session</code> END and the post-ship sync, triaged by <code>/context-memory</code>.
+                    </li>
+                </ul>
+                <p>Flow: <strong>session extracts &rarr; triage &rarr; instruction tier (or discard)</strong>, with the
+                    auto
+                    tier capturing failures along the way. The always-loaded <code>INDEX.md</code> router decides which
+                    files
+                    a session loads by matching the task against trigger keywords.</p>
+            </div>
+            <div class="section-card">
+                <h3>Core Design Principles</h3>
+                <div class="audience-grid">
+                    <div class="metric-card">
+                        <strong>1. Artifact-First</strong>
+                        If it isn't in the artifact, it didn't happen. Chat is transient; artifacts are durable memory.
+                    </div>
+                    <div class="metric-card">
+                        <strong>2. Surgicality</strong>
+                        Every change must trace to a specific Task ID to prevent drive-by refactoring.
+                    </div>
+                    <div class="metric-card">
+                        <strong>3. Subagent-Driven</strong>
+                        Use subagents for heavy exploration to keep the main context loop lean and high-signal.
+                    </div>
+                    <div class="metric-card">
+                        <strong>4. Continuity-First</strong>
+                        Mandatory handoffs before session ends to solve the context window amnesia problem.
+                    </div>
+                    <div class="metric-card">
+                        <strong>5. Evidence-Based Verification</strong>
+                        "Done" requires fresh logs, tests, or proof. We judge by results, not vibes.
+                    </div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Minimum Safe Repository Shape</h3>
+                <pre><code>AGENTS.md
+HARNESS_CARD.md
+skills/
+rules/
+scripts/install.sh
+memories/repo/
+  INDEX.md
+  constitution.md
+  security-policy.md
+  harness-config.md
+  project-knowledge-base.md
+  domain-specs.md
+  learned-heuristics.md
+  observability-log.md
+  adr-log.md
+docs/architecture.md
+docs/generated/
+artifacts/features/</code></pre>
+                <p class="node-desc">The installer copies <code>skills/</code> and <code>rules/</code> into the target
+                    repository, seeds
+                    the memory router (<code>INDEX.md</code>) and the three memory tiers, generated references,
+                    architecture,
+                    the harness card, and a thin repo entrypoint &mdash; without overwriting your
+                    <code>memories/repo/</code>
+                    content or <code>artifacts/</code>.
+                </p>
+            </div>
+            <div class="section-card">
+                <h3>Canonical Memory Files</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File or Folder</th>
+                                <th>Role</th>
+                                <th>What Belongs There</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>memories/repo/INDEX.md</code></td>
+                                <td>Memory router</td>
+                                <td>Always-loaded routing index. Declares Always / By-Intent / By-Debug groups and the
+                                    promotion watchlist. Sessions read this first.</td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/constitution.md</code></td>
+                                <td>Normative rules</td>
+                                <td>Guardrails, non-negotiable quality rules, and durable operating constraints.</td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/harness-config.md</code></td>
+                                <td>Repo operating defaults</td>
+                                <td>Command conventions, artifact paths, tracker mode, and session startup defaults.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/security-policy.md</code></td>
+                                <td>Security contract</td>
+                                <td>Safe vs confirm vs blocked actions, trust boundaries, and prompt-injection rules.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/learned-heuristics.md</code></td>
+                                <td>Descriptive instincts</td>
+                                <td>Repeated, evidence-backed heuristics that helped more than once in this repo.</td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/project-knowledge-base.md</code></td>
+                                <td>Descriptive memory</td>
+                                <td>Architecture notes, subsystem boundaries, recurring patterns, and brownfield
+                                    watchouts.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/domain-specs.md</code></td>
+                                <td>Domain language</td>
+                                <td>Ubiquitous terms, bounded-context rules, and subsystem baselines for large
+                                    codebases.</td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/observability-log.md</code></td>
+                                <td>Auto tier (failures)</td>
+                                <td>Append-only harness/model/spec failure entries written during execution; triaged for
+                                    promotion by <code>/context-memory</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>memories/repo/adr-log.md</code></td>
+                                <td>ADR Registry</td>
+                                <td>Registry index for all Architectural Decision Records (ADRs). Lazy-created on first ADR.</td>
+                            </tr>
+                            <tr>
+                                <td><code>docs/architecture.md</code></td>
+                                <td>Durable architecture map</td>
+                                <td>Major components, subsystem boundaries, integrations, and safe-change guidance.</td>
+                            </tr>
+                            <tr>
+                                <td><code>docs/generated/</code></td>
+                                <td>Generated references</td>
+                                <td><code>codemap.md</code> and <code>references-index.md</code> give the harness
+                                    reusable structural references.</td>
+                            </tr>
+                            <tr>
+                                <td><code>artifacts/features/&lt;slug&gt;/session-extracts.md</code></td>
+                                <td>Extracted tier (candidates)</td>
+                                <td>Per-feature distilled lessons &mdash; hypotheses only until
+                                    <code>/context-memory</code>
+                                    promotes, defers, or discards them.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>artifacts/features/&lt;slug&gt;/</code></td>
+                                <td>Change-specific state</td>
+                                <td>Analysis, spec, plan, tasks, review, and handoff for one bounded feature or fix.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Memory Promotion Rules</h3>
+                <p>Two promotion paths feed durable memory: <strong>manual</strong> (via <code>/context-memory</code>) and
+                    <strong>automatic</strong> (the post-ship sync after every passing verify).
+                </p>
+                <ul>
+                    <li><strong>Cross-Feature Pattern Surfacing:</strong> Heuristics track a <code>recurrence-count</code>. Promote a finding into the instruction tier only when it is durable, evidence-backed, and useful
+                        beyond one feature. If an execution pattern hits <strong>3+ features</strong>, the system automatically drafts a CC-* proposal to promote it to the Constitution; a security finding escalates immediately.</li>
+                    <li><strong>Extraction triage:</strong> <code>/context-session</code> END appends candidates to
+                        <code>session-extracts.md</code>. <code>/context-memory</code> then classifies each candidate:
+                        <strong>promote</strong> (move to instruction tier when durable and evidence-backed),
+                        <strong>defer</strong> (needs more evidence from additional features), or
+                        <strong>discard</strong> (not durable, with reason recorded &mdash; never silently delete).
+                        This triage process ensures only high-signal lessons compound into durable memory.
+                    </li>
+                    <li><strong>Post-ship sync:</strong> a passing <code>/harness-verify</code> verdict triggers a
+                        mandatory
+                        memory sweep. Every file in <code>INDEX.md</code> is either updated or named with a one-line
+                        reason it
+                        was untouched. A generic "no updates needed" fails the gate.</li>
+                    <li><strong>Promotion thresholds:</strong> a memory file at &ge;800 lines, 3+ distinct subtopics, or
+                        5+ artifact references is added to the <code>INDEX.md</code> promotion watchlist with a split
+                        proposal &mdash;
+                        it is never auto-split.</li>
+                    <li>Keep feature-local notes, temporary debugging context, and one-off rationale inside feature
+                        artifacts.</li>
+                    <li>Do not create competing durable memory files such as <code>AI_CONTRACT.md</code> or
+                        <code>DECISIONS.md</code> unless the repository intentionally changes the canonical model.
+                    </li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Agentic Data Flow</h3>
+                <div class="flow-diagram" aria-label="Agentic data flow">
+                    <div class="flow-track">
+                        <span class="flow-node">User Request</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Entrypoint</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Skill Contract</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Artifacts</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Implementation</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Verification</span>
+                    </div>
+                </div>
+                <p class="node-desc">The kit sits between the request and the code change. The entrypoint routes work
+                    into
+                    a
+                    skill, the skill reads and writes artifacts, and the implementation is judged against those
+                    artifacts
+                    instead of chat history.</p>
+            </div>
+            <div class="section-card">
+                <h3>Smart Context Routing</h3>
+                <p class="node-desc">A session never loads the whole memory layer. It reads <code>INDEX.md</code> first,
+                    then uses <strong>Confidence-Scored Loading</strong>: matching &le;2 keywords triggers a lightweight <em>partial-load</em> (headers only), while 3+ triggers a full load. Loaded and skipped groups
+                    are reported back &mdash; silent skipping is not allowed.</p>
+                <div class="audience-grid">
+                    <div class="metric-card">
+                        <strong>Always</strong>
+                        <p><code>constitution.md</code>,</p>
+                        <p><code>security-policy.md</code>,</p>
+                        <p><code>harness-config.md</code></p>
+                        <p>&mdash; every session.</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>By Intent &mdash; Knowledge</strong>
+                        <p>PKB,</p>
+                        <p><code>domain-specs.md</code>,</p>
+                        <p>architecture &mdash; on</p>
+                        <p><em>architecture, pattern, stack, domain</em>.</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>By Intent &mdash; Learned</strong>
+                        <p><code>learned-heuristics.md</code></p>
+                        <p>&mdash; on</p>
+                        <p><em>recurring, "we always/never", "last time"</em>.</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>By Debug</strong>
+                        <p><code>observability-log.md</code>,</p>
+                        <p>prior <code>session-extracts.md</code></p>
+                        <p>&mdash; on</p>
+                        <p><em>debug, regression, retro, root cause</em>.</p>
+                    </div>
+                </div>
+                <p class="node-desc">If <code>INDEX.md</code> is missing or stale, the session falls back to loading
+                    every memory file and routes the gap to <code>/context-memory</code> for index repair.</p>
+            </div>
+            <div class="section-card">
+                <h3>Harness Card</h3>
+                <p class="node-desc">Every adopted repo gets a <code>HARNESS_CARD.md</code> at its root &mdash; a
+                    one-page
+                    summary of the active rigor profile, subsystem status, memory-tier status, and known limits. Read it
+                    before
+                    non-trivial work; if reality diverges from the card, fix one of them.</p>
+            </div>
+            <div class="section-card">
+                <h3>Memory Promotion Thresholds</h3>
+                <p class="node-desc">Memory grows under quotas, not free expansion. <code>/context-memory</code> uses
+                    these
+                    thresholds to keep durable knowledge useful instead of bloating context every session.</p>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Trigger</th>
+                                <th>Threshold</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>File line count (warn)</td>
+                                <td>&ge; 800 lines</td>
+                                <td>Flag the file for split during the next sweep.</td>
+                            </tr>
+                            <tr>
+                                <td>File line count (force split)</td>
+                                <td>&ge; 1200 lines</td>
+                                <td>Split into topic files; update <code>INDEX.md</code>.</td>
+                            </tr>
+                            <tr>
+                                <td>Distinct subtopics in one file</td>
+                                <td>&ge; 3 subtopics</td>
+                                <td>Promote each subtopic to its own memory file.</td>
+                            </tr>
+                            <tr>
+                                <td>Cross-references to one entry</td>
+                                <td>&ge; 5 references</td>
+                                <td>Promote candidate to durable memory tier.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="node-desc">Below threshold, candidates stay in <code>session-extracts.md</code> awaiting more
+                    evidence. The kit prefers proven patterns over speculative ones.</p>
+            </div>
+        </section>
+
+        <!-- 5. Harness Subsystems -->
+        <section id="harness-subsystems">
+            <h2>5. Harness Subsystems</h2>
+            <p class="node-desc">The harness layer is the agent's environment. Each subsystem solves one class of
+                failure
+                that ungoverned agents reliably produce. Together they keep the agent on rails without flattening it
+                into a
+                script.</p>
+            <div class="subsystem-grid">
+                <div class="subsystem-card">
+                    <span class="subsystem-num">1</span>
+                    <h4>Instructions</h4>
+                    <p>Stable, prioritized rules and personas that survive every session.</p>
+                    <div class="solves">What it solves</div>
+                    <p>Drift, flattery, and ad-hoc behavior changes between sessions.</p>
+                    <div class="mechanisms"><strong>Mechanisms:</strong> <code>AGENTS.md</code>, <code>CLAUDE.md</code>,
+                        constitution memory, priority order.</div>
+                </div>
+                <div class="subsystem-card">
+                    <span class="subsystem-num">2</span>
+                    <h4>State</h4>
+                    <p>Durable artifacts that capture what was decided, planned, and proven. Includes <strong>Decision Provenance Records</strong> in <code>progress.md</code> to strictly trace the "why" behind mid-flight deviations back to the plan.</p>
+                    <div class="solves">What it solves</div>
+                    <p>Amnesia across sessions; lost context after compaction or restart.</p>
+                    <div class="mechanisms"><strong>Mechanisms:</strong> <code>artifacts/features/&lt;slug&gt;/</code>,
+                        <code>status.md</code>, handoff blocks, progress logs.
+                    </div>
+                </div>
+                <div class="subsystem-card">
+                    <span class="subsystem-num">3</span>
+                    <h4>Verification</h4>
+                    <p>Mechanical gates that the agent cannot self-certify around.</p>
+                    <div class="solves">What it solves</div>
+                    <p>"Looks good to me" closures, fabricated test results, hallucinated success.</p>
+                    <div class="mechanisms"><strong>Mechanisms:</strong> Mechanical Gate, alignment audit, traceability,
+                        clean-state check, security lens.</div>
+                </div>
+                <div class="subsystem-card">
+                    <span class="subsystem-num">4</span>
+                    <h4>Scope</h4>
+                    <p>Per-feature isolation that bounds the blast radius of any change.</p>
+                    <div class="solves">What it solves</div>
+                    <p>Drive-by refactors, scope creep, and cross-feature contamination.</p>
+                    <div class="mechanisms"><strong>Mechanisms:</strong> Feature slugs, surgical-change rule, file-touch
+                        budgets in plans, traceability chain.</div>
+                </div>
+                <div class="subsystem-card">
+                    <span class="subsystem-num">5</span>
+                    <h4>Lifecycle</h4>
+                    <p>Phase machine that controls what skill can run when, and what evidence each phase requires.</p>
+                    <div class="solves">What it solves</div>
+                    <p>Skipping ahead to implementation, half-finished features, "done" without proof.</p>
+                    <div class="mechanisms"><strong>Mechanisms:</strong> Status states, phase gates, micro-task rule,
+                        post-ship sync.</div>
+                </div>
+                <div class="subsystem-card">
+                    <span class="subsystem-num">6</span>
+                    <h4>Security</h4>
+                    <p>Default-deny posture for risky operations and untrusted input.</p>
+                    <div class="solves">What it solves</div>
+                    <p>Prompt injection, leaked secrets, unsafe shell commands, privilege escalation.</p>
+                    <div class="mechanisms"><strong>Mechanisms:</strong> Security policy memory, security lens in
+                        verify,
+                        confirmation gates, trust-boundary checks.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Context Engineering -->
+        <section id="context-engineering">
+            <h2>6. Context Engineering &mdash; Six-Tier Assembly</h2>
+            <p class="node-desc">Context is assembled per session in tiers, from always-loaded routing to just-in-time
+                code
+                reads. Higher tiers persist across sessions; lower tiers are transient. The router decides which tiers
+                to
+                load based on intent, scope, and rigor profile.</p>
+            <div class="tier-stack">
+                <div class="tier-row" data-tier="1">
+                    <span class="tier-badge">TIER 1</span>
+                    <div class="tier-content">
+                        <strong>Router &amp; Entrypoint</strong>
+                        <span><code>AGENTS.md</code>, <code>CLAUDE.md</code>, skill registry, priority rules.</span>
+                    </div>
+                    <div class="tier-load">Always loaded</div>
+                </div>
+                <div class="tier-row" data-tier="2">
+                    <span class="tier-badge">TIER 2</span>
+                    <div class="tier-content">
+                        <strong>Always-On Memory</strong>
+                        <span>Constitution, security policy, harness config, memory <code>INDEX.md</code>.</span>
+                    </div>
+                    <div class="tier-load">Always loaded</div>
+                </div>
+                <div class="tier-row" data-tier="3">
+                    <span class="tier-badge">TIER 3</span>
+                    <div class="tier-content">
+                        <strong>By-Intent Memory</strong>
+                        <span>Learned heuristics, project knowledge base, language rules &mdash; pulled by topic.</span>
+                    </div>
+                    <div class="tier-load">Loaded on match</div>
+                </div>
+                <div class="tier-row" data-tier="4">
+                    <span class="tier-badge">TIER 4</span>
+                    <div class="tier-content">
+                        <strong>Feature Artifacts</strong>
+                        <span><code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>, <code>status.md</code>,
+                            <code>review.md</code> for the active slug.</span>
+                    </div>
+                    <div class="tier-load">Loaded on slug</div>
+                </div>
+                <div class="tier-row" data-tier="5">
+                    <span class="tier-badge">TIER 5</span>
+                    <div class="tier-content">
+                        <strong>Raw Code (JIT)</strong>
+                        <span>Source files, generated codemap, cross-references &mdash; read just-in-time as the task
+                            requires.</span>
+                    </div>
+                    <div class="tier-load">Just-in-time</div>
+                </div>
+                <div class="tier-row" data-tier="6">
+                    <span class="tier-badge">TIER 6</span>
+                    <div class="tier-content">
+                        <strong>Transient Logs</strong>
+                        <span>Command output, test results, subagent reports &mdash; evicted at session boundary.</span>
+                    </div>
+                    <div class="tier-load">Session-only</div>
+                </div>
+            </div>
+            <figure class="kit-diagram">
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-context-assembly.mmd" role="img"
+                    aria-label="Six-tier context assembly: router, always memory, by-intent memory, feature artifacts, raw code, transient logs.">
+                    <div class="mermaid-loading">Rendering corezero-context-assembly…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 3.5 &mdash; Six-tier context assembly. The router decides
+                    which tiers load for a given intent.</figcaption>
+            </figure>
+            <div class="section-card">
+                <h3>Subagent Fan-Out</h3>
+                <p class="node-desc">Heavy reads (codebase exploration, multi-file research, hallucination cross-checks)
+                    are delegated to subagents so the main context stays clean. Subagents return a structured summary,
+                    not
+                    raw output; only the summary enters the parent context.</p>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-subagent-fanout.mmd" role="img"
+                        aria-label="Subagent fan-out: parent agent delegates parallel read tasks to child agents and receives summaries.">
+                        <div class="mermaid-loading">Rendering corezero-subagent-fanout…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 3.6 &mdash; Subagent fan-out keeps the parent context
+                        small while parallelizing discovery.</figcaption>
+                </figure>
+            </div>
+            <div class="section-card">
+                <h3>Failure Classification</h3>
+                <p class="node-desc">When something goes wrong, classify the cause before patching. Each class routes to
+                    a
+                    different fix: harness changes, model retries, or spec rework.</p>
+                <div class="failure-class-grid">
+                    <div class="failure-class-card harness">
+                        <h4>Harness Problem</h4>
+                        <p class="meaning">The kit's rails let the agent off the rails &mdash; missing gate, stale
+                            memory,
+                            wrong skill routing.</p>
+                        <p class="fix"><strong>Fix:</strong> update skills, memory, or verification gates so the same
+                            class
+                            of failure can't recur.</p>
+                    </div>
+                    <div class="failure-class-card model">
+                        <h4>Model Problem</h4>
+                        <p class="meaning">The agent had everything it needed but still produced a flawed output &mdash;
+                            reasoning slip, fabrication, or capability gap.</p>
+                        <p class="fix"><strong>Fix:</strong> tighten prompts, add adversarial pass, or re-route to a
+                            more
+                            capable model for that phase.</p>
+                    </div>
+                    <div class="failure-class-card spec">
+                        <h4>Spec Problem</h4>
+                        <p class="meaning">The requirements were ambiguous, contradictory, or missing &mdash; agent
+                            implemented the wrong thing correctly.</p>
+                        <p class="fix"><strong>Fix:</strong> return to <code>/spec-requirements</code>, run another grilling
+                            wave, lock open decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Workflow -->
+        <section id="workflow">
+            <span class="eyebrow-mono">§04 · End-to-End Lifecycle</span>
+            <h2>7. Full Workflow — End-to-End Lifecycle (16 Skills)</h2>
+            <p class="node-desc">The full end-to-end flow across all 16 skills. Solid nodes are the required path;
+                dashed/optional nodes run only when their condition is met. Diamonds are routing decisions; blue nodes
+                are
+                mechanical gates.</p>
+            <div class="callout info diagram-serving-note">
+                <strong>Note:</strong> diagrams render live from <code>documents/diagrams/*.mmd</code>. If you cloned the
+                repo, serve it over HTTP &mdash; <code>python3 -m http.server</code> from the repo root, then open
+                <code>/document-publishing-page/document.html</code>. Opening the file directly via
+                <code>file://</code> blocks <code>fetch()</code> on local files and the diagrams will fail to load.
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="box req"></div> <span>REQUIRED PATH (core)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="box opt"></div> <span>OPTIONAL / CONTEXTUAL</span>
+                </div>
+                <div class="legend-item" style="display: flex; gap: 8px; align-items: center;">
+                    <div
+                        style="width: 12px; height: 12px; background: #fff7ed; border: 1.5px solid #f59e0b; border-radius: 2px;">
+                    </div>
+                    <span>DECISION</span>
+                </div>
+                <div class="legend-item" style="display: flex; gap: 8px; align-items: center;">
+                    <div style="width: 12px; height: 12px; background: #3b82f6; border-radius: 2px;"></div>
+                    <span>MECHANICAL GATE</span>
+                </div>
+                <div class="legend-item" style="display: flex; gap: 8px; align-items: center;">
+                    <div
+                        style="width: 12px; height: 12px; background: #fff; border: 1.5px dashed #7c3aed; border-radius: 2px;">
+                    </div>
+                    <span>UTILITY (Phase 2)</span>
+                </div>
+            </div>
+
+            <figure class="kit-diagram">
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-full-flow.mmd" role="img"
+                    aria-label="corezero-full-flow: end-to-end lifecycle across 12 core and 4 utility skills with required, optional, decision, and gate nodes">
+                    <div class="mermaid-loading">Rendering corezero-full-flow…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 4.1 &mdash; <strong>corezero-full-flow (routing
+                        view)</strong>: how skills hand off to each other. Required path solid, conditional/optional
+                    paths dashed. Diamonds are routing decisions; blue nodes are mechanical gates. Source:
+                    <code>documents/diagrams/corezero-full-flow.mmd</code>.
+                </figcaption>
+            </figure>
+
+            <details class="artifact-view">
+                <summary>
+                    <strong>Artifact view</strong> &mdash; what each skill produces (click to expand)
+                </summary>
+                <div class="category-legend">
+                    <span class="cat-chip cat-foundation">FOUNDATION</span>
+                    <span class="cat-chip cat-orchestrator">ORCHESTRATOR</span>
+                    <span class="cat-chip cat-delivery">DELIVERY</span>
+                    <span class="cat-chip cat-optional">OPTIONAL</span>
+                    <span class="cat-chip cat-utility">UTILITY</span>
+                </div>
+                <p class="node-desc">Each card lists the skill, its purpose, and the artifacts it writes. The routing
+                    view above shows how skills connect; this view shows what they produce.</p>
+                <div class="diagram-container">
+                    <!-- Step 0: Init -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Foundation</span>
+                            <span class="node-title">/starter-init</span>
+                            <div class="node-desc">Bootstrap repo routing, workflow defaults, clean-state checks, and
+                                starter memory.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Repo operating defaults">harness-config.md</span>
+                                <span class="artifact-item" data-tooltip="Router-style entrypoint">AGENTS.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 1: Status -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Orchestrator</span>
+                            <span class="node-title">/context-status</span>
+                            <div class="node-desc">The Technical Project Manager. Bird's-eye view of active features and
+                                blockers.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Per-feature phase, progress, blockers, and next step">status.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 2: Memory -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Foundation</span>
+                            <span class="node-title">/context-memory</span>
+                            <div class="node-desc">Load repo rules, maintain durable memory, synthesize the AI coding
+                                contract, and manage the <strong>Project Dictionary</strong>.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Normative rules/guardrails">constitution.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Repo defaults, command conventions, and artifact routing">harness-config.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Permission tiers, trust boundaries, and blocked actions">security-policy.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Repeated, evidence-backed heuristics">learned-heuristics.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Durable repo memory, coding guidance, and Shared Language">project-knowledge-base.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 3: Research -->
+                    <div class="node-wrapper">
+                        <div class="node optional">
+                            <span class="status-badge">Delivery</span>
+                            <span class="node-title">/spec-research</span>
+                            <div class="node-desc">The Investigator. Uses the Diagnose Loop to find root cause before
+                                repair.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Discovery findings &amp; evidence">analysis.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 4: Spec -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Delivery</span>
+                            <span class="node-title">/spec-requirements</span>
+                            <div class="node-desc">Define what and why. Mandates <strong>Intake Classification</strong> before grilling. Checks for domain specs. Uses the <strong>Grilling Phase</strong> (1-2 questions for Tiny, 3-5 for Standard, 5+ for Complex/Ultra) with batched questions paired with recommended answers. Locks requirements in <code>spec.md</code>.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item" data-tooltip="Initial alignment proposal">proposal.md</span>
+                                <span class="artifact-item" data-tooltip="Source of Truth requirements">spec.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Readiness verdict for planning">requirements-review.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 5: Diagram -->
+                    <div class="node-wrapper">
+                        <div class="node optional">
+                            <span class="status-badge">Optional</span>
+                            <span class="node-title">/visualize</span>
+                            <div class="node-desc">Visualize architecture, data flows, and behavior before coding.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Mermaid-based diagrams and visual models">diagram.md</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Branch -->
+                    <div class="row">
+                        <div class="branch-fork"></div>
+                        <div class="node-wrapper">
+                            <div class="node optional">
+                                <span class="status-badge">Optional</span>
+                                <span class="node-title">/spec-adr</span>
+                                <div class="node-desc">Document architectural trade-offs.</div>
+                                <div class="artifacts-list">
+                                    <span class="artifact-item" data-tooltip="Decision log">adr-log.md</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="node-wrapper">
+                            <div class="node required">
+                                <span class="status-badge">Delivery</span>
+                                <span class="node-title">/spec-plan</span>
+                                <div class="node-desc">Design the technical and tasks</div>
+                                <div class="artifacts-list">
+                                    <span class="artifact-item" data-tooltip="Technical design record">design.md</span>
+                                    <span class="artifact-item"
+                                        data-tooltip="Execution strategy and sequencing">plan.md</span>
+                                    <span class="artifact-item" data-tooltip="Traceable work units">tasks.md</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="branch-join"></div>
+                    </div>
+
+                    <!-- Step 7: Implement -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Delivery</span>
+                            <span class="node-title">/spec-implement</span>
+                            <div class="node-desc">Execute bounded tasks: run baseline proof command <strong>before</strong> editing files, record proof targets, match patterns, validate fresh. Unit tests are opt-in only.</div>
+                        </div>
+                        <!-- <div class="loop-back"><span class="loop-text">DRIFT DETECTED</span></div> -->
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 8: Verify -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Delivery</span>
+                            <span class="node-title">/harness-verify</span>
+                            <div class="node-desc">Audit against the spec, task evidence, and the
+                                <strong>Beyonce Rule</strong>.
+                            </div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item" data-tooltip="Evidence &amp; findings">review.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Manual validation guide linked to acceptance criteria">testing-scenarios.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 9: Session -->
+                    <div class="node-wrapper">
+                        <div class="node required">
+                            <span class="status-badge">Continuity</span>
+                            <span class="node-title">/context-session</span>
+                            <div class="node-desc">Start, checkpoint, and end sessions with durable continuity, explicit context assembly tiers, compaction triggers, stale-context eviction, and subagent delegation tracking.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Linear session log and checkpoints">progress.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Resume-ready summary, blockers, and next-step prompt">handoff.md</span>
+                            </div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <!-- Step 10: Harness -->
+                    <div class="node-wrapper">
+                        <div class="node optional">
+                            <span class="status-badge">Growth</span>
+                            <span class="node-title">/harness-maintain</span>
+                            <div class="node-desc">Assess, evaluate, create, or improve the harness when verification or
+                                sessions expose structural weakness.</div>
+                            <div class="artifacts-list">
+                                <span class="artifact-item"
+                                    data-tooltip="Harness findings and subsystem scores">harness-assessment.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Extended evaluator findings beyond normal closeout">eval-report.md</span>
+                                <span class="artifact-item"
+                                    data-tooltip="Failure-driven harness lessons">observability-log.md</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            <div class="section-card">
+                <h3>Stage Responsibilities</h3>
+                <div class="audience-grid">
+                    <div class="metric-card">
+                        <strong>📋 Orchestration</strong>
+                        Status and coordination of project-wide active features and blockers.
+                    </div>
+                    <div class="metric-card">
+                        <strong>🏗 Foundation</strong>
+                        Init, routing, rules, memory, and project-wide knowledge promotion.
+                    </div>
+                    <div class="metric-card">
+                        <strong>🚀 Feature Delivery</strong>
+                        The core loop: Research -> Spec -> Diagram -> ADR -> Plan -> Implement -> Verify.
+                    </div>
+                    <div class="metric-card">
+                        <strong>🧹 Continuity & Growth</strong>
+                        Session continuity plus harness improvement from failures and drift.
+                    </div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Stage Responsibilities and Outputs</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stage</th>
+                                <th>Primary Job</th>
+                                <th>Expected Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Init</strong></td>
+                                <td>Bootstrap routing, repo defaults, and starter memory before delivery work begins.
+                                </td>
+                                <td><code>harness-config.md</code>, <code>AGENTS.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status</strong></td>
+                                <td>Track current phase, progress, blockers, and next step for each feature.</td>
+                                <td><code>status.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Memory</strong></td>
+                                <td>Load repo rules, maintain durable memory, and synthesize the coding contract.</td>
+                                <td><code>constitution.md</code>, <code>harness-config.md</code>,
+                                    <code>security-policy.md</code>, <code>learned-heuristics.md</code>,
+                                    <code>project-knowledge-base.md</code>, <code>docs/architecture.md</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Research</strong></td>
+                                <td>Prove behavior via reproduction and findings.</td>
+                                <td><code>analysis.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Spec</strong></td>
+                                <td>Define <strong>Early Alignment</strong> and requirements.</td>
+                                <td><code>proposal.md</code>, <code>spec.md</code>, <code>requirements-review.md</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Diagram</strong></td>
+                                <td>Visualize architecture, behavior, or flows when a diagram reduces ambiguity.</td>
+                                <td><code>diagram.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ADR</strong></td>
+                                <td>Record architectural decisions and trade-offs when multiple technical paths exist.
+                                </td>
+                                <td><code>adr-log.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Plan</strong></td>
+                                <td>Sequence tasks and perform <strong>Architectural Design</strong>.</td>
+                                <td><code>design.md</code>, <code>plan.md</code>, <code>tasks.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Implement</strong></td>
+                                <td>Execute bounded tasks with explicit proof targets and surgical changes.</td>
+                                <td>Code plus validation evidence</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Verify</strong></td>
+                                <td>Perform <strong>Drift Detection Check</strong> and audit.</td>
+                                <td><code>review.md</code>, <code>testing-scenarios.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Session</strong></td>
+                                <td>Manage continuity, context assembly, compaction, and resume-ready handoff state.
+                                </td>
+                                <td><code>progress.md</code>, <code>handoff.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Harness</strong></td>
+                                <td>Assess, evaluate, or improve the environment across the six harness subsystems.</td>
+                                <td><code>harness-assessment.md</code>, <code>eval-report.md</code>,
+                                    <code>observability-log.md</code>, <code>docs/generated/codemap.md</code>,
+                                    <code>docs/generated/references-index.md</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Artifact Lifecycle</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Artifact</th>
+                                <th>Role</th>
+                                <th>Why It Exists</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>constitution.md</code></td>
+                                <td>Normative repo memory</td>
+                                <td>Stores rules, guardrails, and repo-wide coding mandates.</td>
+                            </tr>
+                            <tr>
+                                <td><code>harness-config.md</code></td>
+                                <td>Repo workflow defaults</td>
+                                <td>Captures commands, paths, tracker mode, and session setup choices.</td>
+                            </tr>
+                            <tr>
+                                <td><code>project-knowledge-base.md</code></td>
+                                <td>Descriptive repo memory</td>
+                                <td>Stores stack conventions, recurring patterns, and the Project Dictionary.</td>
+                            </tr>
+                            <tr>
+                                <td><code>security-policy.md</code></td>
+                                <td>Permission model</td>
+                                <td>Captures trust boundaries, sandbox expectations, and confirm-vs-blocked actions.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>learned-heuristics.md</code></td>
+                                <td>Descriptive instincts</td>
+                                <td>Preserves repeated, evidence-backed execution heuristics without turning them into
+                                    mandates.</td>
+                            </tr>
+                            <tr>
+                                <td><code>docs/architecture.md</code></td>
+                                <td>Durable architecture map</td>
+                                <td>Records major components, subsystem boundaries, integrations, and safe-change
+                                    guidance.</td>
+                            </tr>
+                            <tr>
+                                <td><code>docs/generated/codemap.md</code></td>
+                                <td>Generated structure map</td>
+                                <td>Reduces repeated broad codebase discovery by mapping major paths and entrypoints.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>docs/generated/references-index.md</code></td>
+                                <td>Generated reference index</td>
+                                <td>Lists reusable generated and external references the harness should consult first.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>status.md</code></td>
+                                <td>Process state</td>
+                                <td>Eliminates session amnesia by tracking current phase and blockers.</td>
+                            </tr>
+                            <tr>
+                                <td><code>proposal.md</code></td>
+                                <td>Alignment wave</td>
+                                <td>Mandates user approval on high-level goals before detailed spec'ing.</td>
+                            </tr>
+                            <tr>
+                                <td><code>analysis.md</code></td>
+                                <td>Discovery evidence</td>
+                                <td>Reduces uncertainty before requirements are locked.</td>
+                            </tr>
+                            <tr>
+                                <td><code>spec.md</code></td>
+                                <td>Source of truth</td>
+                                <td>Prevents downstream stages from inventing behavior and holds locked product
+                                    decisions.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gray-Area Decisions</strong> (in <code>spec.md</code>)</td>
+                                <td>Product choice lock</td>
+                                <td>When unresolved user-facing choices, UX decisions, or policy choices would
+                                    materially affect implementation, record them explicitly in spec so they don't leak
+                                    into chat history.</td>
+                            </tr>
+                            <tr>
+                                <td><code>requirements-review.md</code></td>
+                                <td>Spec readiness audit</td>
+                                <td>Records whether the spec is complete enough to plan safely.</td>
+                            </tr>
+                            <tr>
+                                <td><code>diagram.md</code></td>
+                                <td>Visual model</td>
+                                <td>Explains architecture, flows, or behavior when text alone is not clear enough.</td>
+                            </tr>
+                            <tr>
+                                <td><code>adr-log.md</code></td>
+                                <td>Decision history</td>
+                                <td>Captures durable architectural choices and the reasons behind them.</td>
+                            </tr>
+                            <tr>
+                                <td><code>design.md</code></td>
+                                <td>Technical decision record</td>
+                                <td>Captures trade-offs when the implementation path is not obvious.</td>
+                            </tr>
+                            <tr>
+                                <td><code>plan.md</code></td>
+                                <td>Execution strategy</td>
+                                <td>Defines phases, rollout shape, and validation intent.</td>
+                            </tr>
+                            <tr>
+                                <td><code>tasks.md</code></td>
+                                <td>Atomic work ledger</td>
+                                <td>Tracks bounded tasks, status, and proving evidence.</td>
+                            </tr>
+                            <tr>
+                                <td><code>review.md</code></td>
+                                <td>Verification audit</td>
+                                <td>Shows whether the implementation actually satisfies the spec.</td>
+                            </tr>
+                            <tr>
+                                <td><code>testing-scenarios.md</code></td>
+                                <td>Manual verification guide</td>
+                                <td>Gives human testers concrete acceptance scenarios to run.</td>
+                            </tr>
+                            <tr>
+                                <td><code>progress.md</code></td>
+                                <td>Session log</td>
+                                <td>Stores the linear record of work, checkpoints, and current execution state.</td>
+                            </tr>
+                            <tr>
+                                <td><code>handoff.md</code></td>
+                                <td>Session continuity</td>
+                                <td>Preserves blockers, validation state, and the next exact resume prompt.</td>
+                            </tr>
+                            <tr>
+                                <td><code>observability-log.md</code></td>
+                                <td>Harness lesson log</td>
+                                <td>Captures failure-driven improvements that should outlive the current feature.</td>
+                            </tr>
+                            <tr>
+                                <td><code>eval-report.md</code></td>
+                                <td>Extended evaluator record</td>
+                                <td>Stores adversarial, continuity, and harness-level evaluator passes beyond standard
+                                    feature closeout.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Common Feedback Loops</h3>
+                <ul>
+                    <li><strong>Discovery loop:</strong> implementation uncovers unknown behavior, so work moves back to
+                        research or planning.</li>
+                    <li><strong>Clarification loop:</strong> planning reveals requirement gaps, so work returns to the
+                        spec.
+                    </li>
+                    <li><strong>Drift loop:</strong> verification finds behavior outside the approved artifacts, so code
+                        or
+                        spec must be corrected.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Self-Improving Knowledge</h3>
+                <p class="node-desc">The knowledge base compounds as features ship. A passing <code>/harness-verify</code>
+                    verdict triggers a <strong>mandatory post-ship sync</strong>: every file in <code>INDEX.md</code> is
+                    either
+                    updated or named with a one-line reason it was untouched. The sweep distills lessons into
+                    <code>session-extracts.md</code> candidates, which <code>/context-memory</code> then promotes, defers,
+                    or
+                    discards. Generic "no updates needed" fails the gate.
+                </p>
+                <div class="audience-grid">
+                    <div class="metric-card">
+                        <strong>1. Ship</strong>
+                        <code>/harness-verify</code> passes &mdash; mechanical gate, alignment, security all green.
+                    </div>
+                    <div class="metric-card">
+                        <strong>2. Sweep</strong>
+                        Post-ship sync walks every file in <code>INDEX.md</code>; updates land where evidence supports
+                        them.
+                    </div>
+                    <div class="metric-card">
+                        <strong>3. Triage</strong>
+                        <code>/context-memory</code> processes candidates: promote (heuristics, PKB, constitution),
+                        defer, or discard.
+                    </div>
+                    <div class="metric-card">
+                        <strong>4. Compound</strong>
+                        The next session's smart routing loads richer memory automatically. KB grows feature by feature.
+                    </div>
+                </div>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-self-improving-kb.mmd" role="img"
+                        aria-label="Self-improving knowledge base loop: ship, sweep, triage, compound, with promotion thresholds.">
+                        <div class="mermaid-loading">Rendering corezero-self-improving-kb…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 4.2 &mdash; Self-improving knowledge loop. Each
+                        verified ship feeds the next session's context.</figcaption>
+                </figure>
+            </div>
+            <div class="section-card">
+                <h3>The Quality Bar</h3>
+                <ul>
+                    <li>Downstream stages do not invent requirements.</li>
+                    <li>Implementation is backed by fresh evidence.</li>
+                    <li>Traceability from request to proof remains intact.</li>
+                    <li>Spec and code stay aligned at the time of merge.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Locked Decisions: Traceability Across Phases</h3>
+                <p class="node-desc"><strong>Key Concept:</strong> Product and UX decisions recorded in
+                    <code>spec.md</code> (including Gray-Area Decisions) flow downstream into planning and
+                    implementation. Plan-phase must respect spec decisions; implement-phase must honor both spec and
+                    plan decisions without silent reinterpretation.
+                </p>
+                <ul>
+                    <li><strong>spec-requirements:</strong> Records product decisions, user-facing choices, and brownfield
+                        preservation rules in <code>spec.md</code>.</li>
+                    <li><strong>spec-plan:</strong> Treats locked spec decisions as approved inputs. Does not re-open
+                        them silently.</li>
+                    <li><strong>spec-implement:</strong> Enforces Decision Fidelity: follow locked decisions from
+                        <code>spec.md</code> without silent reinterpretation.
+                    </li>
+                    <li><strong>harness-verify:</strong> Checks for decision drift: when implementation changes a behavior
+                        spec had locked, it's a drift violation.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. Profiles -->
+        <section id="profiles">
+            <h2>8. Delivery Profiles</h2>
+            <div class="data-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Flow</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tiny</strong></td>
+                            <td>Compact Spec → Lean Plan → Mechanical Verify</td>
+                            <td>Small bugs, minor improvements, or simple documentation changes.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Standard</strong></td>
+                            <td>Full Spec → Plan & Tasks → Gate + Alignment + Security Verify</td>
+                            <td>Standard feature slices or moderate complexity improvements.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Complex</strong></td>
+                            <td>Research (if needed) → Spec (Grilling Waves) → Plan (+ Design/ADR) → Full Verify (Traceability)</td>
+                            <td>High-risk, cross-boundary, brownfield systems, or major architecture modifications.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <figure class="kit-diagram">
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-rigor-profiles.mmd" role="img"
+                    aria-label="Rigor profiles: Tiny, Standard, Complex, Ultra — each scaling spec, plan, and verify depth.">
+                    <div class="mermaid-loading">Rendering corezero-rigor-profiles…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 5.1 &mdash; Rigor profiles scale the same skills at four
+                    different depths. The flow is identical; the ceremony is not.</figcaption>
+            </figure>
+            <div class="section-card">
+                <h3>Adaptive Rigor Profiles</h3>
+                <p class="node-desc">Profiles scale ceremony to the work. Set the repo default in
+                    <code>harness-config.md</code>; override per feature in <code>status.md</code>. <strong>Profile
+                        cascading:</strong> once set in <code>status.md</code>, all downstream skills (spec, plan,
+                    implement,
+                    verify) load and adapt to the active profile. The same skills run at different depths.
+                </p>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Use For</th>
+                                <th>Spec</th>
+                                <th>Plan</th>
+                                <th>Verify</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Tiny</strong></td>
+                                <td>One-file fixes, doc updates</td>
+                                <td>1-2 questions</td>
+                                <td>Lean plan, inline tasks</td>
+                                <td>Mechanical + alignment</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Standard</strong> (default)</td>
+                                <td>Most feature work</td>
+                                <td>3-5 questions</td>
+                                <td>Full plan + tasks</td>
+                                <td>+ security lens</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complex</strong></td>
+                                <td>Cross-boundary, brownfield risk</td>
+                                <td>5+ questions, decisions locked</td>
+                                <td>+ design, subagent stress-test</td>
+                                <td>+ traceability + scenarios</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complex + System Spec Mode</strong></td>
+                                <td>Cross-cutting policy, harness changes</td>
+                                <td>System Spec Mode + adversarial pass</td>
+                                <td>+ adversarial plan review</td>
+                                <td>+ <code>/harness-maintain</code> Eval Mode</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Scenario Mapping</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Scenario</th>
+                                <th>Recommended Path</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>New feature</strong></td>
+                                <td>Research → Spec → Plan → Implement → Verify</td>
+                                <td>Use the full path: <code>/spec-research</code> (optional discovery) → <code>/spec-requirements</code> → <code>/spec-plan</code> → <code>/spec-implement</code> → <code>/harness-verify</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Brownfield feature</strong></td>
+                                <td>Research → Spec → Plan → Implement → Verify</td>
+                                <td>Start with discovery (<code>/spec-research</code>) to map legacy boundaries and prevent regressions.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bug fix</strong></td>
+                                <td>Research → Spec → Implement → Verify</td>
+                                <td>Use <code>/spec-research</code> to analyze/reproduce, <code>/spec-requirements</code> to lock acceptance criteria, then implement and verify.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tiny change</strong></td>
+                                <td>Spec → Implement → Verify</td>
+                                <td>Use <code>/spec-requirements</code> (1-2 questions) → <code>/spec-implement</code> → <code>/harness-verify</code>. Keep it extremely lean.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Verify Gate -->
+        <section id="verify-gate">
+            <h2>9. The Verify Gate &mdash; Eight-Step Closeout</h2>
+            <p class="node-desc">Verify is the only authority that can move a feature to <code>Done</code>. It runs as
+                an
+                ordered sequence: any failed step reopens tasks and returns the slug to <code>Implementing</code>. The
+                gate
+                is mechanical first, judgmental second, and self-improving last.</p>
+            <div class="verify-stepper">
+                <div class="verify-step gate">
+                    <div>
+                        <strong>Mechanical Gate</strong>
+                        <span>Run the exact bash commands from <code>plan.md</code>. Exit codes must be 0; evidence must
+                            be
+                            from this session. No subjective judgment at this step.</span>
+                    </div>
+                </div>
+                <div class="verify-step gate">
+                    <div>
+                        <strong>Clean-State Check</strong>
+                        <span>No uncommitted changes outside the feature scope. Working tree matches what the plan
+                            authorized.</span>
+                    </div>
+                </div>
+                <div class="verify-step">
+                    <div>
+                        <strong>Alignment Audit</strong>
+                        <span>Compare every <code>REQ-*</code> in <code>spec.md</code> against delivered code. Detect
+                            Missing, Ghost, and Misaligned behavior.</span>
+                    </div>
+                </div>
+                <div class="verify-step">
+                    <div>
+                        <strong>Traceability Audit</strong>
+                        <span>Walk the full chain: <code>SC &rarr; REQ &rarr; AC &rarr; TASK &rarr; CODE &rarr; PROOF
+                                &rarr; REVIEW</code>. Any gap fails the gate.</span>
+                    </div>
+                </div>
+                <div class="verify-step">
+                    <div>
+                        <strong>Security Lens</strong>
+                        <span>Auth, input validation, secret handling, trust boundaries, prompt-injection defense for
+                            AI-facing code.</span>
+                    </div>
+                </div>
+                <div class="verify-step optional">
+                    <div>
+                        <strong>Optional Fallow Pass</strong>
+                        <span>Behavior-neutral cleanup if debt was introduced. Only runs when the previous steps flagged
+                            it; re-run mechanical proof after cleanup.</span>
+                    </div>
+                </div>
+                <div class="verify-step">
+                    <div>
+                        <strong>Testing Scenarios</strong>
+                        <span>Walk through <code>testing-scenarios.md</code> &mdash; golden path, edge cases, regression
+                            risks. Record verdicts in <code>review.md</code>.</span>
+                    </div>
+                </div>
+                <div class="verify-step">
+                    <div>
+                        <strong>Post-Ship Knowledge Sync</strong>
+                        <span>Run <code>/context-memory</code> sweep. Promote learned heuristics, update the project
+                            knowledge base, close the loop. Sync record must be complete before
+                            <code>Done</code>.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="data-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Verdict</th>
+                            <th>Meaning</th>
+                            <th>Next Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Pass</strong></td>
+                            <td>All verification steps green. Evidence captured in <code>review.md</code>.</td>
+                            <td>Status &rarr; <code>Done</code>. Run session handoff.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pass with Follow-Up Debt</strong></td>
+                            <td>Functionally correct but left behind minor, non-blocking technical debt.</td>
+                            <td>Record debt in <code>TECH_DEBT_REGISTER.md</code>; status &rarr; <code>Done</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fail</strong></td>
+                            <td>Failing mechanical gate, spec drift, security gaps, or missing proof.</td>
+                            <td>Reopen affected tasks; status &rarr; <code>Implementing</code> (or return to spec/planning).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <figure class="kit-diagram">
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-verify-gate.mmd" role="img"
+                    aria-label="Verify gate: eight ordered steps from mechanical gate to post-ship knowledge sync, with reopen loops on failure.">
+                    <div class="mermaid-loading">Rendering harness-verify-gate…</div>
+                </div>
+                <figcaption class="kit-diagram-caption">Figure 5.5 &mdash; Verify gate flow. Failure at any step routes
+                    back to <code>Implementing</code>; only Post-Ship Sync moves to <code>Done</code>.</figcaption>
+            </figure>
+        </section>
+
+        <!-- 6. Operating Manual -->
+        <section id="operating-manual">
+            <h2>10. How to Use (Playbooks)</h2>
+            <div class="section-card anchor-target" id="developer-guide">
+                <h3>Quick Start Contract</h3>
+                <ul>
+                    <li>Repository must contain <code>skills/</code>, <code>memories/repo/</code>, and
+                        <code>artifacts/features/</code>.
+                    </li>
+                    <li>The installer copies <code>skills/</code> and <code>rules/</code>, seeds the memory router and
+                        starter memory, and preserves existing <code>memories/repo/</code> content and
+                        <code>artifacts/</code>.
+                    </li>
+                    <li>Implementation is invalid without task traceability and fresh evidence.</li>
+                    <li>Before ending a long session, always emit a handoff artifact.</li>
+                </ul>
+                <div class="chip-row">
+                    <span class="chip">Artifact First</span>
+                    <span class="chip">Evidence Based</span>
+                    <span class="chip">Subagent Driven</span>
+                    <span class="chip">Continuity First</span>
+                    <span class="chip">Surgical Changes</span>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>First Commands</h3>
+                <p>Install the kit into a target repository (idempotent &mdash; re-run to upgrade):</p>
+                <pre><code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/AI-agents-dev-kits/main/scripts/install.sh \
+  | bash -s -- /path/to/your/project</code></pre>
+                <p>Installer output looks like this:</p>
+                <pre><code>CoreZero Nexus installer
+  Target:   /path/to/your/project
+  Version:  0.2.0
+
+Installing kit content (overwrite)...
+Seeding user content (copyIfMissing)...
+
+Summary
+  Files installed: 140
+  Files seeded:    22
+  Files skipped:   0 (already present)
+  Files backed up: 0 -> .corezero-backup-&lt;timestamp&gt;
+
+Next steps:
+  1. Review HARNESS_CARD.md and fill in repo-specific values
+  2. Review memories/repo/harness-config.md (set rigor profile)
+  3. Review memories/repo/constitution.md, security-policy.md
+  4. Run /starter-init in your AI agent to bootstrap the repo
+  5. Start a feature under artifacts/features/&lt;slug&gt;/</code></pre>
+                <p>Already cloned the kit? Run the installer locally instead:</p>
+                <pre><code>bash scripts/install.sh /path/to/your/project</code></pre>
+                <p>Then bootstrap the harness and create durable memory:</p>
+                <pre><code>/starter-init
+/context-memory</code></pre>
+                <p>Then create a new feature with a slug:</p>
+                <pre><code>/spec-requirements
+Feature slug: my-first-feature</code></pre>
+            </div>
+
+            <div class="section-card">
+                <h3>Playbook by Goal</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Goal</th>
+                                <th>Start Command</th>
+                                <th>Expected Artifact</th>
+                                <th>Next Command</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>New feature with uncertainty</td>
+                                <td><code>/spec-research</code></td>
+                                <td><code>analysis.md</code></td>
+                                <td><code>/spec-requirements</code></td>
+                            </tr>
+                            <tr>
+                                <td>Feature with clear requirements</td>
+                                <td><code>/spec-requirements</code></td>
+                                <td><code>spec.md</code></td>
+                                <td><code>/spec-plan</code></td>
+                            </tr>
+                            <tr>
+                                <td>Implementation work</td>
+                                <td><code>/spec-implement</code></td>
+                                <td>Code plus tests</td>
+                                <td><code>/harness-verify</code></td>
+                            </tr>
+                            <tr>
+                                <td>Session continuity</td>
+                                <td><code>/context-session</code></td>
+                                <td><code>progress.md</code>, <code>handoff.md</code></td>
+                                <td>Resume with next-step prompt</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Playbook by Role</h3>
+                <ul>
+                    <li><strong>New user:</strong> run bootstrap, then <code>/context-memory</code> to establish repo
+                        rules and coding conventions, then
+                        <code>/spec-requirements</code>.
+                    </li>
+                    <li><strong>Feature engineer:</strong> follow Spec -> Plan -> Implement -> Verify in order.</li>
+                    <li><strong>Long session operator:</strong> use <code>/context-session</code> to assemble context
+                        from router, repo memory, architecture, feature artifacts, raw code, and transient logs in that
+                        order.</li>
+                    <li><strong>Architect:</strong> use <code>/visualize</code> and <code>/spec-adr</code> before
+                        coding.</li>
+                    <li><strong>Maintainer:</strong> enforce consistency checks and release dry-runs.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>When Blocked, Move Upstream</h3>
+                <ul>
+                    <li><strong>Unclear behavior:</strong> return to <code>/spec-research</code>.</li>
+                    <li><strong>Weak requirements:</strong> refine with <code>/spec-requirements</code>.</li>
+                    <li><strong>Design ambiguity:</strong> extend <code>/spec-plan</code> with <code>design.md</code>.
+                    </li>
+                    <li><strong>Weak evidence:</strong> rerun implementation validation or use
+                        <code>/harness-verify</code>.
+                    </li>
+                    <li><strong>Context overflow:</strong> use <code>/context-session</code> to compact state and evict
+                        stale logs before resuming.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Ready for Implement</h3>
+                <ul>
+                    <li><strong>Spec readiness:</strong> the user scenarios and acceptance criteria are specific enough
+                        that
+                        implementation does not need to invent behavior.</li>
+                    <li><strong>Task readiness:</strong> <code>tasks.md</code> breaks the work into reviewable slices
+                        with
+                        clear ownership.</li>
+                    <li><strong>Design readiness:</strong> ambiguous architectural choices are resolved in
+                        <code>design.md</code> or ADRs.
+                    </li>
+                    <li><strong>Validation readiness:</strong> each task has an intended proof path before code starts.
+                    </li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Definition of Done</h3>
+                <ul>
+                    <li>Task state, code changes, and fresh validation evidence all agree.</li>
+                    <li>The implemented behavior maps back to the approved spec and task IDs.</li>
+                    <li>Drift discovered during verification is either removed or promoted upstream into artifacts.</li>
+                    <li>A handoff is written if the work stops before the next bounded step is obvious.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>When Artifacts Disagree</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>If This Disagrees</th>
+                                <th>With This</th>
+                                <th>Correct Move</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Implementation</td>
+                                <td><code>spec.md</code></td>
+                                <td>Do not rationalize it in chat. Either remove the behavior or update the spec first.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>tasks.md</code></td>
+                                <td><code>spec.md</code></td>
+                                <td>Return to planning and restore requirement coverage before resuming implementation.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>review.md</code></td>
+                                <td>Observed code or tests</td>
+                                <td>Fix the evidence gap. The review is wrong if it cannot prove the behavior.</td>
+                            </tr>
+                            <tr>
+                                <td>Repo memory</td>
+                                <td>Observed codebase reality</td>
+                                <td>Promote corrected knowledge with <code>/context-memory</code>; do not let stale memory
+                                    govern new work.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Workflow Examples: Greenfield and Brownfield</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project Type</th>
+                                <th>When to Use</th>
+                                <th>Recommended Flow</th>
+                                <th>Main Outputs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Greenfield</strong></td>
+                                <td>New product, new service, or major rewrite with no stable baseline.</td>
+                                <td>Install -> Init -> Session START -> Memory -> Spec -> Plan -> Implement -> Verify ->
+                                    Post-Ship Sync -> Session END</td>
+                                <td>Harness card, project constitution, locked spec, verified implementation, seeded
+                                    knowledge base.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Brownfield</strong></td>
+                                <td>Existing system where safety, compatibility, and migration risks are critical.</td>
+                                <td>Install -> Init (Brownfield Mode) -> Research (Brownfield Map) -> Memory -> Spec ->
+                                    Plan -> Implement -> Verify -> Post-Ship Sync -> Session END</td>
+                                <td>Broken-test inventory, preserved-behavior list, scoped spec, incremental tasks,
+                                    regression evidence.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="node-desc"><strong>Greenfield Example (new platform module)</strong></p>
+                <p>1. Capture principles, constraints, and the coding contract with <code>/context-memory</code>.</p>
+                <p>2. Run <code>/spec-research</code> to explore domain unknowns and constraints.</p>
+                <p>3. Produce acceptance criteria using <code>/spec-requirements</code>.</p>
+                <p>4. Draft architecture and boundaries with <code>/visualize</code> and <code>/spec-adr</code>.
+                </p>
+                <p>5. Convert scope into atomic tasks with <code>/spec-plan</code>.</p>
+                <p>6. Implement incrementally via <code>/spec-implement</code> and confirm with
+                    <code>/harness-verify</code>.
+                </p>
+                <p>7. End the work window with <code>/context-session</code> and publish continuity in
+                    <code>handoff.md</code>.
+                </p>
+                <div class="flow-diagram" aria-label="Greenfield workflow diagram">
+                    <div class="flow-track">
+                        <span class="flow-node">Memory</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Research</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Spec</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Diagram</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">ADR</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Plan</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Implement</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Verify</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Session End</span>
+                    </div>
+                </div>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-greenfield-flow.mmd" role="img"
+                        aria-label="Greenfield delivery flow: install, init, memory seeding, research, spec, plan, implement, verify, session end.">
+                        <div class="mermaid-loading">Rendering corezero-greenfield-flow…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 6.1 &mdash; Greenfield flow with full discovery and
+                        constitution-seeding loop.</figcaption>
+                </figure>
+
+                <p class="node-desc"><strong>Brownfield Example (feature change in production system)</strong></p>
+                <p>1. Start from existing repo context in <code>/context-memory</code> to avoid relearning architecture
+                    and coding conventions.
+                </p>
+                <p>2. Use <code>/spec-research</code> to locate integration points, constraints, and regressions.</p>
+                <p>3. Define compatibility and rollback criteria in <code>/spec-requirements</code>.</p>
+                <p>4. Break work into low-risk slices using <code>/spec-plan</code>.</p>
+                <p>5. Execute one slice at a time with <code>/spec-implement</code> and validate each slice with
+                    <code>/harness-verify</code>.
+                </p>
+                <p>6. Run <code>/harness-verify</code>, including the optional Fallow Pass when cleanup is
+                    behavior-neutral.</p>
+                <p>7. End with <code>/context-session</code> so the next session can resume safely.</p>
+                <div class="flow-diagram" aria-label="Brownfield workflow diagram">
+                    <div class="flow-track">
+                        <span class="flow-node">Memory</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Research</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Spec</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Plan</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Implement Slice</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Verify Slice</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node flow-decision">More Slices?</span>
+                    </div>
+                    <div class="flow-branch-row">
+                        <span class="flow-branch-chip">Yes</span>
+                        <span class="flow-branch-text">loop back to Implement Slice</span>
+                        <span class="flow-loop">↺</span>
+                    </div>
+                    <div class="flow-track flow-track-tail">
+                        <span class="flow-branch-chip flow-branch-no">No</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Session End</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Harness Lesson?</span>
+                    </div>
+                </div>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-brownfield-flow.mmd" role="img"
+                        aria-label="Brownfield delivery flow: brownfield map, scope, slice, verify slice, optional fallow, session end.">
+                        <div class="mermaid-loading">Rendering corezero-brownfield-flow…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 6.2 &mdash; Brownfield flow with slice-by-slice
+                        delivery and the optional Fallow Pass for behavior-neutral cleanup.</figcaption>
+                </figure>
+            </div>
+
+            <div class="section-card">
+                <h3>Task Execution Loop</h3>
+                <div class="loop-steps">
+                    <div class="loop-step">Select Task</div>
+                    <div class="loop-step">Record Proof Target</div>
+                    <div class="loop-step green"><strong>IMPLEMENT:</strong> Make the bounded change</div>
+                    <div class="loop-step">Run Validation</div>
+                    <div class="loop-step">Mark Done</div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Delivery Tutorial Snapshot</h3>
+                <p class="node-desc">Reference feature flow:</p>
+                <p>1. <strong>Research:</strong> use <code>/spec-research</code> when root cause is unknown.</p>
+                <p>2. <strong>Spec:</strong> use <code>/spec-requirements</code> with clarifying questions.</p>
+                <p>3. <strong>Plan:</strong> use <code>/spec-plan</code> for atomic traceable tasks.</p>
+                <p>4. <strong>Implement:</strong> run <code>/spec-implement</code> task-by-task.</p>
+                <p>5. <strong>Verify:</strong> run <code>/harness-verify</code> for drift and evidence audit.</p>
+            </div>
+            <div class="section-card">
+                <h3>Session Handoff Pattern</h3>
+                <ol>
+                    <li>Run <code>/context-session</code> before ending a long session.</li>
+                    <li>Write blockers, progress, and the next immediate task into <code>handoff.md</code>.</li>
+                    <li>Resume by pasting the generated next-step prompt into a fresh session.</li>
+                </ol>
+            </div>
+            <div class="section-card">
+                <h3>Multi-Agent Coordination (No-Race Rules)</h3>
+                <ul>
+                    <li><strong>Phase Locking:</strong> only one agent edits a locked planning artifact such as
+                        <code>spec.md</code> or <code>plan.md</code> at a time.
+                    </li>
+                    <li><strong>Task Ownership:</strong> assign explicit Task IDs from <code>tasks.md</code> when
+                        multiple agents implement in parallel.</li>
+                    <li><strong>Branch Isolation:</strong> each agent works in its own branch; reintegrate only after
+                        verification passes.</li>
+                    <li><strong>Shared Memory:</strong> update the knowledge base after new discoveries so other agents
+                        learn instantly.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Brownfield Adoption Rules</h3>
+                <ul>
+                    <li><strong>Do not backfill:</strong> write artifacts for the new change, not the entire legacy
+                        codebase.</li>
+                    <li><strong>Analysis first:</strong> in brownfield repositories, always start with
+                        <code>/spec-research</code> to find side effects.
+                    </li>
+                    <li><strong>Gradual memory:</strong> promote one durable pattern at a time instead of writing a
+                        giant knowledge base up front.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>What Not To Do</h3>
+                <ul>
+                    <li>Do not treat chat history as more authoritative than artifacts.</li>
+                    <li>Do not skip quality gates when the upstream artifact is weak.</li>
+                    <li>Do not claim implementation is complete without fresh evidence.</li>
+                    <li>Do not broaden scope silently during implementation.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="proof-of-workflow">
+            <span class="eyebrow-mono">Proof · Traceability</span>
+            <h2>Proof of Workflow</h2>
+            <div class="section-card">
+                <h3>What Good Looks Like</h3>
+                <p class="node-desc">A useful proposal document needs one concrete walkthrough. This example shows how a
+                    request becomes a verified change without relying on chat memory.</p>
+                <div class="flow-diagram" aria-label="Traceability workflow example">
+                    <div class="flow-track">
+                        <span class="flow-node">Request</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Init</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Session</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Research</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Spec</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Plan</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Implement</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Verify</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Session End</span>
+                        <span class="flow-arrow">→</span>
+                        <span class="flow-node">Harness Lesson?</span>
+                    </div>
+                </div>
+                <p class="node-desc">This proof path intentionally exposes the full harness lifecycle: bootstrap,
+                    continuity, delivery, verification, and feedback into harness improvement.</p>
+                <div class="trace-grid">
+                    <div class="trace-card">
+                        <h3>1. Request</h3>
+                        <p><strong>Example:</strong> "Add social login without breaking existing email login."</p>
+                        <p>The request is still intent, not implementation. The kit does not let coding start here.</p>
+                    </div>
+                    <div class="trace-card">
+                        <h3>2. Spec</h3>
+                        <p><strong>Output:</strong> <code>spec.md</code> records scenarios, acceptance criteria, and
+                            compatibility constraints.</p>
+                        <p>This is where "must not break existing email login" becomes a testable rule instead of a
+                            vague
+                            preference.</p>
+                    </div>
+                    <div class="trace-card">
+                        <h3>3. Plan</h3>
+                        <p><strong>Output:</strong> <code>plan.md</code> and <code>tasks.md</code> split the work into
+                            schema updates, provider integration, UI changes, and verification tasks.</p>
+                        <p>The implementation no longer decides scope on the fly.</p>
+                    </div>
+                    <div class="trace-card">
+                        <h3>4. Implement</h3>
+                        <p><strong>Output:</strong> code plus bounded tests mapped back to task IDs.</p>
+                        <p>Each slice is small enough to review without reconstructing the whole feature from chat
+                            history.
+                        </p>
+                    </div>
+                    <div class="trace-card">
+                        <h3>5. Verify</h3>
+                        <p><strong>Output:</strong> <code>review.md</code> records whether the feature satisfies the
+                            spec
+                            and
+                            whether the evidence is fresh.</p>
+                        <p>This is where drift is caught before merge instead of after release.</p>
+                    </div>
+                    <div class="trace-card">
+                        <h3>6. Continuity</h3>
+                        <p><strong>Output:</strong> <code>handoff.md</code> if the work pauses, or clean merge evidence
+                            if
+                            it finishes.</p>
+                        <p>The next person or next agent can resume without re-discovering intent.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>The Traceability Chain</h3>
+                <p class="node-desc">Every shipped change can be walked end-to-end:
+                    <code>SC &rarr; REQ &rarr; AC &rarr; TASK &rarr; CODE &rarr; PROOF &rarr; REVIEW</code>. The verify
+                    gate refuses to close a feature until each link resolves to a concrete artifact in the slug
+                    folder.
+                </p>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-traceability.mmd" role="img"
+                        aria-label="Traceability chain: scenario, requirement, acceptance criterion, task, code, proof, review.">
+                        <div class="mermaid-loading">Rendering corezero-traceability…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure P.1 &mdash; Traceability chain. Each arrow is a
+                        verifiable link, not a hopeful narrative.</figcaption>
+                </figure>
+                <h3>Drift Findings &mdash; What Verify Catches</h3>
+                <p class="node-desc">When the alignment audit walks REQ vs. code, it labels every mismatch in one of
+                    three
+                    categories. Each routes to a different fix.</p>
+                <div class="findings-grid">
+                    <div class="finding-card missing">
+                        <h4>Missing</h4>
+                        <p>A <code>REQ-*</code> exists in <code>spec.md</code> but no code, test, or proof references
+                            it.
+                            Reopen the matching task or add one.</p>
+                    </div>
+                    <div class="finding-card ghost">
+                        <h4>Ghost</h4>
+                        <p>Code or tests exist that no <code>REQ-*</code> authorizes. Either backfill the spec or remove
+                            the unauthorized scope.</p>
+                    </div>
+                    <div class="finding-card misaligned">
+                        <h4>Misaligned</h4>
+                        <p>Both spec and code exist but their behavior diverges &mdash; off-by-one, wrong default,
+                            missing
+                            edge case. Fix code or update spec, then re-prove.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Limitations & What's Next -->
+        <section id="limitations">
+            <h2>Limitations &amp; What's Next</h2>
+            <p class="node-desc">An honest read of where the kit currently falls short and what's queued for the next
+                cycle. Portfolio readers and adopters deserve the same view I'd give myself in a retro.</p>
+            <div class="limits-grid">
+                <div class="limit-card">
+                    <span class="limit-tag">Limitation</span>
+                    <h3>No formal benchmark suite yet</h3>
+                    <p>The kit's verification gates protect each individual feature, but I don't yet measure the kit
+                        itself across a controlled set of agent runs. Quality claims are based on personal usage, not on
+                        a reproducible eval harness.</p>
+                    <p class="limit-fix"><strong>Next:</strong> seed an eval set of 10&ndash;15 representative tasks
+                        and score spec quality, drift incidents, and verify-gate accuracy across them.</p>
+                </div>
+                <div class="limit-card">
+                    <span class="limit-tag">Limitation</span>
+                    <h3>Brownfield discovery is still manual</h3>
+                    <p><code>/spec-research</code> guides the diagnose loop, but mapping integration points and hidden
+                        coupling in a large legacy codebase still falls heavily on the human operator. The kit doesn't
+                        yet automate test-impact analysis or call-graph extraction.</p>
+                    <p class="limit-fix"><strong>Next:</strong> wire optional codemap and call-graph generation into
+                        <code>/spec-research</code>, so brownfield maps include machine-generated boundaries instead of
+                        relying on hand-curated lists.
+                    </p>
+                </div>
+                <div class="limit-card">
+                    <span class="limit-tag">Limitation</span>
+                    <h3>Memory promotion is rule-based, not learned</h3>
+                    <p>Promotion thresholds (≥800/1200 lines, 3+ subtopics, 5+ refs) are heuristics. They prevent
+                        runaway
+                        bloat but don't distinguish a high-signal lesson from a verbose one. Some genuinely valuable
+                        candidates expire because they didn't accumulate enough cross-references in time.</p>
+                    <p class="limit-fix"><strong>Next:</strong> add an LLM-judged promotion pass during the post-ship
+                        sweep, scoring candidates on signal density and uniqueness rather than file-size proxies.</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>What I'd Build Differently If I Started Over</h3>
+                <ul>
+                    <li><strong>Skill registry as code, not as filenames.</strong> The current kit discovers skills via
+                        directory layout. A typed registry would let one skill compose another at runtime instead of
+                        sequencing them by convention.</li>
+                    <li><strong>Spec quality scoring earlier in the loop.</strong> The 30-point rubric runs in the
+                        evaluator pass; pulling part of it into <code>/spec-requirements</code> itself would catch weak specs
+                        before they enter planning.</li>
+                    <li><strong>First-class subagent orchestration.</strong> Subagent fan-out works, but the
+                        orchestration
+                        is implicit. A dedicated coordinator would make parallel discovery and adversarial verification
+                        more controllable and easier to debug.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Evaluation & Quality -->
+        <section id="evaluation">
+            <h2>Evaluation &amp; Quality</h2>
+            <p class="node-desc">Beyond the verify gate, the kit ships a structured evaluation layer for harness health,
+                hallucination defense, regression catching, and production readiness. Each mode targets a different
+                failure
+                class &mdash; one generic "review" pass would miss most of them.</p>
+            <div class="eval-grid">
+                <div class="eval-card">
+                    <span class="eval-tag">Spec Quality</span>
+                    <h4>30-Point Scoring Rubric</h4>
+                    <p>Automated assessment across <strong>Structure (10)</strong>, <strong>Quality (10)</strong>, and
+                        <strong>Completeness (10)</strong>. Catches under-specified features before they enter the plan
+                        phase, where ambiguity becomes drift.
+                    </p>
+                    <div class="eval-ref">Reference:
+                        <code>skills/harness-maintain/references/spec-quality-scoring.md</code>
+                    </div>
+                </div>
+                <div class="eval-card">
+                    <span class="eval-tag">Hallucination Defense</span>
+                    <h4>Fabrication Pattern Checks</h4>
+                    <p>Pattern matchers for fabricated file paths, test results, API names, verification evidence, and
+                        git
+                        state. Runs as part of verify; flags claims the agent cannot back with a real artifact.</p>
+                    <div class="eval-ref">Reference:
+                        <code>skills/harness-maintain/references/hallucination-checks.md</code>
+                    </div>
+                </div>
+                <div class="eval-card">
+                    <span class="eval-tag">Regression Testing</span>
+                    <h4>Three-Level Regression</h4>
+                    <p><strong>Feature regression</strong> &mdash; code broke. <strong>Harness regression</strong>
+                        &mdash;
+                        the kit itself degraded. <strong>Agent behavior regression</strong> &mdash; quality metrics
+                        fell.
+                        Each level routes to a different fix.</p>
+                    <div class="eval-ref">Reference: <code>skills/harness-maintain/references/regression-testing.md</code>
+                    </div>
+                </div>
+                <div class="eval-card">
+                    <span class="eval-tag">Production Readiness</span>
+                    <h4>8-Category Pre-Deploy Checklist</h4>
+                    <p>For high-risk deployments: <strong>Functional, Observability, Security, Performance, Data,
+                            Rollback, Operational, Documentation</strong>. Each category requires evidence, not just a
+                        check mark.</p>
+                    <div class="eval-ref">Reference:
+                        <code>skills/harness-verify/references/production-readiness-checklist.md</code>
+                    </div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>When to Run Eval Mode</h3>
+                <ul>
+                    <li>After a difficult feature with multiple iterations &mdash; root-cause the friction.</li>
+                    <li>When agent quality seems to be drifting over a series of features.</li>
+                    <li>For periodic harness health checks (monthly or quarterly).</li>
+                    <li>Before promoting candidate findings to durable repo memory.</li>
+                    <li>When onboarding a new team to the kit &mdash; baseline current quality.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Inside the Key Skills (lifecycle diagrams) -->
+        <section id="key-skill-lifecycles">
+            <h2>Inside the Key Skills</h2>
+            <p class="node-desc">Three skills carry most of the harness's load &mdash; <code>/spec-requirements</code> defines
+                what to build, <code>/context-status</code> tracks where every feature sits in the lifecycle, and
+                <code>/context-memory</code> decides what knowledge persists. Each has its own internal flow worth seeing
+                in
+                full. Pan and zoom inside any diagram to inspect details.
+            </p>
+
+            <div class="lifecycle-block">
+                <h3>Spec Lifecycle &mdash; <code>/spec-requirements</code></h3>
+                <p class="node-desc">Grilling waves run until <code>spec.md</code> is unambiguous and locked. Complexity
+                    Triage decides whether one wave is enough or three are required; gray-area decisions are recorded
+                    rather than silently resolved.</p>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-spec-lifecycle.mmd" role="img"
+                        aria-label="Spec lifecycle: grilling waves, triage, lock decisions, verification surface, ready-for-plan.">
+                        <div class="mermaid-loading">Rendering spec-requirements-lifecycle…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 6.6.1 &mdash; Spec lifecycle. Wave count scales with
+                        complexity; output is a locked <code>spec.md</code>.</figcaption>
+                </figure>
+            </div>
+
+            <div class="lifecycle-block">
+                <h3>Status State Machine &mdash; <code>/context-status</code></h3>
+                <p class="node-desc">Every feature slug moves through these states. Only <code>/harness-verify</code> can
+                    move a slug to <code>Done</code>; any failed gate routes it back to <code>Implementing</code> or
+                    <code>Specifying</code> depending on the failure class.
+                </p>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-status-machine.mmd" role="img"
+                        aria-label="Status state machine: Backlog, Specifying, Planning, Implementing, Verifying, Done, Blocked.">
+                        <div class="mermaid-loading">Rendering context-status-machine…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 6.6.2 &mdash; Status state machine. The verify gate
+                        is
+                        the sole authority that closes a slug.</figcaption>
+                </figure>
+            </div>
+
+            <div class="lifecycle-block">
+                <h3>Memory Tiers &mdash; <code>/context-memory</code></h3>
+                <p class="node-desc">Three tiers separate human-curated rules from auto-generated lessons and
+                    per-feature
+                    candidates. Promotion thresholds (≥800/1200 lines, 3+ subtopics, 5+ refs) keep durable memory from
+                    bloating context every session.</p>
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-memory.mmd" role="img"
+                        aria-label="Memory tiers: instruction, auto, extracted — with promotion thresholds and triage flow.">
+                        <div class="mermaid-loading">Rendering context-memory…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 6.6.3 &mdash; Three-tier memory. Candidates flow
+                        upward only when promotion thresholds are met.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 7. Skills Catalog -->
+        <section id="skills-catalog">
+            <span class="eyebrow-mono">§07 · Skill Catalog</span>
+            <h2>11. Complete Skill Catalog</h2>
+            <div class="skill-grid">
+                <div class="skill-card">
+                    <h4>starter-init</h4>
+                    <p>Bootstraps repo routing, AGENTS.md router, workflow defaults, starter memory, and verifies
+                        clean-state prerequisites. Auto-detects tech stack (Node.js, Python, Go, Rust), scans for test
+                        runners and linters, captures operating defaults in <code>harness-config.md</code>, generates
+                        <code>HARNESS_CARD.md</code> at repo root, seeds generated references
+                        (<code>docs/generated/codemap.md</code>, <code>references-index.md</code>). <strong>Brownfield
+                            Mode:</strong> when existing code is detected, preserves broken tests as the baseline, flags
+                        security-sensitive paths, and creates a preserved behavior inventory.
+                    </p>
+                    <p><strong>References:</strong> harness config, AGENTS router, architecture bootstrap, prerequisite
+                        checks, brownfield mode, harness card template.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>context-status</h4>
+                    <p>Orchestrates active feature work, reports phase status and blockers, maintains decision fidelity
+                        across spec/plan/implement/verify, and recommends next command.</p>
+                    <p><strong>References:</strong> status reports, current phase, delivery profile, blockers,
+                        locked-decision validation.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>harness-maintain</h4>
+                    <p>Assesses, evaluates, and improves the repository harness across Instructions, State,
+                        Verification, Scope, Lifecycle, and Security.</p>
+                    <p><strong>References:</strong> assessment rubric, eval modes, security model, generated
+                        references, failure-driven improvement.
+                    </p>
+                </div>
+                <div class="skill-card">
+                    <h4>context-memory</h4>
+                    <p>Maintains repo-wide rules, the <strong>Project Dictionary</strong>, security policy, and learned
+                        heuristics in repository memory. Enforces split: persistent repo facts vs session-scoped working
+                        state (compacts after use).</p>
+                    <p><strong>References:</strong> constitution, harness config, security policy, learned heuristics,
+                        knowledge base, shared language.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>spec-research</h4>
+                    <p>Investigation, brownfield mapping, and root-cause discovery with repository evidence. Traces
+                        failing boundaries, identifies constraints, and surfaces integration risks.</p>
+                    <p><strong>References:</strong> analysis template, debugging checklist, current-state boundaries,
+                        failure traces.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>spec-requirements</h4>
+                    <p>Starts with the mandatory <strong>Intake Phase</strong> (classifying input type and risk flags to decide the execution lane directly in <code>status.md</code>), then resolves ambiguity via the <strong>Grilling Phase</strong> with batched clarifying questions (1-2 for Tiny, 3-5 for Standard, 5+ for Complex/Ultra) paired with recommended answers. Checks for domain specs first. Includes Complexity Triage and locks decisions directly in <code>spec.md</code>, including Gray-Area Decisions and the Verification Surface. <strong>System Spec Mode:</strong> for cross-cutting requests, outputs to <code>docs/system-specs/&lt;name&gt;.md</code>.</p>
+                    <p><strong>Grilling rules:</strong> send questions as batched list, pair every question with recommended answer, don't ask what codebase can answer (grep first), walk decision tree in dependency order.</p>
+                    <p><strong>References:</strong> intake reference, grilling waves, proposal template, spec template, requirements review, complexity classification, system spec template.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>visualize</h4>
+                    <p>Visual architecture, flow, state, and data-model documentation in Mermaid.</p>
+                    <p><strong>References:</strong> C4, sequence, flowchart, state, ERD, class, user journey.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>spec-adr</h4>
+                    <p>Captures architectural decisions and trade-offs when multiple technical paths exist.</p>
+                    <p><strong>References:</strong> ADR template, decision log.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>spec-plan</h4>
+                    <p>Design and <strong>Micro-Task</strong> (2-5 minute) execution strategy with traceability.
+                        Includes complexity triage, automated verification gate (bash commands), and REQ-to-task
+                        mapping.</p>
+                    <p><strong>References:</strong> design, plan, tasks, definition of ready, mechanical verification
+                        gate.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>spec-implement</h4>
+                    <p>Executes bounded tasks task-by-task. Mandates the **Baseline Execution** rule: the implementer must execute the proving command in the shell *before* making any code edits. Enforces surgical focus, explicit proof targets, and Anti-AI Slop standards. Loads minimal context (spec, plan, selected task, touched callers/interfaces). <strong>TDD (Opt-In Only):</strong> unit tests are not mandatory unless requested. <strong>Caveman Mode:</strong> uses ultra-concise, token-efficient communication during technical turns. Refactor tasks load <code>module-design.md</code> for the deep-modules principle.</p>
+                    <p><strong>References:</strong> design standards, implementation standards, tasks template, proof-before-code workflow, module-design.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>context-session</h4>
+                    <p>Packages session state for <strong>Zero Amnesia</strong> transitions with context tiers (entry, spec, work), compaction triggers (token budgets, staleness), next-step prompts, and subagent delegation tracking.</p>
+                    <p><strong>References:</strong> handoff template, progress log, context assembly, context condensation, validation state.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>harness-verify</h4>
+                    <p>Audits against the <strong>Beyonce Rule</strong>, spec drift, evidence freshness, shared
+                        language, and split verification modes. Testing scenarios are context-dependent: unit tests,
+                        integration tests, manual validation, metrics, and logs per verification surface.</p>
+                    <p><strong>References:</strong> review template, testing scenarios, alignment audit, code review
+                        audit, fallow pass,
+                        evaluator handoff.</p>
+                </div>
+            </div>
+
+            <h3 id="utility-skills">Utility Skills</h3>
+            <p class="node-desc" style="text-align: center;">Complementary tools that extend the harness capabilities
+                beyond
+                the full workflow lifecycle. These skills provide specialized documentation, analysis, and skill
+                development capabilities.</p>
+
+            <div class="skill-grid">
+                <div class="skill-card">
+                    <h4>code-review</h4>
+                    <p>Performs rigorous, constructive code reviews based exactly on Google's Engineering Practices.</p>
+                    <p><strong>When to Use:</strong> When assigned to review a new PR or CL before merging.</p>
+                    <p><strong>Key Features:</strong> Evaluates PRs for design, functionality, complexity, testing,
+                        naming, and style. Prioritizes team velocity and code health.</p>
+                    <p><strong>Integration:</strong> <code>/code-review</code> during the PR review phase.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>codebase-documenter</h4>
+                    <p>Generate comprehensive, production-grade documentation for codebases.</p>
+                    <p><strong>When to Use:</strong> After implementation, onboarding, architectural reviews, API
+                        documentation, handoffs.</p>
+                    <p><strong>Key Features:</strong> 10 documentation areas, 3 depth levels (Quick/Standard/Deep),
+                        audience-aware, Mermaid diagrams included.</p>
+                    <p><strong>Integration:</strong>
+                        <code>/spec-implement → /codebase-documenter → /harness-verify</code>
+                    </p>
+                </div>
+                <div class="skill-card">
+                    <h4>system-flow-docs</h4>
+                    <p>Document system workflows and end-to-end flows.</p>
+                    <p><strong>When to Use:</strong> Complex workflows, event-driven systems, background jobs, state
+                        machines, orchestration.</p>
+                    <p><strong>Key Features:</strong> Workflow-focused, traces orchestration, 2-5 core flows,
+                        actor/boundary mapping.</p>
+                    <p><strong>Integration:</strong> <code>/spec-plan → /system-flow-docs</code> for workflow
+                        documentation.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>api-endpoint-docs</h4>
+                    <p>Document REST/HTTP API endpoints from code.</p>
+                    <p><strong>When to Use:</strong> REST API exists, need API reference, external consumers,
+                        integration guides.</p>
+                    <p><strong>Key Features:</strong> Deep endpoint coverage, request/response examples,
+                        auth/errors/rate limits, request-flow diagrams.</p>
+                    <p><strong>Integration:</strong> <code>/spec-implement → /api-endpoint-docs</code> for API-specific
+                        documentation.</p>
+                </div>
+
+            </div>
+
+            <div class="section-card">
+                <h3>Universal Quality Gates: Anti-Rationalization</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rationalization</th>
+                                <th>Reality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>"I'll add the tests later."</td>
+                                <td><strong>Beyonce Rule:</strong> If it's not tested, it doesn't exist.</td>
+                            </tr>
+                            <tr>
+                                <td>"The prompt is clear enough."</td>
+                                <td><strong>Grilling Phase:</strong> Vibe alignment is a trap. Ask 3-5 questions.</td>
+                            </tr>
+                            <tr>
+                                <td>"This task is too small to list."</td>
+                                <td><strong>Micro-Task Rule:</strong> 2-5 min tasks ensure high-fidelity review.</td>
+                            </tr>
+                            <tr>
+                                <td>"Naming doesn't matter here."</td>
+                                <td><strong>Dictionary Guardian:</strong> Shared language is maintainability.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="data-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Skill</th>
+                            <th>Example Trigger</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/starter-init</code></td>
+                            <td>"Run /starter-init to bootstrap repo defaults and starter memory for this project."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/context-status</code></td>
+                            <td>"Run /context-status to see active blockers across all features."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/harness-maintain</code></td>
+                            <td>"Run /harness-maintain to assess where this repository is weak across the 6 subsystems."
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>/context-memory</code></td>
+                            <td>"Run /context-memory and promote this auth middleware pattern into repo memory."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/spec-research</code></td>
+                            <td>"Use /spec-research to trace the first failing boundary in the signup flow."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/spec-requirements</code></td>
+                            <td>"Run /spec-requirements for 'auth-fix' and draft the alignment proposal."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/visualize</code></td>
+                            <td>"Use /visualize to create a sequence diagram for the login flow."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/spec-adr</code></td>
+                            <td>"Use /spec-adr to record why this feature uses a queue instead of direct writes."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/spec-plan</code></td>
+                            <td>"Run /spec-plan and create the technical design for this feature."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/spec-implement</code></td>
+                            <td>"Run /spec-implement TASK-001 and record the proving command before editing."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/context-session</code></td>
+                            <td>"Run /context-session for 'auth-fix' and generate the next-step resume prompt."</td>
+                        </tr>
+                        <tr>
+                            <td><code>/harness-verify</code></td>
+                            <td>"Use /harness-verify to check for spec drift in the latest PR."</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-card">
+                <h3>Power-User Tips</h3>
+                <ul>
+                    <li>Ask research and planning phases to use subagents when the repo is large or the exploration
+                        surface
+                        is broad.</li>
+                    <li>Force <code>/spec-requirements</code> to ask clarifying questions before drafting requirements.</li>
+                    <li>Use handoff aggressively when sessions grow long enough to reduce answer quality.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Standard Templates -->
+        <section id="standard-templates">
+            <h2>Standard Templates</h2>
+            <p class="node-desc" style="text-align: center;">Canonical structures for kit artifacts.</p>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <h3>spec-template.md</h3>
+                    <ul>
+                        <li><strong>Metadata:</strong> Name, Slug, Owner, Status.</li>
+                        <li><strong>Problem Statement:</strong> Why this change matters.</li>
+                        <li><strong>Outcomes & Success Criteria:</strong> What "done" looks like.</li>
+                        <li><strong>User Stories & Scenarios:</strong> Happy path, Edge case, Error state.</li>
+                        <li><strong>Functional Requirements:</strong> REQ-001, REQ-002...</li>
+                        <li><strong>Acceptance Criteria:</strong> AC-001, AC-002 (linked to REQs).</li>
+                    </ul>
+                </div>
+                <div class="arch-card">
+                    <h3>tasks-template.md</h3>
+                    <ul>
+                        <li><strong>Task Formatting:</strong> <code>- [ ] TASK-001 Status: Not Started</code>.</li>
+                        <li><strong>Phases:</strong> Foundations, Core Implementation, Validation.</li>
+                        <li><strong>Traceability:</strong> Link to REQs and ACs.</li>
+                        <li><strong>TDD (Opt-In Only):</strong> When explicitly requested, identify RED (failing test)
+                            and GREEN (passing) for behavioral changes. Not mandatory by default.</li>
+                    </ul>
+                </div>
+                <div class="arch-card">
+                    <h3>adr-template.md</h3>
+                    <ul>
+                        <li><strong>Context:</strong> The forces and problems at play.</li>
+                        <li><strong>Decision:</strong> What is being proposed and why.</li>
+                        <li><strong>Options:</strong> Dimensional assessment (Complexity, Cost, Scalability).</li>
+                        <li><strong>Consequences:</strong> What becomes easier or harder.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <h3>analysis-template.md</h3>
+                    <ul>
+                        <li><strong>Diagnose Loop:</strong> Reproduce -> Hypothesize -> Instrument -> Conclusion.</li>
+                        <li><strong>Findings:</strong> Fact vs Inference.</li>
+                        <li><strong>Risks & Unknowns:</strong> Proving steps for uncertainties.</li>
+                    </ul>
+                </div>
+                <div class="arch-card">
+                    <h3>handoff-template.md</h3>
+                    <ul>
+                        <li><strong>Current Progress:</strong> Tasks completed and in progress.</li>
+                        <li><strong>Active Blockers:</strong> Technical issues or ambiguities.</li>
+                        <li><strong>Next Immediate Step:</strong> Task ID, Goal, and Files to focus on.</li>
+                        <li><strong>Resume Prompt:</strong> Standardized copy-paste instruction for the next session.
+                        </li>
+                    </ul>
+                </div>
+                <div class="arch-card">
+                    <h3>requirements-review.md</h3>
+                    <ul>
+                        <li><strong>Verdict:</strong> ready | ready with minor issues | not ready.</li>
+                        <li><strong>Readiness Assessment:</strong> Strengths and main concerns.</li>
+                        <li><strong>Traceability Check:</strong> Requirements covered, ACs testable.</li>
+                        <li><strong>Blocking Issues:</strong> BR-001, recommended resolution.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="margin-top: var(--space-8);">Project Templates (Fillable)</h3>
+            <p class="node-desc">Nine fillable templates ship under <code>docs/templates/</code> for the surrounding
+                project &mdash; not for individual features. Adopters customize them once per repo to anchor product
+                intent, governance, and reliability expectations.
+                <strong>Note:</strong> <code>docs/architecture.md</code> is a <em>living document</em> updated as the
+                system evolves, not a fillable template.
+            </p>
+            <div class="data-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Template</th>
+                            <th>Purpose</th>
+                            <th>When to Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>PRODUCT_SENSE.md</code></td>
+                            <td>Product north star, user personas, value proposition.</td>
+                            <td>At kickoff; when strategy shifts.</td>
+                        </tr>
+                        <tr>
+                            <td><code>PROJECT_CONSTRAINTS.md</code></td>
+                            <td>Hard limits on scope, time, budget, regulatory boundaries.</td>
+                            <td>At kickoff; when constraints change.</td>
+                        </tr>
+                        <tr>
+                            <td><code>GLOSSARY.md</code></td>
+                            <td>Project dictionary &mdash; shared language for ambiguous terms.</td>
+                            <td>Each time a term causes confusion in spec or review.</td>
+                        </tr>
+                        <tr>
+                            <td><code>TECH_STACK_REFERENCE.md</code></td>
+                            <td>Languages, frameworks, runtimes, version pins, package managers.</td>
+                            <td>When stack changes; before adopting a new dependency.</td>
+                        </tr>
+                        <tr>
+                            <td><code>GOVERNANCE.md</code></td>
+                            <td>Decision authority, review process, escalation paths.</td>
+                            <td>When ownership or review rules change.</td>
+                        </tr>
+                        <tr>
+                            <td><code>RELIABILITY_POLICY.md</code></td>
+                            <td>SLOs, error budgets, oncall expectations, incident response.</td>
+                            <td>Quarterly; after incidents that exceed budget.</td>
+                        </tr>
+                        <tr>
+                            <td><code>QUALITY_POLICY.md</code></td>
+                            <td>Testing standards, coverage targets, code review bar, accessibility minimums.</td>
+                            <td>When standards evolve or new quality dimensions are added.</td>
+                        </tr>
+                        <tr>
+                            <td><code>TECH_DEBT_REGISTER.md</code></td>
+                            <td>Known debt items, owners, impact, planned remediation windows.</td>
+                            <td>Continuously &mdash; appended on each Fallow Pass and verify cycle.</td>
+                        </tr>
+                        <tr>
+                            <td><code>ROADMAP.md</code></td>
+                            <td>Sequenced delivery plan, milestones, dependencies between features.</td>
+                            <td>Each planning cycle; when priorities reorder.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 12. Entrypoints and Integrations -->
+        <section id="adapters-catalog">
+            <h2>12. Entrypoints and Integrations</h2>
+            <div class="icon-grid">
+                <div class="icon-card"><strong>AGENTS.md</strong>Repository entrypoint baseline</div>
+                <div class="icon-card"><strong>memories/repo/constitution.md</strong>Normative repo contract</div>
+                <div class="icon-card"><strong>memories/repo/security-policy.md</strong>Permission model and trust
+                    boundaries</div>
+                <div class="icon-card"><strong>memories/repo/project-knowledge-base.md</strong>Descriptive repo guidance
+                </div>
+                <div class="icon-card"><strong>docs/generated/</strong>Codemap and reusable reference index</div>
+                <div class="icon-card"><strong>skills/</strong>Canonical workflow contracts</div>
+            </div>
+            <div class="section-card">
+                <h3>Entrypoint Rules</h3>
+                <ul>
+                    <li>Entrypoints remain thin and point to skill files rather than duplicating full instructions.</li>
+                    <li>Every runtime should load memory files before execution phases.</li>
+                    <li>Bootstrap is non-destructive and copies <code>skills/</code> while only creating
+                        <code>AGENTS.md</code> when no runtime entrypoint exists.
+                    </li>
+                    <li>MCP integration is supported through shell-based server configurations.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Golden Configurations</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Setup Pattern</th>
+                                <th>Best Use</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cursor</strong></td>
+                                <td>Anchor the entrypoint instructions in project rules and keep artifact paths easy to
+                                    reference.</td>
+                                <td>Real-time code indexing and artifact-focused navigation.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Claude Code</strong></td>
+                                <td>Use the repository entrypoint and route work through the skill files and repo
+                                    memory.</td>
+                                <td>Command-line execution and subagent-heavy workflows.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gemini CLI</strong></td>
+                                <td>Point the runtime at the repo structure directly and keep the entrypoint thin.</td>
+                                <td>Large-context flows and full feature-state summarization.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GitHub Copilot</strong></td>
+                                <td>Keep instructions thin and route back to repo files instead of embedding the
+                                    workflow
+                                    inline.</td>
+                                <td>IDE-integrated file-anchored assistance.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Entry Point Rules</h3>
+                <ul>
+                    <li>Do not duplicate whole skill bodies in entrypoints.</li>
+                    <li>Feature-specific commands should keep the feature slug explicit.</li>
+                    <li>Entrypoints should reinforce that completion requires verification evidence, not just a
+                        plausible
+                        diff.
+                    </li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Discovery Order</h3>
+                <ol>
+                    <li>Read the repo entrypoint such as <code>AGENTS.md</code>.</li>
+                    <li>Load <code>memories/repo/constitution.md</code>.</li>
+                    <li>Load <code>memories/repo/security-policy.md</code>.</li>
+                    <li>Load <code>memories/repo/project-knowledge-base.md</code>.</li>
+                    <li>Load <code>docs/architecture.md</code> and <code>docs/generated/codemap.md</code> when present.
+                    </li>
+                    <li>Read the current feature folder under <code>artifacts/features/&lt;slug&gt;/</code>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- 13. Maintenance -->
+        <section id="maintenance-catalog">
+            <h2>13. Maintenance and Governance</h2>
+            <div class="data-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Area</th>
+                            <th>Canonical Rule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td><strong>Install / Upgrade</strong></td>
+                            <td>Use <code>scripts/install.sh /path/to/project</code> (or the curl-piped form). It
+                                applies
+                                <code>manifest.json</code>: overwrites kit content (<code>skills/</code>,
+                                <code>rules/</code>), seeds
+                                memory and templates only if missing, and preserves <code>memories/repo/</code> and
+                                <code>artifacts/</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Contributing</strong></td>
+                            <td>Any new skill must include a complete SKILL.md contract and references as needed.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Release</strong></td>
+                            <td>Dry-run the first-feature flow and validate entrypoint references.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Architecture</strong></td>
+                            <td>Keep the model clear: skills, entrypoint, memory, and artifacts.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-card anchor-target" id="maintainer-guide">
+                <h3>Consistency Loop</h3>
+                <ul>
+                    <li>Every <code>SKILL.md</code> must contain the required 10 sections.</li>
+                    <li>Internal links in skills and docs must resolve.</li>
+                    <li>Command aliases in docs and the repo entrypoint must match the allowed list.</li>
+                    <li>Canonical snippets must stay aligned across README, docs, the repo entrypoint, and scripts.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Release Checklist</h3>
+                <ol>
+                    <li>Dry-run the first-feature tutorial in a clean directory.</li>
+                    <li>Verify the repo entrypoint still points at the correct canonical paths.</li>
+                    <li>Confirm example artifacts and bootstrap messaging still match the current workflow contract.
+                    </li>
+                </ol>
+            </div>
+            <div class="section-card">
+                <h3>Contributor Rules</h3>
+                <ul>
+                    <li>New skills belong in <code>skills/&lt;name&gt;/</code> and must keep the standard section
+                        structure.</li>
+                    <li>Reference templates belong under <code>skills/*/references/</code>.</li>
+                    <li>New examples belong under <code>artifacts/examples/&lt;slug&gt;/</code>.</li>
+                    <li>Documentation changes must stay synchronized with the skill contract they describe.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Templates and Example Fixtures</h3>
+                <ul>
+                    <li>When updating a template under <code>skills/*/references/</code>, update the example artifacts
+                        that
+                        teach the same structure.</li>
+                    <li>Keep templates agent-friendly: clear headers, compact lists, and no conversational filler.</li>
+                    <li>Example fixtures should show full artifact chains, not isolated snippets.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Reference Standards</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reference Area</th>
+                                <th>Canonical Values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Task Status</strong></td>
+                                <td><code>Not Started</code>, <code>In Progress</code>, <code>Blocked</code>,
+                                    <code>Done</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Review Verdicts</strong></td>
+                                <td><code>Approved</code>, <code>Changes Required</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Requirements Verdicts</strong></td>
+                                <td><code>Ready</code>, <code>Not Ready</code></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Skill Anatomy</strong></td>
+                                <td>Overview, When to Use, Read First, Workflow, Stop Conditions, Core Rules, Common
+                                    Rationalizations, Red Flags, Verification, Output Rules</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Change-Impact Checklist</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>If You Change</th>
+                                <th>You Must Review</th>
+                                <th>Why</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Skill workflow or output rules</td>
+                                <td><code>README.md</code>, docs, entrypoint, examples, consistency checks</td>
+                                <td>The workflow contract is distributed and drifts easily.</td>
+                            </tr>
+                            <tr>
+                                <td>Command names or aliases</td>
+                                <td>Entrypoint, docs tables, consistency script, examples</td>
+                                <td>Broken aliases silently misroute users and agents.</td>
+                            </tr>
+                            <tr>
+                                <td>Artifact schemas or names</td>
+                                <td>Skill references, examples, verification logic, migration notes</td>
+                                <td>Artifact naming is part of the operating contract.</td>
+                            </tr>
+                            <tr>
+                                <td>Bootstrap behavior</td>
+                                <td>Quickstart docs, adoption guidance, release checklist</td>
+                                <td>Bootstrap is the first user touchpoint and shapes repo expectations.</td>
+                            </tr>
+                            <tr>
+                                <td>Canonical documentation paths</td>
+                                <td>README navigation, consistency script, markdown retirement rules</td>
+                                <td>Path drift breaks discoverability and release confidence.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section-card">
+                <h3>Backward-Compatibility Rules</h3>
+                <ul>
+                    <li>A breaking change is any change that renames commands, artifacts, canonical paths, or required
+                        workflow steps.</li>
+                    <li>Any change that alters the workflow contract should be reflected in the constitution and release
+                        notes.</li>
+                    <li>Do not remove old doc entrypoints until HTML parity and link migration are both complete.</li>
+                    <li>Example artifacts must remain representative of the current contract or be updated in the same
+                        change set.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 14. FAQ -->
+        <section id="faq">
+            <h2>14. FAQ and Common Mistakes</h2>
+            <div class="section-card">
+                <h3>FAQ</h3>
+                <p><strong>Do I need to run all skills for every change?</strong><br>Not always. Use a ceremony
+                    profile.
+                    Small
+                    changes can run the Tiny profile; risky changes should use the Complex profile.</p>
+                <p><strong>Can I skip spec and go straight to code?</strong><br>Only for truly trivial changes. For
+                    behavioral changes, skip-spec creates drift risk and weak verification.</p>
+                <p><strong>What does "done" mean?</strong><br>Done means task state, code change, and fresh validation
+                    evidence all agree.</p>
+                <p><strong>When should I use handoff?</strong><br>Before ending any long session, model switch, or
+                    context-heavy branch of work.</p>
+            </div>
+            <div class="section-card">
+                <h3>Common Mistakes</h3>
+                <ul>
+                    <li>Treating chat as source-of-truth instead of artifacts.</li>
+                    <li>Marking tasks done before running validation.</li>
+                    <li>Mixing unrelated refactors into implementation tasks.</li>
+                    <li>Skipping memory promotion for durable findings.</li>
+                    <li>Deleting markdown docs before HTML parity is truly stable.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <h3>Adoption Pitfalls</h3>
+                <ul>
+                    <li><strong>"The overhead is too high for small fixes."</strong> Use the Tiny profile only for truly
+                        low-risk
+                        work.</li>
+                    <li><strong>"Agents are ignoring the skills."</strong> Tighten the entrypoint and make the
+                        Skill-First
+                        rule
+                        explicit.</li>
+                    <li><strong>"Artifacts are drifting from the code."</strong> Make verification a mandatory review
+                        gate.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+
+
+    </main> <!-- End container -->
+
+    <a href="#" id="back-to-top" title="Back to top">↑</a>
+
+    <footer class="main-footer">
+        <p>CoreZero Nexus &bull; Document standard</p>
+    </footer>
+
+    <script src="common.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+flowchart TD
+    START([New Project]) --> BOOT[bootstrap-corezero.sh<br/>copy skills + memory + rules]
+    BOOT --> DETECT{Detect repo state}
+
+    DETECT -->|empty / near-empty| GREEN[Greenfield Mode]
+    DETECT -->|existing code + tests + history| BROWN[Brownfield Mode]
+
+    GREEN --> GINIT[starter-init<br/>Auto-fill harness-config<br/>+ Tier 1 templates from code]
+    GINIT --> GMEM[context-memory<br/>Seed constitution / security<br/>/ project-knowledge-base]
+    GMEM --> GFEAT[Pick first feature]
+
+    BROWN --> BPRES[Preserve existing<br/>AGENTS.md / CLAUDE.md / GEMINI.md]
+    BPRES --> BTEST[Run tests + record<br/>broken-test inventory]
+    BTEST --> BFLAG[Flag security paths<br/>auth / payments / secrets]
+    BFLAG --> BMAP[spec-research<br/>Brownfield Map<br/>Preserved Behavior Inventory]
+    BMAP --> BMEM[context-memory<br/>Capture map into PKB]
+    BMEM --> BSAFE[Pick smallest safe<br/>first feature]
+
+    GFEAT --> LOOP[Guided per-feature loop]
+    BSAFE --> LOOP
+    LOOP --> SHIP([Ship + Self-Improving KB])
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef green fill:#10b981,stroke:#047857,color:#fff
+    classDef brown fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef common fill:#fff,stroke:#d0d7de,color:#0d0d0d
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
+
+    class START,SHIP terminal
+    class GREEN,GINIT,GMEM,GFEAT green
+    class BROWN,BPRES,BTEST,BFLAG,BMAP,BMEM,BSAFE brown
+    class BOOT,LOOP common
+    class DETECT decision

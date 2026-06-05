@@ -1,0 +1,31 @@
+flowchart LR
+    %% Artifact Data Flow — Requirement to Proof to Memory
+
+    AN([analysis.md]) -->|Findings| PR([proposal.md])
+    PR -->|Align| SP([spec.md])
+    SP -->|Map architecture| DS([design.md])
+    SP -->|Decompose| PL([plan.md / tasks.md])
+
+    DS -->|Guide| CODE[(Source Code)]
+    PL -->|Execute| CODE
+
+    CODE -->|Validate| RV([review.md])
+    RV -->|Pass| SX([session-extracts.md])
+    SX -->|Triage / promote| MEM[(memories/repo/*)]
+    RV -->|Consolidate| HO([handoff.md])
+
+    %% Feedback loops
+    RV -.->|Drift detected| SP
+    RV -.->|Code fix loop| PL
+    MEM -.->|Smarter next feature| AN
+
+    classDef default fill:#f7f7f5,stroke:#e0e0e0,color:#111
+    classDef code fill:#ebf5ed,stroke:#c3e0c5,color:#2d7d32
+    classDef review fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+    classDef mem fill:#eef2ff,stroke:#c7d2fe,color:#3730a3
+    classDef handoff fill:#f0f4f8,stroke:#d9e2ec,color:#334e68
+
+    class CODE code
+    class RV review
+    class MEM,SX mem
+    class HO handoff

@@ -1,0 +1,24 @@
+flowchart LR
+    %% Traceability Chain — every line of code traces to a requirement and a proof
+
+    SC([Success Criteria<br/>SC-001]) --> REQ([Requirement<br/>REQ-001])
+    REQ --> AC([Acceptance Criterion<br/>AC-001])
+    AC --> TASK([Task<br/>T-001 in tasks.md])
+    TASK --> CODE[(Code Diff)]
+    CODE --> PROOF([Proof<br/>test / manual / log])
+    PROOF --> REV([review.md verdict])
+
+    REV -.->|Missing: spec wants it, code lacks it| REQ
+    REV -.->|Ghost: code has it, spec lacks it| CODE
+    REV -.->|Misaligned: behavior differs| AC
+
+    NOTE["Every REQ maps to >= 1 AC<br/>Every AC maps to >= 1 TASK<br/>Every TASK has a proving command<br/>No orphaned requirements, no ghost code"]:::note
+
+    classDef chain fill:#fff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px
+    classDef code fill:#ebf5ed,stroke:#c3e0c5,color:#2d7d32
+    classDef review fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+    classDef note fill:#f7f7f5,stroke:#e0e0e0,color:#111
+
+    class SC,REQ,AC,TASK,PROOF chain
+    class CODE code
+    class REV review

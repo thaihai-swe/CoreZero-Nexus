@@ -1,0 +1,73 @@
+flowchart TD
+    %% Full End-to-End Flow — all 16 skills, required vs optional
+
+    START([Request]) --> INIT[starter-init<br/>bootstrap harness]
+
+    %% Setup phase
+    INIT --> HARNESS{First time or<br/>structural issue?}
+    HARNESS -. assess maturity .-> ASSESS[harness-maintain<br/>Assess Mode]
+    ASSESS -.-> SESS
+    HARNESS --> SESS[context-session START<br/>route context via INDEX.md]
+
+    SESS --> STATUS{Multiple<br/>active features?}
+    STATUS -. yes .-> STAT[context-status<br/>project-wide view]
+    STAT -.-> MEM
+    STATUS --> MEM[context-memory<br/>load + tighten durable rules]
+
+    %% Investigation phase
+    MEM --> NEEDRES{Behavior unknown<br/>or brownfield?}
+    NEEDRES -. yes .-> RES[spec-research<br/>analysis.md / brownfield map]
+    RES --> SPEC
+    NEEDRES --> SPEC[spec-requirements<br/>grilling waves + spec.md]
+
+    %% Design phase
+    SPEC --> NEEDVIS{Complex flow<br/>worth a diagram?}
+    NEEDVIS -. yes .-> VIS[visualize<br/>diagram.md]
+    VIS --> NEEDADR
+    NEEDVIS --> NEEDADR{Architectural<br/>decision?}
+    NEEDADR -. yes .-> ADR[spec-adr<br/>adr-NNN.md]
+    ADR --> PLAN
+    NEEDADR --> PLAN[spec-plan<br/>design + tasks + gate]
+
+    %% Execution phase
+    PLAN --> IMPL[spec-implement<br/>one task at a time + proof]
+    IMPL --> VERIFY[harness-verify<br/>gate + alignment + security]
+
+    VERIFY -- gate fail --> IMPL
+    VERIFY -- spec drift --> SPEC
+    VERIFY -- pass --> SYNC[Post-Ship Sync<br/>context-memory sweep]
+
+    %% Learning loop
+    VERIFY -. harness lesson .-> IMPROVE[harness-maintain<br/>Improve Mode]
+    IMPROVE -. durable fix .-> MEM
+
+    %% Documentation and Review phase (optional utility skills)
+    SYNC --> NEEDDOCS{Refresh docs<br/>or review PR?}
+    NEEDDOCS -. API changed .-> APIDOC[api-endpoint-docs<br/>docs/API.md]
+    NEEDDOCS -. flows changed .-> SYSDOC[system-flow-docs<br/>docs/flows.md]
+    NEEDDOCS -. architecture changed .-> CODEDOC[codebase-documenter<br/>docs/*.md]
+    NEEDDOCS -. PR ready .-> CODEREV[code-review<br/>review.md]
+    APIDOC -.-> ENDS
+    SYSDOC -.-> ENDS
+    CODEDOC -.-> ENDS
+    CODEREV -.-> ENDS
+
+    NEEDDOCS --> ENDS[context-session END<br/>handoff + extracts]
+    ENDS --> DONE([Shipped + KB compounded])
+
+    %% Legend
+    LEGEND["Solid = required path<br/>Dashed = optional / conditional"]:::legend
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef core fill:#fff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.6px
+    classDef optional fill:#fff,stroke:#94a3b8,color:#475569,stroke-dasharray:4 3
+    classDef gate fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
+    classDef legend fill:#f7f7f5,stroke:#e0e0e0,color:#111
+
+    class START,DONE terminal
+    class INIT,SESS,MEM,SPEC,PLAN,IMPL,ENDS core
+    class ASSESS,STAT,RES,VIS,ADR,IMPROVE,APIDOC,SYSDOC,CODEDOC,CODEREV optional
+    class VERIFY,SYNC gate
+    class HARNESS,STATUS,NEEDRES,NEEDVIS,NEEDADR,NEEDDOCS decision
+    class LEGEND legend

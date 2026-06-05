@@ -1,0 +1,32 @@
+sequenceDiagram
+    autonumber
+    participant V as harness-verify
+    participant M as context-memory<br/>Post-Ship Sync
+    participant I as INDEX.md
+    participant F as Memory Files
+    participant E as session-extracts.md
+    participant S as status.md
+
+    V->>V: Mechanical gate + Alignment + Security PASS
+    V->>M: Hand off to Post-Ship Sync
+    M->>I: Read every file listed
+    I-->>M: Always + By-Intent + By-Debug groups
+    loop For each file in INDEX.md
+        M->>F: Read file
+        alt Durable change found
+            M->>E: Append candidate to ## Post-Ship Sync block
+            M->>F: Apply diff
+        else No change needed
+            M->>E: Record file name + 1-line reason untouched
+        end
+    end
+    M->>E: Verify every INDEX file accounted for
+    alt Sweep complete
+        M-->>V: OK — sync record present
+        V->>S: Set phase = Done
+    else Generic skip detected
+        M-->>V: REJECT — re-run sweep
+        Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
+    end
+
+    Note over V,F: Profile gating:<br/>Tiny = heuristic-only sweep<br/>Standard+ = full sweep

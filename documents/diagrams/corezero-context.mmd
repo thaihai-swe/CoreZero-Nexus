@@ -1,0 +1,15 @@
+C4Context
+    title System Context — CoreZero Nexus
+
+    Person(user, "Developer", "Initiates tasks and reviews artifacts.")
+    System_Boundary(corezero_boundary, "CoreZero Nexus Ecosystem") {
+        System(corezero, "CoreZero Nexus", "Standardizes speculative logic into durable, git-tracked artifacts.")
+    }
+    System_Ext(llm, "LLM Agent", "Executes commands, provides reasoning (Claude / Gemini).")
+    SystemDb_Ext(repo, "Git Repository", "Stores source code, memories, and specification artifacts.")
+
+    Rel(user, corezero, "Invokes skills via chat UI")
+    Rel(corezero, llm, "Orchestrates prompts & logic")
+    Rel(llm, corezero, "Returns parsed responses")
+    Rel(corezero, repo, "Reads context & writes artifacts")
+    Rel(user, repo, "Reviews, approves & commits changes")

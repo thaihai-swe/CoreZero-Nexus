@@ -1,0 +1,35 @@
+flowchart TD
+    %% Greenfield Flow — new repo, install kit, ship first feature
+
+    NEW[(New / near-empty repo)] --> BOOT[bootstrap-corezero.sh<br/>copy skills + memory + rules<br/>auto-detect stack]
+
+    BOOT --> INIT[starter-init<br/>Greenfield Mode]
+    INIT --> AGENTS[Create AGENTS.md router<br/>under 50 lines]
+    INIT --> MEMSEED[Seed memories/repo/<br/>INDEX + constitution + security<br/>+ harness-config + PKB]
+    INIT --> TMPL[Pre-fill Tier 1 templates<br/>TECH_STACK / ARCHITECTURE<br/>from code evidence]
+    INIT --> BASE[Clean-state check<br/>build + tests pass]
+
+    AGENTS --> SESS
+    MEMSEED --> SESS
+    TMPL --> SESS
+    BASE --> SESS[context-session START<br/>assemble tier 1-4 context via INDEX.md]
+
+    SESS --> SPEC[spec-requirements<br/>grilling waves + readiness score<br/>spec.md locked]
+    SPEC --> PLAN[spec-plan<br/>design + tasks.md + mechanical gate]
+    PLAN --> IMPL[spec-implement<br/>one task at a time + proof]
+    IMPL --> VERIFY[harness-verify<br/>gate + alignment + security]
+
+    VERIFY -- gate fail --> IMPL
+    VERIFY -- pass --> SYNC[Post-Ship Knowledge Sync<br/>context-memory sweep]
+    SYNC --> ENDS[context-session END<br/>handoff + extracts]
+    ENDS --> DONE([First feature shipped<br/>KB seeded for next feature])
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef green fill:#10b981,stroke:#047857,color:#fff
+    classDef step fill:#fff,stroke:#d0d7de,color:#0d0d0d
+    classDef gate fill:#3b82f6,stroke:#1d4ed8,color:#fff
+
+    class NEW,DONE terminal
+    class BOOT,INIT,SESS,SPEC,PLAN green
+    class AGENTS,MEMSEED,TMPL,BASE,IMPL,ENDS step
+    class VERIFY,SYNC gate

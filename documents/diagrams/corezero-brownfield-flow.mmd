@@ -1,0 +1,33 @@
+flowchart TD
+    %% Brownfield Reverse Flow — understand before changing
+
+    CODE[(Existing Codebase<br/>code + tests + history)] --> INIT[starter-init<br/>Brownfield Mode]
+
+    INIT --> PRESERVE[Preserve existing<br/>AGENTS.md / CLAUDE.md / GEMINI.md]
+    INIT --> BROKEN[Run tests<br/>record Known Broken Tests<br/>do NOT fix silently]
+    INIT --> FLAG[Flag security paths<br/>auth / payments / secrets]
+
+    PRESERVE --> RESEARCH
+    BROKEN --> RESEARCH
+    FLAG --> RESEARCH[spec-research<br/>Brownfield Map]
+
+    RESEARCH --> MAP[Map: entry points, boundaries,<br/>fragile areas, test coverage]
+    MAP --> INV[Preserved Behavior Inventory<br/>what must NOT change]
+    INV --> MEM[context-memory<br/>capture into project-knowledge-base]
+
+    MEM --> SPEC[spec-requirements<br/>Current Context section<br/>brownfield risk rating]
+    SPEC --> SAFE([Pick smallest safe<br/>first-touch surface])
+    SAFE --> LOOP([Standard per-feature loop<br/>spec to verify])
+
+    INV -.->|becomes constraint| SPEC
+    INV -.->|verified preserved| LOOP
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef brown fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef step fill:#fff,stroke:#d0d7de,color:#0d0d0d
+    classDef preserve fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+
+    class CODE,SAFE,LOOP terminal
+    class INIT,RESEARCH,MAP,SPEC brown
+    class PRESERVE,BROKEN,FLAG,MEM step
+    class INV preserve

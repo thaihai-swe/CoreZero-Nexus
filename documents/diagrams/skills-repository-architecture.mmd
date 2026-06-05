@@ -1,0 +1,41 @@
+flowchart TB
+    subgraph OC["Orchestration + Context"]
+        STATUS["context-status"]
+        MEMORY["context-memory"]
+        RESEARCH["spec-research"]
+        SPEC["spec-requirements"]
+    end
+
+    subgraph DP["Delivery Pipeline"]
+        VIS["visualize"]
+        ADR["spec-adr"]
+        PLAN["spec-plan"]
+        IMPL["spec-implement"]
+        VERIFY["harness-verify"]
+        HAND["context-session"]
+    end
+
+    subgraph SD["Specialist Documentation"]
+        API["api-endpoint-docs"]
+        SYS["system-flow-docs"]
+        CODE["codebase-documenter"]
+    end
+
+    STATUS --> MEMORY
+    MEMORY --> RESEARCH
+    RESEARCH --> SPEC
+    SPEC --> VIS
+    SPEC --> ADR
+    SPEC --> PLAN
+    PLAN --> IMPL
+    IMPL --> VERIFY
+    VERIFY --> HAND
+
+    RESEARCH -. repo evidence .-> API
+    RESEARCH -. repo evidence .-> SYS
+    MEMORY -. terminology and rules .-> CODE
+
+    classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
+    classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
+    class MEMORY,SPEC,PLAN primary;
+    class STATUS,RESEARCH,VIS,ADR,IMPL,VERIFY,CLEAN,HAND,API,SYS,CODE neutral;

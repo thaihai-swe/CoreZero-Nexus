@@ -1,0 +1,59 @@
+flowchart TD
+    %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
+
+    subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
+        CONST[constitution.md<br/>Repo-wide rules]
+        SEC[security-policy.md<br/>Trust boundaries]
+        HARN[harness-config.md<br/>Canonical commands]
+        PKB[project-knowledge-base.md<br/>Patterns, watchouts]
+        DOM[domain-specs.md<br/>Domain language]
+        HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
+        ARCH[docs/architecture.md<br/>System structure]
+    end
+
+    subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
+        OBS[observability-log.md<br/>Harness/Model/Spec failures]
+    end
+
+    subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
+        EXT[artifacts/features/&lt;slug&gt;/<br/>session-extracts.md]
+    end
+
+    subgraph ROUTER["Memory Router"]
+        IDX[INDEX.md<br/>Always-loaded routing index]
+    end
+
+    %% Routing
+    IDX -->|Always group| CONST
+    IDX -->|Always group| SEC
+    IDX -->|Always group| HARN
+    IDX -->|By-Intent: Knowledge| PKB
+    IDX -->|By-Intent: Knowledge| DOM
+    IDX -->|By-Intent: Knowledge| ARCH
+    IDX -->|By-Intent: Learned| HEUR
+    IDX -->|By-Debug| OBS
+    IDX -->|By-Debug| EXT
+
+    %% Promotion flow (extracted -> instruction)
+    EXT -.->|context-memory<br/>Extraction Triage| HEUR
+    EXT -.->|promote rule| CONST
+    EXT -.->|promote security| SEC
+    OBS -.->|context-memory<br/>Triage| PKB
+    OBS -.->|durable lesson| HEUR
+
+    %% Writers
+    AIDV[harness-verify<br/>Post-Ship Sync] -->|writes record| EXT
+    AIHN[harness<br/>Improve Mode] -->|appends| OBS
+    AIDS[context-session END] -->|appends candidates| EXT
+
+    classDef instr fill:#10b981,stroke:#047857,color:#fff
+    classDef auto fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef extr fill:#8b5cf6,stroke:#6d28d9,color:#fff
+    classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
+
+    class CONST,SEC,HARN,PKB,DOM,HEUR,ARCH instr
+    class OBS auto
+    class EXT extr
+    class IDX router
+    class AIDV,AIHN,AIDS writer

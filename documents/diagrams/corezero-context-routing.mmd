@@ -1,0 +1,35 @@
+flowchart TD
+    %% Smart Context Routing via INDEX.md
+
+    START([Session Start]) --> IDX[Read INDEX.md<br/>memory router]
+    IDX --> ALWAYS[Load Always group<br/>constitution + security-policy + harness-config]
+
+    ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
+
+    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + domain-specs + architecture]
+    MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
+    MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
+    MATCH -->|no trigger matches| SKIP[Load Always tier only<br/>record 'no groups matched']
+
+    KNOW --> FEAT[Load Feature artifacts<br/>spec / plan / tasks / handoff]
+    LEARN --> FEAT
+    DEBUG --> FEAT
+    SKIP --> FEAT
+
+    FEAT --> REPORT[Report Context Loaded<br/>+ Context Skipped with reasons]
+    REPORT --> WORK([Begin work])
+
+    STALE[INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
+    IDX -.->|if missing| STALE
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef group fill:#eef2ff,stroke:#c7d2fe,color:#3730a3
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
+    classDef fallback fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+
+    class START,WORK terminal
+    class IDX,ALWAYS router
+    class KNOW,LEARN,DEBUG,SKIP,FEAT group
+    class MATCH decision
+    class STALE,ALL fallback

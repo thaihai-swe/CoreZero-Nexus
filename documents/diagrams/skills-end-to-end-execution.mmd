@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant A as Agent Runtime
+    participant S as skills/*/SKILL.md
+    participant M as memories/repo
+    participant F as artifacts/features/<slug>
+
+    U->>A: feature request / debugging request / docs request
+    A->>S: load selected skill contract
+    S->>M: read repo rules and project knowledge
+    M-->>A: constraints, terminology, workflow rules
+    A->>F: read current feature state when present
+    F-->>A: analysis / spec / plan / tasks / review state
+    A->>S: execute workflow steps
+    S-->>A: required reads, outputs, and stop conditions
+    A->>F: write updated artifacts
+    F-->>A: next-step state
+    A-->>U: questions, status, or completed result
+
+    Note over A,F: Typical harness path:<br/>init -> session -> memory -> research -> spec-requirements -> visualize -> adr -> plan -> implement -> verify -> handoff

@@ -1,0 +1,22 @@
+flowchart TD
+    REQUEST([New Request]) --> STATUS["context-status"]
+    STATUS --> MEMORY["context-memory"]
+    MEMORY --> RESEARCH["spec-research"]
+    RESEARCH --> SPEC["spec-requirements"]
+    SPEC --> VIS["visualize"]
+    SPEC -. if architecture decision needed .-> ADR["spec-adr"]
+    VIS --> PLAN["spec-plan"]
+    ADR --> PLAN
+    PLAN --> IMPL["spec-implement"]
+    IMPL --> VERIFY["harness-verify"]
+    VERIFY --> HANDOFF["context-session"]
+
+    IMPL -. discovery loop .-> PLAN
+    VERIFY -. spec drift loop .-> SPEC
+
+    classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
+    classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
+    classDef loop fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px;
+    class MEMORY,SPEC,PLAN primary;
+    class STATUS,RESEARCH,VIS,ADR,IMPL,VERIFY,CLEAN,HANDOFF neutral;
+    class REQUEST loop;

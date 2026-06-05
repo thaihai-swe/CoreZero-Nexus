@@ -1,0 +1,26 @@
+stateDiagram-v2
+    %% Feature Status State Machine
+
+    [*] --> Init
+    Init --> Researching: spec-research
+    Init --> Specing: spec-requirements (behavior clear)
+    Researching --> Specing: analysis complete
+    Specing --> SpecApproved: readiness >= ready
+    SpecApproved --> Planning: spec-plan
+    Planning --> PlanApproved: tasks + gate defined
+    PlanApproved --> Implementing: spec-implement
+    Implementing --> Verifying: tasks complete
+    Verifying --> Implementing: gate fail / reopened tasks
+    Verifying --> Specing: spec drift detected
+    Verifying --> Done: verdict Pass + sync complete
+    Done --> [*]
+
+    Specing --> Researching: ambiguity surfaced
+    Planning --> SpecApproved: design shift needs spec change
+
+    note right of Verifying
+        harness-verify is the sole
+        authority for Done.
+        Post-ship sync must be
+        complete before finalize.
+    end note

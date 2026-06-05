@@ -1,0 +1,38 @@
+flowchart TD
+    %% Verification Gate — split modes, sole completion authority
+
+    START([Implementation complete]) --> PHASE[status = Verifying]
+    PHASE --> GATE[1 - Mechanical Gate Audit<br/>run exact bash commands from plan.md]
+
+    GATE --> GPASS{Gate passes?}
+    GPASS -- No --> FAIL[Write failure to review.md<br/>reopen tasks]
+    FAIL --> STOPF([Return to implement])
+    GPASS -- Yes --> CLEAN[2 - Clean-State Check<br/>no uncommitted changes]
+
+    CLEAN --> ALIGN[3 - Alignment Audit<br/>REQ vs code: Missing / Ghost / Misaligned]
+    ALIGN --> TRACE[4 - Traceability Audit<br/>REQ to AC to TASK to validation]
+    TRACE --> SEC[5 - Security Lens<br/>auth, permissions, data handling]
+    SEC --> CODEREV[6 - Code Review Audit<br/>code-review skill]
+    CODEREV --> FALLOW{Debt introduced?}
+    FALLOW -- Yes --> CLEANUP[7 - Optional Fallow Pass<br/>behavior-neutral cleanup + re-run proof]
+    FALLOW -- No --> SCEN
+    CLEANUP --> SCEN[8 - Testing Scenarios<br/>testing-scenarios.md]
+
+    SCEN --> VERDICT{Verdict}
+    VERDICT -- Issues --> FAIL
+    VERDICT -- Pass --> SYNC[9 - Post-Ship Knowledge Sync<br/>context-memory sweep]
+    SYNC --> SYNCOK{Sync record<br/>complete?}
+    SYNCOK -- No --> SYNC
+    SYNCOK -- Yes --> DONE([status = Done])
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
+    classDef step fill:#fff,stroke:#d0d7de,color:#0d0d0d
+    classDef fail fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+    classDef pass fill:#ebf5ed,stroke:#c3e0c5,color:#2d7d32
+
+    class START,DONE terminal
+    class GPASS,FALLOW,VERDICT,SYNCOK decision
+    class PHASE,GATE,CLEAN,ALIGN,TRACE,SEC,CODEREV,CLEANUP,SCEN step
+    class FAIL,STOPF fail
+    class SYNC pass

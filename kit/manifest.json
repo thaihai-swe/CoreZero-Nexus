@@ -1,0 +1,75 @@
+{
+  "name": "harness-kit",
+  "version": "0.2.0",
+  "description": "Spec-anchored AI software delivery framework with adaptive rigor, durable memory tiers, and a mechanical verification gate.",
+  "homepage": "https://github.com/thaihai-swe/AI-agents-dev-kits",
+  "files": {
+    "overwrite": [
+      "skills/**",
+      "rules/*.md",
+      "rules/README.md",
+      "scripts/install.sh",
+      "docs/ADOPTION_GUIDE.md",
+      "docs/README.md",
+      "docs/code-design.md",
+      "docs/system-specs/README.md",
+      ".github/workflows/harness-check.yml"
+    ],
+    "copyIfMissing": [
+      "AGENTS.md",
+      "HARNESS_CARD.md",
+      "memories/repo/INDEX.md",
+      "memories/repo/constitution.md",
+      "memories/repo/security-policy.md",
+      "memories/repo/learned-heuristics.md",
+      "memories/repo/project-knowledge-base.md",
+      "memories/repo/harness-config.md",
+      "memories/repo/domain-specs.md",
+      "memories/repo/observability-log.md",
+      "memories/repo/adr-log.md",
+      "docs/architecture.md",
+      "docs/PRODUCT_SENSE.md",
+      "docs/PROJECT_CONSTRAINTS.md",
+      "docs/GLOSSARY.md",
+      "docs/GOVERNANCE.md",
+      "docs/RELIABILITY_POLICY.md",
+      "docs/QUALITY_POLICY.md",
+      "docs/TECH_DEBT_REGISTER.md",
+      "docs/TECH_STACK_REFERENCE.md",
+      "docs/generated/codemap.md",
+      "docs/generated/references-index.md"
+    ],
+    "preserve": [
+      "memories/repo/",
+      "artifacts/",
+      ".corezero-version"
+    ]
+  },
+  "templateMap": {
+    "AGENTS.md": "skills/starter-init/references/agents-md-template.md",
+    "HARNESS_CARD.md": "skills/starter-init/references/harness-card-template.md",
+    "memories/repo/INDEX.md": "skills/context-memory/references/index-template.md",
+    "memories/repo/constitution.md": "skills/context-memory/references/constitution-template.md",
+    "memories/repo/security-policy.md": "skills/context-memory/references/security-policy-template.md",
+    "memories/repo/learned-heuristics.md": "skills/context-memory/references/learned-heuristics-template.md",
+    "memories/repo/project-knowledge-base.md": "skills/context-memory/references/project-knowledge-base-template.md",
+    "memories/repo/harness-config.md": "skills/starter-init/references/harness-config-template.md",
+    "memories/repo/domain-specs.md": "skills/context-memory/references/domain-specs-template.md",
+    "memories/repo/observability-log.md": "skills/context-memory/references/observability-log-template.md",
+    "memories/repo/adr-log.md": "skills/context-memory/references/adr-log-template.md",
+    "docs/architecture.md": "skills/context-memory/references/architecture-template.md",
+    "docs/generated/codemap.md": "skills/harness-maintain/references/codemap-template.md",
+    "docs/generated/references-index.md": "skills/harness-maintain/references/references-index-template.md"
+  },
+  "directories": [
+    "skills",
+    "memories/repo",
+    "artifacts/features",
+    "docs",
+    "docs/generated",
+    "docs/system-specs",
+    "rules",
+    "scripts",
+    ".github/workflows"
+  ]
+}

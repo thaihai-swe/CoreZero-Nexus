@@ -1,0 +1,28 @@
+flowchart TB
+    %% 6-Tier Context Assembly — highest signal to lowest
+
+    T1["Tier 1 — Router<br/>AGENTS.md + INDEX.md"]:::t1
+    T2["Tier 2 — Repo Memory (Always)<br/>constitution + security + harness-config"]:::t2
+    T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Architecture / Debug groups"]:::t3
+    T4["Tier 4 — Feature Artifacts<br/>status / spec / plan / tasks / handoff"]:::t4
+    T5["Tier 5 — Raw Code<br/>only files for the immediate task (JIT)"]:::t5
+    T6["Tier 6 — Transient Logs<br/>command output, traces (summarize + evict)"]:::t6
+
+    T1 -->|every session| T2
+    T2 -->|every session| T3
+    T3 -->|before editing| T4
+    T4 -->|just-in-time| T5
+    T5 -->|only when proving| T6
+
+    T6 -.->|compaction: summarize + evict| T4
+    T5 -.->|evict after task| T4
+
+    LOAD["Load Rules:<br/>Tier 1-2 always · Tier 3 by intent<br/>Tier 4 before edit · Tier 5 JIT · Tier 6 on demand"]:::note
+
+    classDef t1 fill:#1e3a8a,stroke:#1e40af,color:#fff
+    classDef t2 fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef t3 fill:#6366f1,stroke:#4f46e5,color:#fff
+    classDef t4 fill:#8b5cf6,stroke:#6d28d9,color:#fff
+    classDef t5 fill:#a78bfa,stroke:#7c3aed,color:#fff
+    classDef t6 fill:#c4b5fd,stroke:#8b5cf6,color:#1e1b4b
+    classDef note fill:#f7f7f5,stroke:#e0e0e0,color:#111
