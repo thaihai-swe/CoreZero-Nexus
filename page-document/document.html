@@ -130,7 +130,7 @@
 
     <main id="main" class="container">
         <div class="hero">
-            <span class="eyebrow-mono accent">v0.1.1 · Spec-Anchored Delivery</span>
+            <span class="eyebrow-mono accent">v0.1.2 · Spec-Anchored Delivery</span>
             <h1>CoreZero Nexus</h1>
             <p class="subtitle">An engineering harness for AI coding agents. Locks specs before code, plans every task,
                 verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
@@ -761,7 +761,8 @@ artifacts/features/</code></pre>
                                 <td>Generated references</td>
                                 <td><code>codemap.md</code>, <code>references-index.md</code>, and
                                     <code>dashboard.html</code> give the harness
-                                    reusable structural references and visual pipelines.</td>
+                                    reusable structural references and visual pipelines.
+                                </td>
                             </tr>
                             <tr>
                                 <td><code>artifacts/features/&lt;slug&gt;/session-extracts.md</code></td>
@@ -2007,9 +2008,11 @@ artifacts/features/</code></pre>
                     <p><strong>When to Use:</strong> Documenting HTTP/REST API endpoints, complex workflows,
                         event-driven orchestration, or system boundaries.</p>
                     <p><strong>Key Features:</strong> Multi-mode routing (<code>api</code>, <code>flow</code>,
-                        <code>both</code>), OpenAPI Baselines, sequence flow mapping, request/response verification.</p>
+                        <code>both</code>), OpenAPI Baselines, sequence flow mapping, request/response verification.
+                    </p>
                     <p><strong>Integration:</strong> <code>/spec-plan → /technical-docs --mode flow</code> or
-                        <code>/spec-implement → /technical-docs --mode api</code>.</p>
+                        <code>/spec-implement → /technical-docs --mode api</code>.
+                    </p>
                 </div>
 
             </div>
@@ -2226,7 +2229,7 @@ artifacts/features/</code></pre>
                 <p>Installer output looks like this:</p>
                 <pre><code>CoreZero Nexus installer
   Target:   /path/to/your/project
-  Version:  0.1.1
+  Version:  0.1.2
 
 Installing kit content (overwrite)...
 Seeding user content (copyIfMissing)...
@@ -2617,7 +2620,8 @@ Feature slug: my-first-feature</code></pre>
                 <h3>The Traceability Chain</h3>
                 <p class="node-desc">Every shipped change can be walked end-to-end:
                     <code>SC (Success Criteria) &rarr; REQ (Requirement) &rarr; AC (Acceptance Criterion) &rarr; TASK (Task) &rarr; CODE (Code Changes) &rarr; PROOF (Validation Evidence) &rarr; REVIEW (review.md Verdict)</code>.
-                    The verify gate refuses to close a feature until each link resolves to a concrete artifact in the feature slug folder.
+                    The verify gate refuses to close a feature until each link resolves to a concrete artifact in the
+                    feature slug folder.
                 </p>
                 <figure class="kit-diagram">
                     <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-traceability.mmd" role="img"
@@ -2843,22 +2847,44 @@ Feature slug: my-first-feature</code></pre>
 
             <div class="section-card">
                 <h3>Harness Maintenance Workflows</h3>
-                <p>The <code>/harness-maintain</code> command operates in five distinct modes to bootstrap, score, evaluate, diagnose, and continuously improve the harness environment:</p>
+                <p>The <code>/harness-maintain</code> command operates in five distinct modes to bootstrap, score,
+                    evaluate, diagnose, and continuously improve the harness environment:</p>
                 <div class="kit-diagram-container">
                     <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-harness-maintenance.mmd"
                         data-aspect-ratio="1.2">
                         <div class="mermaid-loading">Rendering corezero-harness-maintenance…</div>
                     </div>
-                    <figcaption class="kit-diagram-caption">Figure 13.1 &mdash; Harness maintenance workflows (Create, Assess, Improve, Eval, and Doctor modes).</figcaption>
+                    <figcaption class="kit-diagram-caption">Figure 13.1 &mdash; Harness maintenance workflows (Create,
+                        Assess, Improve, Eval, and Doctor modes).</figcaption>
                 </div>
                 <div class="coordination-list" style="margin-top: 1.5rem;">
                     <p><strong>The Five Execution Modes:</strong></p>
                     <ul>
-                        <li><strong>Assess Mode (Audit &amp; Score):</strong> Scores the repository against the six core harness subsystems (Instructions, State, Verification, Scope, Lifecycle, Security) using a 1-5 rubric. It checks pending feature candidates (flagging when they exceed 5) and generates the <code>harness-assessment.md</code> report.</li>
-                        <li><strong>Create Mode (Bootstrap &amp; Setup):</strong> Bootstraps a brand new harness environment for a repository. It runs <code>starter-init</code>, generates the <code>constitution.md</code>, <code>security-policy.md</code>, <code>project-knowledge-base.md</code>, and <code>learned-heuristics.md</code> files, and indexes the project structure.</li>
-                        <li><strong>Improve Mode (Observability Triage):</strong> Analyzes failures from the auto-tier <code>observability-log.md</code>. It categorizes issues (Mechanical, Alignment, or LLM limits), generates prioritized remediation tasks, applies durable fixes to the owning subsystem, and queues instruction-tier promotions.</li>
-                        <li><strong>Eval Mode (Split Evaluation):</strong> Runs split evaluations (Mechanical, Alignment, Adversarial/Security, Continuity) over a feature execution flow. It produces <code>eval-report.md</code> and routes gaps to their respective skills (e.g., spec drift to <code>/spec-requirements</code>).</li>
-                        <li><strong>Doctor Mode (Structural Diagnostics):</strong> Executes <code>scripts/doctor.sh</code> to diagnose and auto-repair path drift, surface drift, and workflow sync. It performs up to 3 automated repair attempts before outputting a diagnostic failure report.</li>
+                        <li><strong>Assess Mode (Audit &amp; Score):</strong> Scores the repository against the six core
+                            harness subsystems (Instructions, State, Verification, Scope, Lifecycle, Security) using a
+                            1-5 rubric. It checks pending feature candidates (flagging when they exceed 5) and generates
+                            the <code>harness-assessment.md</code> report.</li>
+                        <li><strong>Create Mode (Bootstrap &amp; Setup):</strong> Bootstraps a brand new harness
+                            environment for a repository. It runs <code>starter-init</code>, generates the
+                            <code>constitution.md</code>, <code>security-policy.md</code>,
+                            <code>project-knowledge-base.md</code>, and <code>learned-heuristics.md</code> files, and
+                            indexes the project structure.
+                        </li>
+                        <li><strong>Improve Mode (Observability Triage):</strong> Analyzes failures from the auto-tier
+                            <code>observability-log.md</code>. It categorizes issues (Mechanical, Alignment, or LLM
+                            limits), generates prioritized remediation tasks, applies durable fixes to the owning
+                            subsystem, and queues instruction-tier promotions.
+                        </li>
+                        <li><strong>Eval Mode (Split Evaluation):</strong> Runs split evaluations (Mechanical,
+                            Alignment, Adversarial/Security, Continuity) over a feature execution flow. It produces
+                            <code>eval-report.md</code> and routes gaps to their respective skills (e.g., spec drift to
+                            <code>/spec-requirements</code>).
+                        </li>
+                        <li><strong>Doctor Mode (Structural Diagnostics):</strong> Executes
+                            <code>scripts/doctor.sh</code> to diagnose and auto-repair path drift, surface drift, and
+                            workflow sync. It performs up to 3 automated repair attempts before outputting a diagnostic
+                            failure report.
+                        </li>
                     </ul>
                 </div>
             </div>
