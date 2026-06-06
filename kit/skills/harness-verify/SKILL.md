@@ -33,20 +33,25 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 2. **Mechanical Gate Audit**: Run the exact proof commands in `plan.md` (e.g. test, lint) and write results in `review.md`. If gate fails, stop.
 3. **Clean-State Check**: Ensure no uncommitted changes or broken builds.
 4. **Alignment Audit**: Map each `REQ-X` from `spec.md` to the implementation, flagging missing, ghost, or misaligned behaviors.
+   **Pass/Fail threshold**: Zero tolerance — every `AC-*` item in `spec.md` must map to at least one task with recorded validation evidence in `tasks.md`. A single AC with no implementation evidence = `Fail`. There is no partial pass.
 5. **Traceability & Baseline**: Verify `REQ -> AC -> TASK -> validation` trace and check if validation was run *prior* to implementation. (Required for `Complex`, optional for `Standard`).
 6. **Security Lens**: Audit verified scope against `security-policy.md`.
 7. **Helper Skills**:
    - **Code Review**: For substantial changes, invoke `/code-review` (passing touched files, ACs, tasks) and merge findings into `review.md`.
    - **Harness Maintain**: Invoke `/harness-maintain` if changes touch the harness.
 8. **Optional Fallow Pass**: Simplify touched files by removing dead code/unused imports. Do not change behavior; re-run verification after cleanup.
+   **Scope limit**: Fallow pass applies only to files explicitly listed in this feature's `tasks.md` task targets. No changes to adjacent or related files, even if they contain dead code. Re-run the mechanical gate after cleanup before writing the final verdict.
 9. **Write Review**: Output findings by mode and cleanup details in `review.md`.
-10. **Scenarios**: Draft `testing-scenarios.md` for human testing (Required for `Complex`, optional for `Standard`).
+10. **Scenarios**: Draft `testing-scenarios.md` for human testing (Required for `Complex`, optional for `Standard`). Draft using `references/testing-scenarios-template.md`. Required for `Complex`; optional for `Standard`; skip for `Tiny` unless behavior is user-visible.
 11. **Post-Ship Knowledge Sync**: Invoke `/context-memory` Post-Ship Sync (Standard/Complex profiles or when reusable knowledge is produced).
 12. **Finalization**: Set verdict (`Pass`, `Pass with Follow-Up Debt`, or `Fail`). If passed and memory sync is done, update `status.md` to `Done`.
 
 ## Stop Conditions
 
-- Proposed cleanup changes behavior or expands beyond the verified feature surface.
+- Proposed cleanup changes behavior or expands beyond the verified feature surface (fallow-pass scope creep).
+- `plan.md` exists but has no `## Mechanical Verification Gate` section → stop. Route to `/spec-plan` to add the gate before verifying.
+- Proof command exits non-zero after 2 distinct fix attempts → stop. Write findings to `review.md` with verdict `Fail`. Surface to user for resolution before retrying verification.
+- Security audit (Step 6) finds a P0 violation (as defined in `security-policy.md`) → stop. Verdict is `Fail` regardless of other checks. No pass until the violation is resolved and re-verified.
 
 ## Preconditions
 
@@ -61,6 +66,12 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 - **Split Modes**: Perform mechanical, alignment, and security audits separately.
 - **Drift Detection**: Mismatches between code and spec must fail verification.
 - **Done Authority**: This skill is the sole authority for marking a feature `Done`.
+
+## Verdict Definitions
+
+- **Pass**: All ACs verified with executed evidence. No unresolved required findings.
+- **Pass with Follow-Up Debt**: All ACs verified, but non-blocking quality issues exist (e.g., missing inline comments, non-critical dead code not in the fallow pass scope). Requires creating a debt entry in `docs/TECH_DEBT_REGISTER.md` before marking `Done`.
+- **Fail**: One or more ACs not verified, a gate command fails, or a P0 security violation is found. `status.md` stays at `Verifying`. Route to the responsible phase skill.
 
 ## Rationalization vs. Reality
 

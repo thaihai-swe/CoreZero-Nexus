@@ -2,6 +2,18 @@
 
 Use this checklist to ensure the repository is fully prepared for harnessed agentic development.
 
+### Brownfield Phase A (if applicable — skip for greenfield repos)
+
+- [ ] Repo confirmed non-trivial (has existing code, tests, CI, or meaningful history).
+- [ ] Subagent read-only sweep completed. No raw grep output in main context — summaries only.
+- [ ] `memories/repo/brownfield/brownfield-map.md` exists and has at least one rated area.
+- [ ] `memories/repo/brownfield/dependency-graph.md` exists and lists module dependencies.
+- [ ] `memories/repo/learned-heuristics.md` has 3–5 new entries with file citations.
+- [ ] `HARNESS_CARD.md` Known Limits section updated with brownfield-specific caveats.
+- [ ] Profile auto-promotion rule recorded in `brownfield-map.md` under `## Profile Rules`.
+
+### Phase B — Bootstrap (all repos)
+
 - [ ] `install.sh` has already seeded the harness surface. If a seeded file is missing, run `bash scripts/doctor.sh` or re-run the installer before init continues.
 - [ ] `AGENTS.md` exists at the project root and is router-style (< 50 lines, links to deeper docs).
 - [ ] `HARNESS_CARD.md` exists at the project root.

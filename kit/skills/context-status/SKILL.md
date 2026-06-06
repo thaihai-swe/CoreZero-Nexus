@@ -25,6 +25,7 @@ It handles:
 
 - `artifacts/features/**/status.md`
 - `references/status-report-template.md`
+- `memories/repo/harness-config.md` (to resolve the canonical `artifacts/features/` path)
 
 ## When to Use
 
@@ -37,19 +38,22 @@ It handles:
 
 1. **Discovery:** Find all directories in `artifacts/features/`.
 2. **Parsing:** Read the `status.md` (and `handoff.md` if relevant) in each directory.
-3. **Synthesis:** Create a summary table showing:
+3. **Synthesis**: Create a summary table showing:
    - Feature Slug
    - Current Phase
    - Delivery Profile
    - Last Updated
    - Blockers (Yes/No)
+   **Stale detection**: If a feature's `status.md` has a `Last Updated` field older than 7 days and no session checkpoint exists in `progress.md` within that period, flag the feature as `[STALE — no activity]` in the summary table. Do not suppress stale features from the report.
 4. **Detailing:** For each feature, provide a 1-line summary of the "Next Step" using the public slash-command format (e.g., `/spec-plan`, `/harness-verify`), reading the current phase from its `status.md` to determine the correct command.
 5. **Guidance:** If a feature is missing a `status.md`, recommend running `/spec-requirements` (or the appropriate initialization skill) to fix the process drift.
-6. **Dashboard Generation:** Execute `python3 scripts/generate-dashboard.py` to compile the visual interactive status report at `docs/generated/dashboard.html`.
+6. **Dashboard Generation**: Before running `python3 scripts/generate-dashboard.py`, verify the script exists at `scripts/generate-dashboard.py` and Python 3 is available. If the script is missing: produce the text-only summary report (Steps 1–5) and add a warning: "[dashboard generation skipped — scripts/generate-dashboard.py not found]". Do not fail the entire skill for a missing dashboard script. If the script exists, execute it to compile the visual interactive status report at `docs/generated/dashboard.html`.
 
 ## Stop Conditions
 
-- No features found in `artifacts/features/`.
+- No feature directories found in `artifacts/features/` → stop. Report: "No active features found. Run `/spec-requirements` to start a feature."
+- `artifacts/features/` directory is inaccessible or unreadable → stop. Report the access error; do not produce a partial scan.
+- A `status.md` file exists but is malformed (missing `## Current Phase` section) → skip that feature in the summary table and flag it: "[MALFORMED status.md — run /spec-requirements to repair]".
 
 ## Core Rules
 

@@ -27,7 +27,7 @@ Copy the block below into `HARNESS_CARD.md`. Replace placeholders. **Required** 
 
 ## Repository Profile (required)
 
-- **Repository type:** Greenfield | Brownfield | Vibecoded
+- **Repository type:** Greenfield | Brownfield
 - **Default rigor profile:** Tiny | Standard | Complex
 - **Primary stack:** <e.g., Python 3.10 + FastAPI; TypeScript + React; Go services>
 - **Test runner:** <command>
@@ -43,7 +43,7 @@ Mark each `Active` (fully wired), `Partial` (wired with known gaps), or `Off` (i
 | State (per-feature) | Active | `artifacts/features/<slug>/` |
 | Verification (mechanical gate) | Active | `harness-verify` + `harness-config.md` test command |
 | Scope (one task at a time) | Active | `tasks.md` focused, independently-verifiable tasks |
-| Lifecycle (init → spec/research → session → verify) | Active | `brownfield-init` (brownfield only), `starter-init`, `spec-requirements` / `spec-research`, `context-session`, `harness-verify` |
+| Lifecycle (init → spec/research → session → verify) | Active | `starter-init` (Phase A: brownfield archaeology; Phase B: bootstrap), `spec-requirements` / `spec-research`, `context-session`, `harness-verify` |
 | Security (permission tiers) | Active \| Partial \| Off | `memories/repo/security-policy.md` + `skills/harness-maintain/hooks/git-guardrails.sh` |
 | Context Engineering (tiered) | Active | `context-session/references/context-assembly.md` |
 
@@ -93,7 +93,7 @@ List honestly what the harness does NOT cover. Examples:
 - The harness does not gate production deploys.
 - `visualize` is opt-in; not all features have diagrams.
 - Brownfield map is current as of <date>; rerun if the layout shifts.
-- Brownfield repos must run `/brownfield-init` before `/starter-init`.
+- Brownfield repos: `/starter-init` runs Phase A (archaeology) automatically before Phase B (bootstrap).
 - The auto-tier observability log is empty — no failures captured yet.
 
 ## Customizations (optional)

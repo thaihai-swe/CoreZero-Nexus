@@ -61,6 +61,7 @@ Do not use for:
 ## Workflow
 
 ### Memory Promotion & File Management
+0. **INDEX.md Bootstrap**: If `memories/repo/INDEX.md` does not exist, create it from `references/index-template.md` before routing any findings. All subsequent steps depend on the router being initialized.
 1. **Identify the finding** and its source.
 2. **Classify and Route**:
    - **Normative repo rule** -> `constitution.md`
@@ -71,7 +72,7 @@ Do not use for:
    - **Feature-local** -> Keep in feature artifacts.
 3. **Constitution Updates**: Use stable CC-* identifiers, maintain semantic versioning, and avoid overlapping rules.
 4. **Security Policy**: Define permissions, safe vs confirm actions, network/fs/secret boundaries, and prompt-injection handling.
-5. **Learned Heuristics**: Record repeated, evidence-backed execution heuristics (trigger, heuristic, evidence, recurrence count, semantic links, confidence). If you find a matching heuristic, increment its `recurrence-count`. If `recurrence-count` hits 3 or more, automatically draft a CC-* promotion proposal.
+5. **Learned Heuristics**: Record repeated, evidence-backed execution heuristics (trigger, heuristic, evidence, recurrence count, semantic links, confidence). If you find a matching heuristic, increment its `recurrence-count`. If `recurrence-count` hits 3 or more, automatically draft a CC-* promotion proposal. After drafting, **stop and surface the draft to the user for explicit approval before committing to `constitution.md`**. Write the draft to a temporary `memories/repo/cc-proposals/<draft-id>.md` file and note it in `INDEX.md` watchlist. Do not auto-merge.
 6. **Project Knowledge Base**: Integrate findings into descriptive sections, avoiding duplicates. Ensure every new entry uses markdown links (Semantic Knowledge Graph) to connect to relevant `docs/architecture.md` components or domain specs.
 7. **Architecture Baseline**: Map component structure, runtime boundaries, data flow, and external integrations in `docs/architecture.md`.
 8. **AI Coding Contract**: Synthesize stack conventions into normative rules (`constitution.md`) and descriptive examples (`project-knowledge-base.md`).
@@ -110,6 +111,12 @@ Do not use for:
 - Feature-local notes or temporary workarounds promoted as durable memory.
 - Coding contract duplicates rules in both constitution and knowledge base.
 
+## Ownership Boundaries
+
+- **`starter-init`** creates and seeds memory files at initialization time. On re-init, it does not overwrite non-empty memory files.
+- **`context-memory`** is the sole ongoing maintenance owner of instruction-tier memory files after seeding. It updates only files that `starter-init` has already created.
+- `context-memory` reads `memories/repo/adr-log.md` for architecture drift detection but does not append entries (owned by `spec-adr`).
+
 ## Verification
 
 - [ ] Normative rules in constitution/security-policy; descriptive facts in heuristics/PKB.
@@ -124,7 +131,8 @@ Memory files must contain durable, evidence-grounded repo knowledge, separating 
 
 ## Output Rules
 
-- Update only: `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/harness-config.md`, `memories/repo/domain-specs.md`, `docs/architecture.md`, `memories/repo/INDEX.md`, `memories/repo/observability-log.md`, or `memories/repo/adr-log.md`.
+- Update only: `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/domain-specs.md`, `docs/architecture.md`, `memories/repo/INDEX.md`, `memories/repo/observability-log.md`, or `memories/repo/adr-log.md`.
+- `memories/repo/harness-config.md` is owned by `starter-init` and `harness-maintain`. This skill may propose config changes to the user but does not write `harness-config.md` directly.
 - Route findings to the owning skill with a short reason.
 - Preserve heading structure and identifier stability.
 

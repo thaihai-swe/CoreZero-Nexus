@@ -1,8 +1,7 @@
 flowchart LR
     %% Artifact Data Flow — Requirement to Proof to Memory
 
-    AN([analysis.md]) -->|Findings| PR([proposal.md])
-    PR -->|Align| SP([spec.md])
+    AN([analysis.md]) -->|Findings| SP([spec.md])
     SP -->|Map architecture| DS([design.md])
     SP -->|Decompose| PL([plan.md / tasks.md])
 

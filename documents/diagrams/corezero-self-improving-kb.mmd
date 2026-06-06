@@ -1,39 +1,40 @@
-flowchart LR
+flowchart TD
     %% Self-Improving KB Loop — ship to extract to triage to promote
 
-    SHIP([Feature Ships<br/>harness-verify Pass]) --> SYNC[Post-Ship Sync<br/>context-memory sweep]
+    SESSION_END["context-session END<br/>Extract candidates to<br/>session-extracts.md"]:::triage
+    HARNESS["harness-verify / -maintain<br/>Log failures to<br/>observability-log.md"]:::triage
 
-    SYNC -->|sweep every file in INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
+    HARNESS --> VERDICT{harness-verify verdict?}:::decision
+    VERDICT -->|Pass| SYNC["Post-Ship Sync<br/>(context-memory sweep)"]:::sync
+    VERDICT -->|Fail| HARNESS
 
-    FILES -->|durable lesson| EXT[Append candidate<br/>session-extracts.md]
-    FILES -->|harness failure| OBS[Append entry<br/>observability-log.md]
-    FILES -->|no change| RECORD[Record reason in<br/>Post-Ship Sync block]
+    SYNC -->|sweep each file in INDEX.md| FILES{Update or<br/>untouched?}:::decision
+    FILES -->|Update| MEM_UPD["Directly update memory files<br/>(PKB, constitution, architecture, etc.)"]:::sync
+    FILES -->|Untouched| SWEEP_REC["Append sweep record to<br/>session-extracts.md"]:::sync
 
-    EXT --> TRIAGE[context-memory<br/>Extraction Triage]
-    OBS --> TRIAGE
+    MEM_UPD --> SWEEP_REC
+    SWEEP_REC --> TRIAGE["Extraction Triage<br/>(context-memory)"]:::triage
+    SESSION_END --> TRIAGE
+    HARNESS --> TRIAGE
 
-    TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
-    TRIAGE -->|normative rule| CONST[Promote to<br/>constitution.md]
-    TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
-    TRIAGE -->|security finding| SEC[Promote to<br/>security-policy.md]
-    TRIAGE -->|defer| DEF[Wait for next signal]
-    TRIAGE -->|feature-local| DISC[Discard<br/>with reason]
+    TRIAGE --> DECIDE{Triage Action?}:::decision
+    DECIDE -->|Promote Heuristic| HEUR["learned-heuristics.md"]:::promote
+    DECIDE -->|Promote Fact/Pattern| PKB["project-knowledge-base.md<br/>or docs/architecture.md"]:::promote
+    DECIDE -->|Promote Normative Rule| CONST["constitution.md<br/>(CC-* with user approval)"]:::promote
+    DECIDE -->|Promote Sandbox/Perms| SEC["security-policy.md"]:::promote
+    DECIDE -->|Defer| DEF["Defer<br/>(Wait for next signal)"]:::discard
+    DECIDE -->|Discard| DISC["Discard<br/>(Retired, trail kept)"]:::discard
 
-    HEUR --> SMARTER[KB grows<br/>next session is smarter]
-    CONST --> SMARTER
+    HEUR --> SMARTER(["KB Grows<br/>Next session is smarter"]):::terminal
     PKB --> SMARTER
+    CONST --> SMARTER
     SEC --> SMARTER
 
-    SMARTER -.->|loop back| SHIP
+    SMARTER -.->|Smarter baseline| SESSION_END
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef sync fill:#10b981,stroke:#047857,color:#fff
     classDef triage fill:#f59e0b,stroke:#b45309,color:#fff
     classDef promote fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef discard fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
-
-    class SHIP,SMARTER terminal
-    class SYNC,FILES,RECORD sync
-    class TRIAGE,EXT,OBS triage
-    class HEUR,CONST,PKB,SEC promote
-    class DEF,DISC discard
+    classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d

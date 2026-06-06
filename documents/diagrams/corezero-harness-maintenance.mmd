@@ -1,22 +1,30 @@
 flowchart TD
-    %% Harness Maintenance Loop — Assess vs Improve modes
+    %% Harness Maintenance Loop — All 5 modes
 
-    START([Invoke /harness-maintain]) --> MODE{Select Mode}
+    START([Invoke /harness-maintain]) --> MODE{Select Mode}:::decision
 
-    %% Assess Mode Path
-    MODE -->|Assess Mode| ASSESS_SWEEP[Scan repository configuration<br/>rules, lints, policy docs]
-    ASSESS_SWEEP --> ASSESS_AUDIT[Audit alignment vs quality metrics]
-    ASSESS_AUDIT --> ASSESS_REPORT[Generate harness-assessment.md<br/>& eval-report.md]
-    ASSESS_REPORT --> ASSESS_RECOM[Identify governance gaps / rules drift]
-    ASSESS_RECOM --> ENDS([Harness baseline verified])
+    %% Mode Paths
+    MODE -->|Create Mode| CREATE["Create Mode<br/>(Harness missing)"]:::improve
+    CREATE --> CREATE_WORK["Run starter-init bootstrap<br/>Build initial constitution & security baseline"]:::improve
 
-    %% Improve Mode Path
-    MODE -->|Improve Mode| OBS_READ[Read memories/repo/observability-log.md]
-    OBS_READ --> OBS_TRIAGE[Triage failures: mechanical, alignment, or LLM limits]
-    OBS_TRIAGE --> OBS_IDENTIFY[Identify repeating patterns / trends]
-    OBS_IDENTIFY --> OBS_FIX[Formulate durable rule or policy fix]
-    OBS_FIX --> OBS_UPDATE[Promote fix to constitution.md / harness-config.md]
-    OBS_UPDATE --> ENDS
+    MODE -->|Assess Mode| ASSESS["Assess Mode<br/>(Audit health score)"]:::assess
+    ASSESS --> ASSESS_WORK["Score (1-5) against 6 subsystems<br/>Generate harness-assessment.md"]:::assess
+
+    MODE -->|Improve Mode| IMPROVE["Improve Mode<br/>(Observability triage)"]:::improve
+    IMPROVE --> IMPROVE_WORK["Read memories/repo/observability-log.md<br/>Apply durable fixes to constitution / config"]:::improve
+
+    MODE -->|Eval Mode| EVAL["Eval Mode<br/>(Split evaluation)"]:::assess
+    EVAL --> EVAL_WORK["Run split evaluator passes<br/>Generate feature execution eval-report.md"]:::assess
+
+    MODE -->|Doctor Mode| DOCTOR["Doctor Mode<br/>(Structural diagnostics)"]:::improve
+    DOCTOR --> DOCTOR_WORK["Run scripts/doctor.sh checks<br/>Diagnose & auto-repair surface drift"]:::improve
+
+    %% End Connection
+    CREATE_WORK --> ENDS([Harness baseline verified & healthy]):::terminal
+    ASSESS_WORK --> ENDS
+    IMPROVE_WORK --> ENDS
+    EVAL_WORK --> ENDS
+    DOCTOR_WORK --> ENDS
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
@@ -24,6 +32,3 @@ flowchart TD
     classDef improve fill:#fff3cd,stroke:#ffc107,color:#b45309
 
     class START,ENDS terminal
-    class MODE decision
-    class ASSESS_SWEEP,ASSESS_AUDIT,ASSESS_REPORT,ASSESS_RECOM assess
-    class OBS_READ,OBS_TRIAGE,OBS_IDENTIFY,OBS_FIX,OBS_UPDATE improve

@@ -8,8 +8,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 
 | Command | Subsystem | Customer Value / Purpose | Key Artifacts |
 |---|---|---|---|
-| `/brownfield-init` | Project Starter | Sweeps legacy code to locate risks before changing it | `brownfield-map.md`, `dependency-graph.md` |
-| `/starter-init` | Project Starter | Configures linter, build, and test verification baselines | `harness-config.md`, `HARNESS_CARD.md` |
+| `/starter-init` | Project Starter | Configures verification baselines; sweeps legacy code (Phase A) automatically on brownfield repos | `harness-config.md`, `HARNESS_CARD.md`, `brownfield-map.md`, `dependency-graph.md` |
 | `/context-session` | Context | Minimizes token costs and prevents LLM context fatigue | `handoff.md`, `session-extracts.md` |
 | `/context-status` | Context | Monitors feature progression and flags implementation blockers | `progress.md` |
 | `/context-memory` | Context | Updates shared conventions so the agent gets smarter over time | `constitution.md`, `learned-heuristics.md` |
@@ -23,8 +22,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 | `/code-review` | Specialist | Audits code health against Google's Engineering Practices | Integrated reviews in `review.md` |
 | `/visualize` | Specialist | Generates visual SVG/Mermaid flowcharts and class diagrams | `.svg`, `.mermaid` |
 | `/codebase-documenter`| Specialist | Compiles complete technical onboarding guides for new teams | `README.md`, `CONTRIBUTING.md` |
-| `/system-flow-docs` | Specialist | Explains multi-component interactions and workflow paths | Workflow documentation logs |
-| `/api-endpoint-docs` | Specialist | Generates exact, machine-readable HTTP contract specs | API contract documentation |
+| `/technical-docs` | Specialist | Compiles API contracts (`--mode api`) and/or system flows (`--mode flow`/`both`) | `api-docs.md`, `flows.md`, `technical-docs.md` |
 
 ---
 

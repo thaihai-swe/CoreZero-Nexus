@@ -1,6 +1,6 @@
 # End-to-End Tutorial
 
-This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 17 public commands across the 4 core packs and 5 specialist tools, walking you through the entire lifecycle from installation to closeout.
+This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 16 public commands across the 4 core packs and 5 specialist tools, walking you through the entire lifecycle from installation to closeout.
 
 ---
 
@@ -8,10 +8,7 @@ This tutorial provides a complete step-by-step guide for using the **CoreZero Ne
 
 ```mermaid
 graph TD
-    A[Install Kit] --> B1{"Is existing/established repo?"}
-    B1 -->|Yes| B2["/brownfield-init"]
-    B1 -->|No| B3["/starter-init"]
-    B2 --> B3
+    A[Install Kit] --> B3["/starter-init"]
     B3 --> C{"Is existing repo & behavior unknown?"}
 
     subgraph SDD [Spec-Driven Development Flow]
@@ -26,8 +23,7 @@ graph TD
     subgraph Specialist Docs & Diagrams
         I["/visualize"]
         J["/codebase-documenter"]
-        K["/system-flow-docs"]
-        L["/api-endpoint-docs"]
+        K["/technical-docs"]
     end
 
     H --> M["/harness-verify"]
@@ -37,7 +33,6 @@ graph TD
 
     M --> Q["/harness-maintain"]
 
-    style B2 fill:#f9f,stroke:#333,stroke-width:2px
     style B3 fill:#f9f,stroke:#333,stroke-width:2px
     style C fill:#bbf,stroke:#333,stroke-width:2px
     style H fill:#fbb,stroke:#333,stroke-width:2px
@@ -67,37 +62,23 @@ curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scr
 
 ---
 
-## 3. Phase 1: Repository Bootstrapping (`/brownfield-init` & `/starter-init`)
+## 3. Phase 1: Repository Bootstrapping (`/starter-init`)
 
-Once installed, bootstrap the CoreZero Nexus in your repository. For existing repositories, you must run the archaeology pass first.
+Once installed, bootstrap the CoreZero Nexus in your repository.
 
-### Step 1: Run Brownfield Archaeology (Existing Repositories Only)
-If you are introducing the harness to an established codebase, run the archaeology pass:
-```text
-/brownfield-init
-```
-*Effect*: Creates the brownfield map, dependency graph, and seeds risk heuristics under `memories/repo/brownfield/`.
-
-### Step 2: Run Starter Bootstrap
-
-After brownfield archaeology, continue with the normal bootstrap:
-```text
-/starter-init
-```
-
-### Step 2: Initialize the Harness
+### Step 1: Initialize the Harness and Run Archaeology (if applicable)
 Run the initialization command:
 ```text
 /starter-init
 ```
-*Effect*: Sets up active harness configuration, status, and verification settings.
+*Effect*: Detects the repository type. If it is an existing repository, it automatically runs the legacy archaeology sweep (Phase A) first, generating the brownfield map, dependency graph, and seeding risk heuristics under `memories/repo/brownfield/`. It then bootstraps the active harness configuration, status, and verification settings (Phase B).
 
 ### Step 3: Verify Output Files
 Ensure the following files have been created in your repository root:
 - [`AGENTS.md`](../kit/AGENTS.md) — The agent router configuration.
 - [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) — Active harness status and verification settings.
 - [`memories/repo/harness-config.md`](../kit/memories/repo/harness-config.md) — Command and path configuration.
-- `memories/repo/brownfield/` (if run) — Brownfield archaeology map and dependency graph.
+- `memories/repo/brownfield/` (if brownfield) — Brownfield archaeology map and dependency graph.
 - [`docs/architecture.md`](../kit/docs/architecture.md) — System architecture baseline.
 - [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md), [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md), and the other seeded adopter docs.
 
@@ -245,19 +226,17 @@ Generate complete, user-friendly onboarding guides for a new repository:
 ```
 *Effect*: Creates structure maps, contributing rules, and developer setup documentation.
 
-### Step 3: Narrative Workflow Documentation (`/system-flow-docs`)
-Explain how multiple components interact to support complex end-to-end user workflows:
-```text
-/system-flow-docs
-```
-*Effect*: Traces execution flows, maps container boundaries, and writes workflow narratives.
+### Step 3: Technical Documentation (`/technical-docs`)
+Explain how multiple components interact, and compile API endpoint contracts or system flows based on the mode flag:
+- `--mode api`: Generates endpoint specifications and sequence diagrams.
+- `--mode flow`: Traces system orchestration flows and alternative failure paths.
+- `--mode both`: Generates both API contracts and system flows into a single unified document.
 
-### Step 4: HTTP API Reference Documentation (`/api-endpoint-docs`)
-Generate exact, machine-readable HTTP contract specifications:
+Example run:
 ```text
-/api-endpoint-docs
+/technical-docs --mode both
 ```
-*Effect*: Compiles methods, path parameters, request payloads, status codes, and JSON response examples.
+*Effect*: Traces execution flows, maps container boundaries, compiles methods, path parameters, request payloads, status codes, and writes technical narratives.
 
 ---
 
@@ -265,8 +244,7 @@ Generate exact, machine-readable HTTP contract specifications:
 
 | Command | Category | Purpose | Input / Target Artifact |
 |---|---|---|---|
-| `/brownfield-init` | Project Starter | Run brownfield archaeology pass on existing repositories | `memories/repo/brownfield/` |
-| `/starter-init` | Project Starter | Initial setup and router configuration | [`AGENTS.md`](../kit/AGENTS.md), [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) |
+| `/starter-init` | Project Starter | Initial setup, router configuration, and archaeology sweep (Phase A) on brownfield repos | [`AGENTS.md`](../kit/AGENTS.md), [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md), `memories/repo/brownfield/` |
 | `/context-session` | Context | Manage active session boundaries and checkpoints | `artifacts/features/<slug>/` |
 | `/context-memory` | Context | Maintain durable memory files | [`memories/repo/constitution.md`](../kit/memories/repo/constitution.md), [`INDEX.md`](../kit/memories/repo/INDEX.md) |
 | `/context-status` | Context | Multi-feature orchestration overview | Scans `artifacts/features/` |
@@ -280,5 +258,4 @@ Generate exact, machine-readable HTTP contract specifications:
 | `/code-review` | Specialist | Google-standard code review audit | Review output in `review.md` |
 | `/visualize` | Specialist | Generate SVG/Mermaid diagrams | `.svg`, `.mermaid` files |
 | `/codebase-documenter`| Specialist | Repository onboarding guides | READMEs, developer setups |
-| `/system-flow-docs` | Specialist | End-to-end system workflow narrative | Flow docs with Mermaid |
-| `/api-endpoint-docs` | Specialist | HTTP API reference contract documentation | API reference Markdown docs |
+| `/technical-docs` | Specialist | Compiles endpoint contracts and end-to-end event workflows | `api-docs.md`, `flows.md`, `technical-docs.md` |

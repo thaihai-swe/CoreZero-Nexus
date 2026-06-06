@@ -1,4 +1,0 @@
-interface:
-  display_name: "API Endpoint Docs"
-  short_description: "Create API docs with endpoint flow diagrams"
-  default_prompt: "Use $api-endpoint-docs to document the API endpoints in this codebase with an end-to-end Mermaid flow."

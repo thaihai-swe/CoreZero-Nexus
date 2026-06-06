@@ -15,6 +15,7 @@ Use this skill to perform the coding work. Follow `tasks.md`, execute one approv
 ## Read First
 
 - `status.md`, `tasks.md`, `plan.md`, `spec.md` in `artifacts/features/<slug>/`.
+- `artifacts/features/<slug>/progress.md` (if it exists — validate last checkpoint aligns with `status.md` before beginning)
 - `memories/repo/constitution.md` (code standards) and `security-policy.md` (security design).
 - `memories/repo/harness-config.md` (canonical build/test/lint commands).
 - Touched files and interfaces.
@@ -29,10 +30,12 @@ Use this skill to perform the coding work. Follow `tasks.md`, execute one approv
 ## Workflow
 
 1. **Initialization**: Update `status.md` phase to `Implementing`.
+1a. **Resumption Check** (if resuming mid-task): Read the last entry in `progress.md` to identify the interrupted task. Re-run the task's proving command from pre-flight — do not skip this even if the task was `In Progress`. If the proving command now fails, treat the task as not started: reset its status to `Pending` and restart from Step 3.
 2. **Select Task**: Choose the first unblocked task ID (e.g., `T-01`) from `tasks.md`. Declare the target task before coding.
 3. **Pre-Flight Baseline**: Read the task requirements. **Run the task's validation/proving command once in the terminal before editing** to establish a baseline. If files don't exist, create skeleton files first.
 4. **Status Update**: Mark the task `In Progress` in `tasks.md`.
 5. **Coding**: Implement code and tests within the task boundary. Follow `rules/` and templates.
+5a. **Decision Provenance**: If implementation requires a design decision not covered in `spec.md` or `plan.md` (e.g., swapping a library, choosing an alternative algorithm), stop coding. Route to `/spec-adr` if the decision is architectural. For minor implementation choices: append a `## Decision Record` block to `progress.md` (choice, reason, spec alignment) before writing code. Do not implement undocumented mid-flight decisions silently.
 6. **Proof Policy**: Satisfy planned proof surfaces. If the plan mandates tests, implement them.
 7. **Validation**: Re-run the validation command to verify passes.
 8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done`. Update `progress.md` with session notes.
@@ -42,6 +45,7 @@ Use this skill to perform the coding work. Follow `tasks.md`, execute one approv
 
 - `spec.md`, `plan.md`, or `tasks.md` is missing.
 - Unresolved dependencies or design contradictions.
+- `status.md` phase is not `Plan Approved` → stop. Route to `/spec-plan` to complete planning before implementing.
 
 ## Preconditions
 

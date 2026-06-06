@@ -1,30 +1,25 @@
 flowchart TD
-    %% Brownfield Flow — archaeology before bootstrap
+    %% Brownfield Flow — archaeology before bootstrap, research before requirements
 
-    CODE[(Existing Codebase<br/>code + tests + history)] --> INIT[brownfield-init<br/>read-only archaeology sweep]
+    CODE[(Existing Codebase<br/>code + tests + history)] --> BOOT["install.sh<br/>Seed skills, rules, and memories"]:::brown
+    BOOT --> INIT["starter-init (Phase A + B)<br/>Phase A: Archaeology subagent sweep & map debt<br/>Phase B: Bootstrap config & seed memories"]:::brown
 
-    INIT --> MAP[Brownfield Map<br/>risky paths + implicit contracts]
-    INIT --> GRAPH[Dependency Graph<br/>fan-in / blast radius]
-    INIT --> HEUR[Seed heuristics<br/>with file-backed watchouts]
+    INIT --> SESSION_START["context-session START<br/>Load context & claim feature"]:::step
+    SESSION_START --> RES["spec-research<br/>(analysis.md: map boundaries & behaviors to preserve)"]:::brown
 
-    MAP --> START[starter-init<br/>bootstrap harness after archaeology]
-    GRAPH --> START
-    HEUR --> START
+    RES --> SPEC["spec-requirements<br/>(grilling waves + spec.md with brownfield risk rating)"]:::brown
+    SPEC --> PLAN["spec-plan<br/>(plan.md + tasks.md + design.md)"]:::brown
+    PLAN --> IMPL["spec-implement<br/>(one task at a time + proof)"]:::step
+    IMPL --> VERIFY["harness-verify<br/>(review.md + testing-scenarios.md + optional Fallow Pass)"]:::gate
 
-    START --> READ[Read brownfield map<br/>manually when planning work]
-    READ --> SPEC[spec-requirements<br/>Current Context section<br/>brownfield risk rating]
-    SPEC --> SAFE([Pick smallest safe<br/>first-touch surface])
-    SAFE --> LOOP([Standard per-feature loop<br/>spec to verify])
-
-    NOTE[Router caveat:<br/>brownfield artifacts live in memories/repo/brownfield/<br/>but are not auto-loaded by INDEX.md yet]
-    NOTE -.-> READ
+    VERIFY -- gate fail --> IMPL
+    VERIFY -- pass --> SYNC["Post-Ship Sync<br/>(context-memory sweep)"]:::gate
+    SYNC --> ENDS["context-session END<br/>(handoff.md + session-extracts.md)"]:::step
+    ENDS --> DONE([Feature Shipped + KB compounded]):::terminal
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef brown fill:#f59e0b,stroke:#b45309,color:#fff
     classDef step fill:#fff,stroke:#d0d7de,color:#0d0d0d
-    classDef preserve fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+    classDef gate fill:#3b82f6,stroke:#1d4ed8,color:#fff
 
-    class CODE,SAFE,LOOP terminal
-    class INIT,MAP,GRAPH,HEUR,START,SPEC brown
-    class READ step
-    class NOTE preserve
+    class CODE,DONE terminal

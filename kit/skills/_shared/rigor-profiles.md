@@ -90,7 +90,13 @@ At the start of the feature lifecycle (during `/spec-requirements`, `/spec-resea
    - Security-sensitive paths declared in `security-policy.md`
    - System boundary paths in `docs/architecture.md`
    - The agentic harness files (`skills/`, `memories/repo/`, `AGENTS.md`, `HARNESS_CARD.md`)
-3. If an intersection is detected, write/promote the profile to `Complex` in `status.md` under `## 🧭 Delivery Profile`, detailing the matching rule. If no targets match but the task is a single-file minor fix with no boundary impacts, demote to `Tiny`. Otherwise, default to `Standard`.
+3. If `memories/repo/brownfield/brownfield-map.md` exists:
+   - Read all severity ratings in the Severity Rating column.
+   - If any area is rated `high` or `critical` → promote to `Complex`.
+   - Append to the profile rationale: "Brownfield risk: <area> rated <severity>."
+4. If an intersection is detected, write/promote the profile to `Complex` in `status.md` under `## 🧭 Delivery Profile`, detailing the matching rule. If no targets match but the task is a single-file minor fix with no boundary impacts, demote to `Tiny`. Otherwise, default to `Standard`.
+
+The demotion check runs during the Automated Profile Selection Routine inside `/spec-requirements`, `/spec-research`, or `/context-session` resume — not as a separate step.
 
 ## Where Profiles Live
 
@@ -105,3 +111,10 @@ At the start of the feature lifecycle (during `/spec-requirements`, `/spec-resea
 - **Locking the profile and never revisiting.** If implementation reveals the work is harder than the spec implied, promote the profile and re-run the affected phase. The artifacts are cheap; the bug isn't.
 - **Setting the repo default to `Tiny`.** The repo default should match the typical work in this repo. For most repos that is `Standard`. `Tiny` as a default invites silent under-verification.
 - **Treating Complex as one-size-fits-all.** Complex covers everything from a contained-but-risky feature to a repo-wide harness change. Read the Complex row carefully and apply only the rows that match the work — System Spec Mode and `harness-maintain Eval Mode` are reserved for cross-cutting / harness work, not every Complex feature.
+
+### Profile Promotion Mid-Lifecycle
+
+If implementation reveals the profile must be promoted:
+1. Update `status.md` → `## 🧭 Delivery Profile` with the new profile and reason.
+2. Re-run the **most recently completed phase skill** (e.g., if you are in `Implementing`, re-run `/spec-plan` to add any ceremony the new profile requires).
+3. Resume implementation from where work stopped — do not restart the entire lifecycle.

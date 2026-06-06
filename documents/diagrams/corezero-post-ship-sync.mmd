@@ -3,30 +3,37 @@ sequenceDiagram
     participant V as harness-verify
     participant M as context-memory<br/>Post-Ship Sync
     participant I as INDEX.md
+    participant A as Feature Artifacts
     participant F as Memory Files
     participant E as session-extracts.md
     participant S as status.md
 
     V->>V: Mechanical gate + Alignment + Security PASS
     V->>M: Hand off to Post-Ship Sync
-    M->>I: Read every file listed
+    M->>I: Read listed memory files (create INDEX.md if missing)
     I-->>M: Always + By-Intent + By-Debug groups
+    M->>A: Read feature artifacts (spec, plan, review, ADRs)
+    A-->>M: Durable changes and logs
     loop For each file in INDEX.md
-        M->>F: Read file
+        M->>F: Read memory file
         alt Durable change found
-            M->>E: Append candidate to ## Post-Ship Sync block
-            M->>F: Apply diff
+            M->>F: Apply diff (Update)
+            M->>M: Check promotion threshold (lines/subtopics/refs)
+            alt Threshold crossed
+                M->>I: Add to ## Promotion Watchlist
+                M->>A: Write promotions.md proposal
+            end
         else No change needed
-            M->>E: Record file name + 1-line reason untouched
+            M->>M: Formulate 1-line reason untouched
         end
     end
-    M->>E: Verify every INDEX file accounted for
-    alt Sweep complete
-        M-->>V: OK — sync record present
+    M->>E: Write compiled sweep record to ## Post-Ship Sync block
+    M->>M: Verify every INDEX.md file appears once in record
+    alt Sweep verification passes
+        M-->>V: OK — sync record complete
         V->>S: Set phase = Done
-    else Generic skip detected
-        M-->>V: REJECT — re-run sweep
-        Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
+    else Generic skip or gaps found
+        M-->>V: REJECT — fails verification gate
     end
 
     Note over V,F: Profile gating:<br/>Tiny = heuristic-only sweep<br/>Standard+ = full sweep

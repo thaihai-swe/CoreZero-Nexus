@@ -63,10 +63,8 @@ When installed into an empty project directory, the folder structure looks like 
 │   ├── parse-observability.py        # Observability log parser script
 ├── skills/
 │   ├── _shared/                      # Shared rigor profiles, status definitions, diagrams
-│   ├── api-endpoint-docs/            # HTTP API reference generation skill
 │   ├── code-review/                  # Google-standard code review skill
 │   ├── codebase-documenter/          # Onboarding README generation skill
-│   ├── brownfield-init/              # Brownfield archaeology and dependency mapping skill
 │   ├── context-memory/               # Memory triage, post-ship sync, and router skill
 │   ├── context-session/              # Session START, CHECKPOINT, and END lifecycle skill
 │   ├── context-status/               # Multi-feature project-wide reporting skill
@@ -78,7 +76,7 @@ When installed into an empty project directory, the folder structure looks like 
 │   ├── spec-requirements/            # intake, grilling, and spec authoring skill
 │   ├── spec-research/                # Brownfield mapping and diagnosis skill
 │   ├── starter-init/                 # Harness initialization and prefilling skill
-│   ├── system-flow-docs/             # Narrative system flow documentation skill
+│   ├── technical-docs/               # API contract and event flow documentation skill
 │   └── visualize/                    # SVG and Mermaid diagram generation skill
 ├── AGENTS.md                         # Agent router and operating constraints
 └── HARNESS_CARD.md                   # Single-page harness configuration metadata
@@ -103,7 +101,7 @@ Files copied during installation belong to one of three categories defined in `m
 *Posture:* Never modified or deleted by the installer. These files contain your active feature branches, development artifacts, and custom configuration settings.
 
 Files under `memories/repo/brownfield/` are not seeded by install. They are created later by
-`/brownfield-init` when a repository needs the archaeology pass.
+`/starter-init` (Phase A) when a repository needs the archaeology pass.
 
 ---
 

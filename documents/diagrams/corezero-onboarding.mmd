@@ -1,31 +1,26 @@
 flowchart TD
-    START([New Project]) --> BOOT[bootstrap-corezero.sh<br/>copy skills + memory + rules]
-    BOOT --> DETECT{Detect repo state}
+    START([New Project]) --> BOOT["install.sh<br/>Seed skills, rules, and memories"]:::common
+    BOOT --> DETECT{Detect repo state}:::decision
 
-    DETECT -->|empty / near-empty| GREEN[Greenfield Mode]
-    DETECT -->|existing code + tests + history| BROWN[Brownfield Mode]
+    DETECT -->|Greenfield| GREEN["Greenfield Mode<br/>(Empty or near-empty repo)"]:::green
+    DETECT -->|Brownfield| BROWN["Brownfield Mode<br/>(Existing code, tests, CI, or history)"]:::brown
 
-    GREEN --> GINIT[starter-init<br/>Auto-fill harness-config<br/>+ Tier 1 templates from code]
-    GINIT --> GMEM[context-memory<br/>Seed constitution / security<br/>/ project-knowledge-base]
-    GMEM --> GFEAT[Pick first feature]
+    GREEN --> GINIT["starter-init (Phase B)<br/>Configure harness-config.md & seed templates"]:::green
+    GINIT --> GMEM["starter-init (Phase B)<br/>Seed memories (constitution, security, PKB, heuristics)"]:::green
+    GMEM --> GFEAT["Pick first feature<br/>(Route to /spec-requirements)"]:::green
 
-    BROWN --> BARCH[brownfield-init<br/>map debt + dependencies<br/>+ risky paths]
-    BARCH --> BINIT[starter-init<br/>bootstrap harness after archaeology]
-    BINIT --> BREAD[Read brownfield map<br/>before first feature]
-    BREAD --> BSAFE[Pick smallest safe<br/>first feature]
+    BROWN --> BINIT["starter-init (Phase A + B)<br/>Phase A: Archaeology subagent sweep & map debt<br/>Phase B: Bootstrap config & seed memories"]:::brown
+    BINIT --> BREAD["Read brownfield-map.md<br/>Identify risk ratings before first feature"]:::brown
+    BREAD --> BSAFE["Pick small, safe first feature<br/>(Route to /spec-research if behavior unknown)"]:::brown
 
-    GFEAT --> LOOP[Guided per-feature loop]
+    GFEAT --> LOOP[Guided per-feature delivery loop]:::common
     BSAFE --> LOOP
-    LOOP --> SHIP([Ship + Self-Improving KB])
+    LOOP --> SHIP([Shipped feature + KB compounded]):::terminal
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
-    classDef green fill:#10b981,stroke:#047857,color:#fff
-    classDef brown fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef green fill:#ebf7f2,stroke:#10b981,color:#065f46
+    classDef brown fill:#fffbeb,stroke:#f59e0b,color:#92400e
     classDef common fill:#fff,stroke:#d0d7de,color:#0d0d0d
     classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
 
     class START,SHIP terminal
-    class GREEN,GINIT,GMEM,GFEAT green
-    class BROWN,BARCH,BINIT,BREAD,BSAFE brown
-    class BOOT,LOOP common
-    class DETECT decision

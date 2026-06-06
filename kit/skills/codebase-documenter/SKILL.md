@@ -16,8 +16,8 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 ## When to Use (vs. Others)
 
 - **Use `/codebase-documenter`** for repo onboarding: setup, directories, build commands, and contributing guides.
-- **Use `/system-flow-docs`** for event/transaction workflow narratives (2-5 core flows).
-- **Use `/api-endpoint-docs`** for HTTP route inputs and outputs.
+- **Use `/technical-docs --mode flow`** for event/transaction workflow narratives (2-5 core flows).
+- **Use `/technical-docs --mode api`** for HTTP route inputs and outputs.
 
 ## Read First
 
@@ -27,11 +27,28 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ## Workflow
 
-1. **Frame & Depth**: Pick scope and depth (Quick, Standard, or Deep). Default to Standard.
+1. **Scope & Depth**:
+   - `Quick`: Produce `README.md` and `ARCHITECTURE.md` only. No component-level deep dives. Use when the user needs a fast orientation.
+   - `Standard` (default): All 6 output files (README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md). Standard component depth.
+   - `Deep`: All 6 files plus: inline code walkthrough for 2–3 key flows, test coverage map, and a runnable onboarding validation script. Use when new team members need hands-on depth.
+   
+   If the user does not specify, default to `Standard`.
 2. **Explore**: Map folders, dependencies, and main entry points.
 3. **Trace**: Trace key execution flows through code to construct mental models.
 4. **Document**: Write separate Markdown pages using templates. Embed system architecture diagrams. Provide real code snippets with `file:line` references.
-5. **Verify**: Check that instructions are runnable in a fresh environment.
+5. **Verify**: Before finalizing:
+   - Run `grep -rI 'TODO\|PLACEHOLDER\|TBD' <output-dir>` — any hit is a verification failure. Fix or document it explicitly.
+   - Confirm every command in `DEVELOPMENT.md` is syntactically valid shell. If a `Makefile` or `package.json` exists, cross-check command names against their definitions.
+   - Confirm every directory listed in `ARCHITECTURE.md` or `COMPONENTS.md` matches the actual filesystem layout (`ls` or `find` to verify).
+
+### Update Mode
+
+When output files already exist (e.g., a prior `codebase-documenter` run):
+1. Read existing output files.
+2. Diff their content against the current codebase structure (directories, key entry points, main dependencies).
+3. Update only sections where the code has changed. Preserve developer-authored additions in non-generated sections (e.g., custom tips in CONTRIBUTING.md).
+4. Increment a `<!-- Last updated: YYYY-MM-DD -->` comment at the top of each modified file.
+Do not regenerate from scratch unless explicitly requested.
 
 ## Required Coverage (10 Areas)
 
@@ -78,4 +95,9 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ## Verification
 
-- [ ] Every directory listed in folder structure matches actual layout.
+- [ ] No `TODO` or `PLACEHOLDER` strings remain in output files.
+- [ ] Every directory listed in ARCHITECTURE.md exists on disk.
+- [ ] Every command in DEVELOPMENT.md is valid shell syntax.
+- [ ] Setup steps can be followed sequentially to reach a runnable state.
+- [ ] CONTRIBUTING.md includes at minimum: how to run tests, how to submit a change, and code style references.
+- [ ] At least one architecture diagram is embedded and current.

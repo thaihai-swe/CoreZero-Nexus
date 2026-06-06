@@ -1,29 +1,31 @@
 flowchart TD
     %% Verification Gate — split modes, sole completion authority
 
-    START([Implementation complete]) --> PHASE[status = Verifying]
-    PHASE --> GATE[1 - Mechanical Gate Audit<br/>run exact bash commands from plan.md]
+    START([Implementation complete]) --> PHASE["1 - Initialization<br/>status.md = Verifying"]:::step
+    PHASE --> GATE["2 - Mechanical Gate Audit<br/>Run plan gate commands"]:::step
 
-    GATE --> GPASS{Gate passes?}
-    GPASS -- No --> FAIL[Write failure to review.md<br/>reopen tasks]
-    FAIL --> STOPF([Return to implement])
-    GPASS -- Yes --> CLEAN[2 - Clean-State Check<br/>no uncommitted changes]
+    GATE --> GPASS{Gate passes?}:::decision
+    GPASS -- No --> FAIL["Verdict Fail<br/>Reopen tasks & write review.md"]:::fail
+    FAIL --> STOPF([Return to implement]):::fail
 
-    CLEAN --> ALIGN[3 - Alignment Audit<br/>REQ vs code: Missing / Ghost / Misaligned]
-    ALIGN --> TRACE[4 - Traceability Audit<br/>REQ to AC to TASK to validation]
-    TRACE --> SEC[5 - Security Lens<br/>auth, permissions, data handling]
-    SEC --> CODEREV[6 - Code Review Audit<br/>code-review skill]
-    CODEREV --> FALLOW{Debt introduced?}
-    FALLOW -- Yes --> CLEANUP[7 - Optional Fallow Pass<br/>behavior-neutral cleanup + re-run proof]
-    FALLOW -- No --> SCEN
-    CLEANUP --> SCEN[8 - Testing Scenarios<br/>testing-scenarios.md]
+    GPASS -- Yes --> CLEAN["3 - Clean-State Check<br/>No uncommitted changes"]:::step
+    CLEAN --> ALIGN["4 - Alignment Audit<br/>REQ/AC mapping to tasks"]:::step
+    ALIGN --> TRACE["5 - Traceability Audit<br/>REQ -> AC -> TASK -> proof"]:::step
+    TRACE --> SEC["6 - Security Lens<br/>Audit vs security-policy.md"]:::step
+    SEC --> HELPERS["7 - Helper Skills<br/>Code Review / Harness Maintain"]:::step
 
-    SCEN --> VERDICT{Verdict}
-    VERDICT -- Issues --> FAIL
-    VERDICT -- Pass --> SYNC[9 - Post-Ship Knowledge Sync<br/>context-memory sweep]
-    SYNC --> SYNCOK{Sync record<br/>complete?}
-    SYNCOK -- No --> SYNC
-    SYNCOK -- Yes --> DONE([status = Done])
+    HELPERS --> FALLOW{Fallow Cleanup?}:::decision
+    FALLOW -- Yes --> CLEANUP["8 - Optional Fallow Pass<br/>Cleanup targets & re-run proof"]:::step
+    FALLOW -- No --> WRITE_REV
+
+    CLEANUP --> WRITE_REV["9 - Write Review<br/>Write findings to review.md"]:::step
+    WRITE_REV --> SCEN["10 - Scenarios<br/>Draft testing-scenarios.md"]:::step
+
+    SCEN --> VERDICT{11 - Verdict}:::decision
+    VERDICT -- Fail --> FAIL
+    VERDICT -- Pass / Pass with Debt --> SYNC["12 - Post-Ship Sync<br/>Post-Ship Sync memory sweep"]:::pass
+
+    SYNC --> DONE([status = Done]):::terminal
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef decision fill:#fff7ed,stroke:#f59e0b,color:#0d0d0d
@@ -32,7 +34,7 @@ flowchart TD
     classDef pass fill:#ebf5ed,stroke:#c3e0c5,color:#2d7d32
 
     class START,DONE terminal
-    class GPASS,FALLOW,VERDICT,SYNCOK decision
-    class PHASE,GATE,CLEAN,ALIGN,TRACE,SEC,CODEREV,CLEANUP,SCEN step
+    class GPASS,FALLOW,VERDICT decision
+    class PHASE,GATE,CLEAN,ALIGN,TRACE,SEC,HELPERS,CLEANUP,WRITE_REV,SCEN step
     class FAIL,STOPF fail
     class SYNC pass

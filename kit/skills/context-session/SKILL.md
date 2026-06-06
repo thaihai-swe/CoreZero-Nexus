@@ -32,7 +32,9 @@ Governs active feature session continuity after a feature slug already exists. I
 
 ### Session Start
 1. **Slug Check**: If multiple features exist, run `/context-status` first to select the active slug.
+   **First-run path**: If `progress.md` does not yet exist for the slug (first session after `/spec-requirements` created the slug), create it from `references/progress-template.md` before loading context. Skip the Resumption step (Step 4) and go directly to Step 5 (Report & Log).
 2. **Claim Check**: Before loading context, check `artifacts/features/<slug>/claim.md`. If an active (non-expired) claim exists from another agent, stop and report `BLOCKED`. If no claim exists or the claim is stale, create/update `claim.md` to establish ownership. See [references/multi-agent-protocol.md](references/multi-agent-protocol.md).
+   A claim is **stale** if: its `expires_at` timestamp has passed, or its status field is `Released`. For the full protocol, see `references/multi-agent-protocol.md`.
 3. **Context Load**: Load minimum required context per `references/context-assembly.md` and `references/session-start-flow.md`. When reading `INDEX.md`, strictly obey the **Confidence-Scored Loading** rule: if ≤2 keywords match a group, perform a **partial-load** (load only the index/header file for that group). Only load the full group for high-confidence matches (3+ keywords).
 4. **Resumption**: Identify current phase, next task/artifact, and blockers.
 5. **Report & Log**: Update `progress.md` with resumption details and name the exact next core command.
@@ -44,7 +46,10 @@ Governs active feature session continuity after a feature slug already exists. I
 ### Session End
 1. Summarize completion state, proof status, and blockers.
 2. **Delegation**: Document Conversation ID, role, and branch URIs for active subagents.
-3. **Log & Extract**: Append end entry to `progress.md`. (Optional: Distill reusable lessons into `artifacts/features/<slug>/session-extracts.md`).
+3. **Log & Extract**: Append end entry to `progress.md`. Extract lessons to `artifacts/features/<slug>/session-extracts.md`:
+   - `Complex` profile: **Required**. Document at least 3 candidate lessons.
+   - `Standard` profile: **Required** when reusable lessons exist. Document "no extractable lessons" explicitly if none.
+   - `Tiny` profile: Optional. Candidates can be brief or omitted.
 4. **Handoff**: Write `handoff.md` using `references/session-handoff-template.md`, ending with the next core command.
 5. **Release Claim**: Update `claim.md` status to `Released` with release notes. This is mandatory — do not skip.
 
@@ -52,6 +57,7 @@ Governs active feature session continuity after a feature slug already exists. I
 
 - `starter-init` has not been run (no `AGENTS.md` or `harness-config.md` present).
 - No feature slug is selected or `artifacts/features/<slug>/status.md` does not exist yet. In plain terms: status.md does not exist yet for this feature. Route to `/spec-requirements` when requirements can be defined directly, or `/spec-research` when brownfield behavior or root cause is unknown.
+- At session start, if running the test command from `harness-config.md` exits non-zero: surface the broken baseline to the user and stop. Do not load feature context over a broken build. Session Honesty requires surfacing this, not hiding it.
 
 ## Preconditions
 

@@ -9,7 +9,7 @@
 
 ## Repository Profile
 
-- **Repository type:** Greenfield (this repo *is* the kit; adopting projects can be Greenfield, Brownfield, or Vibecoded)
+- **Repository type:** Greenfield (this repo *is* the kit; adopting projects can be Greenfield or Brownfield)
 - **Default rigor profile:** Standard
 - **Primary stack:** Markdown + Bash (documentation-first repo). Optional Python 3.10+ for `visualize`.
 - **Build command:** N/A (no compiled artifacts)
