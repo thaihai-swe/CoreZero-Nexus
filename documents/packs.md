@@ -6,7 +6,7 @@ This guide documents the four core packs that organize CoreZero Nexus commands a
 
 ## The 4 Core Packs
 
-CoreZero Nexus organizes its capabilities into **4 Core Packs** containing **16 public commands** (with the core 12 shown in the taxonomy map below):
+CoreZero Nexus organizes its capabilities into **4 Core Packs** containing **15 public commands** (with the core 12 shown in the taxonomy map below):
 
 ```mermaid
 mindmap

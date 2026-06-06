@@ -10,7 +10,7 @@ CoreZero Nexus implements **Harness Engineering** — the discipline of designin
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin router → skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 5 specialist (16 total)
+│  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 4 specialist (15 total)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (6 subsystems)            │  Environment control
 ├─────────────────────────────────────────────┤
@@ -253,7 +253,7 @@ mindmap
 
 ## Skill Grouping
 
-The 16 skills (11 core delivery + 5 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
+The 15 skills (11 core delivery + 4 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
 
 ```mermaid
 flowchart TB
@@ -278,6 +278,7 @@ flowchart TB
         CR["code-review"]
         TECDOC["technical-docs"]
         CODE["codebase-documenter"]
+        MAINTAIN["harness-maintain"]
     end
 
     START --> STATUS
@@ -291,6 +292,9 @@ flowchart TB
     VERIFY --> HAND
     VERIFY -. invokes internally .-> CR
 
+    VERIFY -. harness failure .-> MAINTAIN
+    MAINTAIN -. durable improvement .-> MEMORY
+
     RESEARCH -. repo evidence .-> TECDOC
     MEMORY -. terminology and rules .-> CODE
     SPEC -. diagrams .-> VIS
@@ -299,6 +303,6 @@ flowchart TB
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     classDef internal fill:#ffffff,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px,stroke-dasharray:4 2;
     class START,MEMORY,SPEC,PLAN primary;
-    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,TECDOC,CODE neutral;
+    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,TECDOC,CODE,MAINTAIN neutral;
     class CR internal;
 ```

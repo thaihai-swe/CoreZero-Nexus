@@ -1,6 +1,6 @@
 # End-to-End Tutorial
 
-This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 16 public commands across the 4 core packs and 5 specialist tools, walking you through the entire lifecycle from installation to closeout.
+This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 15 public commands across the 4 core packs and 4 specialist tools, walking you through the entire lifecycle from installation to closeout.
 
 ---
 
