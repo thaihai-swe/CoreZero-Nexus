@@ -52,7 +52,7 @@ flowchart TD
     AIDV[harness-verify<br/>Post-Ship Sync] -->|writes record| EXT
     AIHN[harness-maintain<br/>Improve Mode] -->|appends| OBS
     AIDS[context-session END] -->|appends candidates| EXT
-    AIBR[brownfield-init] -->|creates map + graph| BROWN
+    AIBR["starter-init<br/>(brownfield phase)"] -->|creates map + graph| BROWN
 
     classDef instr fill:#10b981,stroke:#047857,color:#fff
     classDef auto fill:#f59e0b,stroke:#b45309,color:#fff

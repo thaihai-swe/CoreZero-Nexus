@@ -11,8 +11,7 @@ Adopters follow a canonical path when executing software changes. Start with the
 ### Canonical Workflow
 
 ```text
-brownfield-init (existing repos only)
-  ──> starter-init
+starter-init
   ──> spec-research (brownfield / unknown behavior)
   ──> spec-requirements
         ──> spec-plan
@@ -22,7 +21,6 @@ brownfield-init (existing repos only)
 ```
 
 ### Contextual Commands (Invoke as needed)
-- `/brownfield-init`: Before `/starter-init` on established repositories with existing code, tests, or CI.
 - `/spec-research`: Prior to specifying requirements for brownfield or complex changes.
 - `/context-memory`: To promote, amend, or synthesize repo-wide memory.
 - `/context-status`: For multi-feature orchestration reports.
@@ -33,12 +31,11 @@ brownfield-init (existing repos only)
 
 ## 2. Skill Grouping & Architecture
 
-The 17 skills (12 core delivery + 5 specialist tools) cluster into three groups: Bootstrap + Context, Delivery Pipeline, and Specialist Tools.
+The 15 skills (11 core delivery + 4 specialist tools) cluster into three groups: Bootstrap + Context, Delivery Pipeline, and Specialist Tools.
 
 ```mermaid
 flowchart TB
     subgraph OC["Bootstrap + Context"]
-        BROWN["brownfield-init"]
         START["starter-init"]
         STATUS["context-status"]
         MEMORY["context-memory"]
@@ -57,12 +54,10 @@ flowchart TB
     subgraph ST["Specialist Tools"]
         VIS["visualize"]
         CR["code-review"]
-        API["api-endpoint-docs"]
-        SYS["system-flow-docs"]
+        TECDOC["technical-docs"]
         CODE["codebase-documenter"]
     end
 
-    BROWN --> START
     START --> STATUS
     STATUS --> MEMORY
     MEMORY --> RESEARCH
@@ -74,16 +69,15 @@ flowchart TB
     VERIFY --> HAND
     VERIFY -. invokes internally .-> CR
 
-    RESEARCH -. repo evidence .-> API
-    RESEARCH -. repo evidence .-> SYS
+    RESEARCH -. repo evidence .-> TECDOC
     MEMORY -. terminology and rules .-> CODE
     SPEC -. diagrams .-> VIS
 
     classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     classDef internal fill:#ffffff,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px,stroke-dasharray:4 2;
-    class BROWN,START,MEMORY,SPEC,PLAN primary;
-    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,API,SYS,CODE neutral;
+    class START,MEMORY,SPEC,PLAN primary;
+    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,TECDOC,CODE neutral;
     class CR internal;
 ```
 
@@ -93,16 +87,11 @@ flowchart TB
 
 ### Project Starter Pack
 
-#### `/brownfield-init`
-Runs the brownfield archaeology pass before bootstrap on existing repositories.
-- Produces `memories/repo/brownfield/` artifacts such as the brownfield map and dependency graph.
-- Seeds file-backed heuristics for risky or high-blast-radius areas.
-- Should be run before `/starter-init` when the repo already has meaningful code or history.
-
 #### `/starter-init`
 Bootstraps a repository for agent-assisted delivery.
-- Reconciles only the installer-seeded harness surface.
-- Prepares seeded docs and memory for downstream use.
+- Detects repo type (greenfield / brownfield) and runs an archaeology sweep (Phase A) before bootstrap (Phase B) on repositories with existing code.
+- Produces `memories/repo/brownfield/` artifacts (brownfield map, dependency graph) and seeds file-backed heuristics when existing code is present.
+- Reconciles the installer-seeded harness surface and prepares seeded docs and memory.
 - Audits baseline project test and build states.
 
 ### Context Engineering Pack
@@ -151,16 +140,18 @@ Audits, configures, and maintains the harness itself through evaluation passes.
 
 ## 4. Specialist Tools
 
-These five commands provide specialized review, visualization, and documentation capabilities outside the standard feature delivery pipeline. They can be invoked directly by users or called internally by core skills.
+These commands provide specialized review, visualization, and documentation capabilities outside the standard feature delivery pipeline. They can be invoked directly by users or called internally by core skills.
 
 > [!NOTE]
 > All specialist documentation tools follow the shared formatting, notation, and structural guidelines defined in [`skills/_shared/doc-conventions.md`](../kit/skills/_shared/doc-conventions.md) to ensure design system consistency.
 
 * **`/code-review`**: Audits code quality against Google's Engineering Practices. **Dual-mode**: invokable directly for standalone PR reviews, and automatically invoked internally by `/harness-verify` during the Gated Integration Mode closeout pass. In Gated Integration Mode it writes its findings directly to `review.md` in a single pass.
 * **`/visualize`**: Generates high-fidelity SVG/Mermaid sequence or architectural diagrams.
+* **`/technical-docs`**: Unified technical documentation skill that compiles API contracts and/or system flows from source code. Mode selection determines the documentation generated and output locations:
+  - **`--mode api`**: Documents REST/HTTP API endpoints, query/body payloads, headers, status codes, route-level auth, and embeds sequence diagrams. Outputs to `artifacts/features/<slug>/api-docs.md` (feature-scoped) or `docs/api/<version>.md` (global).
+  - **`--mode flow`**: Documents end-to-end system flows, state transitions, external APIs, and failure paths. Outputs to `artifacts/features/<slug>/flows.md` (feature-scoped) or `docs/flows/<name>.md` (global).
+  - **`--mode both`**: Executes both workflows sequentially and combines the outputs. Outputs to `artifacts/features/<slug>/technical-docs.md` (feature-scoped) or `docs/technical-docs/<name>.md` (global).
 * **`/codebase-documenter`**: Compiles comprehensive onboarding guides for new repositories.
-* **`/system-flow-docs`**: Traces container interactions and designs narrative workflow logs.
-* **`/api-endpoint-docs`**: Compiles contract specifications for API endpoints.
 
 ---
 
@@ -171,7 +162,6 @@ The public command taxonomy is implemented via underlying skill files. Commands 
 | Command | Mode | Skill File |
 |---------|------|------------|
 | `/starter-init` | Public | [`skills/starter-init/SKILL.md`](../kit/skills/starter-init/SKILL.md) |
-| `/brownfield-init` | Public | [`skills/brownfield-init/SKILL.md`](../kit/skills/brownfield-init/SKILL.md) |
 | `/context-session` | Public | [`skills/context-session/SKILL.md`](../kit/skills/context-session/SKILL.md) |
 | `/context-memory` | Public | [`skills/context-memory/SKILL.md`](../kit/skills/context-memory/SKILL.md) |
 | `/context-status` | Public | [`skills/context-status/SKILL.md`](../kit/skills/context-status/SKILL.md) |
@@ -184,6 +174,5 @@ The public command taxonomy is implemented via underlying skill files. Commands 
 | `/harness-maintain` | Public | [`skills/harness-maintain/SKILL.md`](../kit/skills/harness-maintain/SKILL.md) |
 | `/code-review` | Public + `[internal]` via `/harness-verify` | [`skills/code-review/SKILL.md`](../kit/skills/code-review/SKILL.md) |
 | `/visualize` | Public | [`skills/visualize/SKILL.md`](../kit/skills/visualize/SKILL.md) |
+| `/technical-docs` | Public | [`skills/technical-docs/SKILL.md`](../kit/skills/technical-docs/SKILL.md) |
 | `/codebase-documenter` | Public | [`skills/codebase-documenter/SKILL.md`](../kit/skills/codebase-documenter/SKILL.md) |
-| `/system-flow-docs` | Public | [`skills/system-flow-docs/SKILL.md`](../kit/skills/system-flow-docs/SKILL.md) |
-| `/api-endpoint-docs` | Public | [`skills/api-endpoint-docs/SKILL.md`](../kit/skills/api-endpoint-docs/SKILL.md) |

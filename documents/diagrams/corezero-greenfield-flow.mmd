@@ -1,26 +1,27 @@
 flowchart TD
     %% Greenfield Flow — new repo, install kit, ship first feature
 
-    NEW[(New / near-empty repo)] --> BOOT[bootstrap-corezero.sh<br/>copy skills + memory + rules<br/>auto-detect stack]
+    NEW[(New / near-empty repo)] --> BOOT["install.sh<br/>Seed skills, rules, and memories"]:::green
+    BOOT --> INIT["starter-init (Phase B)<br/>Greenfield Mode"]:::green
 
-    BOOT --> INIT[starter-init<br/>Greenfield Mode]
-    INIT --> AGENTS[Create AGENTS.md router<br/>under 50 lines]
-    INIT --> MEMSEED[Seed memories/repo/<br/>INDEX + constitution + security<br/>+ harness-config + PKB]
-    INIT --> TMPL[Pre-fill Tier 1 templates<br/>TECH_STACK / ARCHITECTURE<br/>from code evidence]
-    INIT --> BASE[Clean-state check<br/>build + tests pass]
+    INIT --> AGENTS["Configure AGENTS.md router<br/>Verify entrypoint file is present"]:::step
+    INIT --> MEMSEED["Seed memories/repo/<br/>INDEX.md, constitution.md, security-policy.md,<br/>harness-config.md, and project-knowledge-base.md"]:::step
+    INIT --> TMPL["Pre-fill templates<br/>docs/*.md and docs/architecture.md"]:::step
+    INIT --> BASE["Harness Readiness Check<br/>Run build and baseline tests"]:::step
 
     AGENTS --> SPEC
     MEMSEED --> SPEC
     TMPL --> SPEC
-    BASE --> SPEC[spec-requirements<br/>grilling waves + readiness score<br/>spec.md locked]
-    SPEC --> PLAN[spec-plan<br/>design + tasks.md + mechanical gate]
-    PLAN --> IMPL[spec-implement<br/>one task at a time + proof]
-    IMPL --> VERIFY[harness-verify<br/>gate + alignment + security]
+    BASE --> SPEC["spec-requirements<br/>(grilling waves + spec.md)"]:::green
+
+    SPEC --> PLAN["spec-plan<br/>(plan.md + tasks.md + design.md)"]:::green
+    PLAN --> IMPL["spec-implement<br/>(one task at a time + proof)"]:::step
+    IMPL --> VERIFY["harness-verify<br/>(review.md + testing-scenarios.md)"]:::gate
 
     VERIFY -- gate fail --> IMPL
-    VERIFY -- pass --> SYNC[Post-Ship Knowledge Sync<br/>context-memory sweep]
-    SYNC --> ENDS[context-session END<br/>handoff + extracts]
-    ENDS --> DONE([First feature shipped<br/>KB seeded for next feature])
+    VERIFY -- pass --> SYNC["Post-Ship Sync<br/>(context-memory sweep)"]:::gate
+    SYNC --> ENDS["context-session END<br/>(handoff.md + session-extracts.md)"]:::step
+    ENDS --> DONE([First feature shipped<br/>KB seeded for next feature]):::terminal
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
     classDef green fill:#10b981,stroke:#047857,color:#fff
@@ -28,6 +29,3 @@ flowchart TD
     classDef gate fill:#3b82f6,stroke:#1d4ed8,color:#fff
 
     class NEW,DONE terminal
-    class BOOT,INIT,SPEC,PLAN green
-    class AGENTS,MEMSEED,TMPL,BASE,IMPL,ENDS step
-    class VERIFY,SYNC gate

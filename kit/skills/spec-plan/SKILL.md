@@ -32,13 +32,22 @@ Converts an approved spec into a concrete execution strategy. Creates `plan.md`,
 2. **Profile Load**: Load active rigor profile.
 3. **Rigor Triage**: Set planning depth per profile:
    - `Tiny`: Lean `plan.md` with inlined tasks (3 or fewer). No `design.md`.
-   - `Standard`: Standard plan and task lists.
+   - `Standard`: Full `plan.md` with: (a) impacted files list, (b) explicit execution order, (c) rollback strategy, (d) mechanical verification gate commands. `tasks.md` required. `design.md` only when technical ambiguity remains after reading `spec.md`.
    - `Complex`: Full design (`design.md`), dependency tracking, and phased rollout. Diagram via `/visualize` is optional if it involves boundaries.
 4. **Load Decisions**: Import locked decisions from `spec.md` as constraints.
-5. **Design (Optional)**: Build `design.md` to resolve technical tradeoffs (Required for `Complex`).
+5. **Design (Profile-Driven)**: Build `design.md` to resolve technical tradeoffs.
+   - `Complex` profile: Required.
+   - `Standard` profile: Only when technical ambiguity remains after reading `spec.md`.
+   - `Tiny` profile: Skipped. The profile determines this, not agent judgment.
 6. **Plan Authoring**: Write `plan.md` defining impacted areas, execution order, rollback steps, and verification strategies.
+   **Rollback strategy (required)**: `plan.md` must include a `## Rollback Strategy` section with:
+   - Rollback command or steps (must be executable)
+   - Scope of change affected
+   - Estimated recovery time
+   If the change is irreversible by design (e.g., schema migration), document that explicitly and add a compensating forward-fix procedure.
 7. **Mechanical Gate**: Add a `## Mechanical Verification Gate` section with runnable test/lint bash commands.
 8. **Task Decomposition**: Create `tasks.md` with unique task IDs (`T-01`), clear targets, and specific proof validations.
+   Each task in `tasks.md` must include a `depends_on: [T-XX, T-XX]` field (empty `[]` for tasks with no dependencies). The "first unblocked task" in `/spec-implement` is defined as: the lowest-numbered task whose `depends_on` list is either empty or entirely `Done`.
 9. **Traceability**: Verify `REQ -> AC -> TASK -> validation` mappings are complete.
 10. **Handoff**: Set `status.md` to `Plan Approved` and name `/spec-implement` as the next core command.
 

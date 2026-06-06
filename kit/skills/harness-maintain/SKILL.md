@@ -34,6 +34,20 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 
 ## Workflow
 
+### Step 0: Mode Selection
+
+Determine mode from the invocation context before starting:
+
+| Trigger | Mode |
+|---|---|
+| No harness exists yet (`AGENTS.md` missing) | **Create** |
+| User requests a health score or audit | **Assess** |
+| Open entries exist in `observability-log.md` | **Improve** |
+| User explicitly requests an evaluation pass | **Eval** |
+| `scripts/doctor.sh` has been reported failing | **Doctor** |
+
+When ambiguous, default to **Assess** and surface findings before taking action.
+
 ### Assess Mode
 1. Read project structures, memory files, and feature artifacts.
 2. Score (1-5) against the 6 subsystems (Instructions, State, Verification, Scope, Lifecycle, Security) using `references/assessment-rubric.md`.
@@ -55,10 +69,19 @@ Meta-skill for harness engineering. It evaluates or repairs the harness environm
 
 ### Eval Mode
 1. Run evaluations per `references/eval-modes.md` (Mechanical, Alignment, Adversarial/Security, Continuity).
-2. Write findings to `artifacts/features/<slug>/eval-report.md`. Route outcomes to owning skills.
+2. Write findings to `artifacts/features/<slug>/eval-report.md`. Route findings by type:
+
+   | Finding type | Route to |
+   |---|---|
+   | Skill workflow gap or missing step | `/harness-maintain Improve Mode` (update the SKILL.md) |
+   | INDEX.md integrity issue or missing group | `/context-memory` |
+   | Unresolved placeholder in a template file | The skill that owns the template |
+   | Spec drift (code diverged from spec.md) | `/spec-requirements` (re-spec needed) |
+   | Verification gate failure | `/harness-verify` (re-verify) |
 
 ### Doctor Mode
 1. Run `scripts/doctor.sh` to validate the installed surface, router size, workflow sync, and path truth.
+   **Re-run limit**: Run `scripts/doctor.sh` up to 3 times. If failures persist after 3 passes, stop. Write unresolved items to `artifacts/features/harness/doctor-failure-report.md` and surface to user for manual resolution. Do not loop indefinitely.
 2. Classify failures as missing shipped files, path drift, or workflow drift.
 3. Route fixes to the owning surface (`manifest.json`, `docs/`, `skills/`, or workflows) and re-run the doctor pass before closing.
 

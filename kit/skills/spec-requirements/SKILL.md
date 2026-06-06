@@ -33,12 +33,16 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and `requirements-review
 
 ## Workflow
 
+0. **Claim Check**: Check `artifacts/features/<slug>/claim.md` before writing any artifact. Same protocol as `spec-research` Step 0.
 1. **Initialization**: Create `status.md` if missing (from `references/status-template.md`). Set phase to `Spec'ing`.
 2. **Profile Load**: Load active rigor profile from `status.md` (`## 🧭 Delivery Profile`) or fallback to `memories/repo/harness-config.md` default.
 3. **Intake (Required)**: Classify input type (`new_spec`, `spec_slice`, `change_request`, `new_initiative`, `maintenance`, `harness_improvement`) and risk flags (`auth`, `authorization`, `data_model`, `provider`, `migration`, `cross_boundary`, `public_api`, `security`, `harness-maintain`, `none`) in `status.md`. Determine lane (Tiny/Standard/Complex) per rules in `references/intake.md`.
+3a. **System Spec Mode Routing**: After Intake, check: is the request cross-cutting (affects multiple features) or system-wide (harness, auth, schema)? If yes → switch to System Spec Mode immediately. Output target becomes `docs/system-specs/<name>.md` instead of `artifacts/features/<slug>/spec.md`. All subsequent steps run in this mode. Do not continue into Step 4 in feature mode.
+3b. **Analysis Check**: If `artifacts/features/<slug>/analysis.md` exists, read it before proceeding. Record any open research questions as explicit constraints in Step 4 (Domain Spec Check).
 4. **Domain Spec Check**: Read relevant domain specs (e.g. `memories/repo/domain-specs.md`) to anchor feature behavior.
 5. **Rigor Triage**: Promote profile to match intake lane decision. Set to `Complex` if security/migration/auth/harness-maintain flags exist.
 6. **Grilling Phase**: Ask batch clarifying questions with recommended answers (1-2 for `Tiny`, 3-5 for `Standard`, 5+ for `Complex`). Do not ask what the codebase itself can answer.
+   **Stop rule**: If after 2 grilling rounds the user's answers remain contradictory on a core requirement, stop. Write the contradictions to `spec.md` as `[UNRESOLVED: <description>]` items and surface to user. Do not proceed to Step 7 while core requirements are unresolved.
 7. **Proposal**: Draft `proposal.md` for `Standard`/`Complex` to align scope before spec'ing. (For `Tiny`, embed in the spec).
 8. **Gray-Area Decisions**: Record key design/UX/policy choices directly in `spec.md`.
 9. **Scope Cut**: Explicitly list `In Scope`, `Out Of Scope`, and `Non-Goals`.

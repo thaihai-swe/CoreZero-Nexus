@@ -10,7 +10,7 @@ CoreZero Nexus implements **Harness Engineering** — the discipline of designin
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin router → skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  12 core delivery + 5 specialist (17 total)
+│  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 4 specialist (15 total)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (6 subsystems)            │  Environment control
 ├─────────────────────────────────────────────┤
@@ -139,7 +139,7 @@ CoreZero-Nexus/
 │   │   ├── TECH_STACK_REFERENCE.md
 │   │   ├── PROJECT_CONSTRAINTS.md
 │   │   └── generated/           # Codemap and reference index placeholders
-│   ├── skills/                  # 17 core/utility skills for coding agents
+│   ├── skills/                  # 16 core/utility skills for coding agents
 │   │   └── <skill>/
 │   │       ├── SKILL.md         # Compressed token-efficient skill card
 │   │       └── references/      # Templates and checklist references
@@ -201,8 +201,7 @@ Full file/folder structure the kit ships and the artifacts it produces during wo
 mindmap
   root((CoreZero Nexus))
     skills/
-      Core 12
-        brownfield-init
+      Core 11
         starter-init
         context-session
         context-status
@@ -214,12 +213,11 @@ mindmap
         spec-implement
         harness-verify
         harness-maintain
-      Specialist 5
+      Specialist 4
         code-review
         visualize
         codebase-documenter
-        system-flow-docs
-        api-endpoint-docs
+        technical-docs
     memories/repo/
       INDEX.md
       constitution.md
@@ -255,12 +253,11 @@ mindmap
 
 ## Skill Grouping
 
-The 17 skills (12 core delivery + 5 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
+The 15 skills (11 core delivery + 4 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
 
 ```mermaid
 flowchart TB
     subgraph OC["Bootstrap + Context"]
-        BROWN["brownfield-init"]
         START["starter-init"]
         STATUS["context-status"]
         MEMORY["context-memory"]
@@ -279,12 +276,11 @@ flowchart TB
     subgraph ST["Specialist Tools"]
         VIS["visualize"]
         CR["code-review"]
-        API["api-endpoint-docs"]
-        SYS["system-flow-docs"]
+        TECDOC["technical-docs"]
         CODE["codebase-documenter"]
+        MAINTAIN["harness-maintain"]
     end
 
-    BROWN --> START
     START --> STATUS
     STATUS --> MEMORY
     MEMORY --> RESEARCH
@@ -296,15 +292,17 @@ flowchart TB
     VERIFY --> HAND
     VERIFY -. invokes internally .-> CR
 
-    RESEARCH -. repo evidence .-> API
-    RESEARCH -. repo evidence .-> SYS
+    VERIFY -. harness failure .-> MAINTAIN
+    MAINTAIN -. durable improvement .-> MEMORY
+
+    RESEARCH -. repo evidence .-> TECDOC
     MEMORY -. terminology and rules .-> CODE
     SPEC -. diagrams .-> VIS
 
     classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     classDef internal fill:#ffffff,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px,stroke-dasharray:4 2;
-    class BROWN,START,MEMORY,SPEC,PLAN primary;
-    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,API,SYS,CODE neutral;
+    class START,MEMORY,SPEC,PLAN primary;
+    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,TECDOC,CODE,MAINTAIN neutral;
     class CR internal;
 ```

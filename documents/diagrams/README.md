@@ -31,7 +31,7 @@ Legacy `corezero-*` filenames may remain on some diagram files until a later ren
 |---|---|
 | `corezero-full-flow.mmd` | Guided pack flow with advanced specialist branches |
 | `corezero-dataflow.mmd` | Artifact flow: analysis → spec → plan → code → review → memory |
-| `corezero-onboarding.mmd` | Greenfield vs Brownfield onboarding through `starter-init` |
+| `corezero-onboarding.mmd` | Greenfield vs Brownfield onboarding through `starter-init` (Phase A: archaeology, Phase B: bootstrap) |
 | `corezero-rigor-profiles.mmd` | Adaptive rigor: Tiny / Standard / Complex |
 | `corezero-harness-maintenance.mmd` | Flowchart of /harness-maintain Assess vs Improve modes |
 | `skills-end-to-end-execution.mmd` | Sequence diagram of a harness run |
@@ -40,7 +40,7 @@ Legacy `corezero-*` filenames may remain on some diagram files until a later ren
 | `corezero-traceability.mmd` | REQ → AC → TASK → proof chain |
 | `corezero-status-machine.mmd` | Feature status state machine + transitions |
 | `corezero-greenfield-flow.mmd` | Greenfield flow: bootstrap → `starter-init` → ship first feature |
-| `corezero-brownfield-flow.mmd` | Brownfield flow: archaeology with `/brownfield-init`, then bootstrap the harness |
+| `corezero-brownfield-flow.mmd` | Brownfield flow: archaeology → `starter-init` → research → ship first feature |
 | `corezero-packs-taxonomy.mmd` | Mindmap catalog of all public commands mapped to the 4 Core Packs |
 | `corezero-subagent-fanout.mmd` | SDD: delegate broad work, merge summaries only |
 
@@ -58,6 +58,6 @@ Refresh a diagram when the underlying system changes:
 - Public command flow changes → `corezero-full-flow.mmd`
 - Observability/Maintenance changes → `corezero-harness-maintenance.mmd`
 - New memory file or tier → `corezero-memory.mmd`, `corezero-mindmap.mmd`
-- Brownfield bootstrap changes → `corezero-onboarding.mmd`, `corezero-brownfield-flow.mmd`
+- Brownfield bootstrap changes → `corezero-onboarding.mmd`
 
 After editing, re-run the validator on the changed file.

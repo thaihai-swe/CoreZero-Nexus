@@ -1,6 +1,5 @@
 flowchart TB
     subgraph OC["Bootstrap + Context"]
-        BROWN["brownfield-init"]
         START["starter-init"]
         STATUS["context-status"]
         MEMORY["context-memory"]
@@ -18,12 +17,15 @@ flowchart TB
     end
 
     subgraph SD["Specialist Documentation"]
-        API["api-endpoint-docs"]
-        SYS["system-flow-docs"]
+        TECDOC["technical-docs"]
         CODE["codebase-documenter"]
     end
 
-    BROWN --> START
+    subgraph QA["Quality & Maintenance"]
+        REVIEW["code-review"]
+        MAINTAIN["harness-maintain"]
+    end
+
     START --> STATUS
     STATUS --> MEMORY
     MEMORY --> RESEARCH
@@ -33,13 +35,16 @@ flowchart TB
     SPEC --> PLAN
     PLAN --> IMPL
     IMPL --> VERIFY
-    VERIFY --> HAND
+    VERIFY --> REVIEW
+    REVIEW --> HAND
 
-    RESEARCH -. repo evidence .-> API
-    RESEARCH -. repo evidence .-> SYS
+    VERIFY -. harness failure .-> MAINTAIN
+    MAINTAIN -. durable improvement .-> MEMORY
+
+    RESEARCH -. repo evidence .-> TECDOC
     MEMORY -. terminology and rules .-> CODE
 
     classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
-    class BROWN,START,MEMORY,SPEC,PLAN primary;
-    class STATUS,RESEARCH,VIS,ADR,IMPL,VERIFY,HAND,API,SYS,CODE neutral;
+    class START,MEMORY,SPEC,PLAN primary;
+    class STATUS,RESEARCH,VIS,ADR,IMPL,VERIFY,HAND,TECDOC,CODE,REVIEW,MAINTAIN neutral;

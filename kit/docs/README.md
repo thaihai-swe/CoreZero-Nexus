@@ -6,12 +6,11 @@ This folder is the installed documentation surface for downstream projects using
 
 1. Install the kit
 2. Read [INSTALL.md](INSTALL.md)
-3. For brownfield/legacy repositories, run `/brownfield-init` first to map existing code debt
-4. Run `/starter-init`
-5. Start the first feature with `/spec-requirements` or `/spec-research`
-6. Use `/context-session` only after the feature slug already exists
-7. Deliver through `/spec-plan`, `/spec-implement`
-8. Close out with `/harness-verify`
+3. Run `/starter-init` (which automatically runs Phase A archaeology on brownfield/legacy repositories)
+4. Start the first feature with `/spec-requirements` or `/spec-research`
+5. Use `/context-session` only after the feature slug already exists
+6. Deliver through `/spec-plan`, `/spec-implement`
+7. Close out with `/harness-verify`
 
 ## Core Docs
 

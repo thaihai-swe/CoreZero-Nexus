@@ -74,14 +74,15 @@ Do not claim deferred outputs as completed work.
 1. **Classify** the diagram type.
 2. **Choose output**: SVG by default; Mermaid when requested or appropriate.
 3. **Extract structure**: nodes, containers, arrows, labels, and semantic groups.
-4. **Load style reference**: default to `references/style-1-flat-icon.md`.
+4. **Load Style Reference**: Load `references/style-selection-guide.md` to pick the appropriate style. Default to `style-1-flat-icon.md` unless the guide indicates otherwise for the requested diagram context.
 5. **Map shapes** using the semantic vocabulary below.
 6. **Generate**:
    - For SVG, prefer `scripts/generate-from-template.py` with a fixture-like JSON payload.
    - For Mermaid, follow `references/formats-multi.md`.
-7. **Validate**:
-   - SVG: run `scripts/validate-svg.sh <file.svg>`
-   - Mermaid: run `python3 scripts/validate_mermaid.py <file.mmd>`
+7. **Validate**: Run the appropriate validator (SVG: run `scripts/validate-svg.sh <file.svg>`; Mermaid: run `python3 scripts/validate_mermaid.py <file.mmd>`). If validation fails:
+   - Attempt one automated fix (correct the most common syntax error for the format).
+   - Re-run the validator.
+   - If it fails again → stop. Report the validation error verbatim. Do not deliver an invalid file. Write a `[GENERATION FAILED]` note with the error to the user.
 8. **Optional render check**:
    - Mermaid to SVG: run `python3 scripts/render_mermaid.py <file.mmd> <file.svg>` if `mmdc` is available.
 9. **Report absolute paths** of generated files.
@@ -189,6 +190,10 @@ Do not claim deferred outputs as completed work.
 - Save Mermaid as `.mmd`.
 - Use kebab-case file names.
 - Always report absolute output paths.
+
+**Output location**: Follow canonical paths from `../_shared/doc-conventions.md → ## Output Locations`.
+- Feature-scoped: `artifacts/features/<slug>/diagrams/<name>.svg` (or `.mmd`)
+- Global/standalone: `docs/generated/diagrams/<name>.svg` (or `.mmd`)
 
 ## Verification
 

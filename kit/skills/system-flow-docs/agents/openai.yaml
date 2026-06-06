@@ -1,4 +1,0 @@
-interface:
-  display_name: "System Flow Docs"
-  short_description: "Document system flows and core workflows"
-  default_prompt: "Use $system-flow-docs to document this system with end-to-end flows, core workflows, and supporting diagrams."

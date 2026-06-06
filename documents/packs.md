@@ -6,13 +6,12 @@ This guide documents the four core packs that organize CoreZero Nexus commands a
 
 ## The 4 Core Packs
 
-CoreZero Nexus organizes its capabilities into **4 Core Packs** containing **17 public commands** (with the core 13 shown in the taxonomy map below):
+CoreZero Nexus organizes its capabilities into **4 Core Packs** containing **15 public commands** (with the core 12 shown in the taxonomy map below):
 
 ```mermaid
 mindmap
   root((CoreZero Nexus))
     Project Starter
-      /brownfield-init
       /starter-init
     Context Engineering
       /context-session
@@ -32,8 +31,7 @@ mindmap
 
 ### 📦 Pack 1: Project Starter (Onboarding & Baselines)
 Prepares the codebase for AI-agent delivery.
-- **`/brownfield-init`**: Analyzes existing legacy repositories. Generates a module dependency graph and tech debt map to identify high-blast-radius risk zones.
-- **`/starter-init`**: Bootstraps the harness defaults, active card, and operating configs.
+- **`/starter-init`**: Bootstraps the harness defaults, active card, operating configs, and runs legacy archaeology (Phase A) automatically on brownfield repositories.
 
 ### 📦 Pack 2: Context Engineering (Session Management)
 Keeps the agent oriented and context windows lean.
@@ -68,19 +66,18 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 - Aligning template files with the actual project structure and code evidence.
 
 ### Public Commands
-* `/brownfield-init` — Run before starter-init on repositories with existing code to map debt and dependency risks.
-* `/starter-init` — Boots the harness configuration.
+* `/starter-init` — Boots the harness configuration and runs archaeology if existing code is present.
 
 ### Key Files Touched
 - `AGENTS.md` (router entrypoint)
 - `HARNESS_CARD.md` (harness summary card)
 - `memories/repo/*` (memory router and seed instruction files)
-- `memories/repo/brownfield/*` (brownfield map, dependency graph; created by `/brownfield-init`)
+- `memories/repo/brownfield/*` (brownfield map, dependency graph; created by `/starter-init` Phase A)
 - `docs/architecture.md` (durable architecture baseline)
 - `docs/*.md` project-policy docs seeded for the adopter to refine
 - `docs/generated/*` (index & codemap artifacts)
 
-`/brownfield-init` is now the documented first step for established repositories. Its
+Starter-init archaeology (Phase A) is now the documented first step for established repositories. Its
 artifacts live in the memory layer, but they are not yet auto-routed by `INDEX.md`; later
 sessions need to load them deliberately when a feature touches brownfield risk areas.
 

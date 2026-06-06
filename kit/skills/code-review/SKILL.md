@@ -47,25 +47,34 @@ Favor approving any CL that improves overall code health, even if imperfect.
 - **Feature Fit**: Reject features that do not belong in the system.
 - **Mentoring**: Share knowledge. Mark non-mandatory comments with `Nit:` or `Optional:`.
 
-## Speed of Reviews
+## Review Velocity
 
-- Optimize for team velocity: respond within 1 business day.
-- Approve with comments (LGTM with comments) for minor or optional items.
+Code review completes in the same session it is invoked. Do not defer reviews or partial-review a diff — complete the review or stop with a documented reason.
 
 ## Workflow
 
-1. **Broad View**: Check if the change makes sense overall. If not, reject immediately.
-2. **Main Parts**: Inspect core files first. Provide design feedback immediately.
-3. **The Rest**: Look through the remaining changes and tests.
+1. **Context Load**: Read `spec.md` and `plan.md` for the feature context. Understand the intent before reading code. If standalone mode (no spec), read the PR description and linked issue.
+2. **Mechanical Verification**: Confirm the mechanical gate passed (tests, lint, build). If not, stop — do not review unverified code.
+3. **Core Files Review**: Read each changed file in the diff. For each:
+   - Verify it is within task scope (matches `tasks.md` targets).
+   - Assess design quality: does it integrate cleanly with existing architecture?
+   - Check functionality and edge cases.
+4. **Test Adequacy**: Verify tests are meaningful (assert behavior, not just line coverage). Check for races, missing edge cases, and assertion correctness.
+5. **Naming, Style, Comments**: Apply `rules/` style guides or local consistency. Verify comments explain *why*, not *what*.
+6. **Security Lens**: Check every changed file against `memories/repo/security-policy.md`. Flag any modification to security-sensitive paths. See Stop Conditions for escalation.
+7. **Verdict**: Write structured outcome: overall verdict, mandatory changes (must-fix), optional suggestions (`Nit:`/`Optional:`), and positive callouts for notable improvements.
 
-## What to Look For
+## Review Checklist
 
-1. **Design**: Check integration, interfaces, and architecture.
-2. **Functionality**: Verify behavior and edge cases. Check for races/deadlocks.
-3. **Complexity**: Call out over-engineering. Solve today's problems, not speculative future ones.
-4. **Tests**: Verify test design and assertion correctness.
-5. **Naming & Style**: Clear naming; follow style guides (`rules/`) or preserve local consistency.
-6. **Comments & Docs**: Verify comments explain *why*, not *what*. Update relevant documentation.
+For each review dimension, tick off before writing the verdict:
+
+- [ ] **Design**: Change integrates cleanly. No unplanned coupling or interface leakage.
+- [ ] **Functionality**: Behavior matches spec ACs. Edge cases addressed.
+- [ ] **Complexity**: No over-engineering. Solves today's problems.
+- [ ] **Tests**: Tests assert behavior, not just execution. Assertions are meaningful.
+- [ ] **Naming & Style**: Names are clear and self-documenting. Style guide followed.
+- [ ] **Comments & Docs**: Comments explain *why*. Relevant docs updated.
+- [ ] **Security**: No security-sensitive paths modified without evidence. No new attack surface introduced.
 
 ## Writing Comments & Handling Pushback
 
@@ -76,7 +85,7 @@ Favor approving any CL that improves overall code health, even if imperfect.
 ## Stop Conditions
 
 - PR description is missing or too vague.
-- Modifies security-sensitive paths without explicit security evidence (escalate).
+- Modifies security-sensitive paths without explicit security evidence → **Security Escalation**: stop the review, write `SECURITY_HALT: <description>` to `review.md`, surface the finding to the user, and route to `/context-memory` to update `security-policy.md` if a new boundary has been identified.
 - CL is pure documentation/comment changes (run lightweight pass).
 
 ## Core Rules
@@ -108,4 +117,5 @@ Favor approving any CL that improves overall code health, even if imperfect.
 ## Output Rules
 
 - Produce structured response: overall verdict, mandatory changes, optional suggestions, positive callouts.
-- Do not modify repo files directly. Write outcome to `artifacts/features/<slug>/review.md` when integration mode is active.
+- **Standalone mode**: Write verdict to `artifacts/features/<slug>/review.md`. If no active slug, write to `docs/reviews/review-<YYYY-MM-DD>.md`.
+- **Gated Integration mode** (called from `/harness-verify`): Return structured response to the caller; `/harness-verify` writes it to `review.md`.

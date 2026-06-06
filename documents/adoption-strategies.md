@@ -151,8 +151,7 @@ For inherited codebases, understand before changing. Init in Brownfield Mode, ma
 flowchart TD
     %% Brownfield Reverse Flow — understand before changing
 
-    CODE[(Existing Codebase<br/>code + tests + history)] --> ARCH[brownfield-init<br/>archaeology + risk map]
-    ARCH --> INIT[starter-init<br/>Brownfield Mode]
+    CODE[(Existing Codebase<br/>code + tests + history)] --> INIT["starter-init<br/>Phase A: archaeology + risk map<br/>Phase B: Brownfield Mode"]
 
     INIT --> PRESERVE[Preserve existing<br/>AGENTS.md / entrypoints]
     INIT --> BROKEN[Run tests<br/>record Known Broken Tests<br/>do NOT fix silently]

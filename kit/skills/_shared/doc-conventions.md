@@ -1,6 +1,6 @@
 # Documentation Conventions
 
-Shared rules for the documentation skills (`system-flow-docs`, `codebase-documenter`, `api-endpoint-docs`). Each skill links here from its `Read First` section instead of restating these rules. Skill-specific rules stay in the SKILL.md file.
+Shared rules for the documentation skills (`technical-docs`, `codebase-documenter`). Each skill links here from its `Read First` section instead of restating these rules. Skill-specific rules stay in the SKILL.md file.
 
 ## Core Rules
 
@@ -18,6 +18,18 @@ Shared rules for the documentation skills (`system-flow-docs`, `codebase-documen
 - Keep Markdown scannable: short sections, tables where helpful, diagrams near the sections they support.
 - Keep Mermaid diagrams inside fenced ```mermaid blocks.
 - Order sections for onboarding: overview → visuals → workflows or endpoints → deeper reference material.
+
+## Output Locations
+
+Each documentation skill saves to a canonical location. Do not deviate unless the user specifies a different path.
+
+| Skill | Feature-scoped invocation | Global / standalone invocation |
+|---|---|---|
+| `/technical-docs` | `--mode api` -> `artifacts/features/<slug>/api-docs.md`<br>`--mode flow` -> `artifacts/features/<slug>/flows.md`<br>`--mode both` -> `artifacts/features/<slug>/technical-docs.md` | `--mode api` -> `docs/api/<version>.md`<br>`--mode flow` -> `docs/flows/<name>.md`<br>`--mode both` -> `docs/technical-docs/<name>.md` |
+| `/codebase-documenter` | *(always global)* | `docs/` root (`README.md`, `ARCHITECTURE.md`, etc.) |
+| `/visualize` | `artifacts/features/<slug>/diagrams/<name>.svg` or `.mmd` | `docs/generated/diagrams/<name>.svg` or `.mmd` |
+
+A **feature-scoped invocation** is one triggered from inside a feature lifecycle (i.e., a feature slug exists and is active in `status.md`). A **global invocation** is one triggered directly by the user with no active slug.
 
 ## Verification (shared checks)
 

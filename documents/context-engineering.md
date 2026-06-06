@@ -250,5 +250,5 @@ During `/context-memory` Post-Ship Sync, promote durable patterns from
 `session-extracts.md` into the appropriate domain pack file.
 
 Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs.
-As of the current kit revision, they are produced by `/brownfield-init` but are not yet
+As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet
 auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.

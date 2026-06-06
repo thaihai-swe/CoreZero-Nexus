@@ -2,55 +2,53 @@ flowchart TD
     %% Full End-to-End Flow — current skill set, required vs optional
 
     START([Request]) --> EXIST{Is it an existing repo?}
-    EXIST -- yes --> BROWNFIELD[brownfield-init<br/>Archaeology Sweep]
-    BROWNFIELD --> INIT[starter-init<br/>bootstrap harness]
+    EXIST -- yes --> INIT
     EXIST -- no --> INIT
+    INIT["starter-init<br/>Phase A: archaeology (brownfield only)<br/>Phase B: bootstrap (all repos)"]
 
     %% Setup phase
     INIT --> SESSION_START[context-session START<br/>Open Feature Boundary]
     SESSION_START --> HARNESS{First time or<br/>structural issue?}
-    HARNESS -. assess maturity .-> ASSESS[harness-maintain<br/>Assess Mode]
+    HARNESS -. assess maturity .-> ASSESS["harness-maintain<br/>(Assess Mode)"]
     ASSESS -.-> NEEDRES
     HARNESS --> NEEDRES{Behavior unknown<br/>or brownfield?}
 
     %% Investigation phase
-    NEEDRES -. yes .-> RES[spec-research<br/>analysis.md / brownfield map]
+    NEEDRES -. yes .-> RES["spec-research<br/>(analysis.md)"]
     RES --> SPEC
-    NEEDRES --> SPEC[spec-requirements<br/>grilling waves + spec.md]
+    NEEDRES --> SPEC["spec-requirements<br/>(grilling waves + spec.md)"]
 
     %% Design phase
     SPEC --> NEEDVIS{Complex flow<br/>worth a diagram?}
-    NEEDVIS -. yes .-> VIS[visualize<br/>diagram.md]
+    NEEDVIS -. yes .-> VIS["visualize<br/>(diagram.svg or diagram.mmd)"]
     VIS --> NEEDADR
     NEEDVIS --> NEEDADR{Architectural<br/>decision?}
-    NEEDADR -. yes .-> ADR[spec-adr<br/>adr-NNN.md]
+    NEEDADR -. yes .-> ADR["spec-adr<br/>(adr-NNN.md)"]
     ADR --> PLAN
-    NEEDADR --> PLAN[spec-plan<br/>design + tasks + gate]
+    NEEDADR --> PLAN["spec-plan<br/>(plan.md + tasks.md + design.md)"]
 
     %% Execution phase
-    PLAN --> IMPL[spec-implement<br/>one task at a time + proof]
-    IMPL --> VERIFY[harness-verify<br/>gate + alignment + security]
+    PLAN --> IMPL["spec-implement<br/>(one task at a time + proof)"]
+    IMPL --> VERIFY["harness-verify<br/>(review.md + testing-scenarios.md)"]
 
     VERIFY -- gate fail --> IMPL
     VERIFY -- spec drift --> SPEC
     VERIFY -- pass --> SYNC[Post-Ship Sync<br/>context-memory sweep]
 
     %% Learning loop
-    VERIFY -. harness lesson .-> IMPROVE[harness-maintain<br/>Improve Mode]
+    VERIFY -. harness lesson .-> IMPROVE["harness-maintain<br/>(Improve Mode)"]
     IMPROVE -. durable fix .-> INIT
 
     %% Documentation and Review phase (optional utility skills)
     SYNC --> NEEDDOCS{Refresh docs<br/>or review PR?}
-    NEEDDOCS -. API changed .-> APIDOC[api-endpoint-docs<br/>docs/API.md]
-    NEEDDOCS -. flows changed .-> SYSDOC[system-flow-docs<br/>docs/flows.md]
-    NEEDDOCS -. architecture changed .-> CODEDOC[codebase-documenter<br/>docs/*.md]
-    NEEDDOCS -. PR ready .-> CODEREV[code-review<br/>review.md]
-    APIDOC -.-> ENDS
-    SYSDOC -.-> ENDS
+    NEEDDOCS -. technical docs changed .-> TECHDOC["technical-docs<br/>(api, flow, or both modes)"]
+    NEEDDOCS -. architecture changed .-> CODEDOC["codebase-documenter<br/>(docs/ root README/ARCHITECTURE)"]
+    NEEDDOCS -. PR ready .-> CODEREV["code-review<br/>(review.md)"]
+    TECHDOC -.-> ENDS
     CODEDOC -.-> ENDS
     CODEREV -.-> ENDS
 
-    NEEDDOCS --> ENDS[context-session END<br/>handoff + extracts]
+    NEEDDOCS --> ENDS["context-session END<br/>(handoff.md + session-extracts.md)"]
     ENDS --> DONE([Shipped + KB compounded])
 
     %% Legend
@@ -65,7 +63,7 @@ flowchart TD
 
     class START,DONE terminal
     class INIT,SESSION_START,SPEC,PLAN,IMPL,ENDS core
-    class ASSESS,BROWNFIELD,RES,VIS,ADR,IMPROVE,APIDOC,SYSDOC,CODEDOC,CODEREV optional
+    class ASSESS,RES,VIS,ADR,IMPROVE,TECHDOC,CODEDOC,CODEREV optional
     class VERIFY,SYNC gate
     class HARNESS,EXIST,NEEDRES,NEEDVIS,NEEDADR,NEEDDOCS decision
     class LEGEND legend
