@@ -31,6 +31,7 @@ The documentation set is organized into three tiers to allow maintainers to prog
 * **[skills-guide.md](skills-guide.md)** — The command taxonomy, guided learning flow, and internal lineages.
 * **[packs.md](packs.md)** — Breakdown of the 4 core packs: Project Starter, Context Engineering, Spec-Driven Development, and Harness Engineering.
 * **[end-to-end-tutorial.md](end-to-end-tutorial.md)** — Step-by-step developer tutorial walking through all 15 commands in a sample lifecycle.
+* **[evaluation-report.md](evaluation-report.md)** — End-to-end evaluation report covering architecture, context management gaps, and template blueprints.
 * **[INSTALL.md](INSTALL.md)** — Requirements, installation steps, upgrade mechanics, and rollback instructions.
 
 ### Tier 2: Technical & Context Systems

@@ -84,24 +84,61 @@ Durable cross-feature guidance in `memories/repo/`:
 
 ## Data Flow
 
+The diagram below details the sequence of interactions across the 5 layers during feature development, from user request to post-ship knowledge sync (see details in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)):
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Agent as Main Agent (Nexus Loop)
+    participant Sub as Research Subagents
+    participant Art as Feature Artifacts
+    participant Mem as Memory Layer
+    participant Cmd as Verification Commands
+
+    User->>Agent: Request Feature/Bug Fix
+    Agent->>Mem: Read INDEX.md & Always-loaded memory (T1 & T2)
+    Note over Agent,Mem: Check keywords for intent groups (T3)
+    alt Brownfield / Complex Area
+        Agent->>Agent: Route to /spec-research
+        Agent->>Sub: Spawn research subagents
+        Sub->>Sub: Sweep codebase & API boundaries
+        Sub-->>Agent: Return summary reports (evict raw search logs)
+        Agent->>Art: Write analysis.md & status.md (Phase = Spec'ing)
+    else Greenfield / Trivial
+        Agent->>Art: Create status.md (Phase = Spec'ing)
+    end
+
+    Agent->>Agent: Route to /spec-requirements
+    Agent->>User: Socratic Grilling (Batch Questions)
+    User-->>Agent: Clarifications
+    Agent->>Art: Write spec.md (AC-* criteria) & proposal.md
+    Note over Agent,Art: Lock specifications
+
+    Agent->>Agent: Route to /spec-plan
+    Agent->>Art: Write design.md, plan.md & tasks.md (Granular Tasks + Proofs)
+
+    loop For each task in tasks.md
+        Agent->>Agent: Route to /spec-implement --task <task-id>
+        Agent->>Agent: Modify code JIT (T5)
+        Agent->>Cmd: Run local proof command (e.g., unit test)
+        Cmd-->>Agent: Proof output (T6)
+        Agent->>Agent: Evict raw proof output, record outcome in tasks.md
+    end
+
+    Agent->>Agent: Route to /harness-verify
+    Agent->>Cmd: Run mechanical verification (Lint, Build, Test suites)
+    Cmd-->>Agent: Mechanical PASS
+    Agent->>Agent: Run alignment audit (Map AC-* to task proofs)
+    Agent->>Agent: Run code review audit against google-eng guidelines
+
+    Agent->>Mem: Post-Ship Memory Sweep (context-memory)
+    Note over Agent,Mem: Read memory files in INDEX.md, append lessons to session-extracts.md
+    Agent->>Art: Set status.md (Phase = Done)
+    Agent->>Agent: Route to /context-session END
+    Agent-->>User: Report execution success & handoff location
 ```
-User Request
-    │
-    ▼
-AGENTS.md (router) → loads skill
-    │
-    ▼
-Skill reads: INDEX.md (memory router) → Always/By-Intent/By Domain Packs/By-Debug groups → feature artifacts → references/
-    │
-    ▼
-Skill produces: feature artifacts (spec, plan, tasks, code, review)
-    │
-    ▼
-Findings promoted: session-extracts.md (extracted tier) → extraction triage → memories/repo/ (instruction tier)
-    │
-    ▼
-Session ends: handoff.md + session-extracts.md generated for continuity
-```
+
 
 ## Failure Classification
 

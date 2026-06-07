@@ -252,3 +252,12 @@ During `/context-memory` Post-Ship Sync, promote durable patterns from
 Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs.
 As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet
 auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.
+
+---
+
+## Context Compaction & Claim Gaps
+
+During the system-wide evaluation (detailed in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
+
+* **Automated Compaction Hooks**: Pruning ephemeral command output and logs (Tier 6) is currently a manual cognitive task for agents. A dedicated script utility (e.g., `scripts/compact-context.py`) should be introduced to programmatically summarize long command runs and evict stale code segments.
+* **Workspace Claim Lock Contention**: The file-backed claim protocol manages multi-agent coordination but lacks automated collision resolution. To prevent distributed agent workspace blockages, claim files should be explicitly mapped to Git branch states rather than single absolute paths.
