@@ -105,6 +105,5 @@ These rules are checked during alignment audits and cannot be bypassed:
 During the system-wide evaluation (detailed in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)), several gaps and corresponding recommendations were identified to optimize the harness for autonomous agents:
 
 * **Script-Driven Stack Archaeology**: Currently, `/starter-init` relies on manual questionnaires to configure paths and commands in [harness-config.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/memories/repo/harness-config.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
-* **Automated Compaction Hooks**: Agents are instructed to prune transient logs manually. The framework should embed a utility (e.g., `scripts/compact-context.py`) that executes post-task to auto-condense console logs and compile artifacts.
 * **Standardized Error Parsing**: To make failure GC loops reliable, the system needs an error parser script to structuralize compilation and test-run failures before logging them in `observability-log.md`.
 * **Multi-Agent Branch-Mapped Claims**: The file-backed claim protocol is vulnerable to concurrency race conditions. Lock files should be explicitly mapped to Git branch states to prevent workspace collisions.

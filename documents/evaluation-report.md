@@ -16,7 +16,6 @@ Autonomous coding agents are highly capable but prone to hallucination, context 
 * **Dynamic Memory Promotion**: The automated post-ship memory sweep and extraction triage guarantee that learned heuristics compound over time.
 
 ### Core Gaps & Recommended Enhancements
-* **Lack of Automated Compaction Scripts**: The compaction/eviction policies (summarizing grep output, evicting stale file contents) are currently guidelines in skill files rather than script-supported automated tools.
 * **Complex Tech-Stack Auto-Configuration**: The `starter-init` questionnaire is highly conversational and manual. A script-driven detection layer for common runtimes (Node, Python, Go, Rust) would improve reliability.
 * **Multi-Agent Workspace Lock Contention**: The file-backed claim protocol is effective but prone to race conditions if agents write concurrently without a lock manager.
 
@@ -264,8 +263,6 @@ To build a template compatible with both greenfield and brownfield initiatives t
 > [!IMPORTANT]
 > **1. Script-Driven Stack Archaeology**: Auto-detect package managers, test runners, and build commands during `/starter-init` instead of relying entirely on user text inputs.
 >
-> **2. Automated Compaction Hook**: Introduce a CLI-backed script (`scripts/compact-context.py`) that agents can invoke (or that runs automatically after `/spec-implement` tasks) to prune transient outputs and collapse files into summaries.
+> **2. Standardized Error Parsing**: Build an error classification helper (`scripts/parse-observability.py`) to categorize compiler and test outputs, ensuring they are formatted correctly before being written to `observability-log.md`.
 >
-> **3. Standardized Error Parsing**: Build an error classification helper (`scripts/parse-observability.py`) to categorize compiler and test outputs, ensuring they are formatted correctly before being written to `observability-log.md`.
->
-> **4. Active Workspace Claims**: Support multi-agent environments by mapping claim files to git branches, preventing lockouts and race conditions across distributed agent runs.
+> **3. Active Workspace Claims**: Support multi-agent environments by mapping claim files to git branches, preventing lockouts and race conditions across distributed agent runs.
