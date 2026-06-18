@@ -7,19 +7,19 @@ compatibility: Designed for AI coding agents.
 # Kit Implement
 
 ## Overview
-Perform the coding work. Follow `docs/generated/tasks.md` and execute one approved task at a time.
+Perform the coding work. Follow `artifacts/features/<slug>/tasks.md` and execute one approved task at a time.
 
 ## I/O Hand-off Protocol
-- **Reads**: `docs/generated/plan.md`, `docs/generated/tasks.md`, `docs/project/requirements.md`, `memories/repo/harness-telemetry.md`.
-- **Writes**: Source code, `docs/generated/tasks.md` (to mark tasks done), `memories/repo/harness-telemetry.md`.
+- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`.
+- **Writes**: Source code, `artifacts/features/<slug>/tasks.md` (to mark tasks done), `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`.
 - **Next Skill**: `/harness-verify`
 
 ## Workflow
-1. **Initialize State**: Update the `## Current State` section of `memories/repo/harness-telemetry.md` to set phase to `Implementing`.
-2. **Select Task**: Choose the first unblocked task ID from `docs/generated/tasks.md`.
+1. **Initialize State**: Update the `## Current State` section of `artifacts/features/<slug>/status.md` to set phase to `Implementing`.
+2. **Select Task**: Choose the first unblocked task ID from `artifacts/features/<slug>/tasks.md`.
 3. **Coding**: Implement code and tests within the task boundary.
 4. **Validation**: Run the validation commands required by the task.
-5. **Log & Close**: Mark task `Done` in `docs/generated/tasks.md`.
+5. **Log & Close**: Mark task `Done` in `artifacts/features/<slug>/tasks.md`.
 6. **Next Step**: If tasks remain, continue. If complete, route to `/harness-verify`.
 
 ## Core Rules

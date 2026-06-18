@@ -7,4 +7,4 @@ compatibility: Designed for AI coding agents.
 # Code Review
 
 ## Overview
-Review changes against `memories/repo/security-policy.md` and `docs/project/requirements.md`.
+Review changes against `memories/repo/security-policy.md` and `artifacts/features/<slug>/spec.md`.

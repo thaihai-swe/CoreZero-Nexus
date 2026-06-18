@@ -117,6 +117,7 @@ flowchart TD
 ## Compaction Triggers
 
 Compact context when:
+- `harness-telemetry.md` exceeds 500 lines or the session is ending
 - Raw grep/search output exceeds 50 lines
 - Full file contents are loaded but only a section is needed
 - Previous task's code context is no longer relevant

@@ -210,7 +210,7 @@ mindmap
   root((CoreZero Nexus))
     Context
       Memory
-        core-policies.md
+        constitution.md
         knowledge-base.md
       Research
         analysis.md

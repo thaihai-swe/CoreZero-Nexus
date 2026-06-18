@@ -39,8 +39,8 @@ The kit enforces environment control through six integrated subsystems:
 - **Solution**: Durable trackers (`status.md`, `tasks.md`, `progress.md`) maintain state outside the volatile chat history. **Decision Provenance Records** inside `progress.md` strictly capture the "why" behind mid-flight execution deviations to ensure traceability back to the origin plan.
 
 ### C. Verification (Mechanical Gates)
-- **Problem**: Agents "rationalize" failures, claiming tasks are complete when tests or lints are still failing.
-- **Solution**: Verification is governed by non-negotiable terminal commands (linters, test suites). The gate cannot be bypassed by agent excuses.
+- **Problem**: Agents "rationalize" failures, claiming tasks are complete when tests or lints are still failing, or they get stuck in an infinite fix-verify loop.
+- **Solution**: Verification is governed by non-negotiable terminal commands. A circuit breaker tracks failures (max 2) before forcing a fallback to `/spec-plan` to rethink the approach. The gate cannot be bypassed by agent excuses.
 
 ### D. Scope (Surface Constraints)
 - **Problem**: Agents naturally drift, introducing "ghost" features or performing refactors in adjacent files.

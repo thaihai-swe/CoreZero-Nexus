@@ -41,9 +41,10 @@ This document defines the installed surface that adopters receive from `kit/`.
 | `skills/codebase-documenter/**` | `overwrite` | Docs authoring bundle |
 | `skills/visualize/**` | `overwrite` | Specialist visualization bundle |
 | `skills/README.md` | `overwrite` | Shipped skills index |
-| `rules/README.md` | `overwrite` | Rules index |
-| `rules/python.md` | `overwrite` | Python guidance |
-| `rules/security.md` | `overwrite` | Security guidance |
+| `docs/rules/README.md` | `overwrite` | Rules index |
+| `docs/rules/python.md` | `overwrite` | Python guidance |
+| `docs/rules/security.md` | `overwrite` | Security guidance |
+| `.gitignore` | `append` | Excludes generated outputs |
 | `scripts/install.sh` | `overwrite` | Package installer |
 | `scripts/generate-dashboard.py` | `overwrite` | Optional dashboard helper |
 | `artifacts/` | `preserve` | Adopter feature state |

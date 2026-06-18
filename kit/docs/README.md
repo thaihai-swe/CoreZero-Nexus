@@ -4,8 +4,8 @@ This folder is the installed documentation surface for downstream repositories u
 
 ## Start Here
 
-1. Read [guides/onboarding.md](guides/onboarding.md).
-2. Fill in the adopter-owned files under [project/](project/).
+1. Fill in the adopter-owned files under [project/](project/).
+2. Review the coding constraints in [rules/](rules/).
 3. Use the shipped core workflow:
    `/starter-init` -> `/spec-research` or `/spec-requirements` -> `/spec-plan` -> `/spec-implement` -> `/harness-verify`
 4. Use the governance bundle when needed:
@@ -18,8 +18,8 @@ This folder is the installed documentation surface for downstream repositories u
 
 ### First-read docs
 
-- [guides/onboarding.md](guides/onboarding.md) — installation, upgrade, and first-run flow
 - [policies/code-design.md](policies/code-design.md) — kit-managed design policy
+- [rules/](rules/) — language-specific coding and security rules
 
 ### Adopter-owned project docs
 

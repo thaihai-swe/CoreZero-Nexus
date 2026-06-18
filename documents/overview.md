@@ -90,6 +90,7 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 
 ### Phase 1: Repository Bootstrapping ([`/starter-init`](../kit/skills/starter-init/SKILL.md))
 - Initializes the environment, parses dependencies, and registers targets.
+- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`docs/generated/*`, `memories/repo/harness-telemetry.md`) from version control.
 - **Greenfield Mode:** Prefills standard templates and triggers.
 - **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and seeds legacy boundary rules into `memories/repo/brownfield/`.
 
@@ -99,7 +100,7 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 
 ### Phase 3: Specification Intake ([`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md))
 - Conducts a "Socratic Grilling" phase, asking the developer clarifying questions to avoid assumptions.
-- Authors the canonical `spec.md` containing clear Acceptance Criteria (`AC-001`, `AC-002`, etc.) and scores readiness using `readiness-scoring.md`.
+- Authors the canonical `spec.md` requiring strict deterministic Acceptance Criteria formatted as markdown checklists (`- [ ]`) or Gherkin (`Given/When/Then`) mapped to binary verification commands.
 
 ### Phase 4: Planning ([`/spec-plan`](../kit/skills/spec-plan/SKILL.md))
 - Drafts Architectural Decision Records (ADRs) via `/spec-adr` if system architecture is modified.
@@ -108,11 +109,12 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 
 ### Phase 5: Implementation ([`/spec-implement`](../kit/skills/spec-implement/SKILL.md))
 - Agent executes modifications in targeted files.
-- Coding standards in [`rules/`](../kit/docs/rules/) (syntax, language-specific lints, and security standards) must be strictly adhered to.
+- Coding standards in [`docs/rules/`](../kit/docs/rules/) (syntax, language-specific lints, and security standards) must be strictly adhered to.
 - For every task item, the agent runs the localized proof command, records the outcome, and immediately evicts raw console logs to prevent context fatigue.
 
 ### Phase 6: Verification & Review ([`/harness-verify`](../kit/skills/harness-verify/SKILL.md))
 - **Mechanical Gate:** Runs the workspace-wide check suite (linting, build verification, and test suites) to ensure zero broken baselines.
+- **Circuit Breaker:** Tracks failure counts to prevent infinite loops; if an implementation fails verification >= 2 times, it routes back to `/spec-plan` or `/code-review`.
 - **Alignment Audit:** Maps every single `AC-*` from `spec.md` to task proofs to verify full requirements implementation.
 - **Code Review:** Checks code against safety guidelines and Google-standard coding policies.
 - Promotes feature status to `Done` in `status.md`.

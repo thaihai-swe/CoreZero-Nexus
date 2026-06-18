@@ -10,17 +10,21 @@ compatibility: Designed for AI coding agents.
 Converts approved requirements into a concrete execution strategy. Answers: how will we build this safely, and what task does implementation start with?
 
 ## I/O Hand-off Protocol
-- **Reads**: `docs/project/requirements.md`, `memories/repo/harness-telemetry.md`.
-- **Writes**: `docs/generated/plan.md`, `docs/generated/tasks.md`, `memories/repo/harness-telemetry.md`.
+- **Reads**: `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`.
+- **Writes**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/status.md`.
 - **Next Skill**: `/spec-implement`
 
 ## Workflow
-1. **Initialize State**: Update the `## Current State` section of `memories/repo/harness-telemetry.md` to set phase to `Planning`.
-2. **Design**: Write `docs/generated/plan.md` defining impacted areas, execution order, rollback steps, and verification strategies.
-3. **Task Breakdown**: Create `docs/generated/tasks.md` with unique task IDs (`T-01`), clear targets, and specific proof validations.
-4. **Traceability**: Verify every requirement in `docs/project/requirements.md` maps to a task in `docs/generated/tasks.md`.
-5. **Handoff**: Set `memories/repo/harness-telemetry.md` to `Plan Approved` and route to `/spec-implement`.
+1. **Initialize State**: Update the `## Current State` section of `artifacts/features/<slug>/status.md` to set phase to `Planning`.
+2. **Design**: Write `artifacts/features/<slug>/plan.md` defining impacted areas, execution order, rollback steps, and verification strategies. The plan must pass the **Architectural Gates** (see Core Rules) or explicitly document justified exceptions in a "Complexity Tracking" section.
+3. **Task Breakdown**: Create `artifacts/features/<slug>/tasks.md` with unique task IDs (`T-01`), clear targets, and specific proof validations. Mark independent, non-blocking tasks with `[P]` to indicate safe parallel execution zones.
+4. **Traceability**: Verify every requirement in `artifacts/features/<slug>/spec.md` maps to a task in `artifacts/features/<slug>/tasks.md`.
+5. **Handoff**: Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
 
 ## Core Rules
+- **Hierarchical Detail Management**: Keep `plan.md` high-level and readable. Do NOT dump raw code or algorithms into the plan; extract those to separate implementation detail files if necessary.
+- **Architectural Gates**:
+  - **Simplicity Gate**: No speculative future-proofing. Build only what satisfies the exact requirements.
+  - **Anti-Abstraction Gate**: Use framework features directly. Avoid creating custom wrappers or premature abstractions.
 - **Verifiable Task Increments**: Break work into low-risk tasks that can be proven independently.
 - **No Spec Re-opening**: Stick to the approved requirements.
