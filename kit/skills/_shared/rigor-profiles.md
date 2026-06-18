@@ -1,6 +1,6 @@
 # Rigor Profiles
 
-A repo-wide and per-feature delivery profile that scales the kit's ceremony to the work's risk and scope. Set the default in `memories/repo/harness-config.md`. Override per feature in `artifacts/features/<slug>/status.md`.
+A repo-wide and per-feature delivery profile that scales the kit's ceremony to the work's risk and scope. Set the default in `memories/repo/core-policies.md`. Override per feature in `artifacts/features/<slug>/status.md`.
 
 ## Why Profiles Exist
 
@@ -52,9 +52,9 @@ The top tier. Use for high-ambiguity, cross-boundary, brownfield-risky work, or 
 
 | Skill | Behavior |
 |---|---|
-| `spec-requirements` | 5+ grilling questions; all gray-area decisions locked in `spec.md`. Full readiness review. **System Spec Mode** when the work is cross-cutting (multiple features constrained by it, or harness changes). Adversarial review pass before lock when the work changes public API, persistent data, or harness subsystems. |
+| `spec-requirements` | 5+ grilling questions; all gray-area decisions locked in `spec.md`. Full readiness review. Cross-cutting work stays in the same spec workflow and gets adversarial review before lock when the work changes public API, persistent data, or harness subsystems. |
 | `spec-research` | Required. Subagent-driven exploration; parallel subagents for cross-cutting work. |
-| `visualize` | Required when system structure is affected. Architecture diagrams must be regenerated for harness or system-spec work. |
+| `visualize` | Required when system structure is affected. Architecture diagrams must be regenerated for harness or cross-cutting work. |
 | `spec-adr` | Required for each locked technical choice. |
 | `spec-plan` | Full `design.md` + `plan.md` + `tasks.md`. Stress-test design with subagent. Adversarial plan review and phased rollout when the work is cross-cutting. Smaller-than-usual task slices with continuous proof for harness or migration work. |
 | `spec-implement` | Standard; smaller slices for cross-cutting or migration work. |
@@ -88,7 +88,7 @@ At the start of the feature lifecycle (during `/spec-requirements`, `/spec-resea
 1. Listing the target files to be modified (either from the issue/proposal, or from a `git diff` if resuming work).
 2. Checking intersections against:
    - Security-sensitive paths declared in `security-policy.md`
-   - System boundary paths in `docs/architecture.md`
+   - System boundary paths in `docs/project/architecture.md`
    - The agentic harness files (`skills/`, `memories/repo/`, `AGENTS.md`, `HARNESS_CARD.md`)
 3. If `memories/repo/brownfield/brownfield-map.md` exists:
    - Read all severity ratings in the Severity Rating column.
@@ -100,9 +100,9 @@ The demotion check runs during the Automated Profile Selection Routine inside `/
 
 ## Where Profiles Live
 
-- **Repo default**: `memories/repo/harness-config.md` -> `## Adaptive Rigor` -> `Default profile:`
+- **Repo default**: `memories/repo/core-policies.md` -> `## Adaptive Rigor` -> `Default profile:`
 - **Per-feature override**: `artifacts/features/<slug>/status.md` -> `## 🧭 Delivery Profile`
-- **Skills consume**: each skill's "Read First" already loads `harness-config.md` and `status.md`. The profile read happens at the start of every skill's workflow.
+- **Skills consume**: each skill's "Read First" already loads `core-policies.md` and `status.md`. The profile read happens at the start of every skill's workflow.
 
 ## Anti-Patterns
 
@@ -110,7 +110,7 @@ The demotion check runs during the Automated Profile Selection Routine inside `/
 - **Treating `Standard` as a synonym for "default ceremony."** Standard means most feature work. If the feature is genuinely risky, promote it.
 - **Locking the profile and never revisiting.** If implementation reveals the work is harder than the spec implied, promote the profile and re-run the affected phase. The artifacts are cheap; the bug isn't.
 - **Setting the repo default to `Tiny`.** The repo default should match the typical work in this repo. For most repos that is `Standard`. `Tiny` as a default invites silent under-verification.
-- **Treating Complex as one-size-fits-all.** Complex covers everything from a contained-but-risky feature to a repo-wide harness change. Read the Complex row carefully and apply only the rows that match the work — System Spec Mode and `harness-maintain Eval Mode` are reserved for cross-cutting / harness work, not every Complex feature.
+- **Treating Complex as one-size-fits-all.** Complex covers everything from a contained-but-risky feature to a repo-wide harness change. Read the Complex row carefully and apply only the rows that match the work — `harness-maintain Eval Mode` is reserved for cross-cutting / harness work, not every Complex feature.
 
 ### Profile Promotion Mid-Lifecycle
 

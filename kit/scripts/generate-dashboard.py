@@ -87,7 +87,7 @@ def scan_workspace(root_path: Path):
                 })
     return features
 
-def get_html_template(features_json, failures_json):
+def get_html_template(features_json):
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -384,19 +384,10 @@ def get_html_template(features_json, failures_json):
                 <!-- Dynamically generated features go here -->
             </div>
         </div>
-
-        <!-- Failure Observability Audit Feed -->
-        <div>
-            <div class="section-title">Open Observability Remediations</div>
-            <div id="obs-container" class="obs-list">
-                <!-- Dynamically generated observability tasks go here -->
-            </div>
-        </div>
     </div>
 
     <script>
         const features = {features_json};
-        const failures = {failures_json};
 
         function renderFeatures() {{
             const container = document.getElementById('features-container');
@@ -444,29 +435,6 @@ def get_html_template(features_json, failures_json):
             }}).join('');
         }}
 
-        function renderFailures() {{
-            const container = document.getElementById('obs-container');
-            const openFailures = failures.filter(f => f.status === 'open');
-            
-            if (openFailures.length === 0) {{
-                container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-secondary); border-color: var(--border-glass);">No open observability items.</div>';
-                return;
-            }}
-            
-            container.innerHTML = openFailures.map((fail, index) => `
-                <div class="obs-item" id="obs-item-${{index}}">
-                    <div class="obs-header">
-                        <span class="obs-id">${{fail.id}}</span>
-                        <span class="obs-class">${{fail.class}}</span>
-                    </div>
-                    <div style="font-weight: 500; font-size: 0.95rem; margin-bottom: 0.25rem;">${{fail.summary}}</div>
-                    <div class="obs-fix">
-                        <strong>Proposed Fix:</strong> ${{fail.proposed_durable_fix}}
-                    </div>
-                </div>
-            `).join('');
-        }}
-
         function filterCards() {{
             const query = document.getElementById('search-bar').value.toLowerCase();
             const cards = document.querySelectorAll('.feature-card');
@@ -483,7 +451,6 @@ def get_html_template(features_json, failures_json):
 
         // Initial render
         renderFeatures();
-        renderFailures();
     </script>
 </body>
 </html>
@@ -501,28 +468,13 @@ def main():
     # Scan for features
     features = scan_workspace(root)
     
-    # Try importing parse-observability logic to get failures
-    sys.path.append(str(root / "kit" / "scripts"))
-    sys.path.append(str(root / "scripts"))
-    try:
-        from parse_observability import parse_log
-        obs_path = root / "memories" / "repo" / "observability-log.md"
-        if obs_path.exists():
-            failures = parse_log(obs_path.read_text(encoding="utf-8"))
-        else:
-            failures = []
-    except ImportError:
-        failures = []
-        
     if args.dry_run:
         print(f"Features scanned: {len(features)}")
-        print(f"Open failures found: {len([f for f in failures if f.get('status') == 'open'])}")
         return 0
         
     # Render dashboard
     html_content = get_html_template(
-        json.dumps(features),
-        json.dumps(failures)
+        json.dumps(features)
     )
     
     output_path = Path(args.output)

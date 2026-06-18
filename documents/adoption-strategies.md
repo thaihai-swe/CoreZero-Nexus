@@ -13,7 +13,7 @@
 
 Don't adopt everything at once. Start with:
 
-1. **Week 1:** Bootstrap the kit, fill in `docs/PRODUCT_SENSE.md` and refine `docs/architecture.md`
+1. **Week 1:** Bootstrap the kit, fill in `docs/project/product-sense.md` and refine `docs/project/architecture.md`
 2. **Week 2:** Use `/spec-requirements` + `/spec-plan` for one real feature
 3. **Week 3:** Add `/spec-implement` + `/harness-verify` to close the loop
 4. **Week 4:** Evaluate — did it help? What was friction?
@@ -25,7 +25,7 @@ For existing projects with history:
 1. **Don't backfill.** Don't try to create specs for existing features.
 2. **Analysis first.** Use `/spec-research` to map existing behavior before changing it.
 3. **Preserve behavior.** The kit's brownfield protection rules prevent accidental breakage.
-4. **Grow memory gradually.** Let `constitution.md` and `project-knowledge-base.md` accumulate naturally.
+4. **Grow memory gradually.** Let `core-policies.md` and `project-knowledge-base.md` accumulate naturally.
 
 ## Ceremony Scaling
 
@@ -37,7 +37,7 @@ The kit adapts to work size:
 | Small bug | Tiny | Compact spec, lean plan, mechanical-gate-only verify | Design doc, ADR, full grilling |
 | Standard feature | Standard | Full spec, plan, task breakdown, gate + alignment + security lens | Nothing skipped, but kept lean |
 | Complex/risky work | Complex | Grilling waves, design doc, ADR, detailed plan, full verify with traceability | Nothing — full ceremony |
-| Repo-wide / harness change | Complex | System Spec Mode, adversarial review, phased rollout, `/harness-maintain` eval mode | Nothing |
+| Repo-wide / harness change | Complex | adversarial review, phased rollout, `/harness-maintain` eval mode | Nothing |
 
 The `/spec-requirements` skill triages automatically. You don't need to declare the profile upfront.
 
@@ -111,7 +111,7 @@ New repo or near-empty project — install the kit, run init, ship the first fea
 flowchart TD
     %% Greenfield Flow — new repo, install kit, ship first feature
 
-    NEW[(New / near-empty repo)] --> BOOT[install.sh<br/>copy skills + memory + rules<br/>auto-detect stack]
+    NEW[(New / near-empty repo)] --> BOOT[install.sh<br/>copy skills + memory + rules]
 
     BOOT --> INIT[starter-init<br/>Greenfield Mode]
     INIT --> AGENTS[Create AGENTS.md router<br/>under 50 lines]

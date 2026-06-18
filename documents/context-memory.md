@@ -89,16 +89,16 @@ flowchart TB
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
 | 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `constitution.md`, `harness-config.md`, `security-policy.md` | Always — every session |
+| 2 | Always group: `core-policies.md`, `core-policies.md`, `security-policy.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
 **Intent groups (Tier 3) — defined in `memories/repo/INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, domain-specs, `adr-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`).
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`).
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`).
-- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `observability-log.md` and per-feature `session-extracts.md`).
+- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`).
 
 ### Smart Routing via INDEX.md
 
@@ -118,7 +118,7 @@ flowchart TD
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
 
-    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + domain-specs + architecture]
+    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + architecture]
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
     MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
     MATCH -->|no trigger matches| SKIP[Load Always tier only<br/>record 'no groups matched']
@@ -177,17 +177,16 @@ flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
     subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[constitution.md<br/>Repo-wide rules]
+        CONST[core-policies.md<br/>Repo-wide rules]
         SEC[security-policy.md<br/>Trust boundaries]
-        HARN[harness-config.md<br/>Canonical commands]
+        HARN[core-policies.md<br/>Canonical commands]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
-        DOM[domain-specs.md<br/>Domain language]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
-        ARCH[docs/architecture.md<br/>System structure]
+        ARCH[docs/project/architecture.md<br/>System structure]
     end
 
     subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
-        OBS[observability-log.md<br/>Harness/Model/Spec failures]
+        OBS[harness-telemetry.md<br/>Harness/Model/Spec failures]
     end
 
     subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
@@ -203,7 +202,6 @@ flowchart TD
     IDX -->|Always group| SEC
     IDX -->|Always group| HARN
     IDX -->|By-Intent: Knowledge| PKB
-    IDX -->|By-Intent: Knowledge| DOM
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
     IDX -->|By-Debug| OBS
@@ -227,7 +225,7 @@ flowchart TD
     classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
 
-    class CONST,SEC,HARN,PKB,DOM,HEUR,ARCH instr
+    class CONST,SEC,HARN,PKB,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router
@@ -240,16 +238,15 @@ flowchart TD
 * **`INDEX.md`**: Declares Always / By-Intent / By-Debug groups. Sessions read this first.
 
 #### Instruction Tier — Human-Curated, Durable
-* **`constitution.md`**: Normative repository rules tagged with `CC-*` identifiers. Update frequency is rare.
+* **`core-policies.md`**: Normative repository rules tagged with `CC-*` identifiers. Update frequency is rare.
 * **`security-policy.md`**: Permission model, sandbox guidelines, trust boundaries.
-* **`harness-config.md`**: Commands, paths, trackers, and promotion thresholds.
+* **`core-policies.md`**: Commands, paths, trackers, and promotion thresholds.
 * **`project-knowledge-base.md`**: Durable facts, conventions, and patterns.
-* **`domain-specs.md`**: Domain vocabulary, rules, and subsystem maps.
 * **`learned-heuristics.md`**: Evidence-backed execution patterns.
-* **`docs/architecture.md`**: Component boundaries, seams, and layouts.
+* **`docs/project/architecture.md`**: Component boundaries, seams, and layouts.
 
 #### Auto Tier — Failure-Driven, Append-Only
-* **`observability-log.md`**: Tracks Harness/Model/Spec failure classifications. Written by `/harness-maintain` Improve Mode.
+* **`harness-telemetry.md`**: Tracks Harness/Model/Spec failure classifications. Written by `/harness-maintain` Improve Mode.
 
 #### Extracted Tier — Per-Feature Candidates
 * **`artifacts/features/<slug>/session-extracts.md`**: Candidate findings and observations compiled during session boundaries.
@@ -262,7 +259,7 @@ Knowledge flows from local feature execution upward into instruction-tier memory
 
 ### Manual Promotion & Triage
 
-When a finding is identified in a feature folder (`session-extracts.md` or `observability-log.md`), run `/context-memory` to initiate Extraction Triage:
+When a finding is identified in a feature folder (`session-extracts.md` or `harness-telemetry.md`), run `/context-memory` to initiate Extraction Triage:
 
 | Decision | Condition | Action |
 |----------|-----------|--------|
@@ -270,11 +267,11 @@ When a finding is identified in a feature folder (`session-extracts.md` or `obse
 | **Defer** | Promising but needs further confirmations | Retain in candidate log |
 | **Discard** | Feature-specific, obsolete, or incorrect | Discard with documented reason |
 
-*Normative rules* (must/should) route to `constitution.md` or `security-policy.md`.
+*Normative rules* (must/should) route to `core-policies.md` or `security-policy.md`.
 *Descriptive facts* (uses/prefers) route to `project-knowledge-base.md` or `learned-heuristics.md`.
 
 ### Promotion Watchlist Thresholds
-To prevent file bloat, memory segments are audited against these boundaries (from `harness-config.md`):
+To prevent file bloat, memory segments are audited against these boundaries (from `core-policies.md`):
 - Memory file length $\ge$ 800 lines (warning) / 1200 lines (hard limit).
 - $\ge$ 3 distinct H2 subtopics covering separate concerns.
 - $\ge$ 5 features referencing the same slice.
@@ -294,14 +291,14 @@ flowchart LR
     SYNC -->|sweep every file in INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
 
     FILES -->|durable lesson| EXT[Append candidate<br/>session-extracts.md]
-    FILES -->|harness failure| OBS[Append entry<br/>observability-log.md]
+    FILES -->|harness failure| OBS[Append entry<br/>harness-telemetry.md]
     FILES -->|no change| RECORD[Record reason in<br/>Post-Ship Sync block]
 
     EXT --> TRIAGE[context-memory<br/>Extraction Triage]
     OBS --> TRIAGE
 
     TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
-    TRIAGE -->|normative rule| CONST[Promote to<br/>constitution.md]
+    TRIAGE -->|normative rule| CONST[Promote to<br/>core-policies.md]
     TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
     TRIAGE -->|security finding| SEC[Promote to<br/>security-policy.md]
     TRIAGE -->|defer| DEF[Wait for next signal]

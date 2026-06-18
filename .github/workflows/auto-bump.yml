@@ -96,8 +96,7 @@ jobs:
             exit 1
           fi
 
-
-      - name: Bump VERSION, commit, tag, branch, push
+      - name: Bump version surfaces, commit, tag, branch, push
         if: steps.bump.outputs.level != 'skip'
         run: |
           next="${{ steps.next.outputs.version }}"
@@ -105,12 +104,25 @@ jobs:
           IFS=. read -r nmajor nminor npatch <<<"$next"
           release_branch="release/${nmajor}.${nminor}.x"
 
-          echo "$next" > VERSION
+          python3 - "$next" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          version = sys.argv[1]
+          Path("VERSION").write_text(version + "\n", encoding="utf-8")
+          Path("kit/VERSION").write_text(version + "\n", encoding="utf-8")
+
+          manifest_path = Path("kit/manifest.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          manifest["version"] = version
+          manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+          PY
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add VERSION
+          git add VERSION kit/VERSION kit/manifest.json
           git commit -m "release: v$next [skip ci]"
           git tag "v$next"
 

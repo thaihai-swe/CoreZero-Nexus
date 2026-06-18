@@ -44,17 +44,17 @@ flowchart TB
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
 | 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `constitution.md`, `harness-config.md`, `security-policy.md` | Always — every session |
+| 2 | Always group: `core-policies.md`, `core-policies.md`, `security-policy.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Domain Packs / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
 **Intent groups (Tier 3) — defined in `memories/repo/INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, domain-specs, `adr-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`)
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
-- **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domains/<name>/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
-- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `observability-log.md` and per-feature `session-extracts.md`)
+- **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
+- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
 
 ## Assembly Rules
 
@@ -83,7 +83,7 @@ flowchart TD
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
 
-    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + domain-specs + architecture]
+    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + architecture]
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
     MATCH -->|domain glossary triggers| DOMAIN[Load Domain Pack<br/>glossary only or full pack]
     MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
@@ -216,17 +216,18 @@ a specific business or technical domain.
 ### Where They Live
 
 ```
-memories/domains/<name>/
-├── glossary.md       — ubiquitous language + trigger keywords
-├── patterns.md       — proven domain patterns
-├── anti-patterns.md  — failure modes to avoid
-└── boundary-rules.md — domain ownership and integration contracts
+memories/domain/
+├── glossary.md      — ubiquitous language + trigger keywords
+├── patterns.md      — proven domain patterns
+├── anti-patterns.md — failure modes to avoid
+├── boundaries.md    — domain ownership and integration contracts
+└── spec.md          — optional: canonical domain spec (REQ/AC contract)
 ```
 
 ### How Loading Works
 
 Domain packs use confidence-scored loading (same principle as Tier 3 intent groups):
-- **3+ keyword matches** → full pack load (all 4 files)
+- **3+ keyword matches** → full pack load (all files)
 - **1–2 keyword matches** → partial load (glossary.md only)
 - **0 matches** → pack skipped
 
@@ -238,10 +239,10 @@ triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
 
 ### Authoring a Pack
 
-1. Create `memories/domains/<name>/` with the 4 required files.
+1. Create `memories/domain/` with the required files.
 2. Declare triggers in `glossary.md` frontmatter.
 3. Register the pack in `memories/repo/INDEX.md` under `## By Domain Packs`.
-4. See `memories/domains/README.md` for the full schema.
+4. See `memories/domain/README.md` for the full schema.
 
 ### Lifecycle
 
@@ -257,7 +258,6 @@ auto-routed by `INDEX.md`; sessions need to load them intentionally when relevan
 
 ## Context Compaction & Claim Gaps
 
-During the system-wide evaluation (detailed in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
+During the system-wide evaluation (detailed in [evaluation-report.md](documents/evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
 
 * **Workspace Claim Lock Contention**: The file-backed claim protocol manages multi-agent coordination but lacks automated collision resolution. To prevent distributed agent workspace blockages, claim files should be explicitly mapped to Git branch states rather than single absolute paths.
-

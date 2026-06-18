@@ -3,7 +3,7 @@
 # CoreZero Nexus installer
 #
 # Usage:
-#   scripts/install.sh <target_dir> [--version <x.y.z>] [--dry-run]
+#   scripts/install.sh <target_dir> [--dry-run]
 #
 # Behavior:
 #   - Reads manifest.json at the kit root.
@@ -11,7 +11,6 @@
 #   - Overwrites kit content (skills, scripts, rules, doc references).
 #   - Copies user-content files (memory, templates, architecture) only if missing.
 #   - Preserves user state (memories/repo content, artifacts/, local settings).
-#   - Writes <target>/.corezero-version with the installed version.
 #   - Idempotent. Re-running upgrades the kit and preserves your content.
 #
 # Curl-pipe support:
@@ -22,8 +21,8 @@ set -euo pipefail
 
 REPO_URL="${HARNESS_KIT_REPO_URL:-https://github.com/thaihai-swe/CoreZero-Nexus.git}"
 
-err() { printf 'ERROR: %s   ' "$*" >&2; exit 1; }
-log() { printf '%s   ' "$*"; }
+err() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
+log() { printf '%s\n' "$*"; }
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || err "required command not found: $1"
@@ -45,6 +44,27 @@ for item in cur:
 PY
 }
 
+read_manifest_pairs() {
+  local manifest="$1"
+  local path="$2"
+  python3 - "$manifest" "$path" <<'PY'
+import json, sys
+m = json.load(open(sys.argv[1]))
+cur = m
+for k in sys.argv[2].split('.'):
+    cur = cur.get(k, []) if isinstance(cur, dict) else cur
+    if cur is None:
+        cur = []
+        break
+if not isinstance(cur, list):
+    raise SystemExit("expected list at " + sys.argv[2])
+for item in cur:
+    if not isinstance(item, dict) or "src" not in item or "dst" not in item:
+        raise SystemExit("expected {src, dst} object at " + sys.argv[2])
+    print(item["src"] + "\t" + item["dst"])
+PY
+}
+
 read_manifest_string() {
   local manifest="$1"
   local path="$2"
@@ -55,16 +75,6 @@ cur = m
 for k in sys.argv[2].split('.'):
     cur = cur[k]
 print(cur)
-PY
-}
-
-read_template_for() {
-  local manifest="$1"
-  local target_rel="$2"
-  python3 - "$manifest" "$target_rel" <<'PY'
-import json, sys
-m = json.load(open(sys.argv[1]))
-print(m.get("templateMap", {}).get(sys.argv[2], ""))
 PY
 }
 
@@ -107,6 +117,20 @@ copy_into_target() {
   cp "$src" "$dst"
 }
 
+copy_cross_tree() {
+  local src_rel="$1"
+  local dst_rel="$2"
+  local src="$REPO_ROOT/$src_rel"
+  local dst="$TARGET_DIR/$dst_rel"
+  [[ -f "$src" ]] || err "crossTreeOverwrite references missing source: $src_rel"
+  if [[ "$DRY_RUN" == "true" ]]; then
+    log "  [dry-run] would copy (cross-tree): $src_rel -> $dst_rel"
+    return
+  fi
+  mkdir -p "$(dirname "$dst")"
+  cp "$src" "$dst"
+}
+
 backup_file() {
   local rel="$1"
   local dst="$TARGET_DIR/$rel"
@@ -135,13 +159,8 @@ resolve_source_dir() {
   require_cmd git
   SOURCE_TEMP="$(mktemp -d)"
   log "Cloning kit to temp: $SOURCE_TEMP"
-  if [[ -n "${PIN_VERSION:-}" ]]; then
-    git clone --depth 1 --branch "v$PIN_VERSION" "$REPO_URL" "$SOURCE_TEMP" >/dev/null 2>&1 \
-      || err "could not clone $REPO_URL at tag v$PIN_VERSION"
-  else
-    git clone --depth 1 "$REPO_URL" "$SOURCE_TEMP" >/dev/null 2>&1 \
-      || err "could not clone $REPO_URL"
-  fi
+  git clone --depth 1 "$REPO_URL" "$SOURCE_TEMP" >/dev/null 2>&1 \
+    || err "could not clone $REPO_URL"
   SOURCE_DIR="$SOURCE_TEMP"
 }
 
@@ -152,20 +171,15 @@ cleanup_source_temp() {
 }
 
 TARGET_DIR=""
-PIN_VERSION=""
 DRY_RUN="false"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --version)
-      PIN_VERSION="${2:-}"; shift 2
-      [[ -n "$PIN_VERSION" ]] || err "--version requires a value"
-      ;;
     --dry-run)
       DRY_RUN="true"; shift
       ;;
     -h|--help)
-      log "Usage: install.sh <target_dir> [--version <x.y.z>] [--dry-run]"
+      log "Usage: install.sh <target_dir> [--dry-run]"
       exit 0
       ;;
     *)
@@ -175,7 +189,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-[[ -n "$TARGET_DIR" ]] || err "Usage: install.sh <target_dir> [--version <x.y.z>] [--dry-run]"
+[[ -n "$TARGET_DIR" ]] || err "Usage: install.sh <target_dir> [--dry-run]"
 
 require_cmd python3
 require_cmd cp
@@ -186,20 +200,10 @@ trap cleanup_source_temp EXIT
 resolve_source_dir
 MANIFEST="$SOURCE_DIR/manifest.json"
 [[ -f "$MANIFEST" ]] || err "manifest.json not found at $MANIFEST"
-
-KIT_VERSION="$(read_manifest_string "$MANIFEST" version)"
-
-if [[ -n "$PIN_VERSION" && "$PIN_VERSION" != "$KIT_VERSION" ]]; then
-  err "kit clone is version $KIT_VERSION but --version $PIN_VERSION was requested"
-fi
+REPO_ROOT="$(cd "$SOURCE_DIR/.." && pwd)"
 
 mkdir -p "$TARGET_DIR"
 TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
-
-EXISTING_VERSION=""
-if [[ -f "$TARGET_DIR/.corezero-version" ]]; then
-  EXISTING_VERSION="$(tr -d '[:space:]' < "$TARGET_DIR/.corezero-version")"
-fi
 
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="$TARGET_DIR/.corezero-backup-$TIMESTAMP"
@@ -207,7 +211,6 @@ BACKUP_DIR="$TARGET_DIR/.corezero-backup-$TIMESTAMP"
 log "CoreZero Nexus installer"
 log "  Source:   $SOURCE_DIR"
 log "  Target:   $TARGET_DIR"
-log "  Version:  $KIT_VERSION${EXISTING_VERSION:+ (replacing $EXISTING_VERSION)}"
 log "  Dry run:  $DRY_RUN"
 log "  Package:  adopter docs in docs/; maintainer docs stay in the source repo"
 log ""
@@ -224,6 +227,7 @@ done < <(read_manifest_array "$MANIFEST" directories)
 log "Installing kit content (overwrite)..."
 overwrite_count=0
 backup_count=0
+cross_tree_count=0
 
 while IFS= read -r pattern; do
   [[ -n "$pattern" ]] || continue
@@ -238,6 +242,16 @@ while IFS= read -r pattern; do
   done < <(expand_glob "$pattern")
 done < <(read_manifest_array "$MANIFEST" files.overwrite)
 
+while IFS=$'\t' read -r src_rel dst_rel; do
+  [[ -n "$src_rel" && -n "$dst_rel" ]] || continue
+  if [[ -f "$TARGET_DIR/$dst_rel" ]]; then
+    backup_file "$dst_rel"
+    backup_count=$((backup_count + 1))
+  fi
+  copy_cross_tree "$src_rel" "$dst_rel"
+  cross_tree_count=$((cross_tree_count + 1))
+done < <(read_manifest_pairs "$MANIFEST" files.crossTreeOverwrite)
+
 log "Seeding user content (copyIfMissing)..."
 seeded_count=0
 skipped_count=0
@@ -248,78 +262,64 @@ while IFS= read -r rel; do
     skipped_count=$((skipped_count + 1))
     continue
   fi
-  template_rel="$(read_template_for "$MANIFEST" "$rel")"
-  if [[ -n "$template_rel" ]]; then
-    [[ -f "$SOURCE_DIR/$template_rel" ]] || err "templateMap points at missing file: $template_rel"
-    if [[ "$DRY_RUN" == "true" ]]; then
-      log "  [dry-run] would seed from template: $rel <- $template_rel"
-    else
-      mkdir -p "$(dirname "$TARGET_DIR/$rel")"
-      cp "$SOURCE_DIR/$template_rel" "$TARGET_DIR/$rel"
-    fi
-  else
-    [[ -f "$SOURCE_DIR/$rel" ]] || err "copyIfMissing references missing source: $rel"
-    copy_into_target "$rel"
-  fi
+  [[ -f "$SOURCE_DIR/$rel" ]] || err "copyIfMissing references missing source: $rel"
+  copy_into_target "$rel"
   seeded_count=$((seeded_count + 1))
 done < <(read_manifest_array "$MANIFEST" files.copyIfMissing)
 
-detect_stack_and_prefill_config() {
-  local config_file="$TARGET_DIR/memories/repo/harness-config.md"
-  [[ -f "$config_file" ]] || return 0
-  if ! grep -qE '^- Test:[[:space:]]*$|^- Test command:[[:space:]]*$' "$config_file"; then
-    return 0
-  fi
-
-  local install_cmd="" test_cmd="" lint_cmd="" typecheck_cmd="" build_cmd="" stack=""
-
-  if [[ -f "$TARGET_DIR/package.json" ]]; then
-    stack="Node.js"
-    install_cmd="npm install"; test_cmd="npm test"
-    lint_cmd="npm run lint"; typecheck_cmd="npm run typecheck"; build_cmd="npm run build"
-  elif [[ -f "$TARGET_DIR/pyproject.toml" || -f "$TARGET_DIR/requirements.txt" ]]; then
-    stack="Python"
-    install_cmd="pip install -e ."; test_cmd="pytest"
-    lint_cmd="ruff check ."; typecheck_cmd="mypy ."; build_cmd="python -m build"
-  elif [[ -f "$TARGET_DIR/go.mod" ]]; then
-    stack="Go"
-    install_cmd="go mod download"; test_cmd="go test ./..."
-    lint_cmd="golangci-lint run ./..."; typecheck_cmd="go vet ./..."; build_cmd="go build ./..."
-  elif [[ -f "$TARGET_DIR/Cargo.toml" ]]; then
-    stack="Rust"
-    install_cmd="cargo fetch"; test_cmd="cargo test"
-    lint_cmd="cargo clippy -- -D warnings"; typecheck_cmd="cargo check"; build_cmd="cargo build --release"
-  fi
-
-  [[ -z "$stack" ]] && return
-
-  if [[ "$DRY_RUN" == "true" ]]; then
-    log "  [dry-run] would prefill harness-config.md for $stack"
-    return
-  fi
-
-  "${SED_INPLACE[@]}" \
-    -e "s|^- Install / bootstrap:[[:space:]]*$|- Install / bootstrap: ${install_cmd}|" \
-    -e "s|^- Install / bootstrap command:[[:space:]]*$|- Install / bootstrap command: ${install_cmd}|" \
-    -e "s|^- Test:[[:space:]]*$|- Test: ${test_cmd}|" \
-    -e "s|^- Test command:[[:space:]]*$|- Test command: ${test_cmd}|" \
-    -e "s|^- Lint / format:[[:space:]]*$|- Lint / format: ${lint_cmd}|" \
-    -e "s|^- Lint / format command:[[:space:]]*$|- Lint / format command: ${lint_cmd}|" \
-    -e "s|^- Typecheck:[[:space:]]*$|- Typecheck: ${typecheck_cmd}|" \
-    -e "s|^- Typecheck command:[[:space:]]*$|- Typecheck command: ${typecheck_cmd}|" \
-    -e "s|^- Build:[[:space:]]*$|- Build: ${build_cmd}|" \
-    -e "s|^- Build command:[[:space:]]*$|- Build command: ${build_cmd}|" \
-    "$config_file"
-
-  log "  Auto-detected stack: $stack — prefilled harness-config.md"
-}
-
-detect_stack_and_prefill_config
-
 if [[ "$DRY_RUN" != "true" ]]; then
   find "$TARGET_DIR/scripts" -maxdepth 1 -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} +
-  printf '%s   ' "$KIT_VERSION" > "$TARGET_DIR/.corezero-version"
 fi
+
+warn_orphans() {
+  [[ "$DRY_RUN" == "true" ]] && return 0
+  local orphans=(
+    "docs/system-specs"
+    "docs/INSTALL.md"
+    "docs/ADOPTION_GUIDE.md"
+    "docs/GLOSSARY.md"
+    "docs/GOVERNANCE.md"
+    "docs/PRODUCT_SENSE.md"
+    "docs/PROJECT_CONSTRAINTS.md"
+    "docs/QUALITY_POLICY.md"
+    "docs/RELIABILITY_POLICY.md"
+    "docs/TECH_DEBT_REGISTER.md"
+    "docs/TECH_STACK_REFERENCE.md"
+    "docs/architecture.md"
+    "docs/code-design.md"
+    "docs/guides/install.md"
+    "docs/guides/adoption-guide.md"
+    "memories/domains"
+    "scripts/detect-stack.py"
+    "scripts/doctor.sh"
+    "scripts/parse-observability.py"
+    "scripts/check-surface-truth.py"
+    ".github/workflows/harness-check.yml"
+    "rules/README.md"
+    "rules/security.md"
+    "rules/python.md"
+    "skills/context-memory/references/architecture-template.md"
+    "skills/context-memory/references/constitution-template.md"
+    "skills/context-memory/references/index-template.md"
+    "skills/context-memory/references/project-knowledge-base-template.md"
+    "skills/context-memory/references/security-policy-template.md"
+    "skills/context-memory/references/observability-log-template.md"
+    "skills/context-memory/references/adr-log-template.md"
+    "skills/starter-init/references/harness-config-template.md"
+    "skills/starter-init/references/harness-card-template.md"
+    "skills/harness-maintain/references/codemap-template.md"
+    "skills/harness-maintain/references/references-index-template.md"
+    "skills/context-status/references/dashboard-template.html"
+  )
+  local orphan
+  for orphan in "${orphans[@]}"; do
+    if [[ -e "$TARGET_DIR/$orphan" ]]; then
+      log "  WARNING: orphan from previous kit version: $orphan (safe to delete)"
+    fi
+  done
+}
+
+warn_orphans
 
 errors=0
 validate_path() {
@@ -335,24 +335,39 @@ validate_path() {
 if [[ "$DRY_RUN" != "true" ]]; then
   log ""
   log "Post-install validation"
+  validate_path "docs/README.md" "Installed docs start page"
+  validate_path "docs/guides/onboarding.md" "Onboarding guide"
+  validate_path "docs/policies/code-design.md" "Code design policy"
   validate_path "skills" "Skills directory"
+  validate_path "skills/context/context-status/SKILL.md" "Context-status skill"
+  validate_path "skills/harness/harness-maintain/SKILL.md" "Harness-maintain skill"
+  validate_path "skills/spec/spec-adr/SKILL.md" "Spec-ADR skill"
+  validate_path "skills/utilities/technical-docs/SKILL.md" "Technical-docs skill"
+  validate_path "skills/utilities/codebase-documenter/SKILL.md" "Codebase-documenter skill"
+  validate_path "skills/utilities/visualize/SKILL.md" "Visualize skill"
+  validate_path "skills/utilities/visualize/scripts/validate_mermaid.py" "Visualize Mermaid validator"
+  validate_path "skills/utilities/visualize/templates/architecture.svg" "Visualize SVG template"
+  validate_path "skills/utilities/visualize/fixtures/architecture-style-1.json" "Visualize regression fixture"
+  validate_path "skills/utilities/visualize/references/example-flow.mmd" "Visualize Mermaid sample"
   validate_path "memories/repo" "Memory layer"
   validate_path "memories/repo/INDEX.md" "Memory router"
-  validate_path "memories/repo/constitution.md" "Constitution"
-  validate_path "memories/repo/harness-config.md" "Harness config"
+  validate_path "memories/repo/core-policies.md" "Constitution"
+  validate_path "memories/repo/core-policies.md" "Harness config"
   validate_path "memories/repo/security-policy.md" "Security policy"
   validate_path "HARNESS_CARD.md" "Harness card"
   validate_path "AGENTS.md" "Runtime entrypoint"
+  validate_path "docs/rules/python.md" "Python rules"
+  validate_path "docs/rules/security.md" "Security rules"
   validate_path "scripts/install.sh" "Installer (self-shipped)"
-  validate_path ".corezero-version" "Version stamp"
 fi
 
 log ""
 log "Summary"
-log "  Files installed: $overwrite_count"
-log "  Files seeded:    $seeded_count"
-log "  Files skipped:   $skipped_count (already present)"
-log "  Files backed up: $backup_count -> $BACKUP_DIR"
+log "  Files installed:      $overwrite_count"
+log "  Cross-tree installed: $cross_tree_count"
+log "  Files seeded:         $seeded_count"
+log "  Files skipped:        $skipped_count (already present)"
+log "  Files backed up:      $backup_count -> $BACKUP_DIR"
 log "  Installed docs: docs/ (adopter-facing)"
 log "  Not installed by default: documents/ (maintainer-only)"
 
@@ -363,12 +378,15 @@ fi
 
 log ""
 log "Next steps:"
-log "  1. Read docs/ADOPTION_GUIDE.md for the guided pack-based start"
+log "  1. Read docs/guides/onboarding.md for the installation, upgrade, and adoption walkthrough"
 log "  2. Run /starter-init in your AI agent"
 log "  3. Start the first feature with /spec-requirements (or /spec-research for brownfield/unknown behavior)"
 log "  4. Use /context-session only after a feature slug and status.md already exist"
 log "  5. Deliver through /spec-plan, /spec-implement"
 log "  6. Close out with /harness-verify"
-log "  7. Use documents/ only in the source repository when maintaining the kit itself"
+log "  7. Governance bundle: /context-status, /harness-maintain, /spec-adr"
+log "  8. Docs bundle: /technical-docs, /codebase-documenter"
+log "  9. Specialist visualization: /visualize (Mermaid validation bundled; Mermaid render optional with mmdc)"
+log "  10. Use documents/ only in the source repository when maintaining the kit itself"
 log ""
 log "Upgrade later: re-run this command. Memory and artifacts are preserved."

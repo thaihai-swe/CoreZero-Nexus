@@ -61,16 +61,16 @@ The kit enforces environment control through six integrated subsystems:
 The self-improving loop relies on a structured **Garbage Collection (GC) Loop** to learn from execution failures:
 
 ```
-[Agent/Harness Failure] ──> [observability-log.md] ──> [/harness-maintain (Improve)] ──> [Triage & Promoted to Memory]
+[Agent/Harness Failure] ──> [harness-telemetry.md] ──> [/harness-maintain (Improve)] ──> [Triage & Promoted to Memory]
 ```
 
-1. **Capture**: When a task fails a verification gate or requires manual intervention, the event is logged in `observability-log.md`.
+1. **Capture**: When a task fails a verification gate or requires manual intervention, the event is logged in `harness-telemetry.md`.
 2. **Classify**: `/harness-maintain` categorizes the failure:
    - *Harness Problem*: The environment allowed or encouraged the mistake (e.g., missing template validation).
    - *Model Problem*: The environment was adequate, but LLM execution was poor (requires stricter core rules).
    - *Spec Problem*: The requirements or acceptance criteria were contradictory or vague.
 3. **Upgrade**: If classified as a harness or model problem, `/harness-maintain` generates a repair proposal.
-4. **Persist**: `/context-memory` triages the proposal and promotes the fix to `constitution.md`, `project-knowledge-base.md`, or a new automated check.
+4. **Persist**: `/context-memory` triages the proposal and promotes the fix to `core-policies.md`, `project-knowledge-base.md`, or a new automated check.
 
 ---
 
@@ -102,8 +102,8 @@ These rules are checked during alignment audits and cannot be bypassed:
 
 ## 6. Gaps & Blueprint Recommendations
 
-During the system-wide evaluation (detailed in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)), several gaps and corresponding recommendations were identified to optimize the harness for autonomous agents:
+During the system-wide evaluation (detailed in [evaluation-report.md](documents/evaluation-report.md)), several gaps and corresponding recommendations were identified to optimize the harness for autonomous agents:
 
-* **Script-Driven Stack Archaeology**: Currently, `/starter-init` relies on manual questionnaires to configure paths and commands in [harness-config.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/memories/repo/harness-config.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
-* **Standardized Error Parsing**: To make failure GC loops reliable, the system needs an error parser script to structuralize compilation and test-run failures before logging them in `observability-log.md`.
+* **Script-Driven Stack Archaeology**: Currently, `/starter-init` relies on manual questionnaires to configure paths and commands in [core-policies.md](kit/memories/repo/core-policies.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
+* **Standardized Error Parsing**: To make failure GC loops reliable, the system needs an error parser script to structuralize compilation and test-run failures before logging them in `harness-telemetry.md`.
 * **Multi-Agent Branch-Mapped Claims**: The file-backed claim protocol is vulnerable to concurrency race conditions. Lock files should be explicitly mapped to Git branch states to prevent workspace collisions.

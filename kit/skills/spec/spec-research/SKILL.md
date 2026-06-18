@@ -1,0 +1,27 @@
+---
+name: spec-research
+description: Investigate an unknown problem space or bug and produce an analysis artifact.
+compatibility: Designed for AI coding agents.
+---
+
+# Kit Research
+
+## Overview
+Investigate system behaviors and produce `docs/generated/analysis.md`. Use this for debugging, failure tracing, and mapping brownfield code before writing a spec or plan.
+
+## I/O Hand-off Protocol
+- **Reads**: `memories/repo/harness-telemetry.md`, codebase files.
+- **Writes**: `docs/generated/analysis.md`, `memories/repo/harness-telemetry.md`.
+- **Next Skill**: `/spec-requirements` or `/spec-plan`.
+
+## Workflow
+1. **Initialize State**: Update the `## Current State` section of `memories/repo/harness-telemetry.md` to set phase to `Researching`.
+2. **Reproduce**: For bugs, recreate the failure first.
+3. **Map**: Map target files, trace dependencies, and identify boundaries.
+4. **Document**: Write findings, risks, and next steps in `docs/generated/analysis.md`.
+5. **Handoff**: Set `memories/repo/harness-telemetry.md` to `Research Complete`. Route to `/spec-requirements` if scope is clear, or `/spec-plan` if a formal plan is needed first.
+
+## Core Rules
+- **Fact-Focused**: Separate observed facts from inferences. Prove hypotheses with code evidence.
+- **Scope Limit**: Write analysis only. Do NOT write code or plans yet.
+- **Strict I/O**: Do not create custom artifacts outside of the designated files.

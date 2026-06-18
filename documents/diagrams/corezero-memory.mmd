@@ -2,17 +2,16 @@ flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
     subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[constitution.md<br/>Repo-wide rules]
+        CONST[core-policies.md<br/>Repo-wide rules]
         SEC[security-policy.md<br/>Trust boundaries]
-        HARN[harness-config.md<br/>Canonical commands]
+        HARN[core-policies.md<br/>Canonical commands]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
-        DOM[domain-specs.md<br/>Domain language]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
-        ARCH[docs/architecture.md<br/>System structure]
+        ARCH[docs/project/architecture.md<br/>System structure]
     end
 
     subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
-        OBS[observability-log.md<br/>Harness/Model/Spec failures]
+        OBS[harness-telemetry.md<br/>Harness/Model/Spec failures]
     end
 
     subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
@@ -24,7 +23,7 @@ flowchart TD
     end
 
     subgraph PACKS["Domain Packs — Adopter-Owned"]
-        DPACK[memories/domains/&lt;name&gt;/<br/>glossary + patterns + anti-patterns + boundary-rules]
+        DPACK[memories/domain/<br/>glossary + patterns + anti-patterns + boundaries + spec]
     end
 
     BROWN[Brownfield artifacts<br/>memories/repo/brownfield/*<br/>manual load for now]
@@ -34,7 +33,6 @@ flowchart TD
     IDX -->|Always group| SEC
     IDX -->|Always group| HARN
     IDX -->|By-Intent: Knowledge| PKB
-    IDX -->|By-Intent: Knowledge| DOM
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
     IDX -->|By Domain Packs| DPACK
@@ -61,7 +59,7 @@ flowchart TD
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
     classDef packs fill:#eef2ff,stroke:#c7d2fe,color:#3730a3
 
-    class CONST,SEC,HARN,PKB,DOM,HEUR,ARCH instr
+    class CONST,SEC,HARN,PKB,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router

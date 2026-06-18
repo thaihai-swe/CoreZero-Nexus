@@ -77,10 +77,10 @@ Run the initialization command:
 Ensure the following files have been created in your repository root:
 - [`AGENTS.md`](../kit/AGENTS.md) — The agent router configuration.
 - [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) — Active harness status and verification settings.
-- [`memories/repo/harness-config.md`](../kit/memories/repo/harness-config.md) — Command and path configuration.
+- [`memories/repo/core-policies.md`](../kit/memories/repo/core-policies.md) — Command and path configuration.
 - `memories/repo/brownfield/` (if brownfield) — Brownfield archaeology map and dependency graph.
-- [`docs/architecture.md`](../kit/docs/architecture.md) — System architecture baseline.
-- [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md), [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md), and the other seeded adopter docs.
+- [`docs/project/architecture.md`](../kit/docs/project/architecture.md) — System architecture baseline.
+- [`docs/project/product-sense.md`](../kit/docs/project/product-sense.md), [`docs/project/glossary.md`](../kit/docs/project/glossary.md), and the other seeded adopter docs.
 
 ---
 
@@ -109,7 +109,7 @@ Save intermediate session states without ending the session:
 ```
 
 ### Step 4: Manage Durable Memory (`/context-memory`)
-Manually triage, amend, or synthesize repo-wide memory (such as [`constitution.md`](../kit/memories/repo/constitution.md), [`security-policy.md`](../kit/memories/repo/security-policy.md), [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md)):
+Manually triage, amend, or synthesize repo-wide memory (such as [`core-policies.md`](../kit/memories/repo/core-policies.md), [`security-policy.md`](../kit/memories/repo/security-policy.md), [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md)):
 ```text
 /context-memory
 ```
@@ -202,7 +202,7 @@ When the environment itself needs assessment, repair, or triaging based on obser
 *Effect*:
 - **assess**: Evaluates the repo harness against the 6 subsystems.
 - **create**: Generates harness configuration from scratch.
-- **improve**: Upgrades harness mechanisms based on observability failures. Triages `status: open` entries in `observability-log.md` using the structured YAML schema, prioritizes them, designs/applies fixes, and updates the trend summary.
+- **improve**: Upgrades harness mechanisms based on observability failures. Triages `status: open` entries in `harness-telemetry.md` using the structured YAML schema, prioritizes them, designs/applies fixes, and updates the trend summary.
 - **eval**: Runs split-evaluator auditing passes.
 - **doctor**: Runs the shipped drift and repair checks.
 
@@ -246,7 +246,7 @@ Example run:
 |---|---|---|---|
 | `/starter-init` | Project Starter | Initial setup, router configuration, and archaeology sweep (Phase A) on brownfield repos | [`AGENTS.md`](../kit/AGENTS.md), [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md), `memories/repo/brownfield/` |
 | `/context-session` | Context | Manage active session boundaries and checkpoints | `artifacts/features/<slug>/` |
-| `/context-memory` | Context | Maintain durable memory files | [`memories/repo/constitution.md`](../kit/memories/repo/constitution.md), [`INDEX.md`](../kit/memories/repo/INDEX.md) |
+| `/context-memory` | Context | Maintain durable memory files | [`memories/repo/core-policies.md`](../kit/memories/repo/core-policies.md), [`INDEX.md`](../kit/memories/repo/INDEX.md) |
 | `/context-status` | Context | Multi-feature orchestration overview | Scans `artifacts/features/` |
 | `/spec-research` | SDD | Investigate ambiguous/brownfield systems | `analysis.md` |
 | `/spec-requirements`| SDD | Define and lock feature requirements | `spec.md`, `proposal.md` |

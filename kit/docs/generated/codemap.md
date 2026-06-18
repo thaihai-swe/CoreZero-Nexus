@@ -1,29 +1,23 @@
 # Codemap
 
-> Generated reference. Refresh when the installed surface changes materially.
+> Seeded placeholder. Refresh with `/harness-maintain` after the installed surface changes materially.
 
-## Top-Level Map
+## Installed Surface Map
 
 | Path | Responsibility | Notes |
 | :--- | :--- | :--- |
-| `AGENTS.md` | Thin router for load order and workflow entry | Keep under 50 lines |
-| `HARNESS_CARD.md` | Harness summary and known limits | Read before non-trivial work |
-| `docs/` | Installed operating docs | Includes `README.md`, `ADOPTION_GUIDE.md`, `INSTALL.md`, policy docs, generated refs, and `architecture.md` |
-| `memories/repo/` | Durable rules, commands, and knowledge | `INDEX.md` routes memory loading |
-| `skills/` | Canonical workflow contracts | Public commands map to these skill folders |
-| `scripts/` | Install, repair, and validation helpers | Includes `install.sh`, `doctor.sh`, `check-surface-truth.py` |
-| `.github/workflows/` | Consistency automation | `harness-check.yml` |
+| `AGENTS.md` | Runtime entry router | Installed at the adopter repo root |
+| `INDEX.md` | Root routing index | Points to deeper kit surfaces |
+| `HARNESS_CARD.md` | Runtime status and limits card | Read before non-trivial work |
+| `docs/` | Adopter-facing documentation | Includes `guides/`, `project/`, `policies/`, and `generated/` |
+| `memories/repo/` | Durable repository memory | `INDEX.md` routes memory loading |
+| `memories/domain/` | Adopter-owned domain pack templates | Replace example content with project-specific content |
+| `skills/` | Shipped command contracts | Core workflow, governance, docs authoring, and specialist visualization |
+| `rules/` | Shipped coding and safety rules | Includes Python and security guidance |
+| `scripts/` | Install and validation helpers | Includes `install.sh` |
 
-## Key Entrypoints
+## First Entry Points
 
-- Path: `docs/README.md`
-  Purpose: first stop after install
-  Watchouts: must only reference installed files
-
-- Path: `scripts/install.sh`
-  Purpose: manifest-driven installer
-  Watchouts: must preserve adopter-owned seeded files
-
-- Path: `scripts/doctor.sh`
-  Purpose: repair and drift-check entrypoint
-  Watchouts: runs structural checks, not feature verification
+- `docs/README.md` — start here after install
+- `docs/guides/onboarding.md` — required first-run guide
+- `scripts/install.sh` — installer and upgrade entrypoint

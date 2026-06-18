@@ -73,8 +73,8 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 - `HARNESS_CARD.md` (harness summary card)
 - `memories/repo/*` (memory router and seed instruction files)
 - `memories/repo/brownfield/*` (brownfield map, dependency graph; created by `/starter-init` Phase A)
-- `docs/architecture.md` (durable architecture baseline)
-- `docs/*.md` project-policy docs seeded for the adopter to refine
+- `docs/project/architecture.md` (durable architecture baseline)
+- `docs/project/*.md` adopter-owned docs seeded for refinement
 - `docs/generated/*` (index & codemap artifacts)
 
 Starter-init archaeology (Phase A) is now the documented first step for established repositories. Its
@@ -100,16 +100,16 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 
 ### Key Files Touched
 - `memories/repo/INDEX.md`
-- `memories/repo/constitution.md`
+- `memories/repo/core-policies.md`
 - `memories/repo/security-policy.md`
 - `memories/repo/learned-heuristics.md`
 - `memories/repo/project-knowledge-base.md`
-- `memories/repo/observability-log.md` (failure ledger with structured YAML trend summary)
-- `memories/domains/*` (domain-specific glossary trigger, patterns, and boundaries)
+- `memories/repo/harness-telemetry.md` (failure ledger with structured YAML trend summary)
+- `memories/domain/*` (domain-specific glossary trigger, patterns, boundaries, and spec)
 - `artifacts/features/<slug>/progress.md`
 - `artifacts/features/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
-- `docs/architecture.md`
+- `docs/project/architecture.md`
 - `docs/generated/codemap.md`
 - `docs/generated/references-index.md`
 
@@ -144,10 +144,10 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`
 - `memories/repo/adr-log.md`
-- [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md)
-- [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md)
-- [`docs/TECH_STACK_REFERENCE.md`](../kit/docs/TECH_STACK_REFERENCE.md)
-- [`docs/PROJECT_CONSTRAINTS.md`](../kit/docs/PROJECT_CONSTRAINTS.md)
+- [`docs/project/product-sense.md`](../kit/docs/project/product-sense.md)
+- [`docs/project/glossary.md`](../kit/docs/project/glossary.md)
+- [`docs/project/tech-stack-reference.md`](../kit/docs/project/tech-stack-reference.md)
+- [`docs/project/project-constraints.md`](../kit/docs/project/project-constraints.md)
 
 ---
 
@@ -166,11 +166,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 * `/harness-maintain` — Assesses, configures, or evaluates the harness systems.
 
 ### Key Files Touched
-- `docs/code-design.md`
-- [`docs/GOVERNANCE.md`](../kit/docs/GOVERNANCE.md)
-- [`docs/QUALITY_POLICY.md`](../kit/docs/QUALITY_POLICY.md)
-- [`docs/RELIABILITY_POLICY.md`](../kit/docs/RELIABILITY_POLICY.md)
-- [`docs/TECH_DEBT_REGISTER.md`](../kit/docs/TECH_DEBT_REGISTER.md)
+- `docs/policies/code-design.md`
 - `artifacts/features/<slug>/review.md`
 - `artifacts/features/<slug>/testing-scenarios.md`
 - `artifacts/features/<slug>/harness-assessment.md`

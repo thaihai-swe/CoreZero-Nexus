@@ -2,6 +2,7 @@
 
 This file is the agent entrypoint and instruction router for this repository. Read it every session before any other file.
 
+Read @CLAUDE.md for general guidance on how to work with this repository.
 ## 0. Priority Rules
 
 These rules override all other guidance in this file when they conflict.
@@ -24,8 +25,8 @@ When a rule uses one of these keywords, treat it with the corresponding weight.
 * **Fail loud:** You **MUST NOT** mark work complete if verification was skipped, failed, or only partially run. State exactly what was and was not verified.
 * **Preserve behavior:** Existing observable behavior is a contract. You **MUST NOT** change it unless the user explicitly asks.
 * **Keep design SOLID:** **SHOULD** follow SOLID principles when changing or adding software design.
-* **Apply code-design rules:** For cross-cutting overengineering pitfalls — duplicate spellings, hidden coupling, swallowed errors, premature seams, spec/behavior drift — see `docs/code-design.md`. Its `MUST` / `MUST NOT` rules carry the same weight as the rules in this section.
-* **Read the Harness Card:** Before non-trivial work, **SHOULD** skim `HARNESS_CARD.md` at the repo root. It declares the active rigor profile, subsystem status, and known limits. If reality diverges from the card, fix one of them.
+* **Apply code-design rules:** For cross-cutting overengineering pitfalls — duplicate spellings, hidden coupling, swallowed errors, premature seams, spec/behavior drift — see `kit/docs/policies/code-design.md`. Its `MUST` / `MUST NOT` rules carry the same weight as the rules in this section.
+* **Read the Master Index and Harness Card:** Before non-trivial work, **SHOULD** consult `INDEX.md` and skim `kit/HARNESS_CARD.md`. `INDEX.md` routes on-demand context indexes; `kit/HARNESS_CARD.md` declares active status and limits for the shipped package.
 
 ## 1. Operating Loop
 
@@ -112,6 +113,7 @@ Rules:
 * Always review subagent output before relying on it.
 * You remain responsible for final decisions and merge quality.
 * Do not hide uncertainty behind subagent output.
+* **Context Indexes:** Do not read all documentation, memory, or rule files. Instead, consult the master routing index `INDEX.md` at session start to locate and load specific sub-indexes (e.g. `kit/memories/repo/INDEX.md` or `kit/docs/rules/README.md`) only when the active task warrants it.
 
 ## 7. Communication Style
 

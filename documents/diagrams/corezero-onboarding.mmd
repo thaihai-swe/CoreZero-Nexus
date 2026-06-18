@@ -5,7 +5,7 @@ flowchart TD
     DETECT -->|Greenfield| GREEN["Greenfield Mode<br/>(Empty or near-empty repo)"]:::green
     DETECT -->|Brownfield| BROWN["Brownfield Mode<br/>(Existing code, tests, CI, or history)"]:::brown
 
-    GREEN --> GINIT["starter-init (Phase B)<br/>Configure harness-config.md & seed templates"]:::green
+    GREEN --> GINIT["starter-init (Phase B)<br/>Configure core-policies.md & seed templates"]:::green
     GINIT --> GMEM["starter-init (Phase B)<br/>Seed memories (constitution, security, PKB, heuristics)"]:::green
     GMEM --> GFEAT["Pick first feature<br/>(Route to /spec-requirements)"]:::green
 

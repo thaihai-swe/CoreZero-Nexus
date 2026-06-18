@@ -2,7 +2,7 @@ flowchart TD
     %% Self-Improving KB Loop — ship to extract to triage to promote
 
     SESSION_END["context-session END<br/>Extract candidates to<br/>session-extracts.md"]:::triage
-    HARNESS["harness-verify / -maintain<br/>Log failures to<br/>observability-log.md"]:::triage
+    HARNESS["harness-verify / -maintain<br/>Log failures to<br/>harness-telemetry.md"]:::triage
 
     HARNESS --> VERDICT{harness-verify verdict?}:::decision
     VERDICT -->|Pass| SYNC["Post-Ship Sync<br/>(context-memory sweep)"]:::sync
@@ -19,8 +19,8 @@ flowchart TD
 
     TRIAGE --> DECIDE{Triage Action?}:::decision
     DECIDE -->|Promote Heuristic| HEUR["learned-heuristics.md"]:::promote
-    DECIDE -->|Promote Fact/Pattern| PKB["project-knowledge-base.md<br/>or docs/architecture.md"]:::promote
-    DECIDE -->|Promote Normative Rule| CONST["constitution.md<br/>(CC-* with user approval)"]:::promote
+    DECIDE -->|Promote Fact/Pattern| PKB["project-knowledge-base.md<br/>or docs/project/architecture.md"]:::promote
+    DECIDE -->|Promote Normative Rule| CONST["core-policies.md<br/>(CC-* with user approval)"]:::promote
     DECIDE -->|Promote Sandbox/Perms| SEC["security-policy.md"]:::promote
     DECIDE -->|Defer| DEF["Defer<br/>(Wait for next signal)"]:::discard
     DECIDE -->|Discard| DISC["Discard<br/>(Retired, trail kept)"]:::discard

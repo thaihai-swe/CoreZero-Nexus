@@ -1,46 +1,45 @@
 # Project Docs
 
-This folder is the installed documentation surface for downstream projects using CoreZero Nexus.
+This folder is the installed documentation surface for downstream repositories using CoreZero Nexus.
 
 ## Start Here
 
-1. Install the kit
-2. Read [INSTALL.md](INSTALL.md)
-3. Run `/starter-init` (which automatically runs Phase A archaeology on brownfield/legacy repositories)
-4. Start the first feature with `/spec-requirements` or `/spec-research`
-5. Use `/context-session` only after the feature slug already exists
-6. Deliver through `/spec-plan`, `/spec-implement`
-7. Close out with `/harness-verify`
+1. Read [guides/onboarding.md](guides/onboarding.md).
+2. Fill in the adopter-owned files under [project/](project/).
+3. Use the shipped core workflow:
+   `/starter-init` -> `/spec-research` or `/spec-requirements` -> `/spec-plan` -> `/spec-implement` -> `/harness-verify`
+4. Use the governance bundle when needed:
+   `/context-status`, `/context-compact`, `/harness-maintain`, `/spec-adr`
+5. Use the docs authoring bundle when the repo needs durable documentation outputs:
+   `/technical-docs`, `/codebase-documenter`
+6. Use `/visualize` when Mermaid or polished SVG diagrams materially improve clarity.
 
-## Core Docs
+## Installed Surfaces
 
-- [ADOPTION_GUIDE.md](ADOPTION_GUIDE.md) — greenfield and brownfield adoption flow
-- [INSTALL.md](INSTALL.md) — installer behavior, upgrade behavior, and installed surface
-- [code-design.md](code-design.md) — normative coding-policy guidance
+### First-read docs
 
-## Starter Inputs
+- [guides/onboarding.md](guides/onboarding.md) — installation, upgrade, and first-run flow
+- [policies/code-design.md](policies/code-design.md) — kit-managed design policy
 
-- [PRODUCT_SENSE.md](PRODUCT_SENSE.md)
-- [GLOSSARY.md](GLOSSARY.md)
-- [TECH_STACK_REFERENCE.md](TECH_STACK_REFERENCE.md)
-- [PROJECT_CONSTRAINTS.md](PROJECT_CONSTRAINTS.md)
+### Adopter-owned project docs
 
-## Continuity And Context
+- [project/architecture.md](project/architecture.md)
+- [project/product-sense.md](project/product-sense.md)
+- [project/glossary.md](project/glossary.md)
+- [project/tech-stack-reference.md](project/tech-stack-reference.md)
+- [project/project-constraints.md](project/project-constraints.md)
 
-- [architecture.md](architecture.md)
+### Generated placeholders
+
 - [generated/codemap.md](generated/codemap.md)
 - [generated/dashboard.html](generated/dashboard.html)
 - [generated/references-index.md](generated/references-index.md)
-- `memories/repo/*`
 
-## Quality And Repair
+The `generated/` files are seeded placeholders until your project refreshes them.
+Use `/harness-maintain` to rebuild `codemap` and `references-index`, and `/context-status` to regenerate the dashboard when your project adopts those governance surfaces.
 
-- [GOVERNANCE.md](GOVERNANCE.md)
-- [QUALITY_POLICY.md](QUALITY_POLICY.md)
-- [RELIABILITY_POLICY.md](RELIABILITY_POLICY.md)
-- [TECH_DEBT_REGISTER.md](TECH_DEBT_REGISTER.md)
-- `bash scripts/doctor.sh` — repair and drift check
+## Output Ownership
 
-## Generated Files
-
-`docs/generated/codemap.md` and `docs/generated/references-index.md` are generated-reference surfaces. Refresh them with `/harness-maintain` when the repository structure changes materially.
+- `/technical-docs` owns feature-scoped API and flow documentation outputs.
+- `/codebase-documenter` owns repo onboarding and architecture doc sets.
+- `/visualize` owns optional SVG and Mermaid diagram outputs.

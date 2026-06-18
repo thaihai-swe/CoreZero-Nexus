@@ -1,54 +1,59 @@
 # Kit Documentation
 
-> **Who is this for?**
-> — **Adopting the kit into a project?** → Go to [`docs/`](../kit/docs/README.md) instead.
-> — **Maintaining or evolving the kit itself?** → You are in the right place. Start with the orientation list below.
+Maintainer entrypoint for the CoreZero Nexus source repository.
 
-This is the canonical maintainer documentation surface for the CoreZero Nexus source repository. All installer assets (skills, templates, and rules) are located under the [`kit/`](../kit/) directory in this source repository.
+## Start Here
 
----
+CoreZero Nexus now has two explicit products:
 
-## The Core Value Proposition
+- `kit/` — the installable adopter package
+- `documents/` plus `page-document/` — maintainer and public explainer surfaces
 
-Generative AI code generation is fast but often suffers from "AI slop," code bloat, context amnesia, and silent regressions. CoreZero Nexus addresses these challenges through four foundational pillars:
+When changing shipped behavior, start in `kit/`. When changing explanation, release notes, or site copy, work in `documents/` and `page-document/`.
 
-> [!IMPORTANT]
-> **1. Spec-Driven Discipline**: No code is written until a granular specification (`spec.md`) is locked and mapped to concrete acceptance criteria (`AC-*`).
->
-> **2. Continuous Verification**: Every code change is gated behind an automated mechanical verification commands loop (lints, builds, tests) to guarantee zero broken baselines.
->
-> **3. Zero Amnesia Context**: Active sessions are checkpointed, compacted, and handed off seamlessly, ensuring the agent never "forgets" requirements in large codebases.
->
-> **4. Durable Knowledge Compounding**: After every successful feature deployment, the kit sweeps session logs to update a central repository memory tier, making future agent runs progressively smarter.
+## Maintainer Reading Order
 
----
+1. [architecture.md](architecture.md) — repo architecture and boundaries
+2. [TEMPLATE_SURFACE.md](TEMPLATE_SURFACE.md) — exact shipped surface and ownership
+3. [INSTALL.md](INSTALL.md) — install, upgrade, and validation flow
+4. [skills-guide.md](skills-guide.md) — shipped commands and any future `source-only` markers
+5. [releasing.md](releasing.md) — release, version-sync, and Pages checklist
 
-## 1. Document Architecture & Navigation
+## Source Of Truth
 
-The documentation set is organized into three tiers to allow maintainers to progress from high-level workflows to deep architectural specs.
+The repo follows this truth order:
 
-### Tier 1: Core Guides
-* **[skills-guide.md](skills-guide.md)** — The command taxonomy, guided learning flow, and internal lineages.
-* **[packs.md](packs.md)** — Breakdown of the 4 core packs: Project Starter, Context Engineering, Spec-Driven Development, and Harness Engineering.
-* **[end-to-end-tutorial.md](end-to-end-tutorial.md)** — Step-by-step developer tutorial walking through all 15 commands in a sample lifecycle.
-* **[evaluation-report.md](evaluation-report.md)** — End-to-end evaluation report covering architecture, context management gaps, and template blueprints.
-* **[INSTALL.md](INSTALL.md)** — Requirements, installation steps, upgrade mechanics, and rollback instructions.
+1. `kit/manifest.json` for shipped surface
+2. `kit/skills/*/SKILL.md` for workflow behavior
+3. `documents/` for maintainer explanation
+4. generated files only as derived placeholders
 
-### Tier 2: Technical & Context Systems
-* **[context-memory.md](context-memory.md)** — The 6 context tiers, dynamic memory index routing, 3-tier memory model, compaction rules, and self-improving loop.
-* **[HARNESS_ENGINEERING.md](HARNESS_ENGINEERING.md)** — Harness engineering core theory, the 6 subsystems, OpenAI advanced agent principles, and GC loops.
-* **[architecture.md](architecture.md)** — File layer layouts, entrypoint routing, data flows, and skill structure.
-* **[reference.md](reference.md)** — Quick lookup tables for commands, templates, feature artifacts, and memories.
-* **[TEMPLATE_SURFACE.md](TEMPLATE_SURFACE.md)** — Breakdown of file categories, installer overwrite/preserve settings, and file ownership rules.
+## Current Packaging Position
 
-### Tier 3: Operations & Strategy
-* **[adoption-strategies.md](adoption-strategies.md)** — Scale triaging (Tiny/Standard/Complex), Greenfield onboarding, and Brownfield reverse mapping.
-* **[evals.md](evals.md)** — Split-mode verification gates (Mechanical, Alignment, Security, Continuity), spec scoring, and regression checks.
-* **[integrations.md](integrations.md)** — Standard IDE and agent client routing configurations (Claude Code, Cursor, Gemini).
-* **[releasing.md](releasing.md)** — Git tagging strategies, Conventional Commit auto-bumps, release branches, and versioning checklists.
+The installed package ships the full command surface:
 
----
+- shipped commands:
+  - `/starter-init`
+  - `/spec-research`
+  - `/spec-requirements`
+  - `/spec-plan`
+  - `/spec-implement`
+  - `/harness-verify`
+  - `/context-session`
+  - `/context-memory`
+  - `/context-status`
+  - `/harness-maintain`
+  - `/spec-adr`
+  - `/code-review`
+  - `/technical-docs`
+  - `/codebase-documenter`
+  - `/visualize`
+- the `source-only` marker is reserved for future skills that remain in the repo but stay out of `kit/manifest.json`
 
-## 2. Visual Diagrams
+## Validation
 
-Mermaid diagram source files live under [`diagrams/`](diagrams/). See the [diagram directory map](diagrams/README.md) for individual files and validator details.
+For packaging changes, at minimum run the installer flow locally:
+
+```bash
+bash scripts/install.sh /tmp/corezero-check --dry-run
+```

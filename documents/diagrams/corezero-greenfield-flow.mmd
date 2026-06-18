@@ -5,8 +5,8 @@ flowchart TD
     BOOT --> INIT["starter-init (Phase B)<br/>Greenfield Mode"]:::green
 
     INIT --> AGENTS["Configure AGENTS.md router<br/>Verify entrypoint file is present"]:::step
-    INIT --> MEMSEED["Seed memories/repo/<br/>INDEX.md, constitution.md, security-policy.md,<br/>harness-config.md, and project-knowledge-base.md"]:::step
-    INIT --> TMPL["Pre-fill templates<br/>docs/*.md and docs/architecture.md"]:::step
+    INIT --> MEMSEED["Seed memories/repo/<br/>INDEX.md, core-policies.md, security-policy.md,<br/>core-policies.md, and project-knowledge-base.md"]:::step
+    INIT --> TMPL["Pre-fill templates<br/>docs/project/*.md<br/>and docs/project/architecture.md"]:::step
     INIT --> BASE["Harness Readiness Check<br/>Run build and baseline tests"]:::step
 
     AGENTS --> SPEC

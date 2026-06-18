@@ -10,7 +10,7 @@ Autonomous coding agents are highly capable but prone to hallucination, context 
 
 ### Core Strengths of the Current Kit
 * **State Preservation outside Chat History**: Volatile chat history is superseded by durable, git-tracked status and progress logs, eliminating "agent amnesia" across context resets.
-* **Progressive Disclosure & JIT Context**: The split between a thin entrypoint [AGENTS.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/AGENTS.md), modular skill contracts, and references prevents context-window saturation and keeps the agent focused.
+* **Progressive Disclosure & JIT Context**: The split between a thin entrypoint [AGENTS.md](AGENTS.md), modular skill contracts, and references prevents context-window saturation and keeps the agent focused.
 * **Binary Verification Gates**: Non-negotiable mechanical checks (linters, test runners, builder hooks) prevent anti-rationalization and make release gates absolute.
 * **Comprehensive Greenfield & Brownfield Routing**: Clear demarcation of initialization workflows ensures that legacy architecture mapping (archaeology sweeps) runs only when needed, while greenfield bootstrap stays lean.
 * **Dynamic Memory Promotion**: The automated post-ship memory sweep and extraction triage guarantee that learned heuristics compound over time.
@@ -103,7 +103,7 @@ sequenceDiagram
 The kit enforces control over the agent's operating environment through six integrated subsystems:
 
 ### A. Instructions (Progressive Disclosure)
-* **Mechanics**: Instead of loading a monolithic `RULES.md` file, the agent reads a minimal, (< 50 lines) [AGENTS.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/AGENTS.md) router. This files routes commands to the corresponding `skills/<name>/SKILL.md` (e.g., [SKILL.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/skills/starter-init/SKILL.md)). References and templates (e.g., `progress-template.md`) are loaded dynamically as needed.
+* **Mechanics**: Instead of loading a monolithic `RULES.md` file, the agent reads a minimal, (< 50 lines) [AGENTS.md](AGENTS.md) router. This files routes commands to the corresponding `skills/<name>/SKILL.md` (e.g., [SKILL.md](kit/skills/starter-init/SKILL.md)). References and templates (e.g., `progress-template.md`) are loaded dynamically as needed.
 * **Evaluation**: Exceptional token efficiency. By partitioning instructions, the agent maintains maximum attention budget for the actual task context.
 
 ### B. State (Externalized Memory)
@@ -111,7 +111,7 @@ The kit enforces control over the agent's operating environment through six inte
 * **Evaluation**: Robust. The use of **Decision Provenance Records** inside `progress.md` ensures that mid-flight changes to execution design are documented and traceable back to the plan, preventing chaotic ad-hoc modifications.
 
 ### C. Verification (Mechanical Gates)
-* **Mechanics**: Verification is governed by non-negotiable terminal commands in [harness-config.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/memories/repo/harness-config.md).
+* **Mechanics**: Verification is governed by non-negotiable terminal commands in [core-policies.md](kit/memories/repo/core-policies.md).
 * **Evaluation**: Very strong constraint mapping. The **Anti-Rationalization** rule prevents agents from claiming success based on code readability alone; they must run mechanical validation commands and capture real terminal outputs.
 
 ### D. Scope (Surface Constraints)
@@ -119,11 +119,11 @@ The kit enforces control over the agent's operating environment through six inte
 * **Evaluation**: Bounded and safe. Restricting the agent's edit surface to only target files eliminates unrelated refactors and random changes.
 
 ### E. Lifecycle (Clean-State Guarantees)
-* **Mechanics**: [starter-init](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/skills/starter-init/SKILL.md) audits baseline test/build states. [check-surface-truth.py](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/scripts/check-surface-truth.py) runs structural validation of the harness layout. [doctor.sh](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/scripts/doctor.sh) runs repair routines.
-* **Evaluation**: Complete. The division of [starter-init](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/skills/starter-init/SKILL.md) into **Phase A (Archaeology)** for brownfield repositories and **Phase B (Bootstrap)** ensures that legacy code boundary rules are captured prior to harness setup.
+* **Mechanics**: [starter-init](kit/skills/starter-init/SKILL.md) audits baseline test/build states.
+* **Evaluation**: Complete. The division of [starter-init](kit/skills/starter-init/SKILL.md) into **Phase A (Archaeology)** for brownfield repositories and **Phase B (Bootstrap)** ensures that legacy code boundary rules are captured prior to harness setup.
 
 ### F. Security (Trust Boundaries)
-* **Mechanics**: [security-policy.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/memories/repo/security-policy.md) enforces sandbox parameters, credential exclusions, and validation constraints.
+* **Mechanics**: [security-policy.md](kit/memories/repo/security-policy.md) enforces sandbox parameters, credential exclusions, and validation constraints.
 * **Evaluation**: Highly prescriptive. Establishes clear rules on forbidden tools (e.g., executing unverified downloaded scripts) and flags active credentials in git-tracked code during archaeology sweeps.
 
 ---
@@ -135,14 +135,14 @@ Context is managed as a scarce resource to ensure high attention density:
 | Tier | Content | Load Rule |
 |---|---|---|
 | **Tier 1 — Router** | `AGENTS.md` + `INDEX.md` | Always loaded first |
-| **Tier 2 — Always Repo Memory** | `constitution.md` + `security-policy.md` + `harness-config.md` | Always loaded |
+| **Tier 2 — Always Repo Memory** | `core-policies.md` + `security-policy.md` + `core-policies.md` | Always loaded |
 | **Tier 3 — By Intent Repo Memory** | Knowledge, Learned, Domain Packs, Debug | Load JIT based on keyword triggers |
 | **Tier 4 — Feature Artifacts** | `status.md`, `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Loaded before editing or verifying |
 | **Tier 5 — Raw Code** | Bounded file targets | Loaded JIT per active task |
 | **Tier 6 — Transient Logs** | Ephemeral tool output | Summarize and evict immediately |
 
 ### Intent-Based Memory Routing & Confidence-Scoring
-Memory files listed in [INDEX.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/memories/repo/INDEX.md) are classified into groups. When matching a task, the harness computes a confidence score:
+Memory files listed in [INDEX.md](kit/memories/repo/INDEX.md) are classified into groups. When matching a task, the harness computes a confidence score:
 * **High Confidence (3+ matching keywords)**: Loads the full memory group.
 * **Low Confidence (≤ 2 matching keywords)**: Performs a **partial-load**, reading only the header or index file of the memory group. This keeps situational awareness high while keeping context windows lean.
 
@@ -175,17 +175,17 @@ SDD enforces absolute discipline before code changes are made.
 CoreZero Nexus is designed as a **self-improving system** where the harness learns from its own execution failures:
 
 ```
-[Harness/Agent Failure] ──> [observability-log.md] ──> [/harness-maintain (Improve)] ──> [Memory Promotion Triage]
+[Harness/Agent Failure] ──> [harness-telemetry.md] ──> [/harness-maintain (Improve)] ──> [Memory Promotion Triage]
 ```
 
 ### The Garbage Collection (GC) Loop
-* **Capture**: Failures at mechanical gates, model logic breakdowns, and spec contradictions are appended to `observability-log.md`.
+* **Capture**: Failures at mechanical gates, model logic breakdowns, and spec contradictions are appended to `harness-telemetry.md`.
 * **Classify**: Failures are classified into three types:
   - *Harness Problem*: Missing template constraints or weak scripts.
   - *Model Problem*: Execution errors requiring tighter core rules.
   - *Spec Problem*: Vagueness requiring requirements refactoring.
 * **Upgrade**: Stated improvements are designed and applied during `/harness-maintain --mode improve`.
-* **Triage & Promote**: Candidates from `session-extracts.md` and `observability-log.md` are triaged during `/context-memory` Post-Ship Sync and promoted into [constitution.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/kit/memories/repo/constitution.md) (rules) or `project-knowledge-base.md` (patterns) when threshold counts are exceeded.
+* **Triage & Promote**: Candidates from `session-extracts.md` and `harness-telemetry.md` are triaged during `/context-memory` Post-Ship Sync and promoted into [core-policies.md](kit/memories/repo/core-policies.md) (rules) or `project-knowledge-base.md` (patterns) when threshold counts are exceeded.
 
 ---
 
@@ -199,32 +199,32 @@ To build a template compatible with both greenfield and brownfield initiatives t
 <project-root>/
 ├── AGENTS.md                      # Entrypoint router (keep under 50 lines)
 ├── HARNESS_CARD.md                # Real-time state summary card
-├── .corezero-version              # Version tracking file
 ├── docs/                          # Human-readable & agent-readable documentation
 │   ├── README.md                  # Project overview & command list
-│   ├── ADOPTION_GUIDE.md          # Greenfield/Brownfield workflow steps
-│   ├── INSTALL.md                 # Setup guidelines
-│   ├── architecture.md            # Structural diagrams & descriptions
-│   ├── GLOSSARY.md                # Project-specific glossary
-│   ├── PRODUCT_SENSE.md           # Product constraints & target metrics
+│   ├── guides/                    # Install and adoption entry guides
+│   ├── project/                   # Structural docs and project-specific context
+│   ├── policies/                  # Kit-managed coding policy guidance
 │   └── generated/                 # Generated files (codemap.md, references-index.md)
 ├── memories/
 │   ├── repo/                      # Durable 3-Tier Repo-wide Memory
 │   │   ├── INDEX.md               # Memory intent router
-│   │   ├── constitution.md        # Normative rules (CC-* tags)
+│   │   ├── core-policies.md        # Normative rules (CC-* tags)
 │   │   ├── security-policy.md     # Permission boundaries
-│   │   ├── harness-config.md      # Paths, test/lint commands, promotion thresholds
+│   │   ├── core-policies.md      # Paths, test/lint commands, promotion thresholds
 │   │   ├── project-knowledge-base.md # continuity patterns
 │   │   ├── learned-heuristics.md  # Discovered code instincts
-│   │   └── observability-log.md   # Append-only failure ledger
-│   └── domains/                   # Bounded-context glossary & boundaries
-│       └── example/               # Seeded domain-pack templates
+│   │   └── harness-telemetry.md   # Append-only failure ledger
+│   └── domain/                    # Bounded-context glossary & boundaries
+│       ├── README.md              # Domain-pack schema and trigger rules
+│       ├── glossary.md            # Domain glossary template
+│       ├── patterns.md            # Domain patterns template
+│       ├── anti-patterns.md       # Domain anti-patterns template
+│       ├── boundaries.md          # Domain boundaries template
+│       └── spec.md                # Canonical domain spec template
 ├── skills/                        # Shipped agent capability definitions (SKILL.md)
 ├── rules/                         # Shipped syntax/lint coding standards
 └── scripts/                       # Harness validation & repair utilities
-    ├── install.sh                 # Bootstrap and upgrade script
-    ├── doctor.sh                  # Checks surface health & repairs missing templates
-    └── check-surface-truth.py     # Structural routing validator
+    └── install.sh                 # Bootstrap and upgrade script
 ```
 
 ### B. Standardized Workflow for Greenfield vs. Brownfield
@@ -263,6 +263,4 @@ To build a template compatible with both greenfield and brownfield initiatives t
 > [!IMPORTANT]
 > **1. Script-Driven Stack Archaeology**: Auto-detect package managers, test runners, and build commands during `/starter-init` instead of relying entirely on user text inputs.
 >
-> **2. Standardized Error Parsing**: Build an error classification helper (`scripts/parse-observability.py`) to categorize compiler and test outputs, ensuring they are formatted correctly before being written to `observability-log.md`.
->
-> **3. Active Workspace Claims**: Support multi-agent environments by mapping claim files to git branches, preventing lockouts and race conditions across distributed agent runs.
+> **2. Active Workspace Claims**: Support multi-agent environments by mapping claim files to git branches, preventing lockouts and race conditions across distributed agent runs.
