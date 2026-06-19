@@ -35,4 +35,4 @@ This directory holds the agent capability contracts. Each subdirectory (except `
 
 ## Shared references
 
-`_shared/` holds cross-skill references — rigor profiles, status phases, doc conventions, and the diagram catalog. It is exempt from the SKILL.md rule. See [`_shared/README.md`](_shared/README.md).
+`_shared/` holds cross-skill references — status phases, doc conventions, and the diagram catalog. It is exempt from the SKILL.md rule. See [`_shared/README.md`](_shared/README.md).

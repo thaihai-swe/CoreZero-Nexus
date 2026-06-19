@@ -31,7 +31,7 @@ flowchart TD
     end
 
     subgraph Track2["2. Cross-Session Tools (Durable Local Repo)"]
-        CS1["INDEX.md (Router Index)"]
+        CS1["MASTER_INDEX.md (Router Index)"]
         CS2["Repo Memories (memories/repo/)"]
         CS3["Feature Artifacts (status/plan/tasks)"]
     end
@@ -67,7 +67,7 @@ The kit assembles context across 6 tiers, from highest signal to lowest. Each ti
 flowchart TB
     %% 6-Tier Context Assembly — highest signal to lowest
 
-    T1["Tier 1 — Router<br/>AGENTS.md + INDEX.md"]:::t1
+    T1["Tier 1 — Router<br/>AGENTS.md + MASTER_INDEX.md"]:::t1
     T2["Tier 2 — Repo Memory (Always)<br/>constitution + security + harness-config"]:::t2
     T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Domain Packs / Debug groups"]:::t3
     T4["Tier 4 — Feature Artifacts<br/>status / spec / plan / tasks / handoff"]:::t4
@@ -98,15 +98,15 @@ flowchart TB
 
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
-| 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
+| 1 | `AGENTS.md` + `MASTER_INDEX.md` (router) | Always — first thing loaded every session |
 | 2 | Always group: `core-policies.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Domain Packs / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
-**Intent groups (Tier 3) — defined in `memories/repo/INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`)
+**Intent groups (Tier 3) — defined in `memories/repo/MASTER_INDEX.md`:**
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/codemap.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
 - **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
@@ -122,9 +122,9 @@ flowchart TB
 
 ---
 
-## Smart Routing via INDEX.md
+## Smart Routing via MASTER_INDEX.md
 
-Tier 3 (memory by intent) is no longer "load everything." `memories/repo/INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
+Tier 3 (memory by intent) is no longer "load everything." `memories/repo/MASTER_INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
 
 **Confidence-Scored Loading (Partial Loads):**
 When loading by-intent groups, the harness evaluates a confidence score based on keyword matches:
@@ -133,9 +133,9 @@ When loading by-intent groups, the harness evaluates a confidence score based on
 
 ```mermaid
 flowchart TD
-    %% Smart Context Routing via INDEX.md
+    %% Smart Context Routing via MASTER_INDEX.md
 
-    START([Session Start]) --> IDX[Read INDEX.md<br/>memory router]
+    START([Session Start]) --> IDX[Read MASTER_INDEX.md<br/>memory router]
     IDX --> ALWAYS[Load Always group<br/>constitution + security-policy + harness-config]
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
@@ -155,7 +155,7 @@ flowchart TD
     FEAT --> REPORT[Report Context Loaded<br/>+ Context Skipped with reasons]
     REPORT --> WORK([Begin work])
 
-    STALE[INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
+    STALE[MASTER_INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
     IDX -.->|if missing| STALE
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
@@ -324,14 +324,16 @@ triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
 
 1. Create `memories/domain/` with the required files.
 2. Declare triggers in `glossary.md` frontmatter.
-3. Register the pack in `memories/repo/INDEX.md` under `## By Domain Packs`.
+3. Register the pack in `memories/repo/MASTER_INDEX.md` under `## By Domain Packs`.
 4. See `memories/domain/README.md` for the full schema.
 
 ### Lifecycle
 
 Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content. During `/context-memory` Post-Ship Sync, promote durable patterns from `session-extracts.md` into the appropriate domain pack file.
 
-Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.
+Brownfield artifacts under `memories/repo/project-knowledge-base.md ## Repository Overview` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `MASTER_INDEX.md`; sessions need to load them intentionally when relevant.
+
+> **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract only the `## Index` section or first 50 lines of a memory file, preserving context budget without agent interpretation.
 
 ---
 

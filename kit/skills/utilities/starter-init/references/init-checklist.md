@@ -6,11 +6,9 @@ Use this checklist to ensure the repository is fully prepared for harnessed agen
 
 - [ ] Repo confirmed non-trivial (has existing code, tests, CI, or meaningful history).
 - [ ] Subagent read-only sweep completed. No raw grep output in main context — summaries only.
-- [ ] `memories/repo/brownfield/brownfield-map.md` exists and has at least one rated area.
-- [ ] `memories/repo/brownfield/dependency-graph.md` exists and lists module dependencies.
+- [ ] Archaeology sweep findings (baseline commands, security paths, and preserved behaviors) recorded in `memories/repo/project-knowledge-base.md` and `memories/repo/core-policies.md`.
 - [ ] `memories/repo/learned-heuristics.md` has 3–5 new entries with file citations.
 - [ ] `memories/repo/core-policies.md` limits/caveats updated.
-- [ ] Profile auto-promotion rule recorded in `brownfield-map.md` under `## Profile Rules`.
 
 ### Phase B — Bootstrap (all repos)
 

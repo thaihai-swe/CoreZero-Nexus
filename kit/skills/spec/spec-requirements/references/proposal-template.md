@@ -1,8 +1,5 @@
 # Proposal: [Feature Name]
 
-## Delivery Profile
-(Choose from: Tiny, Standard, Complex)
-
 ## 💡 The Problem
 (Why are we doing this? What is the pain point?)
 

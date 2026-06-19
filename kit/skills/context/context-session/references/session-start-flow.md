@@ -15,6 +15,10 @@ If the feature slug does not exist yet or `artifacts/features/<slug>/status.md` 
 5.  **Check Handoff:** Look for `artifacts/features/<slug>/handoff.md`. If it exists, read it to understand the exact state left by the previous session.
 6.  **Check Progress:** Read `artifacts/features/<slug>/progress.md` to understand the broader history of the feature work.
 7.  **Validate State:** Ensure the repository is in the state described by the handoff (e.g., if handoff says tests pass, verify they do).
+7.5 **Integrity Cross-Check**: Perform these mechanical checks:
+    * Verify every task ID in `tasks.md` traces to an AC ID in `spec.md`. Flag orphaned task IDs as `[STALE TASK]`.
+    * Grep 3–5 key file paths mentioned in `plan.md` against `git ls-files`. Flag missing paths as `[STALE PLAN]`.
+    * If stale markers are found, surface them as a `## ⚠️ Stale Context` section in the session readiness summary before proceeding. Do not silently continue.
 8.  **Report Context:** Output a summary to the user indicating readiness:
     *   **Feature:** [slug]
     *   **Phase:** [current phase]
@@ -22,3 +26,4 @@ If the feature slug does not exist yet or `artifacts/features/<slug>/status.md` 
     *   **Blockers:** [None, or list them]
     *   **Context Loaded:** [Always group + by-intent groups loaded with the keywords that matched]
     *   **Context Skipped:** [by-intent groups intentionally skipped, with one-line reason each]
+    *   **Stale Context:** [None, or describe stale tasks/plans found in Step 7.5]

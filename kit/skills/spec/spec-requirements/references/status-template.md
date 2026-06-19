@@ -8,13 +8,11 @@
 
 - **Input type:** (new_spec | spec_slice | change_request | new_initiative | maintenance | harness_improvement)
 - **Risk flags:** (comma-separated list, or `none`)
-- **Lane:** (Tiny | Standard | Complex)
+
 - **One-line restatement:**
 - **Affected docs/specs:**
 - **Reasoning:**
 
-## 🧭 Delivery Profile
-(Choose from: Tiny, Standard, Complex. See `skills/_shared/rigor-profiles.md`. If unset, agents inherit the repo default from `memories/repo/core-policies.md`. The intake lane above promotes this profile if it would be lower.)
 
 ## 🎯 High-Level Progress
 - [ ] Research complete

@@ -2,10 +2,10 @@
 
 Invoked automatically by `harness-verify` when a feature's verdict is `Pass`. The sweep is the self-improving step: every shipped feature must either update the knowledge base or explicitly justify why each file was left alone.
 
-The mode is gated by the active rigor profile:
+The scope of the sweep is determined by the size and complexity of the change:
 
-- **Tiny:** sweep only `learned-heuristics.md`. Update if the session produced a repeated, evidence-backed instinct. Otherwise record "no heuristic learned" and stop.
-- **Standard / Complex:** full sweep across every memory file listed in `MASTER_INDEX.md`.
+- **Extremely Narrow (documentation-only, comment changes, typo fixes):** Sweep only `learned-heuristics.md` if any heuristic was learned. Otherwise, record "no heuristic learned" and stop.
+- **Standard Feature / Core Changes:** Perform a full sweep across every memory file listed in `MASTER_INDEX.md`.
 
 Procedure (Standard and above):
 

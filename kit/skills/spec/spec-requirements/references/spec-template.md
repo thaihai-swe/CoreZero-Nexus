@@ -4,7 +4,6 @@
 
 - Feature name:
 - Feature slug:
-- Delivery profile: Tiny | Standard | Complex
 - Owner:
 - Status: Draft | In Review | Approved | In Progress | Done
 - Last updated:
@@ -168,13 +167,13 @@ The merge into `memories/domain/spec.md` happens during `/harness-verify` post-s
   - Linked scenario or success criteria:
   - Validation method:
   - Proof target:
-  - Scenario (Given / When / Then):           # required for Complex, optional for Standard, skipped for Tiny
+  - Scenario (Given / When / Then):           # recommended for high-risk or user-visible behaviors
     - Given:
     - When:
     - Then:
   - Test path:                                 # file path or test name exercising the scenario above; matches Proof target
 
-*(Add AC-002, AC-003, ... as needed. Each AC must have at least one scenario block when the active profile is Complex.)*
+*(Add AC-002, AC-003, ... as needed. Each AC should have at least one scenario block when the behavior is user-visible, security-sensitive, or high-risk.)*
 
 ## Notes
 

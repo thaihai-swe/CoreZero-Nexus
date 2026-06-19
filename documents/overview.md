@@ -12,7 +12,7 @@ CoreZero operates across five distinct layers that separate concerns and maintai
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin task router -> points to skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 4 specialist capability cards
+│  2. Skill Layer (skills/*/SKILL.md)         │  16 skills across 4 groups (Lifecycle, Context & Memory, Quality & Docs, Visualization)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (ETCLOVG Taxonomy)        │  Rules, validation commands, and session control
 ├─────────────────────────────────────────────┤
@@ -37,13 +37,13 @@ CoreZero operates across five distinct layers that separate concerns and maintai
 To conserve context window budget and prevent AI hallucination, the kit structures context into six tiers and loads them progressively:
 
 ```text
-      [Tier 1: Router] (AGENTS.md + INDEX.md)
+      [Tier 1: Router] (AGENTS.md + MASTER_INDEX.md)
              │ (loaded every session)
              ▼
       [Tier 2: Repo Memory (Always)] (constitution + security-policy + harness-config)
              │ (loaded every session)
              ▼
-      [Tier 3: Repo Memory (By Intent)] (Knowledge / Learned / Debug groups via memories/repo/INDEX.md)
+      [Tier 3: Repo Memory (By Intent)] (Knowledge / Learned / Debug groups via memories/repo/MASTER_INDEX.md)
              │ (loaded based on task trigger keywords)
              ▼
       [Tier 4: Feature Artifacts] (status.md, spec.md, plan.md, tasks.md, handoff.md)
@@ -56,7 +56,7 @@ To conserve context window budget and prevent AI hallucination, the kit structur
                (summarized and evicted immediately to avoid bloating)
 ```
 
-- **INDEX-Driven Trigger Loading (Tier 3):** Under [`INDEX.md`](../kit/memories/repo/INDEX.md), files in Tier 3 are loaded selectively based on query triggers defined in [`memories/repo/INDEX.md`](../kit/memories/repo/INDEX.md):
+- **INDEX-Driven Trigger Loading (Tier 3):** Under [`MASTER_INDEX.md`](../kit/memories/repo/MASTER_INDEX.md), files in Tier 3 are loaded selectively based on query triggers defined in [`memories/repo/MASTER_INDEX.md`](../kit/memories/repo/MASTER_INDEX.md):
     - **Knowledge:** Loads [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md), architecture, and indexes when keywords like `architecture`, `pattern`, `stack`, or `domain` are matched.
     - **Learned:** Loads [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) when keywords like `heuristic`, `recurring`, or `lesson` are matched.
     - **Debug:** Loads [`harness-telemetry.md`](../kit/memories/repo/harness-telemetry.md) when keywords like `debug`, `failure`, or `root cause` are matched.
@@ -92,7 +92,7 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 - Initializes the environment, parses dependencies, and registers targets.
 - **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`docs/generated/*`, `memories/repo/harness-telemetry.md`) from version control.
 - **Greenfield Mode:** Prefills standard templates and triggers.
-- **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and seeds legacy boundary rules into `memories/repo/brownfield/`.
+- **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and records risk area notes into `memories/repo/project-knowledge-base.md`.
 
 ### Phase 2: Session Initialization ([`/context-session START`](../kit/skills/context-session/SKILL.md))
 - Initiates the feature sandbox under a specific slug (e.g. `feature-abc`).
@@ -130,8 +130,11 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 ## 4. Operational & Specialist Skills
 
 Nexus also contains specialist commands that run outside of the primary delivery loop to maintain the repository health:
-- **`/harness-maintain`:** Updates generated indexes (`codemap.md` and `references-index.md`) and analyzes failures in `harness-telemetry.md` to suggest gate adjustments.
+- **`/harness-maintain`:** Updates generated indexes (`codemap.md`) and analyzes failures in `harness-telemetry.md` to suggest gate adjustments.
 - **`/visualize`:** Parses Mermaid markup and renders high-fidelity SVG architectural diagrams or data-flow maps.
 - **`/code-review`:** Performs manual-trigger code quality and security reviews.
+- **`/ponytail`:** Enforces the laziest effective solution — checks for over-engineering, trims bloat, and maximises platform-native features. Intensity: lite / full (default) / ultra.
 - **`/technical-docs`:** Automatically generates API flowcharts, contracts, and schema documentation.
 - **`/codebase-documenter`:** Refreshes adopter-facing orientation assets and README guides.
+
+`scripts/context-loader.py` provides `--mode summary` to extract the index or first 50 lines of any memory file, enforcing MVC without agent interpretation.

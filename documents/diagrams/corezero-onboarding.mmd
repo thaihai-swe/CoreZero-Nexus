@@ -10,9 +10,7 @@ flowchart TD
     GMEM --> GFEAT["Pick first feature<br/>(Route to /spec-requirements)"]:::green
 
     BROWN --> BINIT["starter-init (Phase A + B)<br/>Phase A: Archaeology subagent sweep & map debt<br/>Phase B: Bootstrap config & seed memories"]:::brown
-    BINIT --> BREAD["Read brownfield-map.md<br/>Identify risk ratings before first feature"]:::brown
-    BREAD --> BSAFE["Pick small, safe first feature<br/>(Route to /spec-research if behavior unknown)"]:::brown
-
+    BINIT --> BSAFE["Pick small, safe first feature<br/>(Route to /spec-research if behavior unknown)"]:::brown
     GFEAT --> LOOP[Guided per-feature delivery loop]:::common
     BSAFE --> LOOP
     LOOP --> SHIP([Shipped feature + KB compounded]):::terminal

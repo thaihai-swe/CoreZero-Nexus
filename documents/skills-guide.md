@@ -24,6 +24,7 @@ This guide describes the current shipped commands and the reserved `source-only`
 | `/technical-docs` | Generate grounded API and flow documentation | Shipped now |
 | `/codebase-documenter` | Generate repo onboarding and architecture doc sets | Shipped now |
 | `/visualize` | Generate SVG and Mermaid technical diagrams | Shipped now |
+| `/ponytail` | Enforces simplicity-first coding — YAGNI, laziest effective solution, trims over-engineering. Intensity: lite / full (default) / ultra. | Shipped now |
 
 ---
 
@@ -45,7 +46,7 @@ Governance, docs authoring, and visualization commands are shipped helpers. They
 
 Run `/context-memory --audit` to produce a structured report of memory system health. The audit checks:
 
-- File sizes against the soft warning threshold (800 lines) and hard limit (1200 lines) configured in `core-policies.md` (with proactive warnings triggered at 600 lines as guided by `learned-heuristics.md`)
+- File sizes against the soft warning threshold (800 lines) and hard limit (1200 lines) configured in `core-policies.md`
 - Domain pack trigger keyword relevance against the current codebase
 - Stale references in memory files (paths or identifiers that no longer exist)
 - Unused domain packs (no recent load events in telemetry or session extracts)

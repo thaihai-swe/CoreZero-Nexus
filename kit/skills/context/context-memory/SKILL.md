@@ -15,10 +15,11 @@ Updates persistent AI memories (e.g., rules, architecture) so future agents don'
 - **Next Skill**: `/context-status` (if audit mode used)
 
 ## Workflow
-1. **Mode Selection**: Determine if this is a regular update or audit.
-2. **Regular Update**: Identify new heuristics, gotchas, or architectural patterns learned during the session.
-3. **Audit Mode**: Run comprehensive checks on memory system health.
-4. **Update Files**: Modify appropriate files in `memories/repo/`.
+1. **Mode Selection**: Determine if this is a regular update or audit (see Audit Mode below).
+2. **Session Extracts**: Read `artifacts/features/<slug>/session-extracts.md`. For each entry marked `[CANDIDATE]`: promote confirmed durable lessons to `learned-heuristics.md` or the relevant domain pack's `patterns.md`; discard noise. Remove promoted entries from the candidates list.
+3. **Config Drift Check**: Identify any new file paths, canonical commands, or module roots introduced during the session. Update `core-policies.md` `## Harness Config` and `project-knowledge-base.md` `## Repository Overview` to reflect them. Mark unknowns `[UNKNOWN]` per CC-003 — do not guess.
+4. **Domain Pack Update**: If the active feature touched a domain with an installed pack, check whether any new patterns or anti-patterns emerged. Update `memories/domain/<name>/patterns.md` or `anti-patterns.md` with evidence-backed entries only.
+5. **Size Check**: For every file modified in Steps 2–4, count lines. If any file exceeds 600 lines, open a promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` Section 2 Rule 5.
 
 ## Core Rules
 - No fabrication: do not invent patterns or heuristics; only record what was observed.

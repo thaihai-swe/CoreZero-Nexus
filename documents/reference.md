@@ -8,7 +8,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 
 | Command | Subsystem | Customer Value / Purpose | Key Artifacts |
 |---|---|---|---|
-| `/starter-init` | Project Starter | Configures verification baselines; sweeps legacy code (Phase A) automatically on brownfield repos | `core-policies.md`, `brownfield-map.md`, `dependency-graph.md` |
+| `/starter-init` | Project Starter | Configures verification baselines; sweeps legacy code (Phase A) automatically on brownfield repos | `core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md` |
 | `/context-session` | Context | Minimizes token costs and prevents LLM context fatigue | `handoff.md`, `session-extracts.md` |
 | `/context-status` | Context | Monitors feature progression and flags implementation blockers | `progress.md` |
 | `/context-memory` | Context | Updates shared conventions so the agent gets smarter over time | `core-policies.md`, `learned-heuristics.md` |
@@ -20,6 +20,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 | `/harness-verify` | Harness | Performs mechanical build gates and spec alignment audits | `review.md`, `testing-scenarios.md` |
 | `/harness-maintain` | Harness | Evaluates and improves harness rules based on logged errors | `harness-telemetry.md` |
 | `/code-review` | Specialist | Audits code health against Google's Engineering Practices | Integrated reviews in `review.md` |
+| `/ponytail` | Specialist | Enforces the laziest effective solution — checks for over-engineering, trims bloat, maximises platform-native features. Supports lite / full (default) / ultra intensity levels | (no artifacts — advisory mode) |
 | `/visualize` | Specialist | Generates visual SVG/Mermaid flowcharts and class diagrams | `.svg`, `.mermaid` |
 | `/codebase-documenter`| Specialist | Compiles complete technical onboarding guides for new teams | `README.md`, `CONTRIBUTING.md` |
 | `/technical-docs` | Specialist | Compiles API contracts (`--mode api`) and/or system flows (`--mode flow`/`both`) | `api-docs.md`, `flows.md`, `technical-docs.md` |
@@ -58,11 +59,10 @@ The memory layer is structured in a **3-Tier Memory Architecture**:
 
 | File | Public Owner | Type | Tier | Lifecycle |
 |------|-------------|------|------|-----------|
-| [`INDEX.md`](../kit/memories/repo/INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
-| [`core-policies.md`](../kit/memories/repo/core-policies.md) | `/context-memory` | Normative | Instruction | Created at init |
+| [`MASTER_INDEX.md`](../kit/memories/repo/MASTER_INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
+| [`core-policies.md`](../kit/memories/repo/core-policies.md) | `/starter-init` / `/context-memory` | Normative | Instruction | Created at init |
 | [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) | `/context-memory` | Descriptive | Instruction | Created at init |
 | [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md) | `/context-memory` | Descriptive | Instruction | Created at init |
-| [`core-policies.md`](../kit/memories/repo/core-policies.md) | `/starter-init` | Operational | Instruction | Created at init |
 | [`harness-telemetry.md`](../kit/memories/repo/harness-telemetry.md) | `/harness-maintain` | Operational | Auto | Created at init, written by Improve Mode |
 | [`adr-log.md`](../kit/memories/repo/adr-log.md) | `/spec-adr` | Registry | Instruction | Lazy-created on first ADR |
 

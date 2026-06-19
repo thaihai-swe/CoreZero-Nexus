@@ -29,7 +29,7 @@ CoreZero is structured around a **Five-Layer Model** designed to enforce separat
 ┌────────────────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)                       │  Thin router → JIT skill loading
 ├────────────────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)                    │  11 core delivery + 4 specialist contracts
+│  2. Skill Layer (skills/*/SKILL.md)                    │  16 skills across 4 groups
 ├────────────────────────────────────────────────────────┤
 │  3. Harness Layer (ETCLOVG Taxonomy & Scripts)         │  Environment constraints & gate-runner.sh validation
 ├────────────────────────────────────────────────────────┤
@@ -113,7 +113,7 @@ The kit enforces control over the agent's operating environment through the seve
 - **Evaluation**: Prevents loose execution and ensures commands are locked down.
 
 ### B. Tools (Capabilities & Constraints)
-- **Mechanics**: Exposed agent capabilities are limited by active rigor profiles to prevent runaway operations.
+- **Mechanics**: Exposed agent capabilities are bounded by the normative rules in `core-policies.md` and the agent's active permission tiers.
 - **Evaluation**: Highly effective for containing costs and minimizing redundant file writes.
 
 ### C. Context (Budgeting & MVC)
@@ -228,9 +228,10 @@ To build a template compatible with both greenfield and brownfield initiatives t
 │       ├── boundaries.md          # Domain boundaries template
 │       └── spec.md                # Canonical domain spec template
 ├── skills/                        # Shipped agent capability definitions (SKILL.md)
-├── rules/                         # Shipped syntax/lint coding standards
+├── docs/rules/                    # Shipped syntax/lint coding standards
 └── scripts/                       # Harness validation & repair utilities
     ├── install.sh                 # Bootstrap and upgrade script
+    ├── context-loader.py          # MVC-enforcing partial context loader (--mode summary)
     └── harness/                   # Mechanical verification gates
         ├── gate-runner.sh         # Run linter/build/tests
         └── telemetry-collector.sh # Log gate failures to harness-telemetry.md

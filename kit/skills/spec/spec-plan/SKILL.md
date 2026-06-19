@@ -28,4 +28,9 @@ Converts approved requirements into a concrete execution strategy. Answers: how 
   - **Anti-Abstraction Gate**: Use framework features directly. Avoid creating custom wrappers or premature abstractions.
 - **Verifiable Task Increments**: Break work into low-risk tasks that can be proven independently.
 - **No Spec Re-opening**: Stick to the approved requirements.
+- **Spec Amendment Protocol**: If `spec.md` is amended after `plan.md` has been approved, the agent MUST:
+  1. Add a `[STALE — spec amended <date>]` header to the top of `plan.md` and `tasks.md`.
+  2. Set `status.md` phase back to `Planning`.
+  3. Re-run Steps 2–4 (Design, Task Breakdown, Traceability) before any implementation task resumes.
+  Implementation MUST NOT continue against a stale plan.
 - **Context Eviction**: After drafting the plan, you MUST summarize any raw architectural logs and evict them from your context window before handing off to `/spec-implement`.

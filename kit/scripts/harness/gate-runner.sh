@@ -23,9 +23,25 @@ run_gate() {
     fi
 }
 
+# New override hook
+if [ -f "./scripts/harness/gate-runner.local.sh" ]; then
+  echo "=> Using project-local gate-runner override."
+  bash "./scripts/harness/gate-runner.local.sh"; exit $?
+fi
+
+# Pre-flight check function (new):
+preflight_check() {
+  local cmd="$1"
+  if ! command -v "$cmd" > /dev/null 2>&1; then
+    echo "SETUP_FAILURE: Required tool '$cmd' not found. Run setup/install before harness."
+    exit 2
+  fi
+}
+
 # Load project configuration if available
 if [ -f "package.json" ]; then
     echo "=> Node.js configuration detected."
+    preflight_check npm
     
     if grep -q '"lint":' package.json; then
         run_gate "npm run lint"
@@ -38,6 +54,7 @@ if [ -f "package.json" ]; then
     fi
 elif [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
     echo "=> Python configuration detected."
+    preflight_check python3
     if command -v flake8 >/dev/null 2>&1; then
         run_gate "flake8 ."
     fi
@@ -46,10 +63,15 @@ elif [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
     fi
     if command -v pytest >/dev/null 2>&1; then
         run_gate "pytest"
+    else
+        echo "SETUP_FAILURE: pytest not found in Python path."
+        exit 2
     fi
 else
-    echo "=> No recognizable project configuration found. Skipping specific language gates."
-    echo "=> Please configure gate-runner.sh for your language stack."
+    echo "ERROR: No recognizable project configuration found (no package.json, pytest.ini, or pyproject.toml)."
+    echo "=> Configure scripts/harness/gate-runner.local.sh for your language stack."
+    echo "=> See kit/docs/README.md for configuration instructions."
+    exit 1
 fi
 
 echo "=> All gates passed successfully."

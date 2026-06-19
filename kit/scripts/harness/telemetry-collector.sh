@@ -92,12 +92,25 @@ if [ ! -f "$TELEMETRY_FILE" ]; then
 fi
 
 # Append the new log entry
-{
-  echo "## Failure at $TIMESTAMP"
-  echo "\`\`\`text"
-  echo "$ERROR_MSG"
-  echo "\`\`\`"
-  echo ""
-} >> "$TELEMETRY_FILE"
+NEXT_ID=$(grep -c "id: OBS-" "$TELEMETRY_FILE" 2>/dev/null || echo 0)
+NEXT_ID=$(printf "OBS-%03d" $((NEXT_ID + 1)))
+CLEAN_DESC=$(echo "$ERROR_MSG" | head -n 1 | tr -d '"' | tr -d "'" | cut -c 1-120)
+
+cat >> "$TELEMETRY_FILE" << EOF
+
+\`\`\`yaml
+- id: ${NEXT_ID}
+  date: $(date +"%Y-%m-%d")
+  classification: "[UNKNOWN: harness | model | spec]"
+  severity: medium
+  skill: "[UNKNOWN: <active-skill>]"
+  description: "${CLEAN_DESC}"
+  root_cause: "[UNKNOWN]"
+  fix_applied: "none yet"
+  recurrence_risk: medium
+  promotion_candidate: false
+  status: open
+\`\`\`
+EOF
 
 echo "=> Telemetry logged to $TELEMETRY_FILE"

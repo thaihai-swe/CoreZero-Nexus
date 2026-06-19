@@ -36,7 +36,7 @@ The kit enforces environment control and architectural boundaries using the form
 
 ### B. Tools (Capabilities & Constraints)
 - **Definition**: The specific schema-defined capabilities exposed to the agent (e.g. file writing, searching, commands) and their rate/frequency limits.
-- **Implementation**: Tools are declared inside the core agent configuration and restricted by active rigor profiles to prevent infinite tool loops.
+- **Implementation**: Tools are declared inside the core agent configuration and bounded by the normative rules in `core-policies.md` (CC-* identifiers) and the agent's active permission tiers, preventing runaway operations.
 
 ### C. Context (Budgeting & MVC)
 - **Definition**: The progressive disclosure of information to keep the active token budget lean and high-signal.
@@ -108,6 +108,6 @@ These rules are checked during alignment audits and cannot be bypassed:
 
 During the system-wide evaluation (detailed in [evaluation-report.md](evaluation-report.md)), several gaps and corresponding recommendations were identified to optimize the harness for autonomous agents:
 
-* **Script-Driven Stack Archaeology**: Currently, `/starter-init` relies on manual questionnaires to configure paths and commands in [core-policies.md](kit/memories/repo/core-policies.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
+* **Script-Driven Stack Archaeology**: Currently, `/starter-init` uses an interactive interview workflow to configure paths and commands in [core-policies.md](kit/memories/repo/core-policies.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
 * **Standardized Error Parsing**: To make failure GC loops reliable, the system needs an error parser script to structuralize compilation and test-run failures before logging them in `harness-telemetry.md`.
 * **Multi-Agent Branch-Mapped Claims**: The file-backed claim protocol is vulnerable to concurrency race conditions. Lock files should be explicitly mapped to Git branch states to prevent workspace collisions.

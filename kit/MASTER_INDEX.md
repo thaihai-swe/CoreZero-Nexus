@@ -17,14 +17,15 @@
 1. Files in the **Always** group load on every session start.
 2. Files in the **By Intent** groups are evaluated individually. Do not load a group all at once.
    - **Granular Routing:** Evaluate the active task against *each individual file's* description. Load ONLY the specific files whose contents are strictly required for the current task.
-   - **Semantic Triggers:** You may load a file if its core purpose matches the task's intent, even if exact literal keywords are absent (e.g., loading `architecture.md` when defining cross-service data models).
+   - **Semantic Triggers:** You may load a file if its core purpose matches the task's intent, even if exact literal keywords are absent.
+   - **Partial Loading:** For low-confidence matches or when you only need an overview, use `kit/scripts/context-loader.py <file> --mode summary` to extract just the file's index or summary, preserving token budget.
 3. Files in the **By Debug** group load only when debugging, retro, or post-mortem work begins.
-4. The **Phase × Lane Matrix** below tells you what to add (and what to stop reading) once the active rigor profile is known.
+4. The **Phase × Guidance Matrix** below tells you what to add (and what to stop reading) at each phase of the delivery loop.
 5. If a file outgrows its slot (>800 lines, 3+ distinct subtopics, or 5+ artifacts reference one slice), open a promotion proposal under `artifacts/features/<slug>/promotions.md`.
 
 ### Always (load every session)
 
-- `memories/repo/core-policies.md` — repo-wide normative rules (CC-* identifiers), canonical commands, paths, rigor defaults, and security policy.
+- `memories/repo/core-policies.md` — repo-wide normative rules (CC-* identifiers), canonical commands, limits, and security policy.
 
 ### By Intent — Knowledge
 
@@ -81,30 +82,30 @@ Trigger keywords: `debug`, `failure`, `regression`, `incident`, `retro`, `flaky`
 - `memories/repo/harness-telemetry.md` — auto-tier failure log written by `/harness-verify` and triaged by `/harness-maintain`.
 - `artifacts/features/<slug>/session-extracts.md` — per-feature distillation, candidate-only until triaged.
 
-## 3. Phase × Lane Matrix
+## 3. Phase × Guidance Matrix
 
-The Always group loads every session. This matrix says what to **add** at each phase based on the active rigor profile and what to **stop reading** when it's not relevant. `Must` = required reading; `Should` = read unless reason to skip; `Skip` = do not read.
+The Always group loads every session. This matrix says what to **add** at each phase of the delivery loop. The AI agent should use this as a baseline guide and dynamically load extra files (using intent-based routing) if the task risk warrants it. `Must` = required reading; `Should` = read unless reason to skip; `Skip` = do not read.
 
-| Source | Tiny — Spec | Tiny — Plan | Tiny — Implement | Tiny — Verify | Standard — Spec | Standard — Plan | Standard — Implement | Standard — Verify | Complex — Spec | Complex — Plan | Complex — Implement | Complex — Verify |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `core-policies.md` | Must | Must | Must | Must | Must | Must | Must | Must | Must | Must | Must | Must |
-| `project-knowledge-base.md` | Skip | Skip | Skip | Skip | Should | Must | Should | Should | Must | Must | Must | Must |
-| `docs/project/architecture.md` | Skip | Skip | Skip | Skip | Should | Should | Skip | Should | Must | Must | Should | Must |
-| `docs/project/product-sense.md` | Skip | Skip | Skip | Skip | Should | Skip | Skip | Skip | Should | Should | Skip | Skip |
-| `docs/project/glossary.md` | Skip | Skip | Skip | Skip | Should | Should | Skip | Skip | Should | Should | Should | Skip |
-| `docs/project/tech-stack.md` | Skip | Skip | Skip | Skip | Skip | Should | Should | Skip | Should | Must | Must | Skip |
-| `docs/project/project-constraints.md` | Skip | Skip | Skip | Skip | Should | Should | Skip | Should | Must | Must | Should | Should |
-| `learned-heuristics.md` | Skip | Skip | Skip | Skip | Should | Should | Should | Should | Must | Must | Must | Must |
-| `docs/project/codemap.md` | Skip | Skip | Skip | Skip | Should | Should | Should | Skip | Must | Must | Must | Skip |
-| `docs/rules/*.md` (on language/domain match) | Skip | Skip | Should | Should | Skip | Should | Must | Should | Skip | Should | Must | Must |
-| `docs/policies/code-design.md` (on software-design change) | Skip | Skip | Should | Skip | Skip | Should | Should | Skip | Should | Must | Must | Should |
-| `domain/glossary.md` (on match) | Should | Should | Should | Skip | Should | Should | Should | Skip | Should | Must | Must | Skip |
-| `domain/boundaries.md` (on match) | Skip | Skip | Skip | Skip | Should | Should | Skip | Should | Must | Must | Must | Must |
-| `domain/patterns.md` (on match) | Skip | Skip | Should | Skip | Skip | Should | Must | Skip | Skip | Must | Must | Skip |
-| `domain/anti-patterns.md` (on match) | Skip | Skip | Skip | Should | Skip | Skip | Skip | Must | Skip | Should | Skip | Must |
-| `domain/spec.md` (when present & match) | Skip | Should | Should | Skip | Should | Must | Must | Skip | Must | Must | Must | Should |
-| `harness-telemetry.md` | Skip | Skip | Skip | Skip if clean | Skip | Skip | Skip | Should | Should | Should | Should | Must |
-| Prior `session-extracts.md` | Skip | Skip | Skip | Skip | Skip | Should | Skip | Skip | Should | Should | Skip | Should |
+| Source | Spec | Plan | Implement | Verify |
+|---|---|---|---|---|
+| `core-policies.md` | Must | Must | Must | Must |
+| `project-knowledge-base.md` | Should | Must | Should | Should |
+| `docs/project/architecture.md` | Should | Should | Skip | Should |
+| `docs/project/product-sense.md` | Should | Skip | Skip | Skip |
+| `docs/project/glossary.md` | Should | Should | Skip | Skip |
+| `docs/project/tech-stack.md` | Skip | Should | Should | Skip |
+| `docs/project/project-constraints.md` | Should | Should | Skip | Should |
+| `learned-heuristics.md` | Should | Should | Should | Should |
+| `docs/project/codemap.md` | Should | Should | Should | Skip |
+| `docs/rules/*.md` (on language/domain match) | Skip | Should | Must | Should |
+| `docs/policies/code-design.md` (on software-design change) | Skip | Should | Should | Skip |
+| `domain/glossary.md` (on match) | Should | Should | Should | Skip |
+| `domain/boundaries.md` (on match) | Should | Should | Skip | Should |
+| `domain/patterns.md` (on match) | Skip | Should | Must | Skip |
+| `domain/anti-patterns.md` (on match) | Skip | Skip | Skip | Must |
+| `domain/spec.md` (when present & match) | Should | Must | Must | Skip |
+| `harness-telemetry.md` | Skip | Skip | Skip | Should |
+| Prior `session-extracts.md` | Skip | Should | Skip | Skip |
 
 Phase definitions (Mapped to the canonical 7-Phase Delivery Loop):
 - **Bootstrap**: Initializing workspace via `starter-init`.
@@ -114,8 +115,6 @@ Phase definitions (Mapped to the canonical 7-Phase Delivery Loop):
 - **Implementation (Implement)**: Coding, proving tasks, and evicting context via `spec-implement`.
 - **Verification (Verify)**: Running mechanical test runners and audits via `harness-verify`.
 - **Memory Sync**: Triaging and promoting heuristics via `context-memory` and closing session via `context-session END`.
-
-When a task escalates lane mid-flight (Tiny → Standard, Standard → Complex), re-read the column at the new lane before continuing — files marked `Skip` at the old lane may now be `Must`.
 
 ## 4. Domain Context Packs
 
@@ -138,7 +137,7 @@ Domain packs live in `memories/domain/`. The memory router loads a pack when the
 
 - Keywords are declared in `glossary.md` YAML frontmatter under `triggers:`.
 - The memory router evaluates domain intent based on matches. A single keyword match activates the domain pack.
-- Once activated, use the Phase × Lane Matrix to determine exactly which files from the pack to load (e.g., `patterns.md` for Implementation, `anti-patterns.md` for Verification).
+- Once activated, use the Phase × Guidance Matrix to determine exactly which files from the pack to load (e.g., `patterns.md` for Implementation, `anti-patterns.md` for Verification).
 - With 0 matches, the pack is skipped entirely.
 
 ### File Schema

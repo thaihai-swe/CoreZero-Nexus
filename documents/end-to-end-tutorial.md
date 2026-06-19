@@ -93,7 +93,7 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | Skill | Required? | Modes | Use when | Primary artifacts |
 |---|---|---|---|---|
 | [`/starter-init`](../kit/skills/utilities/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `docs/`, `memories/`, `.gitignore`, project memory seeds |
-| [`/spec-research`](../kit/skills/spec/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, root cause is unclear, or profile is Complex | `artifacts/features/<slug>/analysis.md`, `status.md` |
+| [`/spec-research`](../kit/skills/spec/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, or root cause is unclear | `artifacts/features/<slug>/analysis.md`, `status.md` |
 | [`/spec-requirements`](../kit/skills/spec/spec-requirements/SKILL.md) | Required per feature | Requirements authoring | Define what must be built and how it will be accepted | `spec.md`, `status.md` |
 | [`/spec-plan`](../kit/skills/spec/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into design and tasks | `plan.md`, `tasks.md`, `status.md` |
 | [`/spec-implement`](../kit/skills/spec/spec-implement/SKILL.md) | Required per feature | Task execution | Implement approved tasks one at a time | Source changes, `tasks.md`, `status.md`, telemetry on failures |
@@ -102,20 +102,21 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | [`/context-memory`](../kit/skills/context/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
 | [`/context-compact`](../kit/skills/context/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/repo/` |
 | [`/context-status`](../kit/skills/context/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `docs/generated/dashboard.html` |
-| [`/harness-maintain`](../kit/skills/harness/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/generated/codemap.md`, `docs/generated/references-index.md`, eval reports |
-| [`/spec-adr`](../kit/skills/spec/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked; required for Complex locked choices | ADR entry, `docs/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
+| [`/harness-maintain`](../kit/skills/harness/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/generated/codemap.md`, eval reports |
+| [`/spec-adr`](../kit/skills/spec/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `docs/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
 | [`/code-review`](../kit/skills/utilities/code-review/SKILL.md) | Optional helper | Review | Manual review is requested or verification calls for deeper review | Review findings, usually feature-scoped |
+| [`/ponytail`](../kit/skills/utilities/ponytail/SKILL.md) | Optional helper | `lite`, `full` (default), `ultra` | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features | Advisory — no artifacts |
 | [`/technical-docs`](../kit/skills/utilities/technical-docs/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
 | [`/codebase-documenter`](../kit/skills/utilities/codebase-documenter/SKILL.md) | Optional helper | Codebase documentation | Need broader repo onboarding or architecture documentation | README-style guides, architecture docs, setup docs |
-| [`/visualize`](../kit/skills/utilities/visualize/SKILL.md) | Optional helper, conditional for Complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts |
+| [`/visualize`](../kit/skills/utilities/visualize/SKILL.md) | Optional helper, conditional for complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts |
 
 ---
 
-## 3. Rigor Profiles Decide How Much Ceremony Runs
+## 3. Ceremony Scaling — How Much Rigor Runs
 
-The profile system is defined in [`kit/skills/_shared/rigor-profiles.md`](../kit/skills/_shared/rigor-profiles.md). Every feature defaults to `Standard` unless the rules promote or demote it.
+The agent scales ceremony based on the risk, scope, and complexity of each feature. There is no separate rigor-profiles configuration file — the agent detects the appropriate level by reading the task, the repo state, and the spec.
 
-| Profile | What runs |
+| Scale | What runs |
 |---|---|
 | Tiny | Minimal requirements, lean plan, implementation, and focused verification. Usually skips `/spec-research`, `/spec-adr`, and `/visualize` unless explicitly requested. |
 | Standard | Normal feature flow. Research runs if the codebase is unfamiliar. ADRs and diagrams are optional and used when they clarify real decisions or boundaries. |
@@ -140,7 +141,7 @@ The installer uses [`kit/manifest.json`](../kit/manifest.json) to decide which f
 After install, the adopter-facing entrypoints are:
 
 - `AGENTS.md`
-- `INDEX.md`
+- `MASTER_INDEX.md`
 - `docs/README.md`
 
 ### Phase 1: Bootstrap With `/starter-init`
@@ -407,8 +408,8 @@ These documentation helpers are shipped by default, but they do not replace the 
 
 - Shipped skill index: [`kit/skills/README.md`](../kit/skills/README.md)
 - Kit map: [`documents/kit-map.md`](kit-map.md)
-- Rigor profiles: [`kit/skills/_shared/rigor-profiles.md`](../kit/skills/_shared/rigor-profiles.md)
 - Status phases: [`kit/skills/_shared/status-phases.md`](../kit/skills/_shared/status-phases.md)
 - Install manifest: [`kit/manifest.json`](../kit/manifest.json)
+- Context loader script: [`kit/scripts/context-loader.py`](../kit/scripts/context-loader.py)
 
 When this tutorial disagrees with a `SKILL.md` contract, the `SKILL.md` contract is the source of truth.

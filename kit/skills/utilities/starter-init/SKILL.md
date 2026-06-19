@@ -19,12 +19,12 @@ Bootstraps the `docs/` and `memories/` directories with standard templates, then
 ### Phase 1 — Bootstrap Structure
 1. Ensure `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain` exist.
 2. Confirm the installer seeded `memories/repo/harness-telemetry.md`. Create any that are missing.
-3. **Gitignore**: Detect or create `.gitignore` at the repository root. Append `docs/generated/*` and `memories/repo/harness-telemetry.md` so telemetry and scratch task files are excluded from version control by default.
+3. **Gitignore**: Detect or create `.gitignore` at the repository root. For each of the following entries — `docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh` — check whether an identical line already exists in `.gitignore`. Append **only** entries that are absent. Do not duplicate existing entries.
 
 ### Phase 2 — Baseline Detection
 4. Detect greenfield vs. brownfield:
    - Greenfield: empty repo or only the kit's own files. Skip baseline test discovery.
-   - Brownfield: existing source tree. Search for the canonical baseline test or compile command (`pytest`, `npm test`, `cargo test`, `go test`, `make test`). Record the result in `memories/repo/project-knowledge-base.md` `## Repository Overview`.
+   - Brownfield: existing source tree. Search for the canonical baseline test or compile command (`pytest`, `npm test`, `cargo test`, `go test`, `make test`). Record the result and any discovered high-risk or migration-prone areas in `memories/repo/project-knowledge-base.md` `## Repository Overview`.
    - If no baseline exists in a brownfield repo, ask the adopter to declare the best available proof surface and record their answer.
 
 ### Phase 3 — Memory Customization (mandatory)

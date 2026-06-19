@@ -6,7 +6,7 @@ The memory layer stores durable cross-feature knowledge that agents need repeate
 
 ## Memory Architecture
 
-The kit organizes memory into three tiers with a routing index. Sessions read `INDEX.md` first, then load only the groups that match the task.
+The kit organizes memory into three tiers with a routing index. Sessions read `MASTER_INDEX.md` first, then load only the groups that match the task.
 
 ```mermaid
 flowchart TD
@@ -28,13 +28,11 @@ flowchart TD
     end
 
     subgraph ROUTER["Memory Router"]
-        IDX[INDEX.md<br/>Always-loaded routing index]
+        IDX[MASTER_INDEX.md<br/>Always-loaded routing index]
     end
 
     %% Routing
     IDX -->|Always group| CONST
-    IDX -->|Always group| SEC
-    IDX -->|Always group| HARN
     IDX -->|By-Intent: Knowledge| PKB
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
@@ -44,7 +42,6 @@ flowchart TD
     %% Promotion flow (extracted -> instruction)
     EXT -.->|context-memory<br/>Extraction Triage| HEUR
     EXT -.->|promote rule| CONST
-    EXT -.->|promote security| SEC
     OBS -.->|context-memory<br/>Triage| PKB
     OBS -.->|durable lesson| HEUR
 
@@ -59,7 +56,7 @@ flowchart TD
     classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
 
-    class CONST,SEC,HARN,PKB,HEUR,ARCH instr
+    class CONST,PKB,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router
@@ -72,7 +69,7 @@ flowchart TD
 
 | File | Purpose |
 |------|---------|
-| `INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug groups. Sessions read this first. |
+| `MASTER_INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug groups. Sessions read this first. |
 
 ### Instruction Tier — Human-Curated, Durable
 
@@ -145,11 +142,11 @@ Threshold breach opens a proposal in `artifacts/features/<slug>/promotions.md` �
 
 ## Context Assembly Tiers
 
-Sessions read `INDEX.md` first, then load only the groups that match the task. The 6-tier context model — load order, intent groups, compaction triggers, and eviction rules — is canonical in [`context-engineering.md`](context-engineering.md). Read that file for the full assembly contract.
+Sessions read `MASTER_INDEX.md` first, then load only the groups that match the task. The 6-tier context model — load order, intent groups, compaction triggers, and eviction rules — is canonical in [`context-engineering.md`](context-engineering.md). Read that file for the full assembly contract.
 
 A short reference for memory authors:
-- `INDEX.md` is the router. Always-loaded files belong to the Always group.
-- By-Intent groups (Knowledge / Learned / Architecture / Debug) load only when their trigger keywords match the task.
+- `MASTER_INDEX.md` is the router. Always-loaded files belong to the Always group.
+- By-Intent groups (Knowledge / Learned / Domain Packs / Debug) load only when their trigger keywords match the task.
 - When no intent group matches, sessions load Always-tier only and record "no by-intent groups matched" in the session opener.
 
 ## Learned Heuristics Format
@@ -256,6 +253,4 @@ sequenceDiagram
         M-->>V: REJECT — re-run sweep
         Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
     end
-
-    Note over V,F: Profile gating:<br/>Tiny = heuristic-only sweep<br/>Standard+ = full sweep
 ```

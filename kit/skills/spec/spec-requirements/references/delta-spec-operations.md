@@ -10,13 +10,11 @@ How feature `## Delta` sections in `spec.md` merge into a canonical domain spec 
 
 If any of those is false, leave the spec's `## Delta` section empty and skip the merge step. The feature's own `## Functional Requirements` remain the only requirements record.
 
-Profile gating:
+Risk-based gating:
 
-| Profile | Delta section | Merge step |
-|---|---|---|
-| Tiny | Skipped. | No. |
-| Standard | Optional. Required only if the brownfield risk rating is `High` and the impacted domain has a canonical spec. | Run only when the section is filled. |
-| Complex | Required when impacted boundaries overlap a tracked domain. | Required when section is filled. |
+- **Simple/Low-Risk:** Skipped.
+- **High-Risk/Cross-Boundary:** Recommended if the change touches legacy modules or code roots.
+- **Tracked Domain Impact:** Required if the impacted codebase boundaries overlap a registered domain pack containing a canonical spec contract.
 
 ## Delta operation rules
 

@@ -25,7 +25,7 @@ Used to resume, checkpoint, or close work for an existing feature slug. This ski
 
 ## Workflow
 1. **Resolve Mode**: If the user did not specify `START`, `CHECKPOINT`, or `END`, infer the mode from the request and state it before proceeding.
-2. **Load Routed Context**: Follow `references/session-start-flow.md` and `references/context-assembly.md` for `START` and any mode that needs fresh context.
+2. **Load Routed Context**: Follow `references/session-start-flow.md` and `references/context-assembly.md` for `START` and any mode that needs fresh context. For `START` mode, run the mechanical integrity cross-check step.
 3. **Respect Claims**: Follow `references/multi-agent-protocol.md` before taking or releasing ownership of a feature slug.
 4. **Record Progress**: Use `references/progress-template.md` for checkpoint and end summaries.
 5. **Create Handoff On End**: Use `references/session-handoff-template.md` and append candidate extracts using `references/session-extracts-template.md` when durable lessons exist.

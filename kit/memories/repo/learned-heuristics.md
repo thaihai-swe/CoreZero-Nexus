@@ -50,22 +50,11 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Last reviewed: 2026-06-18
 - Promote to stronger rule? Yes — candidate for `docs/policies/code-design.md`
 
-### LH-005: Rigor profile selection skews Tiny for bug fixes even with security-sensitive paths
-- Trigger:
-  - agent selects Tiny profile for a bug fix or small change
-- Working heuristic:
-  - before locking the profile, cross-reference target files against `memories/repo/core-policies.md` security-sensitive paths and `docs/project/architecture.md` system boundaries. If any intersection exists, promote to Standard or Complex regardless of change size.
-- Evidence:
-  - bug fixes on auth, input validation, or session logic were scoped as Tiny but required Standard-level verification
-- Confidence: Medium
-- Last reviewed: 2026-06-18
-- Promote to stronger rule? Yes — candidate for `skills/_shared/rigor-profiles.md` anti-patterns section
-
 ### LH-006: Token budget underestimation causes context compaction mid-complex task
 - Trigger:
-  - running a Complex-profile feature that loads many memory tiers and generates large tool output
+  - running a complex feature that loads many memory files and generates large tool output
 - Working heuristic:
-  - estimate token cost at feature start: count files loaded from the Phase x Lane Matrix, add 2x buffer for tool output. If total exceeds 60% of capacity (120,000 tokens), split work into smaller phases and checkpoint between them.
+  - estimate token cost at feature start: count loaded files, add 2x buffer for tool output. If total exceeds 60% of capacity (120,000 tokens), split work into smaller phases and checkpoint between them.
 - Evidence:
   - context compaction triggered mid-implementation, causing loss of design details and rework
 - Confidence: High

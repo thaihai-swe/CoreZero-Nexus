@@ -67,8 +67,6 @@ A minimal `status.md` must always contain:
 ## Phase
 [current phase from the table above]
 
-## 🧭 Delivery Profile
-[Tiny | Standard | Complex]
 
 ## Feature Slug
 [slug]
@@ -83,5 +81,4 @@ A minimal `status.md` must always contain:
 ## Cross-References
 
 - Template: `skills/spec-requirements/references/status-template.md`
-- Rigor profiles: `skills/_shared/rigor-profiles.md`
 - Skill preconditions: each core skill's `## Preconditions` section

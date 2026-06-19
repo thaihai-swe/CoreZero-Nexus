@@ -2,6 +2,8 @@
 
 This file is the agent entrypoint and instruction router for this repository. Read it every session before any other file.
 
+Always reference to @CLAUDE.MD first.
+
 ## What this repo is
 
 CoreZero is a spec-anchored AI software delivery framework. It ships an installable package (the "kit") that gets installed into downstream repositories to bootstrap AI-assisted software development workflows.

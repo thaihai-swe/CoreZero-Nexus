@@ -58,5 +58,4 @@ instead.
 ## Referencing
 
 - `design-standards.md` — UI/UX implementation rules (parallel to this file)
-- `../_shared/rigor-profiles.md` — scales how much ceremony this skill runs
 - `../_shared/status-phases.md` — lifecycle state machine

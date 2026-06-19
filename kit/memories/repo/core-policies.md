@@ -1,8 +1,5 @@
-# Core Policies (Constitution & Config)
 
 # CoreZero Constitution
-
-Version: 1.2.0 | Last amended: 2026-06-17
 
 ## Purpose
 
@@ -42,6 +39,9 @@ The canonical domain spec contract lives in `memories/domain/spec.md`. Do not pu
 
 ### CC-011 — Maintain Minimum Viable Context (MVC)
 To prevent memory drift, context must be tiered via the Three-Track Memory Model (Native Stack, Cross-Session Tools, Team Sharing). Use `MASTER_INDEX.md` for semantic routing and avoid dumping full-project context into the agent window.
+
+### CC-012 — Spec mutation is logged, not silent
+Any change to an approved `spec.md` MUST be recorded in the spec's `## Spec Amendments` section with the date, field changed, reason, and list of tasks re-checked. Resolving spec/code divergence in chat history is not sufficient.
 
 ## Release Guardrails
 
@@ -92,6 +92,7 @@ To prevent memory drift, context must be tiered via the Three-Track Memory Model
 - Lint / format command: N/A (documentation-first repo)
 - Typecheck command: N/A
 - Build command: N/A
+- Harness gate-runner command: `bash scripts/harness/gate-runner.sh` (overridden by `scripts/harness/gate-runner.local.sh` if present)
 
 ## Session Defaults
 
@@ -117,10 +118,6 @@ To prevent memory drift, context must be tiered via the Three-Track Memory Model
 - Commit / PR expectations: Subject under 72 chars, body explains why
 - Required reviewers or owners: None (solo maintainer)
 
-## Adaptive Rigor
-
-- **Default profile:** Standard
-- **Rules:** Canonical selection, promotion, and demotion rules are defined in `skills/_shared/rigor-profiles.md`. Refer to it before editing code.
 
 ## Active Session Limits & FinOps Guardrails
 
@@ -145,7 +142,7 @@ Every feature lifecycle follows the canonical 7-Phase Delivery Loop:
 - **Observability log:** Empty until real failures get captured. Expect entries once features run end-to-end.
 - **Session extracts:** Only exist per-feature; expect them to populate as features run `/context-session END`.
 - **Mermaid rendering:** `visualize` ships in the package, but Mermaid-to-SVG rendering still depends on optional `mmdc` (CLI tool). Structural Mermaid validation works without it.
-- **Adversarial spec review:** Recommended for cross-cutting work in the `Complex` profile but not yet a separate skill.
+- **Adversarial spec review:** Recommended for cross-cutting or high-risk work but not yet a separate skill.
 
 ## Memory Promotion Thresholds
 

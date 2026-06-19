@@ -1,7 +1,7 @@
 {
   "name": "harness-kit",
-  "version": "0.5.0",
-  "description": "Spec-anchored AI software delivery framework with adaptive rigor, durable memory tiers, and a mechanical verification gate.",
+  "version": "0.0.1",
+  "description": "Spec-anchored AI software delivery framework with durable memory tiers and a mechanical verification gate.",
   "homepage": "https://github.com/thaihai-swe/CoreZero-Nexus",
   "files": {
     "overwrite": [
@@ -14,6 +14,7 @@
       "scripts/install.sh",
       "scripts/harness/**",
       "scripts/generate-dashboard.py",
+      "scripts/context-loader.py",
       "docs/rules/python.md",
       "docs/rules/security.md",
       "docs/rules/ponytail.md",
@@ -35,13 +36,13 @@
       "docs/project/tech-stack.md",
       "docs/project/codemap.md",
       "docs/generated/dashboard.html",
-      "memories/repo/harness-telemetry.md",
       "memories/domain/glossary.md",
       "memories/domain/patterns.md",
       "memories/domain/anti-patterns.md",
       "memories/domain/boundaries.md",
       "memories/domain/spec.md"
     ],
+    "crossTreeOverwrite": [],
     "preserve": [
       "memories/repo/",
       "artifacts/"

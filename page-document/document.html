@@ -181,7 +181,7 @@
                 <span class="about-tag">Spec-anchored delivery</span>
                 <span class="about-tag">Mechanical verification</span>
                 <span class="about-tag">Durable memory</span>
-                <span class="about-tag">12 core skills · 4 specialist tools</span>
+                <span class="about-tag">16 shipped skills</span>
             </div>
         </aside>
 
@@ -337,7 +337,7 @@
                         etc.).
                     </div>
                     <div class="nn-item"><strong>Read the Master Index.</strong> Before non-trivial work,
-                        <strong>SHOULD</strong> consult <code>INDEX.md</code> at the repo root for context routing and key memory files (such as <code>memories/repo/core-policies.md</code> which declares active status and limits).
+                        <strong>SHOULD</strong> consult <code>MASTER_INDEX.md</code> at the repo root for context routing and key memory files (such as <code>memories/repo/core-policies.md</code> which declares active status and limits).
                     </div>
                 </div>
             </div>
@@ -580,7 +580,7 @@
                 <div class="arch-card">
                     <h3>E. The Memory Layer (Durable Guidance)</h3>
                     <p class="node-desc">Located in <code>memories/repo/</code>. Organized into three tiers behind a
-                        routing index (<code>memories/repo/INDEX.md</code>). The knowledge base operates as a
+                        routing index (<code>MASTER_INDEX.md</code>). The knowledge base operates as a
                         <strong>Semantic Memory
                             Knowledge Graph</strong> using Markdown links to bind heuristics to domain specs. The tiers
                         are: the <strong>Instruction tier</strong> (human-curated
@@ -615,7 +615,7 @@
                 </ul>
                 <p>Flow: <strong>session extracts &rarr; triage &rarr; instruction tier (or discard)</strong>, with the
                     auto
-                    tier capturing failures along the way. The memory router <code>memories/repo/INDEX.md</code> decides
+                    tier capturing failures along the way. The memory router <code>MASTER_INDEX.md</code> decides
                     which
                     files
                     a session loads by matching the task against trigger keywords.</p>
@@ -648,16 +648,13 @@
             <div class="section-card">
                 <h3>Minimum Safe Repository Shape</h3>
                 <pre><code>AGENTS.md
-INDEX.md
+MASTER_INDEX.md
 skills/
 rules/
 scripts/
   install.sh
   generate-dashboard.py
 memories/repo/
-  INDEX.md
-  core-policies.md
-  security-policy.md
   core-policies.md
   project-knowledge-base.md
   learned-heuristics.md
@@ -673,13 +670,12 @@ memories/domain/
 docs/project/architecture.md
 docs/generated/
   codemap.md
-  references-index.md
   dashboard.html
 artifacts/features/</code></pre>
                 <p class="node-desc">The installer copies <code>skills/</code> and <code>rules/</code> into the target
                     repository, seeds
-                    the master index (<code>INDEX.md</code>), the memory router (<code>memories/repo/INDEX.md</code>),
-                    and the three memory tiers, generated references,
+                    the master index and memory router (<code>MASTER_INDEX.md</code>),
+                    the memory tiers, generated references,
                     architecture,
                     the harness card, and a thin repo entrypoint &mdash; without overwriting your
                     <code>memories/repo/</code>
@@ -709,27 +705,15 @@ artifacts/features/</code></pre>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code>INDEX.md</code></td>
-                                <td>Master context index</td>
-                                <td>Central registry mapping load-on-demand category-specific context indexes (memories,
-                                    rules, codemaps).</td>
-                            </tr>
-                            <tr>
-                                <td><code>memories/repo/INDEX.md</code></td>
-                                <td>Memory router</td>
+                                <td><code>MASTER_INDEX.md</code></td>
+                                <td>Master Index &amp; Memory Router</td>
                                 <td>Always-loaded routing index. Declares Always / By-Intent / By-Debug groups and the
-                                    promotion watchlist. Sessions read this first.</td>
+                                    promotion watchlist. Sessions read this first. Includes the Phase &times; Guidance Matrix.</td>
                             </tr>
                             <tr>
                                 <td><code>memories/repo/core-policies.md</code></td>
-                                <td>Normative rules</td>
-                                <td>Guardrails, non-negotiable quality rules, and durable operating constraints.</td>
-                            </tr>
-                            <tr>
-                                <td><code>memories/repo/core-policies.md</code></td>
-                                <td>Repo operating defaults & rules</td>
-                                <td>Command conventions, boundaries, trust levels, and session startup defaults.
-                                </td>
+                                <td>Normative operating policies</td>
+                                <td>Guardrails, command conventions, boundaries, non-negotiable quality rules, and durable operating constraints.</td>
                             </tr>
                             <tr>
                                 <td><code>memories/repo/learned-heuristics.md</code></td>
@@ -769,7 +753,7 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><code>docs/generated/</code></td>
                                 <td>Generated references</td>
-                                <td><code>codemap.md</code>, <code>references-index.md</code>, and
+                                <td><code>codemap.md</code> and
                                     <code>dashboard.html</code> give the harness
                                     reusable structural references and visual pipelines.
                                 </td>
@@ -815,12 +799,12 @@ artifacts/features/</code></pre>
                     </li>
                     <li><strong>Post-ship sync:</strong> a passing <code>/harness-verify</code> verdict triggers a
                         mandatory
-                        memory sweep. Every file in <code>memories/repo/INDEX.md</code> is either updated or named with
+                        memory sweep. Every file in <code>MASTER_INDEX.md</code> is either updated or named with
                         a one-line
                         reason it
                         was untouched. A generic "no updates needed" fails the gate.</li>
                     <li><strong>Promotion thresholds:</strong> a memory file at &ge;800 lines, 3+ distinct subtopics, or
-                        5+ artifact references is added to the <code>memories/repo/INDEX.md</code> promotion watchlist
+                        5+ artifact references is added to the <code>MASTER_INDEX.md</code> promotion watchlist
                         with a split
                         proposal &mdash;
                         it is never auto-split.</li>
@@ -887,7 +871,7 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td>File line count (force split)</td>
                                 <td>&ge; 1200 lines</td>
-                                <td>Split into topic files; update <code>memories/repo/INDEX.md</code>.</td>
+                                <td>Split into topic files; update <code>MASTER_INDEX.md</code>.</td>
                             </tr>
                             <tr>
                                 <td>Distinct subtopics in one file</td>
@@ -914,13 +898,13 @@ artifacts/features/</code></pre>
                 code
                 reads. Higher tiers persist across sessions; lower tiers are transient. The router decides which tiers
                 to
-                load based on intent, scope, and rigor profile.</p>
+                load based on intent and scope.</p>
             <div class="tier-stack">
                 <div class="tier-row" data-tier="1">
                     <span class="tier-badge">TIER 1</span>
                     <div class="tier-content">
                         <strong>Router &amp; Entrypoint</strong>
-                        <span><code>AGENTS.md</code>, <code>INDEX.md</code> (master index), <code>CLAUDE.md</code>,
+                        <span><code>AGENTS.md</code>, <code>MASTER_INDEX.md</code> (master index),
                             skill registry, priority rules.</span>
                     </div>
                     <div class="tier-load">Always loaded</div>
@@ -929,8 +913,8 @@ artifacts/features/</code></pre>
                     <span class="tier-badge">TIER 2</span>
                     <div class="tier-content">
                         <strong>Always-On Memory</strong>
-                        <span>Constitution, security policy, harness config, memory
-                            <code>memories/repo/INDEX.md</code>.</span>
+                        <span>Normative policies, security policy, harness config, memory
+                            <code>memories/repo/core-policies.md</code>.</span>
                     </div>
                     <div class="tier-load">Always loaded</div>
                 </div>
@@ -983,7 +967,7 @@ artifacts/features/</code></pre>
                 <h3>Smart Context Routing</h3>
                 <p class="node-desc">Active sessions load only matching memories based on trigger keywords declared in
                     the routing index. This keeps context windows lean, lowers token usage, and prevents LLM context
-                    fatigue. If <code>memories/repo/INDEX.md</code> is missing or stale, the session falls back to
+                    fatigue. If <code>MASTER_INDEX.md</code> is missing or stale, the session falls back to
                     loading every
                     memory file and routes the gap to <code>/context-memory</code> for index repair.</p>
                 <div class="audience-grid" style="margin-bottom: var(--space-6);">
@@ -1458,8 +1442,7 @@ artifacts/features/</code></pre>
                                 <td>Assess, evaluate, or improve the environment across the 7-pillar ETCLOVG framework.
                                 </td>
                                 <td><code>harness-assessment.md</code>, <code>eval-report.md</code>,
-                                    <code>harness-telemetry.md</code>, <code>docs/generated/codemap.md</code>,
-                                    <code>docs/generated/references-index.md</code>
+                                    <code>harness-telemetry.md</code>, and <code>docs/generated/codemap.md</code>
                                 </td>
                             </tr>
                         </tbody>
@@ -1509,12 +1492,6 @@ artifacts/features/</code></pre>
                                 <td><code>docs/generated/codemap.md</code></td>
                                 <td>Generated structure map</td>
                                 <td>Reduces repeated broad codebase discovery by mapping major paths and entrypoints.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>docs/generated/references-index.md</code></td>
-                                <td>Generated reference index</td>
-                                <td>Lists reusable generated and external references the harness should consult first.
                                 </td>
                             </tr>
                             <tr>
@@ -1635,7 +1612,7 @@ artifacts/features/</code></pre>
                 <p class="node-desc">The knowledge base compounds as features ship. A passing
                     <code>/harness-verify</code>
                     verdict triggers a <strong>mandatory post-ship sync</strong>: every file in
-                    <code>memories/repo/INDEX.md</code> is
+                    <code>MASTER_INDEX.md</code> is
                     either
                     updated or named with a one-line reason it was untouched. The sweep distills lessons into
                     <code>session-extracts.md</code> candidates, which <code>/context-memory</code> then promotes,
@@ -1650,7 +1627,7 @@ artifacts/features/</code></pre>
                     </div>
                     <div class="metric-card">
                         <strong>2. Sweep</strong>
-                        Post-ship sync walks every file in <code>memories/repo/INDEX.md</code>; updates land where
+                        Post-ship sync walks every file in <code>MASTER_INDEX.md</code>; updates land where
                         evidence supports
                         them.
                     </div>
@@ -1810,7 +1787,7 @@ artifacts/features/</code></pre>
             <figure class="kit-diagram">
                 <div class="mermaid-render" data-mmd="/CoreZero-Nexus/documents/diagrams/corezero-post-ship-sync.mmd"
                     role="img"
-                    aria-label="Post-ship sync sequence: sweep memories/repo/INDEX.md, check file diffs, apply updates to learned heuristics.">
+                    aria-label="Post-ship sync sequence: sweep MASTER_INDEX.md, check file diffs, apply updates to learned heuristics.">
                     <div class="mermaid-loading">Rendering corezero-post-ship-sync…</div>
                 </div>
                 <figcaption class="kit-diagram-caption">Figure 5.6 &mdash; Post-ship knowledge sync sequence. Validates
@@ -1873,17 +1850,14 @@ artifacts/features/</code></pre>
                     <p>Bootstraps repo routing, AGENTS.md router, workflow defaults, starter memory, and verifies
                         clean-state prerequisites. Interviews for tech stack (Node.js, Python, Go, Rust), test
                         runners, and linters, captures operating defaults in <code>core-policies.md</code>, and seeds generated references
-                        (<code>docs/generated/codemap.md</code>, <code>references-index.md</code>).
+                        (<code>docs/generated/codemap.md</code>).
                         <strong>Phase A (Archaeology):</strong> runs automatically on repositories with existing code,
-                        mapping module dependencies, seeding heuristics, and generating the
-                        brownfield map (<code>brownfield-map.md</code>) and dependency graph
-                        (<code>dependency-graph.md</code>).
+                        mapping module dependencies, and seeding heuristics.
                         <strong>Phase B (Bootstrap):</strong> configures harness defaults, preserves broken tests as the
                         baseline, flags security paths, and creates a preserved behavior inventory.
                     </p>
                     <p><strong>References:</strong> harness config, AGENTS router, architecture bootstrap, prerequisite
-                        checks, brownfield mode, harness card template, brownfield map template, dependency graph
-                        template.</p>
+                        checks, brownfield mode, harness card template.</p>
                 </div>
                 <div class="skill-card">
                     <h4>context-status</h4>
@@ -2231,7 +2205,7 @@ Summary
   Files backed up: 0 -> .corezero-backup-&lt;timestamp&gt;
 
 Next steps:
-  1. Review memories/repo/core-policies.md (set rigor profile and limits)
+  1. Review memories/repo/core-policies.md (configure verification commands and limits)
   2. Run /starter-init in your AI agent to bootstrap the repo
   3. Start a feature under artifacts/features/&lt;slug&gt;/</code></pre>
                 <p>Already cloned the kit? Run the installer locally instead:</p>
