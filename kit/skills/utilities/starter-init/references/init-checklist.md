@@ -9,23 +9,21 @@ Use this checklist to ensure the repository is fully prepared for harnessed agen
 - [ ] `memories/repo/brownfield/brownfield-map.md` exists and has at least one rated area.
 - [ ] `memories/repo/brownfield/dependency-graph.md` exists and lists module dependencies.
 - [ ] `memories/repo/learned-heuristics.md` has 3–5 new entries with file citations.
-- [ ] `HARNESS_CARD.md` Known Limits section updated with brownfield-specific caveats.
+- [ ] `memories/repo/core-policies.md` limits/caveats updated.
 - [ ] Profile auto-promotion rule recorded in `brownfield-map.md` under `## Profile Rules`.
 
 ### Phase B — Bootstrap (all repos)
 
 - [ ] `install.sh` has already seeded the harness surface. If a seeded file is missing, re-run the installer before init continues.
 - [ ] `AGENTS.md` exists at the project root and is router-style (< 50 lines, links to deeper docs).
-- [ ] `HARNESS_CARD.md` exists at the project root.
 - [ ] `memories/repo/core-policies.md` exists and captures repository workflow defaults.
 - [ ] `memories/repo/core-policies.md` exists and contains normative repo-wide rules.
-- [ ] `memories/repo/security-policy.md` exists and captures permission tiers, trust boundaries, and secret handling.
+- [ ] `memories/repo/core-policies.md` contains a Security Policy section that captures permission tiers, trust boundaries, and secret handling.
 - [ ] `memories/repo/learned-heuristics.md` exists and captures descriptive repeated heuristics only.
 - [ ] `memories/repo/project-knowledge-base.md` exists and contains descriptive stack details, patterns, and conventions.
 - [ ] Seeded adopter-owned docs under `docs/project/*.md` exist before pre-fill begins.
 - [ ] `docs/project/architecture.md` exists when the repository has meaningful subsystem boundaries, runtime layers, or external integrations.
-- [ ] `docs/generated/codemap.md` exists when the repo is large enough to benefit from a generated structural map.
-- [ ] `docs/generated/references-index.md` exists when generated or external references should be tracked durably.
+- [ ] `docs/project/codemap.md` exists when the repo is large enough to benefit from a generated structural map.
 - [ ] Language runtime and dependency config files (e.g. package.json, requirements.txt, Cargo.toml) identified from manual code search.
 - [ ] Test runner command identified from manifests and documented in `core-policies.md`.
 - [ ] Lint/format/type-check commands identified from configurations and documented in `core-policies.md`.

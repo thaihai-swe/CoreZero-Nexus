@@ -1,4 +1,4 @@
-# Releasing CoreZero Nexus
+# Releasing CoreZero
 
 Maintainer runbook for release, version sync, and GitHub Pages expectations.
 

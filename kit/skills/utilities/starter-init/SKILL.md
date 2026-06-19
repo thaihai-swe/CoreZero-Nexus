@@ -38,7 +38,7 @@ The installer seeds `memories/repo/*.md` with the kit's *own* content. Those fil
    - Update the `## Verification Commands` block. Mark commands as `N/A` only when the project genuinely has none.
    - Leave the `## Normative Rules` (CC-001 through CC-010) untouched unless the adopter wants to amend a rule. Amendments must follow `## Amendment Rules` in that file.
 
-6. **Customize `security-policy.md`**:
+6. **Customize `core-policies.md` `## Security Policy`**:
    - Prompt: "What paths in this repo are security-sensitive? What external services or secrets does the project depend on? Which actions require explicit confirmation?"
    - Update `## Trust Boundaries`, `## Permission Tiers`, and `## Sandbox And Access Rules` with project-specific paths and rules.
    - Keep `## Prompt-Injection Defense` rules verbatim — they are kit-wide.
@@ -55,8 +55,8 @@ The installer seeds `memories/repo/*.md` with the kit's *own* content. Those fil
 9. **Domain pack selection**:
    - Read `memories/domain/glossary.md` frontmatter triggers.
    - Prompt: "Does this project have one or more bounded subdomains (auth, payments, data pipeline, etc.) that deserve a domain pack? If yes, list them."
-   - For each domain the adopter names: copy the seeded `memories/domain/` scaffold into a per-domain subdirectory (`memories/domain/<name>/`) — only if multiple packs are needed; otherwise customize the existing files in place. Update `memories/repo/INDEX.md` `## By Domain Packs` with the new pack name and trigger keywords.
-   - If the adopter declines all packs, leave the existing scaffold and add a TODO comment to `memories/domain/README.md` reminding them to revisit after the first feature.
+   - For each domain the adopter names: copy the seeded `memories/domain/` scaffold into a per-domain subdirectory (`memories/domain/<name>/`) — only if multiple packs are needed; otherwise customize the existing files in place. Update `MASTER_INDEX.md` `## By Domain Packs` with the new pack name and trigger keywords.
+   - If the adopter declines all packs, leave the existing scaffold.
 
 ### Phase 4 — Confirm and Hand Off
 10. Run `/context-memory --audit` to confirm the seeded files no longer reference kit-internal paths and that domain pack triggers are populated.

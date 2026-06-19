@@ -1,6 +1,6 @@
 # Technical Reference
 
-This reference catalog details the public commands, feature artifact schemas, repository memory files, and configuration templates in the CoreZero Nexus.
+This reference catalog details the public commands, feature artifact schemas, repository memory files, and configuration templates in the CoreZero.
 
 ---
 
@@ -8,7 +8,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 
 | Command | Subsystem | Customer Value / Purpose | Key Artifacts |
 |---|---|---|---|
-| `/starter-init` | Project Starter | Configures verification baselines; sweeps legacy code (Phase A) automatically on brownfield repos | `core-policies.md`, `HARNESS_CARD.md`, `brownfield-map.md`, `dependency-graph.md` |
+| `/starter-init` | Project Starter | Configures verification baselines; sweeps legacy code (Phase A) automatically on brownfield repos | `core-policies.md`, `brownfield-map.md`, `dependency-graph.md` |
 | `/context-session` | Context | Minimizes token costs and prevents LLM context fatigue | `handoff.md`, `session-extracts.md` |
 | `/context-status` | Context | Monitors feature progression and flags implementation blockers | `progress.md` |
 | `/context-memory` | Context | Updates shared conventions so the agent gets smarter over time | `core-policies.md`, `learned-heuristics.md` |
@@ -52,7 +52,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 ## 3. Memory Files (`memories/repo/`)
 
 The memory layer is structured in a **3-Tier Memory Architecture**:
-- **Instruction tier** (human-curated): constitution, security-policy, learned-heuristics, project-knowledge-base, harness-config, and `docs/project/architecture.md`.
+- **Instruction tier** (human-curated): constitution, learned-heuristics, project-knowledge-base, harness-config, and `docs/project/architecture.md`.
 - **Auto tier** (agent-written): observability-log.
 - **Extracted tier** (per-feature candidates): session-extracts.
 
@@ -60,7 +60,6 @@ The memory layer is structured in a **3-Tier Memory Architecture**:
 |------|-------------|------|------|-----------|
 | [`INDEX.md`](../kit/memories/repo/INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
 | [`core-policies.md`](../kit/memories/repo/core-policies.md) | `/context-memory` | Normative | Instruction | Created at init |
-| [`security-policy.md`](../kit/memories/repo/security-policy.md) | `/context-memory` | Normative | Instruction | Created at init |
 | [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) | `/context-memory` | Descriptive | Instruction | Created at init |
 | [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md) | `/context-memory` | Descriptive | Instruction | Created at init |
 | [`core-policies.md`](../kit/memories/repo/core-policies.md) | `/starter-init` | Operational | Instruction | Created at init |
@@ -78,7 +77,7 @@ These docs are copied to adopter repositories for customization:
 | [`project/product-sense.md`](../kit/docs/project/product-sense.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
 | [`project/project-constraints.md`](../kit/docs/project/project-constraints.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
 | [`project/glossary.md`](../kit/docs/project/glossary.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |
-| [`project/tech-stack-reference.md`](../kit/docs/project/tech-stack-reference.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
+| [`project/tech-stack.md`](../kit/docs/project/tech-stack.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
 
 ---
 

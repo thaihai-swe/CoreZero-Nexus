@@ -4,7 +4,7 @@
 
 ## Canonical Source
 
-- The shipped router body lives at [`../../AGENTS.md`](../../AGENTS.md).
+- The shipped router body lives at [`../../../../AGENTS.md`](../../../../AGENTS.md).
 - `manifest.json` seeds downstream `AGENTS.md` directly from that canonical file.
 
 ## Rule

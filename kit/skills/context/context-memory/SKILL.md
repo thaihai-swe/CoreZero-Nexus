@@ -36,9 +36,9 @@ Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
    - >= 800 lines: threshold breached (open `artifacts/features/<slug>/promotions.md`)
    - >= 1200 lines: hard cap (block further appends until promotion lands)
 2. **Domain pack trigger relevance** — for every pack under `memories/domain/`, read trigger keywords from `glossary.md` frontmatter and grep the codebase for occurrences. Flag triggers with zero matches as candidates for removal or rewording.
-3. **Memory-to-code accuracy** — sample referenced paths, file names, and module roots from `project-knowledge-base.md`, `core-policies.md` `## Harness Config`, and `INDEX.md` and confirm each still exists. Flag stale references.
+3. **Memory-to-code accuracy** — sample referenced paths, file names, and module roots from `project-knowledge-base.md`, `core-policies.md` `## Harness Config`, and `MASTER_INDEX.md` and confirm each still exists. Flag stale references.
 4. **Domain pack usage** — read `harness-telemetry.md` (when populated) and `artifacts/features/*/session-extracts.md` for pack-load events; list packs not loaded in any recent session.
-5. **Promotion watchlist sync** — compare files flagged in checks 1–4 against `memories/repo/INDEX.md` `## Promotion Watchlist`. Surface drift in either direction.
+5. **Promotion watchlist sync** — compare files flagged in checks 1–4 against `MASTER_INDEX.md` `## Promotion Watchlist`. Surface drift in either direction.
 
 ### Output
 Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `docs/generated/memory-audit.md` (global). Sections:
@@ -48,7 +48,7 @@ Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md
 - `## Trigger Drift` — domain packs with stale or unmatched triggers
 - `## Stale References` — paths and identifiers that no longer exist
 - `## Unused Packs` — domain packs with zero recent loads
-- `## Watchlist Sync` — proposed updates to `INDEX.md` `## Promotion Watchlist`
+- `## Watchlist Sync` — proposed updates to `MASTER_INDEX.md` `## Promotion Watchlist`
 
 ### Core Rules — Audit Mode
 - Mechanical only — count lines, grep keywords, stat paths. Do not interpret content.

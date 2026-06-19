@@ -8,7 +8,7 @@ Read the repository and populate these from concrete evidence. Cite the source (
 
 | Template | Pre-Fill From |
 |---|---|
-| `docs/project/tech-stack-reference.md` | `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, lockfiles, import statements, framework config |
+| `docs/project/tech-stack.md` | `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, lockfiles, import statements, framework config |
 | `docs/project/architecture.md` | Top-level folder layout, module boundaries, entry points, build/CI config |
 | `docs/project/project-constraints.md` | CI/CD settings, runtime version pins, resource limits, declared compliance tooling |
 

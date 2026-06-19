@@ -1,12 +1,12 @@
-# CoreZero Nexus Overview & Core Workflow
+# CoreZero Overview & Core Workflow
 
-The CoreZero Nexus developer kit is an engineering harness built to provide strict, spec-anchored, and test-validated AI coding agent workflows. It prevents common AI agent failure modes—such as context window amnesia, code bloat ("AI slop"), spec drift, and silent regressions—by structuring the workspace and enforcing strict progression gates.
+The CoreZero developer kit is an engineering harness built to provide strict, spec-anchored, and test-validated AI coding agent workflows. It prevents common AI agent failure modes—such as context window amnesia, code bloat ("AI slop"), spec drift, and silent regressions—by structuring the workspace and enforcing strict progression gates.
 
 ---
 
 ## 1. The 5-Layer Architecture Model
 
-CoreZero Nexus operates across five distinct layers that separate concerns and maintain a minimal, high-signal context window:
+CoreZero operates across five distinct layers that separate concerns and maintain a minimal, high-signal context window:
 
 ```text
 ┌─────────────────────────────────────────────┐
@@ -14,7 +14,7 @@ CoreZero Nexus operates across five distinct layers that separate concerns and m
 ├─────────────────────────────────────────────┤
 │  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 4 specialist capability cards
 ├─────────────────────────────────────────────┤
-│  3. Harness Layer (6 subsystems)            │  Rules, validation commands, and session control
+│  3. Harness Layer (ETCLOVG Taxonomy)        │  Rules, validation commands, and session control
 ├─────────────────────────────────────────────┤
 │  4. Artifact Layer (artifacts/features/)    │  Per-feature durable development state
 ├─────────────────────────────────────────────┤
@@ -24,7 +24,7 @@ CoreZero Nexus operates across five distinct layers that separate concerns and m
 
 1. **Entrypoint Layer ([`AGENTS.md`](../kit/AGENTS.md)):** A minimal, high-level router (< 50 lines) that tells the agent where to find instructions for specific tasks, avoiding loading heavy skill configurations until needed.
 2. **Skill Layer ([`skills/`](../kit/skills/)):** Compressed, token-efficient contracts (`SKILL.md`) that detail workflows, core rules, warning red flags, stop conditions, and outputs for specific tasks.
-3. **Harness Layer ([`core-policies.md`](../kit/memories/repo/core-policies.md) and [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md)):** The environment configuration that declares verification command lists, paths, and live session limits/status.
+3. **Harness Layer ([`core-policies.md`](../kit/memories/repo/core-policies.md)):** The environment configuration structured around the 7-pillar **ETCLOVG** taxonomy, declaring verification command lists, paths, and live session limits/status.
 4. **Artifact Layer (`artifacts/features/<slug>/`):** The isolated scratchpad for the active feature. It contains the feature status, locked specifications, task checkboxes, verification logs, and session progress trackers.
 5. **Memory Layer ([`memories/`](../kit/memories/)):** Separated into:
     - **`repo/`** ([Durable repository-wide memory](../kit/memories/repo/)): constitution, heuristics, knowledge base, security policies.
@@ -37,23 +37,23 @@ CoreZero Nexus operates across five distinct layers that separate concerns and m
 To conserve context window budget and prevent AI hallucination, the kit structures context into six tiers and loads them progressively:
 
 ```text
-     [Tier 1: Router] (AGENTS.md + INDEX.md)
-            │ (loaded every session)
-            ▼
-     [Tier 2: Repo Memory (Always)] (constitution + security-policy + harness-config)
-            │ (loaded every session)
-            ▼
-     [Tier 3: Repo Memory (By Intent)] (Knowledge / Learned / Debug groups via memories/repo/INDEX.md)
-            │ (loaded based on task trigger keywords)
-            ▼
-     [Tier 4: Feature Artifacts] (status.md, spec.md, plan.md, tasks.md, handoff.md)
-            │ (loaded before editing or verifying)
-            ▼
-     [Tier 5: JIT Raw Code] (files targeted for immediate modification)
-            │ (loaded just-in-time)
-            ▼
-     [Tier 6: Transient Logs] (command output, test outputs, grep searches)
-              (summarized and evicted immediately to avoid bloating)
+      [Tier 1: Router] (AGENTS.md + INDEX.md)
+             │ (loaded every session)
+             ▼
+      [Tier 2: Repo Memory (Always)] (constitution + security-policy + harness-config)
+             │ (loaded every session)
+             ▼
+      [Tier 3: Repo Memory (By Intent)] (Knowledge / Learned / Debug groups via memories/repo/INDEX.md)
+             │ (loaded based on task trigger keywords)
+             ▼
+      [Tier 4: Feature Artifacts] (status.md, spec.md, plan.md, tasks.md, handoff.md)
+             │ (loaded before editing or verifying)
+             ▼
+      [Tier 5: JIT Raw Code] (files targeted for immediate modification)
+             │ (loaded just-in-time)
+             ▼
+      [Tier 6: Transient Logs] (command output, test outputs, grep searches)
+               (summarized and evicted immediately to avoid bloating)
 ```
 
 - **INDEX-Driven Trigger Loading (Tier 3):** Under [`INDEX.md`](../kit/memories/repo/INDEX.md), files in Tier 3 are loaded selectively based on query triggers defined in [`memories/repo/INDEX.md`](../kit/memories/repo/INDEX.md):
@@ -99,7 +99,7 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 - Sets up `status.md` and reads `handoff.md` from the previous session to ensure continuous execution.
 
 ### Phase 3: Specification Intake ([`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md))
-- Conducts a "Socratic Grilling" phase, asking the developer clarifying questions to avoid assumptions.
+- Conducts a Socratic evaluation phase, asking the developer clarifying questions to avoid assumptions.
 - Authors the canonical `spec.md` requiring strict deterministic Acceptance Criteria formatted as markdown checklists (`- [ ]`) or Gherkin (`Given/When/Then`) mapped to binary verification commands.
 
 ### Phase 4: Planning ([`/spec-plan`](../kit/skills/spec-plan/SKILL.md))
@@ -110,11 +110,13 @@ A complete feature delivery lifecycle follows a rigorous chronological sequence 
 ### Phase 5: Implementation ([`/spec-implement`](../kit/skills/spec-implement/SKILL.md))
 - Agent executes modifications in targeted files.
 - Coding standards in [`docs/rules/`](../kit/docs/rules/) (syntax, language-specific lints, and security standards) must be strictly adhered to.
-- For every task item, the agent runs the localized proof command, records the outcome, and immediately evicts raw console logs to prevent context fatigue.
+- For every task item, the agent runs the localized mechanical verification gate via `kit/scripts/harness/gate-runner.sh`.
+- **Telemetry Collection:** If the gate fails, errors are piped to `kit/scripts/harness/telemetry-collector.sh` to update `harness-telemetry.md`.
+- **Minimum Viable Context & Eviction:** The agent operates under strict Minimum Viable Context (MVC) guidelines, JIT-loading only targeted files, and evicts raw execution output from the active context window immediately after summarization.
 
 ### Phase 6: Verification & Review ([`/harness-verify`](../kit/skills/harness-verify/SKILL.md))
-- **Mechanical Gate:** Runs the workspace-wide check suite (linting, build verification, and test suites) to ensure zero broken baselines.
-- **Circuit Breaker:** Tracks failure counts to prevent infinite loops; if an implementation fails verification >= 2 times, it routes back to `/spec-plan` or `/code-review`.
+- **Mechanical Gate:** Runs the workspace-wide check suite via `kit/scripts/harness/gate-runner.sh` (linting, build verification, and test suites) to ensure zero broken baselines.
+- **Circuit Breaker:** Tracks failure counts to prevent infinite loops; if an implementation fails verification >= 2 times, it routes back to `/spec-plan` to rethink the approach.
 - **Alignment Audit:** Maps every single `AC-*` from `spec.md` to task proofs to verify full requirements implementation.
 - **Code Review:** Checks code against safety guidelines and Google-standard coding policies.
 - Promotes feature status to `Done` in `status.md`.

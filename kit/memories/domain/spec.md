@@ -3,7 +3,7 @@
 *This file is the single source of truth for the `example` domain's behavior.
 Replace this scaffold with your actual domain rules. Brownfield refactors that
 touch this domain MUST add a `## Delta` section to their feature `spec.md` (see
-`skills/spec-requirements/references/delta-spec-operations.md`) instead of
+`skills/spec/spec-requirements/references/delta-spec-operations.md`) instead of
 restating these rules.*
 
 ## Status

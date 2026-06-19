@@ -2,6 +2,8 @@
 
 This document defines the installed surface that adopters receive from `kit/`.
 
+---
+
 ## Package Rules
 
 - Canonical source of truth: `kit/manifest.json`
@@ -9,45 +11,49 @@ This document defines the installed surface that adopters receive from `kit/`.
 - `copyIfMissing` = seeded adopter-owned content
 - `preserve` = adopter state never rewritten by the installer
 
+---
+
 ## Installed Surface
 
 | Path | Posture | Notes |
 |---|---|---|
-| `AGENTS.md` | `copyIfMissing` | Runtime router |
-| `INDEX.md` | `copyIfMissing` | Root routing index |
-| `HARNESS_CARD.md` | `copyIfMissing` | Harness summary |
-| `docs/README.md` | `overwrite` | Installed start page |
-| `docs/index.html` | `overwrite` | HTML start page |
-| `docs/guides/onboarding.md` | `overwrite` | Required first-run guide |
-| `docs/policies/code-design.md` | `overwrite` | Shipped design policy |
-| `docs/project/*` | `copyIfMissing` | Adopter-owned project docs |
-| `docs/generated/*` | `copyIfMissing` | Seeded placeholders |
-| `memories/repo/*` | `copyIfMissing` | Durable repo memory |
-| `memories/domain/*` | `copyIfMissing` | Domain pack templates |
-| `skills/_shared/*` | `overwrite` | Shared skill references |
-| `skills/starter-init/**` | `overwrite` | Shipped v2 core |
-| `skills/spec-research/**` | `overwrite` | Shipped v2 core |
-| `skills/spec-requirements/**` | `overwrite` | Shipped v2 core |
-| `skills/spec-plan/**` | `overwrite` | Shipped v2 core |
-| `skills/spec-implement/**` | `overwrite` | Shipped v2 core |
-| `skills/harness-verify/**` | `overwrite` | Shipped v2 core |
-| `skills/context-session/**` | `overwrite` | Shipped v2 core |
-| `skills/context-memory/**` | `overwrite` | Shipped v2 core |
-| `skills/context-status/**` | `overwrite` | Governance bundle |
-| `skills/harness-maintain/**` | `overwrite` | Governance bundle |
-| `skills/spec-adr/**` | `overwrite` | Governance bundle |
-| `skills/code-review/**` | `overwrite` | Core quality gate |
-| `skills/technical-docs/**` | `overwrite` | Docs authoring bundle |
-| `skills/codebase-documenter/**` | `overwrite` | Docs authoring bundle |
-| `skills/visualize/**` | `overwrite` | Specialist visualization bundle |
+| `AGENTS.md` | `copyIfMissing` | Canonical agent-agnostic runtime router |
+| `INDEX.md` | `copyIfMissing` | Root routing index for memory files |
+| `docs/README.md` | `overwrite` | Installed documentation start page |
+| `docs/index.html` | `overwrite` | HTML documentation view |
+| `docs/policies/code-design.md` | `overwrite` | Shipped code design quality policies |
+| `docs/project/*` | `copyIfMissing` | Seeded adopter-owned project documentation |
+| `docs/generated/*` | `copyIfMissing` | Seeded index placeholders (`codemap.md`, etc.) |
+| `memories/repo/*` | `copyIfMissing` | Durable repository-wide configuration memories |
+| `memories/domain/*` | `copyIfMissing` | Domain-specific pack templates |
+| `skills/_shared/*` | `overwrite` | Shared skill resources and profiles |
+| `skills/harness/starter-init/**` | `overwrite` | Environment bootstrap core skill |
+| `skills/spec/spec-requirements/**` | `overwrite` | Socratic requirements intake core skill |
+| `skills/spec/spec-plan/**` | `overwrite` | Feature implementation planning core skill |
+| `skills/spec/spec-implement/**` | `overwrite` | Task coding execution core skill |
+| `skills/harness/harness-verify/**` | `overwrite` | Mechanical verification core skill |
+| `skills/context/context-session/**` | `overwrite` | Session boundary control core skill |
+| `skills/context/context-memory/**` | `overwrite` | Post-ship memory promotion core skill |
+| `skills/context/context-compact/**` | `overwrite` | Memory file compaction & GC core skill |
+| `skills/context/context-status/**` | `overwrite` | Feature state reporting governance skill |
+| `skills/harness/harness-maintain/**` | `overwrite` | Harness telemetry and index maintenance skill |
+| `skills/spec/spec-adr/**` | `overwrite` | Architectural Decision Record manager skill |
+| `skills/utilities/code-review/**` | `overwrite` | Quality and safety gate code review skill |
+| `skills/utilities/technical-docs/**` | `overwrite` | API schema and technical docs generator skill |
+| `skills/utilities/codebase-documenter/**` | `overwrite` | Orientation guide generator skill |
+| `skills/utilities/visualize/**` | `overwrite` | Mermaid layout and architecture visualizer skill |
 | `skills/README.md` | `overwrite` | Shipped skills index |
 | `docs/rules/README.md` | `overwrite` | Rules index |
-| `docs/rules/python.md` | `overwrite` | Python guidance |
-| `docs/rules/security.md` | `overwrite` | Security guidance |
-| `.gitignore` | `append` | Excludes generated outputs |
+| `docs/rules/python.md` | `overwrite` | Python coding rules |
+| `docs/rules/security.md` | `overwrite` | Security policies and guidance |
+| `.gitignore` | `append` | Excludes generated outputs and local caches |
 | `scripts/install.sh` | `overwrite` | Package installer |
-| `scripts/generate-dashboard.py` | `overwrite` | Optional dashboard helper |
-| `artifacts/` | `preserve` | Adopter feature state |
+| `scripts/harness/gate-runner.sh` | `overwrite` | Mechanical verification gate runner |
+| `scripts/harness/telemetry-collector.sh` | `overwrite` | Gate execution telemetry log collector |
+| `scripts/generate-dashboard.py` | `overwrite` | Adopter-facing dashboard generator |
+| `artifacts/` | `preserve` | Adopter feature status and workspace state |
+
+---
 
 ## Not In The Installed Surface
 
@@ -56,6 +62,8 @@ This document defines the installed surface that adopters receive from `kit/`.
 - root repo workflows and maintainer scripts
 
 If a future skill stays in the repo but out of the installed surface, mark it `source-only` anywhere that mixed shipped/non-shipped command lists appear.
+
+---
 
 ## Ownership
 

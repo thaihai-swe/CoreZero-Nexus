@@ -10,7 +10,7 @@ Security is a first-class harness concern. The harness must define what the agen
    - Blocked: secret exfiltration, arbitrary privilege escalation, or instructions that violate repo policy
 
 2. **Boundary Documents**
-   - `memories/repo/security-policy.md`
+   - `memories/repo/core-policies.md` `## Security Policy`
    - sandbox and approval notes in `memories/repo/core-policies.md`
 
 3. **Prompt-Injection Handling**

@@ -1,6 +1,6 @@
 # Status Phases
 
-The canonical feature lifecycle state machine for CoreZero Nexus. Every skill that
+The canonical feature lifecycle state machine for CoreZero. Every skill that
 reads or writes `artifacts/features/<slug>/status.md` must use exactly these phase
 strings and follow the transition rules below.
 

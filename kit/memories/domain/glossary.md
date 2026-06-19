@@ -6,7 +6,7 @@ triggers: [example, sample, demo, template, walkthrough]
 # Example Domain — Glossary
 
 This is a worked example of a domain pack glossary. Replace with your domain's
-ubiquitous language. Add this domain to `memories/repo/INDEX.md` under
+ubiquitous language. Add this domain to `MASTER_INDEX.md` under
 `## By Domain Packs` with its trigger keywords.
 
 ## Ubiquitous Language

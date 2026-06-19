@@ -47,7 +47,7 @@ Mark every flag that applies. Multiple flags are common.
 | `migration` | data backfill, persistent state changes, schema rollouts |
 | `cross_boundary` | more than one major architectural boundary |
 | `public_api` | endpoints, SDK signatures, or contracts other features depend on |
-| `security` | secrets, key handling, audit logs, anything in `security-policy.md` |
+| `security` | secrets, key handling, audit logs, anything in `core-policies.md` `## Security Policy` |
 | `harness-maintain` | this kit's skills, templates, memory schemas, or scripts |
 | `none` | none of the above — record explicitly to show you checked |
 

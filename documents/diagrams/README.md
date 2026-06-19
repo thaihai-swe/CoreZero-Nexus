@@ -1,6 +1,6 @@
 # Kit Diagrams
 
-Mermaid diagrams (`.mmd`) visualizing the CoreZero Nexus architecture, memory model, and workflows. Validate any diagram with:
+Mermaid diagrams (`.mmd`) visualizing the CoreZero architecture, memory model, and workflows. Validate any diagram with:
 
 ```bash
 python3 skills/visualize/scripts/validate_mermaid.py documents/diagrams/<file>.mmd

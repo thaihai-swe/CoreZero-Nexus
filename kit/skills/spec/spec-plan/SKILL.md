@@ -28,3 +28,4 @@ Converts approved requirements into a concrete execution strategy. Answers: how 
   - **Anti-Abstraction Gate**: Use framework features directly. Avoid creating custom wrappers or premature abstractions.
 - **Verifiable Task Increments**: Break work into low-risk tasks that can be proven independently.
 - **No Spec Re-opening**: Stick to the approved requirements.
+- **Context Eviction**: After drafting the plan, you MUST summarize any raw architectural logs and evict them from your context window before handing off to `/spec-implement`.

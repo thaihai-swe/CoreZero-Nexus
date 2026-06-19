@@ -1,4 +1,4 @@
-# CoreZero Nexus Learned Heuristics
+# CoreZero Learned Heuristics
 
 ## Purpose
 
@@ -10,7 +10,7 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Trigger:
   - a skill contract or command surface changes
 - Working heuristic:
-  - update `docs/README.md`, `docs/guides/onboarding.md`, and `documents/skills-guide.md` in the same wave
+  - update `documents/skills-guide.md` in the same wave
 - Evidence:
   - repeated drift found in lifecycle docs, command references, and install guidance
 - Confidence: High
@@ -32,7 +32,7 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Trigger:
   - the repo grows enough that repeated codebase rediscovery is happening
 - Working heuristic:
-  - maintain `docs/generated/codemap.md` and `docs/generated/references-index.md` as compact landing surfaces
+  - maintain `docs/project/codemap.md` as a compact landing surface
 - Evidence:
   - repeated review and documentation passes required broad repo sweeps
 - Confidence: Medium
@@ -54,7 +54,7 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Trigger:
   - agent selects Tiny profile for a bug fix or small change
 - Working heuristic:
-  - before locking the profile, cross-reference target files against `memories/repo/security-policy.md` security-sensitive paths and `docs/project/architecture.md` system boundaries. If any intersection exists, promote to Standard or Complex regardless of change size.
+  - before locking the profile, cross-reference target files against `memories/repo/core-policies.md` security-sensitive paths and `docs/project/architecture.md` system boundaries. If any intersection exists, promote to Standard or Complex regardless of change size.
 - Evidence:
   - bug fixes on auth, input validation, or session logic were scoped as Tiny but required Standard-level verification
 - Confidence: Medium
@@ -87,7 +87,7 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Trigger:
   - agent implements a feature that touches a domain with an installed pack but does not load it
 - Working heuristic:
-  - during `/spec-research` and `/spec-requirements`, explicitly check if the task keywords match any domain pack triggers in `memories/repo/INDEX.md` `## By Domain Packs`. If a match exists, load the pack before writing the spec.
+  - during `/spec-research` and `/spec-requirements`, explicitly check if the task keywords match any domain pack triggers in `MASTER_INDEX.md` `## By Domain Packs`. If a match exists, load the pack before writing the spec.
 - Evidence:
   - features built without loading domain packs repeated patterns that were already captured in the pack, or violated boundary rules
 - Confidence: High

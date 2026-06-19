@@ -2,13 +2,13 @@
 
 > Ownership: `Adopter-owned`
 
-Living architecture doc for the installed CoreZero Nexus surface.
+Living architecture doc for the installed CoreZero surface.
 
 ## System Snapshot
 
 - Repository type: Adopter-facing harness package
 - Primary runtime(s): Markdown, Bash, optional Python 3 for validation helpers
-- Main entrypoints: `AGENTS.md`, `HARNESS_CARD.md`, `docs/README.md`, `scripts/install.sh`, `skills/*/SKILL.md`
+- Main entrypoints: `AGENTS.md`, `MASTER_INDEX.md`, `scripts/install.sh`, `skills/*/SKILL.md`
 - Deployment shape: Installed workflow layer inside a downstream repository
 - Confidence: High
 
@@ -16,8 +16,8 @@ Living architecture doc for the installed CoreZero Nexus surface.
 
 | Component | Responsibility | Key Paths | Notes |
 | --- | --- | --- | --- |
-| Router and policy entrypoints | Load-order and operating defaults | `AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/*` | Router stays thin; durable rules live in memory files |
-| Installed docs | User-facing operating guidance | `docs/guides/*`, `docs/project/*`, `docs/policies/code-design.md`, `docs/generated/*` | Must match shipped files exactly |
+| Router and policy entrypoints | Load-order and operating defaults | `AGENTS.md`, `memories/repo/*` | Router stays thin; durable rules live in memory files |
+| Installed docs | User-facing operating guidance | `docs/project/*`, `docs/policies/code-design.md`, `docs/generated/*` | Must match shipped files exactly |
 | Skill contracts | Canonical workflow behavior | `skills/*/SKILL.md`, `skills/*/references/` | Behavioral source of truth |
 | Maintenance scripts | Install helpers | `scripts/install.sh` | Used for install and upgrades |
 
@@ -37,5 +37,5 @@ Living architecture doc for the installed CoreZero Nexus surface.
 
 ## Safe Change Guidance
 
-- High-risk areas: `scripts/install.sh`, `docs/generated/*`, shipped path claims in `docs/guides/*`, `docs/project/*`, and `docs/policies/code-design.md`
+- High-risk areas: `scripts/install.sh`, `docs/generated/*`, shipped path claims in `docs/project/*`, and `docs/policies/code-design.md`
 - Required proof: installer dry-run and install smoke test

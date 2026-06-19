@@ -11,4 +11,4 @@ Regenerate codemaps, indexes, or update CI/CD config.
 
 ## I/O Hand-off Protocol
 - **Reads**: Entire codebase.
-- **Writes**: `docs/generated/codemap.md`, `docs/generated/references-index.md`
+- **Writes**: `docs/project/codemap.md`

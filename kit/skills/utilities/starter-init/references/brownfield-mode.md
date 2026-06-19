@@ -6,9 +6,9 @@ Brownfield mode activates Phase A (archaeology sweep) automatically before Phase
 
 **Additional steps in Brownfield Mode:**
 
-1. **Existing entrypoint check**: If `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or `.github/copilot-instructions.md` already exists, read it before creating or overwriting. Preserve any rules that are still valid; flag conflicts explicitly.
+1. **Existing entrypoint check**: If `AGENTS.md` (or legacy files like `CLAUDE.md`, `.cursorrules`) already exists, read it before creating or overwriting. Preserve any rules that are still valid; flag conflicts explicitly.
 2. **Broken test inventory**: Run the test suite. Do NOT fix broken tests silently. Document every failing test in `memories/repo/core-policies.md` under a `## Known Broken Tests` section. A brownfield baseline is the current state, not an idealized clean state.
-3. **Security-sensitive path flagging**: Before proceeding, scan for auth middleware, payment handlers, secret loading, and external API integrations. List them in `memories/repo/security-policy.md` as high-attention paths requiring explicit confirmation before modification.
+3. **Security-sensitive path flagging**: Before proceeding, scan for auth middleware, payment handlers, secret loading, and external API integrations. List them in `memories/repo/core-policies.md` `## Security Policy` as high-attention paths requiring explicit confirmation before modification.
 4. **Brownfield pack check**: If `memories/repo/brownfield/brownfield-map.md` already exists from a prior Phase A run, skip Phase A and continue to Phase B directly. If both files are missing, run Phase A first.
 5. **Brownfield first feature rule**: Route the first feature through `spec-research` with `../../spec-research/references/brownfield-mapping-template.md` before behavior-changing work begins unless the current behavior is already fully mapped and the feature is demonstrably isolated.
 6. **Preserved behavior baseline**: Identify at least 3 behaviors that must not change regardless of what feature work follows. Record them in `memories/repo/project-knowledge-base.md` under `## Preserved Behavior Baseline`.
@@ -17,4 +17,4 @@ Brownfield mode activates Phase A (archaeology sweep) automatically before Phase
 **Brownfield Mode stop conditions:**
 - The repository has no tests and no build script — document this explicitly and require user acknowledgment before proceeding.
 - Phase A was not run and brownfield map is missing — run Phase A before continuing Phase B.
-- Existing `AGENTS.md` or `CLAUDE.md` contains rules that directly conflict with the harness kit — surface the conflict and ask the user to resolve it before continuing.
+- Existing `AGENTS.md` contains rules that directly conflict with the harness kit — surface the conflict and ask the user to resolve it before continuing.

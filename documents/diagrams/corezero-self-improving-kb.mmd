@@ -20,15 +20,13 @@ flowchart TD
     TRIAGE --> DECIDE{Triage Action?}:::decision
     DECIDE -->|Promote Heuristic| HEUR["learned-heuristics.md"]:::promote
     DECIDE -->|Promote Fact/Pattern| PKB["project-knowledge-base.md<br/>or docs/project/architecture.md"]:::promote
-    DECIDE -->|Promote Normative Rule| CONST["core-policies.md<br/>(CC-* with user approval)"]:::promote
-    DECIDE -->|Promote Sandbox/Perms| SEC["security-policy.md"]:::promote
+    DECIDE -->|Promote Normative/Sandbox Rule| CONST["core-policies.md<br/>(CC-* with user approval)"]:::promote
     DECIDE -->|Defer| DEF["Defer<br/>(Wait for next signal)"]:::discard
     DECIDE -->|Discard| DISC["Discard<br/>(Retired, trail kept)"]:::discard
 
     HEUR --> SMARTER(["KB Grows<br/>Next session is smarter"]):::terminal
     PKB --> SMARTER
     CONST --> SMARTER
-    SEC --> SMARTER
 
     SMARTER -.->|Smarter baseline| SESSION_END
 

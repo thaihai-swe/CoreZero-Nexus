@@ -1,6 +1,6 @@
 # Context Assembly & Memory Tiers
 
-This guide defines how the CoreZero Nexus manages context and durable repository memory to prevent context dilution, agent amnesia, and command drift.
+This guide defines how the CoreZero manages context and durable repository memory to prevent context dilution, agent amnesia, and command drift.
 
 ---
 
@@ -89,7 +89,7 @@ flowchart TB
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
 | 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `core-policies.md`, `core-policies.md`, `security-policy.md` | Always — every session |
+| 2 | Always group: `core-policies.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
@@ -166,41 +166,55 @@ To maintain focus and prevent memory saturation, the context must be compacted d
 
 ---
 
-## 3. The Memory Layer
+## 3. The Three-Track Memory Model & Memory Layer
 
-The memory layer stores durable cross-feature knowledge that agents need repeatedly. It stays compact, reusable, and clearly separate from feature-specific artifacts.
+To prevent memory drift, context dilution, and agent amnesia, the kit structures repository memory across the **Three-Track Memory Model**:
 
-### 3-Tier Memory Architecture
+### A. The Three-Track Memory Model
+
+1. **Native Stack (Ephemeral Runtime Track):**
+   - **Definition**: The active token window loaded into the LLM during the execution step.
+   - **Scope**: Ephemeral logs, raw tool outputs, and JIT code files (Tiers 1, 5, 6).
+   - **Governance**: Strict MVC rules and context eviction are applied to prevent this stack from bloating.
+
+2. **Cross-Session Tools (Durable Local Repository Track):**
+   - **Definition**: Git-tracked local markdown files containing feature statuses, implementation plans, checklists, and repository-wide configuration memories (Tiers 2, 3, 4).
+   - **Scope**: Feature artifacts (`status.md`, `plan.md`, `tasks.md`, `handoff.md`), instruction-tier configuration (`core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`), and telemetry log (`harness-telemetry.md`).
+
+3. **Team Sharing (Domain & Exporter Surface Track):**
+   - **Definition**: Standardized domain-specific schemas and glossaries shared across developers and downstream adopter systems.
+   - **Scope**: Domain packs in `memories/domain/` (such as `glossary.md`, `patterns.md`, `anti-patterns.md`, and `boundaries.md`).
+
+---
+
+### B. Memory Tiers
 
 ```mermaid
 flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
-    subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[core-policies.md<br/>Repo-wide rules]
-        SEC[security-policy.md<br/>Trust boundaries]
-        HARN[core-policies.md<br/>Canonical commands]
+    subgraph INSTR["Instruction Tier — Human-Curated, Durable (Cross-Session / Team)"]
+        CONST[core-policies.md<br/>Repo-wide rules, boundaries & harness config]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
         ARCH[docs/project/architecture.md<br/>System structure]
     end
 
-    subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
+    subgraph AUTO["Auto Tier — Failure-Driven, Append-Only (Cross-Session)"]
         OBS[harness-telemetry.md<br/>Harness/Model/Spec failures]
     end
 
-    subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
+    subgraph EXTR["Extracted Tier — Per-Feature Candidates (Cross-Session)"]
         EXT[artifacts/features/&lt;slug&gt;/<br/>session-extracts.md]
     end
 
-    subgraph ROUTER["Memory Router"]
+    subgraph ROUTER["Memory Router (Native Stack)"]
         IDX[INDEX.md<br/>Always-loaded routing index]
     end
 
     %% Routing
     IDX -->|Always group| CONST
     IDX -->|Always group| SEC
-    IDX -->|Always group| HARN
     IDX -->|By-Intent: Knowledge| PKB
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
@@ -225,7 +239,7 @@ flowchart TD
     classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
 
-    class CONST,SEC,HARN,PKB,HEUR,ARCH instr
+    class CONST,SEC,PKB,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router
@@ -238,9 +252,7 @@ flowchart TD
 * **`INDEX.md`**: Declares Always / By-Intent / By-Debug groups. Sessions read this first.
 
 #### Instruction Tier — Human-Curated, Durable
-* **`core-policies.md`**: Normative repository rules tagged with `CC-*` identifiers. Update frequency is rare.
-* **`security-policy.md`**: Permission model, sandbox guidelines, trust boundaries.
-* **`core-policies.md`**: Commands, paths, trackers, and promotion thresholds.
+* **`core-policies.md`**: Normative repository rules tagged with `CC-*` identifiers, as well as commands, paths, trackers, security boundaries, and promotion thresholds. Update frequency is rare.
 * **`project-knowledge-base.md`**: Durable facts, conventions, and patterns.
 * **`learned-heuristics.md`**: Evidence-backed execution patterns.
 * **`docs/project/architecture.md`**: Component boundaries, seams, and layouts.
@@ -267,7 +279,7 @@ When a finding is identified in a feature folder (`session-extracts.md` or `harn
 | **Defer** | Promising but needs further confirmations | Retain in candidate log |
 | **Discard** | Feature-specific, obsolete, or incorrect | Discard with documented reason |
 
-*Normative rules* (must/should) route to `core-policies.md` or `security-policy.md`.
+*Normative rules* (must/should) route to `core-policies.md`.
 *Descriptive facts* (uses/prefers) route to `project-knowledge-base.md` or `learned-heuristics.md`.
 
 ### Promotion Watchlist Thresholds
@@ -298,16 +310,14 @@ flowchart LR
     OBS --> TRIAGE
 
     TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
-    TRIAGE -->|normative rule| CONST[Promote to<br/>core-policies.md]
+    TRIAGE -->|normative rule or security finding| CONST[Promote to<br/>core-policies.md]
     TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
-    TRIAGE -->|security finding| SEC[Promote to<br/>security-policy.md]
     TRIAGE -->|defer| DEF[Wait for next signal]
     TRIAGE -->|feature-local| DISC[Discard<br/>with reason]
 
     HEUR --> SMARTER[KB grows<br/>next session is smarter]
     CONST --> SMARTER
     PKB --> SMARTER
-    SEC --> SMARTER
 
     SMARTER -.->|loop back| SHIP
 

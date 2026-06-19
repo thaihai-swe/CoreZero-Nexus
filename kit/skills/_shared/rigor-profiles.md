@@ -61,13 +61,13 @@ The top tier. Use for high-ambiguity, cross-boundary, brownfield-risky work, or 
 | `harness-verify` | All modes: mechanical gate, alignment, traceability, security lens, optional fallow pass. `testing-scenarios.md` always. **`harness-maintain Eval Mode`** pass when the work modifies the harness itself. |
 | `context-session` | Standard extraction; recommend mid-session checkpoint. Frequent checkpoints and detailed extraction for cross-cutting work. |
 
-**Use when:** auth, payments, data migration, cross-feature contracts, any work touching paths flagged in `security-policy.md`, cross-cutting policy, harness subsystem changes, public API or schema migrations, or anything that becomes a constraint for future feature specs.
+**Use when:** auth, payments, data migration, cross-feature contracts, any work touching paths flagged in `core-policies.md` `## Security Policy`, cross-cutting policy, harness subsystem changes, public API or schema migrations, or anything that becomes a constraint for future feature specs.
 
 ## Profile Selection Rules
 
 1. **Default to `Standard`** when in doubt.
 2. **Promote to `Complex`** when any of these are true:
-   - The feature touches a path listed in `security-policy.md` as security-sensitive
+   - The feature touches a path listed in `core-policies.md` `## Security Policy` as security-sensitive
    - The feature crosses more than one major architectural boundary
    - The brownfield risk rating in the spec is `Medium` or `High`
    - The acceptance criteria require contracts that other features depend on
@@ -87,9 +87,9 @@ When uncertain between two profiles, pick the higher one. Over-ceremony costs ti
 At the start of the feature lifecycle (during `/spec-requirements`, `/spec-research`, or `/context-session` resume), the agent **MUST** automatically compute the profile by:
 1. Listing the target files to be modified (either from the issue/proposal, or from a `git diff` if resuming work).
 2. Checking intersections against:
-   - Security-sensitive paths declared in `security-policy.md`
+   - Security-sensitive paths declared in `core-policies.md` `## Security Policy`
    - System boundary paths in `docs/project/architecture.md`
-   - The agentic harness files (`skills/`, `memories/repo/`, `AGENTS.md`, `HARNESS_CARD.md`)
+   - The agentic harness files (`skills/`, `memories/repo/`, `AGENTS.md`)
 3. If `memories/repo/brownfield/brownfield-map.md` exists:
    - Read all severity ratings in the Severity Rating column.
    - If any area is rated `high` or `critical` → promote to `Complex`.

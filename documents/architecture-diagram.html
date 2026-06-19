@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoreZero — System Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root[data-theme="dark"] {
+      --bg: #020617;
+      --grid: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --toolbar-bg: rgba(15, 23, 42, 0.9);
+      --fe-fill: rgba(8, 51, 68, 0.4);
+      --fe-stroke: #22d3ee;
+      --be-fill: rgba(6, 78, 59, 0.4);
+      --be-stroke: #34d399;
+      --db-fill: rgba(76, 29, 149, 0.4);
+      --db-stroke: #a78bfa;
+      --cloud-fill: rgba(120, 53, 15, 0.3);
+      --cloud-stroke: #fbbf24;
+      --sec-fill: rgba(136, 19, 55, 0.4);
+      --sec-stroke: #fb7185;
+      --bus-fill: rgba(251, 146, 60, 0.3);
+      --bus-stroke: #fb923c;
+      --ext-fill: rgba(30, 41, 59, 0.5);
+      --ext-stroke: #94a3b8;
+      --fe-region-fill: rgba(8, 51, 68, 0.05);
+      --be-region-fill: rgba(6, 78, 59, 0.04);
+      --db-region-fill: rgba(76, 29, 149, 0.05);
+      --cloud-region-fill: rgba(120, 53, 15, 0.07);
+      --ext-region-fill: rgba(30, 41, 59, 0.06);
+      --arrow-color: #64748b;
+      --arrow-rose: #fb7185;
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f8fafc;
+      --grid: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --toolbar-bg: rgba(241, 245, 249, 0.95);
+      --fe-fill: rgba(207, 250, 254, 0.6);
+      --fe-stroke: #0891b2;
+      --be-fill: rgba(209, 250, 229, 0.6);
+      --be-stroke: #059669;
+      --db-fill: rgba(237, 233, 254, 0.6);
+      --db-stroke: #7c3aed;
+      --cloud-fill: rgba(254, 243, 199, 0.6);
+      --cloud-stroke: #d97706;
+      --sec-fill: rgba(255, 228, 230, 0.6);
+      --sec-stroke: #e11d48;
+      --bus-fill: rgba(255, 237, 213, 0.6);
+      --bus-stroke: #ea580c;
+      --ext-fill: rgba(241, 245, 249, 0.6);
+      --ext-stroke: #64748b;
+      --fe-region-fill: rgba(207, 250, 254, 0.1);
+      --be-region-fill: rgba(209, 250, 229, 0.1);
+      --db-region-fill: rgba(237, 233, 254, 0.1);
+      --cloud-region-fill: rgba(254, 243, 199, 0.1);
+      --ext-region-fill: rgba(241, 245, 249, 0.1);
+      --arrow-color: #475569;
+      --arrow-rose: #e11d48;
+    }
+
+    /* Blueprint Preset Overrides */
+    :root[data-style="blueprint"] {
+      --bg: #0b2545;
+      --grid: #134074;
+      --text-primary: #ffffff;
+      --text-secondary: #8da9c4;
+      --border: #134074;
+      --toolbar-bg: rgba(11, 37, 69, 0.9);
+      --fe-fill: rgba(255, 255, 255, 0.05);
+      --fe-stroke: #ffffff;
+      --be-fill: rgba(255, 255, 255, 0.05);
+      --be-stroke: #ffffff;
+      --db-fill: rgba(255, 255, 255, 0.05);
+      --db-stroke: #ffffff;
+      --cloud-fill: rgba(255, 255, 255, 0.05);
+      --cloud-stroke: #ffffff;
+      --sec-fill: rgba(255, 255, 255, 0.05);
+      --sec-stroke: #ffffff;
+      --bus-fill: rgba(255, 255, 255, 0.05);
+      --bus-stroke: #ffffff;
+      --ext-fill: rgba(255, 255, 255, 0.05);
+      --ext-stroke: #ffffff;
+      --fe-region-fill: transparent;
+      --be-region-fill: transparent;
+      --db-region-fill: transparent;
+      --cloud-region-fill: transparent;
+      --ext-region-fill: transparent;
+      --arrow-color: #ffffff;
+      --arrow-rose: #ffffff;
+    }
+
+    /* Notion Minimal Preset Overrides */
+    :root[data-style="notion"][data-theme="light"] {
+      --bg: #ffffff;
+      --grid: #f1f1f1;
+      --text-primary: #37352f;
+      --text-secondary: #787774;
+      --border: #dfdfde;
+      --toolbar-bg: rgba(255, 255, 255, 0.95);
+      --fe-fill: #f2f1ee;
+      --fe-stroke: #37352f;
+      --be-fill: #f2f1ee;
+      --be-stroke: #37352f;
+      --db-fill: #f2f1ee;
+      --db-stroke: #37352f;
+      --cloud-fill: #f2f1ee;
+      --cloud-stroke: #37352f;
+      --sec-fill: #f2f1ee;
+      --sec-stroke: #37352f;
+      --bus-fill: #f2f1ee;
+      --bus-stroke: #37352f;
+      --ext-fill: #f2f1ee;
+      --ext-stroke: #37352f;
+      --fe-region-fill: transparent;
+      --be-region-fill: transparent;
+      --db-region-fill: transparent;
+      --cloud-region-fill: transparent;
+      --ext-region-fill: transparent;
+      --arrow-color: #37352f;
+      --arrow-rose: #37352f;
+    }
+
+    :root[data-style="notion"][data-theme="dark"] {
+      --bg: #191919;
+      --grid: #2c2c2c;
+      --text-primary: #ffffff;
+      --text-secondary: #9b9b9b;
+      --border: #2c2c2c;
+      --toolbar-bg: rgba(25, 25, 25, 0.9);
+      --fe-fill: #252525;
+      --fe-stroke: #ffffff;
+      --be-fill: #252525;
+      --be-stroke: #ffffff;
+      --db-fill: #252525;
+      --db-stroke: #ffffff;
+      --cloud-fill: #252525;
+      --cloud-stroke: #ffffff;
+      --sec-fill: #252525;
+      --sec-stroke: #ffffff;
+      --bus-fill: #252525;
+      --bus-stroke: #ffffff;
+      --ext-fill: #252525;
+      --ext-stroke: #ffffff;
+      --fe-region-fill: transparent;
+      --be-region-fill: transparent;
+      --db-region-fill: transparent;
+      --cloud-region-fill: transparent;
+      --ext-region-fill: transparent;
+      --arrow-color: #ffffff;
+      --arrow-rose: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .toolbar {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+      background: var(--toolbar-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      backdrop-filter: blur(8px);
+    }
+
+    .toolbar button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .toolbar button:hover {
+      background: var(--border);
+    }
+
+    .export-wrap {
+      position: relative;
+    }
+
+    .export-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: var(--toolbar-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px;
+      min-width: 180px;
+      backdrop-filter: blur(8px);
+      z-index: 200;
+    }
+
+    .export-menu.open {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .export-menu button {
+      width: 100%;
+      text-align: left;
+    }
+
+    .diagram-wrapper {
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 1800px;
+    }
+
+    h1.diagram-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    p.diagram-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toolbar">
+    <button id="btn-theme" title="Toggle theme (T)">🌙 Dark</button>
+    <button id="btn-style" title="Cycle style presets (S)">🎨 Style: Default</button>
+    <div class="export-wrap">
+      <button id="btn-export" title="Export (E)">⬇ Export</button>
+      <div class="export-menu" id="export-menu">
+        <button id="exp-copy">📋 Copy PNG</button>
+        <button id="exp-png">⬇ PNG (4×)</button>
+        <button id="exp-jpeg">⬇ JPEG (4×)</button>
+        <button id="exp-webp">⬇ WebP (4×)</button>
+        <button id="exp-svg">⬇ SVG (dual-theme)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-wrapper">
+    <h1 class="diagram-title">CoreZero</h1>
+    <p class="diagram-subtitle">AI-assisted software delivery framework · Spec-anchored agent workflow · Shipped
+      installer architecture</p>
+
+    <svg id="diagram" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--grid)" stroke-width="0.5" />
+        </pattern>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--arrow-color)" />
+        </marker>
+        <marker id="arrowhead-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--arrow-rose)" />
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="100%" height="100%" fill="var(--bg)" />
+      <rect width="100%" height="100%" fill="url(#grid)" />
+
+      <!-- ═══════════════════════════════════════════════════════════
+           STEP 1: All connection lines drawn first (painter's order)
+           ═══════════════════════════════════════════════════════════ -->
+      <!-- Dev User to Agent -->
+      <line x1="200" y1="140" x2="230" y2="140" stroke="var(--arrow-color)" stroke-width="1.5"
+        marker-end="url(#arrowhead)" />
+
+      <!-- Agent to Routing index -->
+      <line x1="230" y1="280" x2="230" y2="380" stroke="var(--fe-stroke)" stroke-width="1.5"
+        marker-end="url(#arrowhead)" />
+
+      <!-- Routing index dispatch to Skills (spine line) -->
+      <line x1="300" y1="420" x2="440" y2="420" stroke="var(--be-stroke)" stroke-width="1.5"
+        marker-end="url(#arrowhead)" />
+
+      <!-- Spec skills writes specs -->
+      <line x1="660" y1="220" x2="980" y2="220" stroke="var(--fe-stroke)" stroke-width="1.2" stroke-dasharray="4,2"
+        marker-end="url(#arrowhead)" />
+
+      <!-- Harness verify checks and writes review.md -->
+      <line x1="880" y1="150" x2="1210" y2="150" stroke="var(--be-stroke)" stroke-width="1.2" stroke-dasharray="4,2"
+        marker-end="url(#arrowhead)" />
+
+      <!-- Context skills extract feature updates -->
+      <line x1="660" y1="670" x2="980" y2="670" stroke="var(--db-stroke)" stroke-width="1.2" stroke-dasharray="3,3"
+        marker-end="url(#arrowhead)" />
+
+      <!-- Context Memory promotes extracts to Instruction memory -->
+      <line x1="1210" y1="920" x2="1210" y2="680" stroke="var(--arrow-rose)" stroke-width="1.5" stroke-dasharray="4,3"
+        marker-end="url(#arrowhead-rose)" />
+
+      <!-- Agent reads dynamic instruction memory context -->
+      <path d="M 980 630 L 290 630 L 290 320" fill="none" stroke="var(--arrow-rose)" stroke-width="1.5"
+        stroke-dasharray="5,4" marker-end="url(#arrowhead-rose)" />
+
+      <!-- Installer script creates shipped kit/ -->
+      <line x1="200" y1="600" x2="1520" y2="300" stroke="var(--cloud-stroke)" stroke-width="1.5"
+        marker-end="url(#arrowhead)" />
+
+      <!-- kit/ gets imported by adopter repo -->
+      <line x1="1690" y1="480" x2="1690" y2="520" stroke="var(--cloud-stroke)" stroke-width="1.5"
+        marker-end="url(#arrowhead)" />
+
+
+      <!-- ═══════════════════════════════════════════════════════════
+           STEP 2: Component Regions and Boxes
+           ═══════════════════════════════════════════════════════════ -->
+
+      <!-- ─── REGION: entry and developer surface ─── -->
+      <rect x="40" y="30" width="340" height="1000" rx="12" fill="var(--ext-region-fill)" stroke="var(--ext-stroke)"
+        stroke-width="1" stroke-dasharray="8,4" />
+      <text x="210" y="55" fill="var(--text-primary)" font-size="10" font-weight="700" text-anchor="middle"
+        font-family="'JetBrains Mono', monospace" letter-spacing="1">DEVELOPER SURFACE</text>
+
+      <!-- Dev User -->
+      <g>
+        <rect x="60" y="100" width="140" height="80" rx="6" fill="var(--bg)" />
+        <rect x="60" y="100" width="140" height="80" rx="6" fill="var(--ext-fill)" stroke="var(--ext-stroke)"
+          stroke-width="1.5" />
+        <text x="130" y="136" fill="var(--text-primary)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">👤 Developer</text>
+        <text x="130" y="156" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Commands and Intents</text>
+      </g>
+
+      <!-- AI Agent Hexagon -->
+      <g>
+        <polygon points="300,140 350,110 350,170 300,200 250,170 250,110" fill="var(--bg)" />
+        <polygon points="300,140 350,110 350,170 300,200 250,170 250,110" fill="var(--fe-fill)"
+          stroke="var(--fe-stroke)" stroke-width="1.5" />
+        <text x="300" y="154" fill="var(--fe-stroke)" font-size="11" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">🤖 Agent</text>
+      </g>
+
+      <!-- Master Index.md -->
+      <g>
+        <rect x="160" y="240" width="140" height="80" rx="6" fill="var(--bg)" />
+        <rect x="160" y="240" width="140" height="80" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.5" />
+        <text x="230" y="276" fill="var(--be-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">INDEX.md</text>
+        <text x="230" y="296" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Master Router</text>
+      </g>
+
+      <!-- AGENTS.md entrypoint -->
+      <g>
+        <rect x="60" y="380" width="140" height="80" rx="6" fill="var(--bg)" />
+        <rect x="60" y="380" width="140" height="80" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.5" />
+        <text x="130" y="416" fill="var(--be-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">AGENTS.md</text>
+        <text x="130" y="436" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Root Instruction</text>
+      </g>
+
+      <!-- Installer install.sh -->
+      <g>
+        <rect x="60" y="560" width="140" height="80" rx="6" fill="var(--bg)" />
+        <rect x="60" y="560" width="140" height="80" rx="6" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)"
+          stroke-width="1.5" />
+        <text x="130" y="596" fill="var(--cloud-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">install.sh</text>
+        <text x="130" y="616" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Install Script</text>
+      </g>
+
+      <!-- Manifest.json -->
+      <g>
+        <rect x="60" y="700" width="140" height="80" rx="6" fill="var(--bg)" />
+        <rect x="60" y="700" width="140" height="80" rx="6" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)"
+          stroke-width="1.5" />
+        <text x="130" y="736" fill="var(--cloud-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">manifest.json</text>
+        <text x="130" y="756" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Package Manifest</text>
+      </g>
+
+      <!-- core-policies.md -->
+      <g>
+        <rect x="60" y="840" width="140" height="80" rx="6" fill="var(--bg)" />
+        <rect x="60" y="840" width="140" height="80" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.5" />
+        <text x="130" y="876" fill="var(--be-stroke)" font-size="11" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">core-policies.md</text>
+        <text x="130" y="896" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Constitution & Config</text>
+      </g>
+
+
+      <!-- ─── REGION: Kit Skills ─── -->
+      <rect x="420" y="30" width="500" height="1000" rx="12" fill="var(--be-region-fill)" stroke="var(--be-stroke)"
+        stroke-width="1" stroke-dasharray="8,4" />
+      <text x="670" y="55" fill="var(--text-primary)" font-size="10" font-weight="700" text-anchor="middle"
+        font-family="'JetBrains Mono', monospace" letter-spacing="1">SHIPPED KIT SKILLS (kit/skills/)</text>
+
+      <!-- Sub-region: Spec skills -->
+      <g>
+        <rect x="440" y="80" width="220" height="420" rx="8" fill="var(--bg)" stroke="var(--fe-stroke)"
+          stroke-width="0.75" stroke-dasharray="4,4" />
+        <text x="550" y="105" fill="var(--fe-stroke)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">SPEC SKILLS</text>
+
+        <!-- spec-research -->
+        <rect x="460" y="120" width="180" height="50" rx="5" fill="var(--bg)" />
+        <rect x="460" y="120" width="180" height="50" rx="5" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="148" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/spec-research</text>
+
+        <!-- spec-requirements -->
+        <rect x="460" y="190" width="180" height="50" rx="5" fill="var(--bg)" />
+        <rect x="460" y="190" width="180" height="50" rx="5" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="218" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/spec-requirements</text>
+
+        <!-- spec-adr -->
+        <rect x="460" y="260" width="180" height="50" rx="5" fill="var(--bg)" />
+        <rect x="460" y="260" width="180" height="50" rx="5" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="288" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/spec-adr</text>
+
+        <!-- spec-plan -->
+        <rect x="460" y="330" width="180" height="50" rx="5" fill="var(--bg)" />
+        <rect x="460" y="330" width="180" height="50" rx="5" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="358" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/spec-plan</text>
+
+        <!-- spec-implement -->
+        <rect x="460" y="400" width="180" height="50" rx="5" fill="var(--bg)" />
+        <rect x="460" y="400" width="180" height="50" rx="5" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="428" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/spec-implement</text>
+      </g>
+
+      <!-- Sub-region: Harness skills -->
+      <g>
+        <rect x="680" y="80" width="220" height="420" rx="8" fill="var(--bg)" stroke="var(--be-stroke)"
+          stroke-width="0.75" stroke-dasharray="4,4" />
+        <text x="790" y="105" fill="var(--be-stroke)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">HARNESS SKILLS</text>
+
+        <!-- harness-verify -->
+        <rect x="700" y="130" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="700" y="130" width="180" height="60" rx="5" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.2" />
+        <text x="790" y="160" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/harness-verify</text>
+        <text x="790" y="176" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">runs tests and review.md</text>
+
+        <!-- harness-maintain -->
+        <rect x="700" y="240" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="700" y="240" width="180" height="60" rx="5" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.2" />
+        <text x="790" y="270" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/harness-maintain</text>
+        <text x="790" y="286" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">telemetry eval loops</text>
+      </g>
+
+      <!-- Sub-region: Context skills -->
+      <g>
+        <rect x="440" y="530" width="220" height="460" rx="8" fill="var(--bg)" stroke="var(--db-stroke)"
+          stroke-width="0.75" stroke-dasharray="4,4" />
+        <text x="550" y="555" fill="var(--db-stroke)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">CONTEXT SKILLS</text>
+
+        <!-- context-session -->
+        <rect x="460" y="580" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="460" y="580" width="180" height="60" rx="5" fill="var(--db-fill)" stroke="var(--db-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="610" fill="var(--db-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/context-session</text>
+        <text x="550" y="626" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">handoff.md builder</text>
+
+        <!-- context-memory -->
+        <rect x="460" y="680" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="460" y="680" width="180" height="60" rx="5" fill="var(--db-fill)" stroke="var(--db-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="710" fill="var(--db-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/context-memory</text>
+        <text x="550" y="726" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">heuristic promotion</text>
+
+        <!-- context-status·compact -->
+        <rect x="460" y="780" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="460" y="780" width="180" height="60" rx="5" fill="var(--db-fill)" stroke="var(--db-stroke)"
+          stroke-width="1.2" />
+        <text x="550" y="810" fill="var(--db-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/context-status·compact</text>
+        <text x="550" y="826" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">token and log hygiene</text>
+      </g>
+
+      <!-- Sub-region: Utilities skills -->
+      <g>
+        <rect x="680" y="530" width="220" height="460" rx="8" fill="var(--bg)" stroke="var(--bus-stroke)"
+          stroke-width="0.75" stroke-dasharray="4,4" />
+        <text x="790" y="555" fill="var(--bus-stroke)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">UTILITY SKILLS</text>
+
+        <!-- starter-init -->
+        <rect x="700" y="580" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="700" y="580" width="180" height="60" rx="5" fill="var(--bus-fill)" stroke="var(--bus-stroke)"
+          stroke-width="1.2" />
+        <text x="790" y="610" fill="var(--bus-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/starter-init</text>
+        <text x="790" y="626" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">project initialization</text>
+
+        <!-- code-review -->
+        <rect x="700" y="680" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="700" y="680" width="180" height="60" rx="5" fill="var(--bus-fill)" stroke="var(--bus-stroke)"
+          stroke-width="1.2" />
+        <text x="790" y="710" fill="var(--bus-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/code-review</text>
+        <text x="790" y="726" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">style audits</text>
+
+        <!-- technical-docs -->
+        <rect x="700" y="780" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="700" y="780" width="180" height="60" rx="5" fill="var(--bus-fill)" stroke="var(--bus-stroke)"
+          stroke-width="1.2" />
+        <text x="790" y="810" fill="var(--bus-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/technical-docs</text>
+        <text x="790" y="826" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">API doc compiler</text>
+
+        <!-- visualize -->
+        <rect x="700" y="880" width="180" height="60" rx="5" fill="var(--bg)" />
+        <rect x="700" y="880" width="180" height="60" rx="5" fill="var(--bus-fill)" stroke="var(--bus-stroke)"
+          stroke-width="1.2" />
+        <text x="790" y="910" fill="var(--bus-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">/visualize</text>
+        <text x="790" y="926" fill="var(--text-secondary)" font-size="8" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">static chart generator</text>
+      </g>
+
+
+      <!-- ─── REGION: Feature Artifacts ─── -->
+      <rect x="960" y="30" width="500" height="470" rx="12" fill="var(--ext-region-fill)" stroke="var(--ext-stroke)"
+        stroke-width="1" stroke-dasharray="8,4" />
+      <text x="1210" y="55" fill="var(--text-primary)" font-size="10" font-weight="700" text-anchor="middle"
+        font-family="'JetBrains Mono', monospace" letter-spacing="1">FEATURE ARTIFACT STORE (artifacts/features/)</text>
+
+      <!-- Spec docs -->
+      <g>
+        <rect x="980" y="80" width="210" height="160" rx="6" fill="var(--bg)" />
+        <rect x="980" y="80" width="210" height="160" rx="6" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1" />
+        <text x="1085" y="105" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Spec Documents</text>
+        <text x="1085" y="130" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">spec.md · proposal.md</text>
+        <text x="1085" y="150" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">analysis.md · design.md</text>
+        <text x="1085" y="170" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">plan.md · tasks.md</text>
+        <text x="1085" y="190" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">adr-NNN.md</text>
+      </g>
+
+      <!-- Verification Docs -->
+      <g>
+        <rect x="1220" y="80" width="220" height="160" rx="6" fill="var(--bg)" />
+        <rect x="1220" y="80" width="220" height="160" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1" />
+        <text x="1330" y="105" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Verification Docs</text>
+        <text x="1330" y="135" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">review.md (gates audit)</text>
+        <text x="1330" y="160" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">testing-scenarios.md</text>
+        <text x="1330" y="185" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">evals-report.md</text>
+      </g>
+
+      <!-- Context artifacts -->
+      <g>
+        <rect x="980" y="270" width="460" height="200" rx="6" fill="var(--bg)" />
+        <rect x="980" y="270" width="460" height="200" rx="6" fill="var(--db-fill)" stroke="var(--db-stroke)"
+          stroke-width="1" />
+        <text x="1210" y="295" fill="var(--db-stroke)" font-size="11" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Session and State Documents</text>
+        <text x="1210" y="330" fill="var(--text-primary)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">handoff.md · progress.md</text>
+        <text x="1210" y="355" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Manages incremental status tracking between task iterations</text>
+        <text x="1210" y="390" fill="var(--text-primary)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">session-extracts.md</text>
+        <text x="1210" y="415" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Holds parsed heuristic candidates prior to knowledge base
+          promotion</text>
+      </g>
+
+
+      <!-- ─── REGION: Shipped Memory and Rules ─── -->
+      <rect x="960" y="530" width="500" height="470" rx="12" fill="var(--db-region-fill)" stroke="var(--db-stroke)"
+        stroke-width="1" stroke-dasharray="8,4" />
+      <text x="1210" y="555" fill="var(--text-primary)" font-size="10" font-weight="700" text-anchor="middle"
+        font-family="'JetBrains Mono', monospace" letter-spacing="1">3-TIER MEMORY LAYER (kit/memories/)</text>
+
+      <!-- Instruction Tier -->
+      <g>
+        <rect x="980" y="580" width="460" height="100" rx="6" fill="var(--bg)" />
+        <rect x="980" y="580" width="460" height="100" rx="6" fill="var(--db-fill)" stroke="var(--db-stroke)"
+          stroke-width="1.2" />
+        <text x="1210" y="605" fill="var(--db-stroke)" font-size="11" font-weight="700" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">INSTRUCTION TIER (Human-curated)</text>
+        <text x="1210" y="630" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">rules/ · core-policies.md · project-constraints.md</text>
+        <text x="1210" y="650" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">learned-heuristics.md · project-knowledge-base.md · architecture.md</text>
+      </g>
+
+      <!-- Auto Tier -->
+      <g>
+        <rect x="980" y="700" width="460" height="90" rx="6" fill="var(--bg)" />
+        <rect x="980" y="700" width="460" height="90" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.2" />
+        <text x="1210" y="725" fill="var(--be-stroke)" font-size="11" font-weight="700" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">AUTO TIER (Agent-written)</text>
+        <text x="1210" y="750" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">observability-log.md · harness-telemetry.md</text>
+        <text x="1210" y="768" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Collects raw metrics and logs from evaluation hooks</text>
+      </g>
+
+      <!-- Extracted Tier -->
+      <g>
+        <rect x="980" y="810" width="460" height="90" rx="6" fill="var(--bg)" />
+        <rect x="980" y="810" width="460" height="90" rx="6" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+          stroke-width="1.2" />
+        <text x="1210" y="835" fill="var(--fe-stroke)" font-size="11" font-weight="700" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">EXTRACTED TIER (Feature Candidates)</text>
+        <text x="1210" y="860" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">session-extracts.md</text>
+        <text x="1210" y="878" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Maintained dynamically by /context-memory logic</text>
+      </g>
+
+      <!-- Memory router -->
+      <g>
+        <rect x="980" y="920" width="460" height="60" rx="6" fill="var(--bg)" />
+        <rect x="980" y="920" width="460" height="60" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)"
+          stroke-width="1.2" />
+        <text x="1210" y="946" fill="var(--be-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">INDEX.md (Memory Index)</text>
+        <text x="1210" y="966" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Entrypoint to human-curated and machine-learned knowledge
+          bases</text>
+      </g>
+
+
+      <!-- ─── REGION: Adopter Workspace ─── -->
+      <rect x="1500" y="30" width="380" height="1000" rx="12" fill="var(--cloud-region-fill)"
+        stroke="var(--cloud-stroke)" stroke-width="1" stroke-dasharray="8,4" />
+      <text x="1690" y="55" fill="var(--text-primary)" font-size="10" font-weight="700" text-anchor="middle"
+        font-family="'JetBrains Mono', monospace" letter-spacing="1">DISTRIBUTION TARGET (Adopter Repo)</text>
+
+      <!-- Shipped Kit Package -->
+      <g>
+        <rect x="1520" y="90" width="340" height="380" rx="8" fill="var(--bg)" />
+        <rect x="1520" y="90" width="340" height="380" rx="8" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)"
+          stroke-width="1.5" />
+        <text x="1690" y="120" fill="var(--cloud-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Shipped kit/ Package</text>
+
+        <rect x="1540" y="140" width="300" height="60" rx="4" fill="var(--bg)" stroke="var(--be-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="165" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">INDEX.md and AGENTS.md</text>
+        <text x="1690" y="185" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Bootstrap indices</text>
+
+        <rect x="1540" y="220" width="300" height="60" rx="4" fill="var(--bg)" stroke="var(--be-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="245" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">skills/ and memories/</text>
+        <text x="1690" y="265" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Core tools and templates</text>
+
+        <rect x="1540" y="300" width="300" height="60" rx="4" fill="var(--bg)" stroke="var(--be-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="325" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">docs/rules/ and manifest.json</text>
+        <text x="1690" y="345" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Validation schemas and file map</text>
+
+        <text x="1690" y="440" fill="var(--text-secondary)" font-size="9" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Maintained as read-only package dependencies</text>
+      </g>
+
+      <!-- Adopter repo target -->
+      <g>
+        <rect x="1520" y="520" width="340" height="460" rx="8" fill="var(--bg)" />
+        <rect x="1520" y="520" width="340" height="460" rx="8" fill="var(--ext-fill)" stroke="var(--ext-stroke)"
+          stroke-width="1.5" />
+        <text x="1690" y="550" fill="var(--ext-stroke)" font-size="12" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Adopter Project Target</text>
+
+        <!-- Adopter config -->
+        <rect x="1540" y="570" width="300" height="70" rx="4" fill="var(--bg)" stroke="var(--be-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="595" fill="var(--be-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Adopter Configuration</text>
+        <text x="1690" y="615" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">AGENTS.md · INDEX.md</text>
+        <text x="1690" y="630" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">(Adopter-specific routes)</text>
+
+        <!-- Feature branches -->
+        <rect x="1540" y="660" width="300" height="70" rx="4" fill="var(--bg)" stroke="var(--fe-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="685" fill="var(--fe-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Adopter Features</text>
+        <text x="1690" y="705" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">artifacts/features/{slug}/</text>
+        <text x="1690" y="720" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Active code implementation area</text>
+
+        <!-- Adopter sources -->
+        <rect x="1540" y="750" width="300" height="60" rx="4" fill="var(--bg)" stroke="var(--db-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="775" fill="var(--db-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Adopter Source Code</text>
+        <text x="1690" y="795" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">App binaries · config · pipelines</text>
+
+        <!-- Developer work loop -->
+        <rect x="1540" y="830" width="300" height="130" rx="4" fill="var(--bg)" stroke="var(--ext-stroke)"
+          stroke-width="1" />
+        <text x="1690" y="855" fill="var(--ext-stroke)" font-size="10" font-weight="600" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">Operating Work Loop</text>
+        <text x="1690" y="880" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">1. Dev defines requirements</text>
+        <text x="1690" y="895" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">2. Agent runs plan loops</text>
+        <text x="1690" y="910" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">3. Evals run tests via harness</text>
+        <text x="1690" y="925" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle"
+          font-family="'JetBrains Mono', monospace">4. Memory promotions persist fixes</text>
+      </g>
+
+      <!-- ─── Legend ─── -->
+      <rect x="18" y="1040" width="1460" height="34" rx="6" fill="var(--toolbar-bg)" stroke="var(--border)"
+        stroke-width="1" />
+      <text x="80" y="1061" fill="var(--text-secondary)" font-size="8.5" font-family="'JetBrains Mono', monospace"
+        font-weight="700">LEGEND:</text>
+
+      <rect x="140" y="1052" width="10" height="10" rx="2" fill="var(--fe-fill)" stroke="var(--fe-stroke)"
+        stroke-width="1" />
+      <text x="155" y="1060" fill="var(--text-secondary)" font-size="7.5"
+        font-family="'JetBrains Mono', monospace">Frontend / Spec</text>
+
+      <rect x="320" y="1052" width="10" height="10" rx="2" fill="var(--be-fill)" stroke="var(--be-stroke)"
+        stroke-width="1" />
+      <text x="335" y="1060" fill="var(--text-secondary)" font-size="7.5"
+        font-family="'JetBrains Mono', monospace">Backend / Harness</text>
+
+      <rect x="520" y="1052" width="10" height="10" rx="2" fill="var(--db-fill)" stroke="var(--db-stroke)"
+        stroke-width="1" />
+      <text x="535" y="1060" fill="var(--text-secondary)" font-size="7.5"
+        font-family="'JetBrains Mono', monospace">Database / Context / Memory</text>
+
+      <rect x="790" y="1052" width="10" height="10" rx="2" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)"
+        stroke-width="1" />
+      <text x="805" y="1060" fill="var(--text-secondary)" font-size="7.5"
+        font-family="'JetBrains Mono', monospace">Install / Cloud / Distribution</text>
+
+      <rect x="1050" y="1052" width="10" height="10" rx="2" fill="var(--bus-fill)" stroke="var(--bus-stroke)"
+        stroke-width="1" />
+      <text x="1065" y="1060" fill="var(--text-secondary)" font-size="7.5"
+        font-family="'JetBrains Mono', monospace">Utilities / Exporters</text>
+
+      <rect x="1250" y="1052" width="10" height="10" rx="2" fill="var(--ext-fill)" stroke="var(--ext-stroke)"
+        stroke-width="1" />
+      <text x="1265" y="1060" fill="var(--text-secondary)" font-size="7.5"
+        font-family="'JetBrains Mono', monospace">External / Dev / Boundaries</text>
+
+    </svg>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const btnTheme = document.getElementById('btn-theme');
+      const btnStyle = document.getElementById('btn-style');
+
+      // Theme logic
+      const savedTheme = localStorage.getItem('arch-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let theme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+      function applyTheme(t) {
+        theme = t;
+        root.setAttribute('data-theme', t);
+        btnTheme.textContent = t === 'dark' ? '☀ Light' : '🌙 Dark';
+        localStorage.setItem('arch-theme', t);
+      }
+      applyTheme(theme);
+      btnTheme.addEventListener('click', () => applyTheme(theme === 'dark' ? 'light' : 'dark'));
+
+      // Style logic
+      const savedStyle = localStorage.getItem('arch-style') || 'default';
+      let currentStyle = savedStyle;
+
+      function applyStyle(s) {
+        currentStyle = s;
+        if (s === 'default') {
+          root.removeAttribute('data-style');
+        } else {
+          root.setAttribute('data-style', s);
+        }
+        btnStyle.textContent = `🎨 Style: ${s.charAt(0).toUpperCase() + s.slice(1)}`;
+        localStorage.setItem('arch-style', s);
+      }
+      applyStyle(currentStyle);
+
+      const stylesList = ['default', 'blueprint', 'notion'];
+      btnStyle.addEventListener('click', () => {
+        const idx = stylesList.indexOf(currentStyle);
+        const nextStyle = stylesList[(idx + 1) % stylesList.length];
+        applyStyle(nextStyle);
+      });
+
+      const btnExport = document.getElementById('btn-export');
+      const exportMenu = document.getElementById('export-menu');
+      btnExport.addEventListener('click', e => { e.stopPropagation(); exportMenu.classList.toggle('open'); });
+      document.addEventListener('click', () => exportMenu.classList.remove('open'));
+
+      const svgEl = document.getElementById('diagram');
+      const SCALE = 4;
+      const TITLE = (document.querySelector('h1.diagram-title')?.textContent || 'diagram').trim().replace(/\s+/g, '-');
+
+      function svgToPng(scale, format) {
+        return new Promise(resolve => {
+          const clone = svgEl.cloneNode(true);
+          const [, , w, h] = svgEl.getAttribute('viewBox').split(' ').map(Number);
+          clone.setAttribute('width', w * scale);
+          clone.setAttribute('height', h * scale);
+          const cs = getComputedStyle(root);
+          const vars = ['--bg', '--grid', '--text-primary', '--text-secondary', '--border'];
+          const styleEl = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+          styleEl.textContent = `:root{${vars.map(v => `${v}:${cs.getPropertyValue(v).trim()}`).join(';')}}`;
+          clone.prepend(styleEl);
+          const blob = new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' });
+          const url = URL.createObjectURL(blob);
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = w * scale; canvas.height = h * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+            const mime = { jpeg: 'image/jpeg', webp: 'image/webp' }[format] || 'image/png';
+            canvas.toBlob(resolve, mime, 0.95);
+          };
+          img.src = url;
+        });
+      }
+
+      function dl(blob, name) {
+        const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: name });
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      }
+
+      document.getElementById('exp-copy').addEventListener('click', async () => {
+        const blob = await svgToPng(2, 'png');
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      });
+      document.getElementById('exp-png').addEventListener('click', async () => dl(await svgToPng(SCALE, 'png'), `${TITLE}.png`));
+      document.getElementById('exp-jpeg').addEventListener('click', async () => dl(await svgToPng(SCALE, 'jpeg'), `${TITLE}.jpg`));
+      document.getElementById('exp-webp').addEventListener('click', async () => dl(await svgToPng(SCALE, 'webp'), `${TITLE}.webp`));
+      document.getElementById('exp-svg').addEventListener('click', () => {
+        const clone = svgEl.cloneNode(true);
+        const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+        const cssDark = [
+          '--bg:#020617;--grid:#1e293b;--text-primary:#f1f5f9;--text-secondary:#94a3b8;--border:#334155;',
+          '--fe-fill:rgba(8,51,68,0.4);--fe-stroke:#22d3ee;',
+          '--be-fill:rgba(6,78,59,0.4);--be-stroke:#34d399;',
+          '--db-fill:rgba(76,29,149,0.4);--db-stroke:#a78bfa;',
+          '--cloud-fill:rgba(120,53,15,0.3);--cloud-stroke:#fbbf24;',
+          '--sec-fill:rgba(136,19,55,0.4);--sec-stroke:#fb7185;',
+          '--bus-fill:rgba(251,146,60,0.3);--bus-stroke:#fb923c;',
+          '--ext-fill:rgba(30,41,59,0.5);--ext-stroke:#94a3b8;',
+          '--fe-region-fill:rgba(8,51,68,0.05);--be-region-fill:rgba(6,78,59,0.04);',
+          '--db-region-fill:rgba(76,29,149,0.05);--cloud-region-fill:rgba(120,53,15,0.07);',
+          '--ext-region-fill:rgba(30,41,59,0.06);',
+          '--arrow-color:#64748b;--arrow-rose:#fb7185;'
+        ].join('');
+        const cssLight = [
+          '--bg:#f8fafc;--grid:#cbd5e1;--text-primary:#0f172a;--text-secondary:#64748b;--border:#e2e8f0;',
+          '--fe-fill:rgba(207,250,254,0.6);--fe-stroke:#0891b2;',
+          '--be-fill:rgba(209,250,229,0.6);--be-stroke:#059669;',
+          '--db-fill:rgba(237,233,254,0.6);--db-stroke:#7c3aed;',
+          '--cloud-fill:rgba(254,243,199,0.6);--cloud-stroke:#d97706;',
+          '--sec-fill:rgba(255,228,230,0.6);--sec-stroke:#e11d48;',
+          '--bus-fill:rgba(255,237,213,0.6);--bus-stroke:#ea580c;',
+          '--ext-fill:rgba(241,245,249,0.6);--ext-stroke:#64748b;',
+          '--fe-region-fill:rgba(207,250,254,0.1);--be-region-fill:rgba(209,250,229,0.1);',
+          '--db-region-fill:rgba(237,233,254,0.1);--cloud-region-fill:rgba(254,243,199,0.1);',
+          '--ext-region-fill:rgba(241,245,249,0.1);',
+          '--arrow-color:#475569;--arrow-rose:#e11d48;'
+        ].join('');
+        style.textContent = [
+          `:root{${cssDark}}`,
+          `@media(prefers-color-scheme:light){:root{${cssLight}}}`
+        ].join('');
+        clone.prepend(style);
+        dl(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' }), `${TITLE}.svg`);
+      });
+
+      document.addEventListener('keydown', e => {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        if (e.key === 't' || e.key === 'T') applyTheme(theme === 'dark' ? 'light' : 'dark');
+        if (e.key === 's' || e.key === 'S') {
+          const idx = stylesList.indexOf(currentStyle);
+          const nextStyle = stylesList[(idx + 1) % stylesList.length];
+          applyStyle(nextStyle);
+        }
+        if (e.key === 'e' || e.key === 'E') exportMenu.classList.toggle('open');
+      });
+    })();
+  </script>
+</body>
+
+</html>

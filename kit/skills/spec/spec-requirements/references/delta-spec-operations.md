@@ -5,7 +5,7 @@ How feature `## Delta` sections in `spec.md` merge into a canonical domain spec 
 ## When the delta workflow applies
 
 - The feature is brownfield (`## Current Context` is filled).
-- The feature's `Impacted boundaries` overlap a domain pack listed in `memories/repo/INDEX.md` `## By Domain Packs`.
+- The feature's `Impacted boundaries` overlap a domain pack listed in `MASTER_INDEX.md` `## By Domain Packs`.
 - A canonical spec exists (or will be created) at `memories/domain/spec.md`.
 
 If any of those is false, leave the spec's `## Delta` section empty and skip the merge step. The feature's own `## Functional Requirements` remain the only requirements record.

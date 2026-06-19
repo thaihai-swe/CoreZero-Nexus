@@ -77,7 +77,7 @@ What problem are we solving, for whom, and why now?
 
 ## Delta
 
-*Optional. Fill in only when this feature modifies a canonical domain spec at `memories/domain/spec.md`. Skip for greenfield features and for brownfield features that do not touch a tracked domain. Required for Complex brownfield features whose `Impacted boundaries` overlap a domain pack listed in `memories/repo/INDEX.md`.*
+*Optional. Fill in only when this feature modifies a canonical domain spec at `memories/domain/spec.md`. Skip for greenfield features and for brownfield features that do not touch a tracked domain. Required for Complex brownfield features whose `Impacted boundaries` overlap a domain pack listed in `MASTER_INDEX.md`.*
 
 The delta names what changes against the canonical spec — not what the feature does in total. A reader of the canonical spec plus this delta should see the post-merge target state.
 
@@ -107,7 +107,7 @@ The delta names what changes against the canonical spec — not what the feature
   - Reason:
   - Migration / compensating behavior:
 
-The merge into `memories/domain/spec.md` happens during `/harness-verify` post-ship sync per `kit/skills/spec-requirements/references/delta-spec-operations.md`. The feature's own `## Functional Requirements` section remains the source of truth for what was built; the delta exists so the canonical spec stays accurate after this feature lands.
+The merge into `memories/domain/spec.md` happens during `/harness-verify` post-ship sync per `kit/skills/spec/spec-requirements/references/delta-spec-operations.md`. The feature's own `## Functional Requirements` section remains the source of truth for what was built; the delta exists so the canonical spec stays accurate after this feature lands.
 
 ## Gray-Area Decisions
 

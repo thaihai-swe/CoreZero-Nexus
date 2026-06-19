@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Root entrypoint for CoreZero Nexus installation.
+# Root entrypoint for CoreZero installation.
 # Redirects to kit/scripts/install.sh locally, or clones the repository
 # when run via curl-pipe.
 #
@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-echo "Cloning CoreZero Nexus to temp directory..."
+echo "Cloning CoreZero to temp directory..."
 if [[ -n "$PIN_VERSION" ]]; then
   git clone --depth 1 --branch "v$PIN_VERSION" "$REPO_URL" "$SOURCE_TEMP" >/dev/null 2>&1 \
     || { echo "ERROR: could not clone $REPO_URL at tag v$PIN_VERSION" >&2; exit 1; }

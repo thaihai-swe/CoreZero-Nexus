@@ -11,7 +11,7 @@ flowchart TD
     GPASS -- Yes --> CLEAN["3 - Clean-State Check<br/>No uncommitted changes"]:::step
     CLEAN --> ALIGN["4 - Alignment Audit<br/>REQ/AC mapping to tasks"]:::step
     ALIGN --> TRACE["5 - Traceability Audit<br/>REQ -> AC -> TASK -> proof"]:::step
-    TRACE --> SEC["6 - Security Lens<br/>Audit vs security-policy.md"]:::step
+    TRACE --> SEC["6 - Security Lens<br/>Audit vs core-policies.md"]:::step
     SEC --> HELPERS["7 - Helper Skills<br/>Code Review / Harness Maintain"]:::step
 
     HELPERS --> FALLOW{Fallow Cleanup?}:::decision

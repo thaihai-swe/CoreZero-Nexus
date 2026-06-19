@@ -30,7 +30,7 @@ bash scripts/install.sh /path/to/your/project --dry-run
 After install:
 
 1. Read `docs/README.md`
-2. Read `docs/guides/onboarding.md`
+2. Read `documents/onboarding.md`
 3. Run `/starter-init`
 4. Continue with `/spec-research` or `/spec-requirements`
 5. Use `/context-status`, `/harness-maintain`, and `/spec-adr` when governance or multi-feature coordination work needs them

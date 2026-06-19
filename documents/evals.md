@@ -4,14 +4,17 @@
 
 The evaluation layer provides structured quality assessment beyond the normal verify closeout. It uses split evaluator passes — each targeting a different failure class — rather than one generic "review."
 
+---
+
 ## Split Evaluator Modes
 
 ### 1. Mechanical Gate Audit
 
 **What it checks:** Do the exact verification commands pass?
 
-- Runs the bash commands defined in `plan.md` Mechanical Verification Gate
+- Runs the mechanical verification gate via `kit/scripts/harness/gate-runner.sh`
 - Checks exit codes (must be 0)
+- Pipes errors to `telemetry-collector.sh` and logs to `harness-telemetry.md` if any occur
 - Verifies evidence is fresh (from current session)
 - No subjective judgment — purely mechanical
 
@@ -24,7 +27,7 @@ flowchart TD
     %% Verification Gate — split modes, sole completion authority
 
     START([Implementation complete]) --> PHASE[status = Verifying]
-    PHASE --> GATE[1 - Mechanical Gate Audit<br/>run exact bash commands from plan.md]
+    PHASE --> GATE[1 - Mechanical Gate Audit<br/>run kit/scripts/harness/gate-runner.sh]
 
     GATE --> GPASS{Gate passes?}
     GPASS -- No --> FAIL[Write failure to review.md<br/>reopen tasks]
@@ -95,6 +98,8 @@ flowchart TD
 
 **Failure class:** Amnesia, context corruption, lost state
 
+---
+
 ## Advanced Evaluation Features
 
 ### Spec Quality Scoring
@@ -112,6 +117,8 @@ Three levels: Feature regression (code broke), Harness regression (kit degraded)
 ### Production Readiness
 
 8-category checklist for high-risk deployments: Functional, Observability, Security, Performance, Data, Rollback, Operational, Documentation. See `skills/harness-verify/references/production-readiness-checklist.md`.
+
+---
 
 ## When to Use Eval Mode
 

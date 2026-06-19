@@ -1,16 +1,16 @@
 # Harness Packs
 
-This guide documents the four core packs that organize CoreZero Nexus commands and files for adopter repositories.
+This guide documents the four core packs that organize CoreZero commands and files for adopter repositories.
 
 ---
 
 ## The 4 Core Packs
 
-CoreZero Nexus organizes its capabilities into **4 Core Packs** containing **15 public commands** (with the core 12 shown in the taxonomy map below):
+CoreZero organizes its capabilities into **4 Core Packs** containing **15 public commands** (with the core 12 shown in the taxonomy map below):
 
 ```mermaid
 mindmap
-  root((CoreZero Nexus))
+  root((CoreZero))
     Project Starter
       /starter-init
     Context Engineering
@@ -61,7 +61,7 @@ Guarantees delivery quality and continuously improves the harness.
 The `Project Starter` pack bootstraps a repository for AI-assisted development by setting up the entrypoint router, baseline memory configuration, system architecture guides, and project templates.
 
 ### When To Use It
-- Installing CoreZero Nexus in a project for the first time.
+- Installing CoreZero in a project for the first time.
 - Re-initializing operating configurations after a major workflow change.
 - Aligning template files with the actual project structure and code evidence.
 
@@ -70,7 +70,6 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 
 ### Key Files Touched
 - `AGENTS.md` (router entrypoint)
-- `HARNESS_CARD.md` (harness summary card)
 - `memories/repo/*` (memory router and seed instruction files)
 - `memories/repo/brownfield/*` (brownfield map, dependency graph; created by `/starter-init` Phase A)
 - `docs/project/architecture.md` (durable architecture baseline)
@@ -101,7 +100,6 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 ### Key Files Touched
 - `memories/repo/INDEX.md`
 - `memories/repo/core-policies.md`
-- `memories/repo/security-policy.md`
 - `memories/repo/learned-heuristics.md`
 - `memories/repo/project-knowledge-base.md`
 - `memories/repo/harness-telemetry.md` (failure ledger with structured YAML trend summary)
@@ -146,7 +144,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `memories/repo/adr-log.md`
 - [`docs/project/product-sense.md`](../kit/docs/project/product-sense.md)
 - [`docs/project/glossary.md`](../kit/docs/project/glossary.md)
-- [`docs/project/tech-stack-reference.md`](../kit/docs/project/tech-stack-reference.md)
+- [`docs/project/tech-stack.md`](../kit/docs/project/tech-stack.md)
 - [`docs/project/project-constraints.md`](../kit/docs/project/project-constraints.md)
 
 ---

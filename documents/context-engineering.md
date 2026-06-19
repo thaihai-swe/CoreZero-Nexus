@@ -4,6 +4,61 @@
 
 Defines how the kit assembles, budgets, compacts, and evicts context during long-running work. Context is the agent's working memory — too little and it forgets, too much and it loses focus.
 
+---
+
+## The Minimum Viable Context (MVC) Principle (Rule CC-011)
+
+To prevent cognitive drift, context window saturation, and high execution costs, the kit enforces the **Minimum Viable Context (MVC)** principle (**Rule CC-011**). 
+
+The core directive of MVC is: **Only load the minimal, high-signal context required to execute the active task.** 
+
+Never dump full files, large directories, or entire database schemas into the agent's context window. Instead, follow progressive JIT (Just-In-Time) loading and enforce strict, aggressive compaction and eviction of stale data.
+
+---
+
+## The Three-Track Memory Model
+
+To structure workspace information efficiently, the kit divides memory into three distinct operational tracks:
+
+```mermaid
+flowchart TD
+    %% Three-Track Memory Model
+    
+    subgraph Track1["1. Native Stack (Ephemeral Runtime)"]
+        NS1["Router (AGENTS.md)"]
+        NS2["JIT Code Content (T5)"]
+        NS3["Transient Logs (T6)"]
+    end
+
+    subgraph Track2["2. Cross-Session Tools (Durable Local Repo)"]
+        CS1["INDEX.md (Router Index)"]
+        CS2["Repo Memories (memories/repo/)"]
+        CS3["Feature Artifacts (status/plan/tasks)"]
+    end
+
+    subgraph Track3["3. Team Sharing (Domain & Exporter Surface)"]
+        TS1["Domain Packs (memories/domain/)"]
+        TS2["Adopter-facing APIs & Docs"]
+    end
+
+    Track1 -->|evicted/summarized into| Track2
+    Track2 -->|triage & promote lessons to| Track3
+```
+
+1. **Native Stack (Ephemeral Runtime):** 
+   - **What**: The direct, live token context loaded into the LLM during the active session. This includes the entrypoint router (`AGENTS.md`), JIT-loaded target code files, and transient execution outputs (Tiers 1, 5, and 6).
+   - **Lifespan**: Volatile. Evicted and summarized aggressively within the session.
+   
+2. **Cross-Session Tools (Durable Local Repository):** 
+   - **What**: Git-tracked markdown files that store local feature state and repository-wide memories (Tiers 2, 3, and 4). Includes feature plans, tasks, progress logs, `learned-heuristics.md`, and `harness-telemetry.md`.
+   - **Lifespan**: Persistent across sessions, versioned via Git.
+   
+3. **Team Sharing (Domain & Exporter Surface):** 
+   - **What**: Shared knowledge domain templates, boundaries, glossaries (`memories/domain/`), and system references that propagate to other developers and peer agent sessions.
+   - **Lifespan**: Extremely durable, highly curated.
+
+---
+
 ## Context Tiers
 
 The kit assembles context across 6 tiers, from highest signal to lowest. Each tier has its own load rule.
@@ -44,7 +99,7 @@ flowchart TB
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
 | 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `core-policies.md`, `core-policies.md`, `security-policy.md` | Always — every session |
+| 2 | Always group: `core-policies.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Domain Packs / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
@@ -64,6 +119,8 @@ flowchart TB
 - Load Tier 4 scoped to the active feature slug
 - Load Tier 5 minimally — only the files the current task touches
 - Tier 6 is ephemeral — extract the signal, then evict the noise
+
+---
 
 ## Smart Routing via INDEX.md
 
@@ -114,6 +171,21 @@ flowchart TD
     class STALE,ALL fallback
 ```
 
+---
+
+## Context Eviction & Telemetry Control
+
+Raw console output, compiler errors, and test execution traces (Tier 6) are extremely token-dense and low-signal once analyzed. Retaining them in the active context window wastes token budget and accelerates model saturation, leading to hallucinations.
+
+To prevent this, the `/spec-implement` workflow enforces **Mandatory Context Eviction**:
+1. **Execute**: Run the mechanical validation gate via `gate-runner.sh`.
+2. **Analyze**: Parse the success or failure output to identify the root cause or confirm completion.
+3. **Summarize**: Record a 3-5 line high-level summary of the run in the active verification/task log (e.g. `tests passed` or `linter failed with syntax error in lines 12-14`).
+4. **Evict**: Immediately remove the raw terminal stderr/stdout from the active context window. Do not keep the raw command dump in subsequent turns.
+5. **Log Telemetry**: If the run failed, pipe the output to `telemetry-collector.sh` which appends it to `memories/repo/harness-telemetry.md` (removing it from the active session runtime).
+
+---
+
 ## Compaction Triggers
 
 Compact context when:
@@ -124,6 +196,8 @@ Compact context when:
 - Logs or error output has been analyzed and findings recorded
 - The context window is approaching capacity
 
+---
+
 ## Compaction Strategies
 
 | Strategy | When | How |
@@ -132,6 +206,8 @@ Compact context when:
 | **Scope-narrow** | Full file loaded, only function needed | Drop to relevant section |
 | **Evict** | Previous task context no longer needed | Remove entirely |
 | **Promote** | Finding is durable | Write to memory/artifact, then evict source |
+
+---
 
 ## Stale Context Rules
 
@@ -143,6 +219,8 @@ Context becomes stale when:
 
 Stale context MUST be evicted — carrying it forward dilutes attention and wastes budget.
 
+---
+
 ## Session Checkpoints
 
 Checkpoint when:
@@ -153,6 +231,8 @@ Checkpoint when:
 
 Checkpoint = update progress.md + apply compaction + verify context is lean.
 
+---
+
 ## Anti-Patterns
 
 | Anti-Pattern | Why It's Bad | Instead |
@@ -162,6 +242,8 @@ Checkpoint = update progress.md + apply compaction + verify context is lean.
 | Loading all feature artifacts at once | Most aren't needed for the current task | Load JIT based on task dependencies |
 | Never checkpointing | Context grows until quality degrades | Checkpoint after each completed task |
 | Relying on chat history for state | Chat is volatile and gets truncated | Use progress.md as system of record |
+
+---
 
 ## Subagent-Driven Development
 
@@ -178,11 +260,11 @@ flowchart TD
     DECIDE -- Yes --> SPAWN[Spawn subagents]
 
     SPAWN --> SA1[Subagent A<br/>isolated context]
-    SPAWN --> SA2[Subagent B<br/>isolated context]
-    SPAWN --> SA3[Subagent C<br/>isolated context]
+    SPAWNOW[Subagent B<br/>isolated context]
+    SA3[Subagent C<br/>isolated context]
 
     SA1 -->|raw exploration<br/>stays isolated| R1[Summary Report A]
-    SA2 -->|raw exploration<br/>stays isolated| R2[Summary Report B]
+    SPAWNOW -->|raw exploration<br/>stays isolated| R2[Summary Report B]
     SA3 -->|raw exploration<br/>stays isolated| R3[Summary Report C]
 
     R1 --> MERGE[Merge ONLY summaries<br/>into main context]
@@ -203,16 +285,16 @@ flowchart TD
     classDef note fill:#f7f7f5,stroke:#e0e0e0,color:#111
 
     class MAIN,MERGE,STATUS main
-    class SA1,SA2,SA3 sub
+    class SA1,SPAWNOW,SA3 sub
     class R1,R2,R3 report
     class DECIDE decision
 ```
 
+---
+
 ## Domain Packs
 
-Domain packs extend the memory router with project-specific semantic context. Each pack
-captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for
-a specific business or technical domain.
+Domain packs extend the memory router with project-specific semantic context. Each pack captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for a specific business or technical domain.
 
 ### Where They Live
 
@@ -247,18 +329,14 @@ triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
 
 ### Lifecycle
 
-Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content.
-During `/context-memory` Post-Ship Sync, promote durable patterns from
-`session-extracts.md` into the appropriate domain pack file.
+Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content. During `/context-memory` Post-Ship Sync, promote durable patterns from `session-extracts.md` into the appropriate domain pack file.
 
-Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs.
-As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet
-auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.
+Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.
 
 ---
 
 ## Context Compaction & Claim Gaps
 
-During the system-wide evaluation (detailed in [evaluation-report.md](documents/evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
+During the system-wide evaluation (detailed in [evaluation-report.md](evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
 
 * **Workspace Claim Lock Contention**: The file-backed claim protocol manages multi-agent coordination but lacks automated collision resolution. To prevent distributed agent workspace blockages, claim files should be explicitly mapped to Git branch states rather than single absolute paths.

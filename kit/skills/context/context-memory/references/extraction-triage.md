@@ -13,7 +13,7 @@ When processing extracted-tier or auto-tier memory entries:
    - Heuristic with confirming evidence -> append to `learned-heuristics.md`
    - Pattern or boundary fact -> integrate into `project-knowledge-base.md` or `docs/project/architecture.md`
    - Normative rule with team agreement -> amend `core-policies.md` (CC-*)
-   - Permission, trust, or sandbox rule -> amend `security-policy.md`
+   - Permission, trust, or sandbox rule -> amend `core-policies.md` `## Security Policy`
    - Harness gap -> route to `harness-maintain` Improve Mode
    - Spec gap -> route back to `spec-requirements`
 4. **Defer** when the candidate is plausible but under-evidenced:

@@ -1,4 +1,4 @@
-# CoreZero Nexus Visualize Scripts
+# CoreZero Visualize Scripts
 
 Helper scripts for deterministic SVG generation and Mermaid validation.
 
@@ -64,24 +64,6 @@ python3 ./skills/visualize/scripts/render_mermaid.py ./out/diagram.mmd ./out/dia
 ```
 
 Requirements:
-- `mmdc` on `PATH`
-
-### `test-all-styles.sh`
-
-SVG regression suite for the seven bundled styles.
-
-Usage:
-
-```bash
-source .venv/bin/activate
-./skills/visualize/scripts/test-all-styles.sh
-```
-
-This script:
-- renders `fixtures/*.json`
-- validates the generated SVGs
-- writes outputs to `skills/visualize/test-output/`
-
 ## Scope
 
 These scripts support the implemented output paths in this repo:

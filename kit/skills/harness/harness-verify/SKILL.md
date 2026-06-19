@@ -15,7 +15,7 @@ Validates that the implemented feature works and didn't break existing behavior.
 - **Next Skill**: `/context-memory` (to log lessons learned) or done.
 
 ## Workflow
-1. Run lint, typecheck, and test commands.
+1. Run `bash kit/scripts/harness/gate-runner.sh` to mechanically verify the workspace. Do not guess commands.
 2. Verify all ACs from `spec.md` are satisfied.
 3. If passes, update the `## Current State` section of `artifacts/features/<slug>/status.md` to `Verified`.
 4. **If fails**: Increment a failure counter in `harness-telemetry.md`. If failures < 2, route back to `/spec-implement`. If failures >= 2 on the same task, route to `/spec-plan` to rethink the approach or trigger `/code-review` for intervention.

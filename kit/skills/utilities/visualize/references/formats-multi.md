@@ -95,7 +95,7 @@ sequenceDiagram
 
 ```mermaid
 C4Context
-    title System Context — CoreZero Nexus
+    title System Context — CoreZero
 
     Person(user, "Developer", "Uses AI agent to build features")
     System(corezero, "AI Agents Dev Kit", "Skill-driven spec → code workflow")
@@ -207,7 +207,7 @@ classDiagram
 
 ```mermaid
 mindmap
-  root((CoreZero Nexus))
+  root((CoreZero))
     Context
       Memory
         constitution.md
@@ -261,7 +261,7 @@ journey
 
 ```mermaid
 gantt
-    title CoreZero Nexus Feature Delivery Timeline
+    title CoreZero Feature Delivery Timeline
     dateFormat YYYY-MM-DD
     section Context
     Memory & Research     :a1, 2025-01-01, 1d

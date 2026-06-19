@@ -1,10 +1,10 @@
 # Kit Documentation
 
-Maintainer entrypoint for the CoreZero Nexus source repository.
+Maintainer entrypoint for the CoreZero source repository.
 
 ## Start Here
 
-CoreZero Nexus now has two explicit products:
+CoreZero now has two explicit products:
 
 - `kit/` — the installable adopter package
 - `documents/` plus `page-document/` — maintainer and public explainer surfaces

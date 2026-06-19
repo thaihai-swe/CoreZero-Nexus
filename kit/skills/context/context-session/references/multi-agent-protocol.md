@@ -23,7 +23,7 @@ Before starting any work on a feature, an agent **must** create or verify owners
 ```markdown
 # Claim: <slug>
 
-- Agent ID: <describe yourself — e.g., "Claude Sonnet 3.5 session, terminal 1" or "Gemini CLI, user @alice">
+- Agent ID: <describe yourself — e.g., "Primary agent session, terminal 1">
 - Claimed at: <ISO 8601 timestamp>
 - Claimed by: <user or automated pipeline context>
 - Expires at: <claimed-at + 4 hours, or "manual release only">
@@ -114,8 +114,8 @@ Multiple agents read and write to `memories/repo/` — this is intentional. Rule
 
 - **Read freely**: Any agent may read any memory file at any time.
 - **Append only for logs**: `harness-telemetry.md` and `session-extracts.md` are append-only. Never overwrite an existing entry.
-- **Propose before amending instruction-tier memory**: An agent must not directly edit `core-policies.md`, `security-policy.md`, or `project-knowledge-base.md` during feature work. Proposals go through `/context-memory` Extraction Triage after the feature ships.
-- **`INDEX.md` is read-only during feature work**: Only `/harness-maintain` and `/context-memory` Post-Ship Sync have write authority over `INDEX.md`.
+- **Propose before amending instruction-tier memory**: An agent must not directly edit `core-policies.md` or `project-knowledge-base.md` during feature work. Proposals go through `/context-memory` Extraction Triage after the feature ships.
+- **`MASTER_INDEX.md` is read-only during feature work**: Only `/harness-maintain` and `/context-memory` Post-Ship Sync have write authority over `MASTER_INDEX.md`.
 
 ---
 

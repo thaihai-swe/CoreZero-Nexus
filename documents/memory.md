@@ -13,9 +13,7 @@ flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
     subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[core-policies.md<br/>Repo-wide rules]
-        SEC[security-policy.md<br/>Trust boundaries]
-        HARN[core-policies.md<br/>Canonical commands]
+        CONST[core-policies.md<br/>Normative rules, boundaries & config]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
         ARCH[docs/project/architecture.md<br/>System structure]
@@ -80,9 +78,7 @@ flowchart TD
 
 | File | Type | Content | Update Frequency |
 |------|------|---------|-----------------|
-| `core-policies.md` | Normative | Repo-wide rules (CC-* identifiers) | Rare — only when rules change |
-| `security-policy.md` | Normative | Permission tiers, trust boundaries, sandbox rules | Rare |
-| `core-policies.md` | Operational | Commands, paths, trackers, session defaults, promotion thresholds | During init or when tooling changes |
+| `core-policies.md` | Normative & Operational | Repo-wide rules, security boundaries, commands, paths, and defaults | Rare — during init or when tooling/policies change |
 | `project-knowledge-base.md` | Descriptive | Durable facts, patterns, conventions | As project evolves |
 | `learned-heuristics.md` | Descriptive | Evidence-backed execution patterns | After repeated observations |
 | `docs/project/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
@@ -106,7 +102,7 @@ flowchart TD
 | **Normative** | Rules that MUST be followed | "must", "must not", "requires" | "Tests must pass before marking done" |
 | **Descriptive** | Facts that ARE true | "uses", "follows", "prefers" | "The API uses JWT with 24h expiry" |
 
-Normative rules go in `core-policies.md` or `security-policy.md`.
+Normative rules go in `core-policies.md`.
 Descriptive facts go in `project-knowledge-base.md` or `learned-heuristics.md`.
 
 ## Promotion Rules
@@ -120,8 +116,7 @@ When a finding emerges from analysis, implementation, or review:
 1. **Check durability:** Is it evidence-based, stable, and useful beyond this feature?
 2. **Classify:** Normative rule? Descriptive pattern? Still feature-local?
 3. **Route:**
-   - Repo-wide rule → `core-policies.md`
-   - Security/permission rule → `security-policy.md`
+   - Repo-wide or security/permission rule → `core-policies.md`
    - Repeated execution pattern (2+ features) → `learned-heuristics.md`
    - Durable fact or convention → `project-knowledge-base.md`
    - Structural map → `docs/project/architecture.md`
@@ -202,16 +197,14 @@ flowchart LR
     OBS --> TRIAGE
 
     TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
-    TRIAGE -->|normative rule| CONST[Promote to<br/>core-policies.md]
+    TRIAGE -->|normative rule or security finding| CONST[Promote to<br/>core-policies.md]
     TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
-    TRIAGE -->|security finding| SEC[Promote to<br/>security-policy.md]
     TRIAGE -->|defer| DEF[Wait for next signal]
     TRIAGE -->|feature-local| DISC[Discard<br/>with reason]
 
     HEUR --> SMARTER[KB grows<br/>next session is smarter]
     CONST --> SMARTER
     PKB --> SMARTER
-    SEC --> SMARTER
 
     SMARTER -.->|loop back| SHIP
 

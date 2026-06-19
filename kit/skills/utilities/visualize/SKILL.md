@@ -10,7 +10,7 @@ description: >-
 compatibility: Designed for all Agent Skills-compatible tools.
 ---
 
-# CoreZero Nexus Visualize
+# CoreZero Visualize
 
 ## Overview
 
@@ -24,7 +24,6 @@ This skill is not prompt-only. It ships with:
 - `scripts/validate_mermaid.py` for Mermaid syntax validation
 - `scripts/render_mermaid.py` for Mermaid-to-SVG rendering when `mmdc` is installed
 - `templates/*.svg` starter templates
-- `fixtures/*.json` regression examples
 
 ## Read First
 
@@ -194,16 +193,6 @@ Do not claim deferred outputs as completed work.
 **Output location**: Follow canonical paths from `../_shared/doc-conventions.md → ## Output Locations`.
 - Feature-scoped: `artifacts/features/<slug>/diagrams/<name>.svg` (or `.mmd`)
 - Global/standalone: `docs/generated/diagrams/<name>.svg` (or `.mmd`)
-
-## Verification
-
-Regression fixtures live in `fixtures/`.
-Run the SVG regression suite with:
-
-```bash
-source .venv/bin/activate
-./skills/visualize/scripts/test-all-styles.sh
-```
 
 Validate Mermaid with:
 

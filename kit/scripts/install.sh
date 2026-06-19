@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# CoreZero Nexus installer
+# CoreZero installer
 #
 # Usage:
 #   scripts/install.sh <target_dir> [--dry-run]
@@ -89,14 +89,14 @@ expand_glob() {
   pushd "$SOURCE_DIR" >/dev/null
   if [[ "$pattern" == *"**"* ]]; then
     local base="${pattern%%/\*\**}"
-    [[ -d "$base" ]] && find "$base" -type f
+    [[ -d "$base" ]] && find "$base" -type f ! -name ".DS_Store" ! -path "*/test-output/*"
   elif [[ "$pattern" == *"*"* ]]; then
     shopt -s nullglob
     local matches=( $pattern )
     shopt -u nullglob
     local m
     for m in "${matches[@]}"; do
-      [[ -f "$m" ]] && echo "$m"
+      [[ -f "$m" && "$(basename "$m")" != ".DS_Store" && "$m" != *"/test-output/"* ]] && echo "$m"
     done
   else
     [[ -f "$pattern" ]] && echo "$pattern"
@@ -161,7 +161,27 @@ resolve_source_dir() {
   log "Cloning kit to temp: $SOURCE_TEMP"
   git clone --depth 1 "$REPO_URL" "$SOURCE_TEMP" >/dev/null 2>&1 \
     || err "could not clone $REPO_URL"
-  SOURCE_DIR="$SOURCE_TEMP"
+  if [[ -f "$SOURCE_TEMP/manifest.json" ]]; then
+    SOURCE_DIR="$SOURCE_TEMP"
+  elif [[ -f "$SOURCE_TEMP/kit/manifest.json" ]]; then
+    SOURCE_DIR="$SOURCE_TEMP/kit"
+  else
+    err "manifest.json not found in cloned repository at $SOURCE_TEMP"
+  fi
+  if [[ -d "$REPO_URL" ]]; then
+    log "Local repository detected. Syncing working tree changes..."
+    find "$REPO_URL" -not -path '*/.*' -type f | while read -r src_file; do
+      local rel_path="${src_file#$REPO_URL/}"
+      mkdir -p "$(dirname "$SOURCE_TEMP/$rel_path")"
+      cp "$src_file" "$SOURCE_TEMP/$rel_path"
+    done
+    # Refresh SOURCE_DIR based on synced files
+    if [[ -f "$SOURCE_TEMP/manifest.json" ]]; then
+      SOURCE_DIR="$SOURCE_TEMP"
+    elif [[ -f "$SOURCE_TEMP/kit/manifest.json" ]]; then
+      SOURCE_DIR="$SOURCE_TEMP/kit"
+    fi
+  fi
 }
 
 cleanup_source_temp() {
@@ -208,7 +228,7 @@ TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="$TARGET_DIR/.corezero-backup-$TIMESTAMP"
 
-log "CoreZero Nexus installer"
+log "CoreZero installer"
 log "  Source:   $SOURCE_DIR"
 log "  Target:   $TARGET_DIR"
 log "  Dry run:  $DRY_RUN"
@@ -268,7 +288,7 @@ while IFS= read -r rel; do
 done < <(read_manifest_array "$MANIFEST" files.copyIfMissing)
 
 if [[ "$DRY_RUN" != "true" ]]; then
-  find "$TARGET_DIR/scripts" -maxdepth 1 -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} +
+  find "$TARGET_DIR/scripts" -type f \( -name "*.sh" -o -name "*.py" \) -exec chmod +x {} +
 fi
 
 warn_orphans() {
@@ -277,6 +297,7 @@ warn_orphans() {
     "docs/system-specs"
     "docs/INSTALL.md"
     "docs/ADOPTION_GUIDE.md"
+    "HARNESS_CARD.md"
     "docs/GLOSSARY.md"
     "docs/GOVERNANCE.md"
     "docs/PRODUCT_SENSE.md"
@@ -309,6 +330,10 @@ warn_orphans() {
     "skills/starter-init/references/harness-card-template.md"
     "skills/harness-maintain/references/codemap-template.md"
     "skills/harness-maintain/references/references-index-template.md"
+    "docs/generated/references-index.md"
+    "memories/repo/security-policy.md"
+    "INDEX.md"
+    "docs/README.md"
     "skills/context-status/references/dashboard-template.html"
   )
   local orphan
@@ -335,8 +360,6 @@ validate_path() {
 if [[ "$DRY_RUN" != "true" ]]; then
   log ""
   log "Post-install validation"
-  validate_path "docs/README.md" "Installed docs start page"
-  validate_path "docs/guides/onboarding.md" "Onboarding guide"
   validate_path "docs/policies/code-design.md" "Code design policy"
   validate_path "skills" "Skills directory"
   validate_path "skills/context/context-status/SKILL.md" "Context-status skill"
@@ -347,18 +370,17 @@ if [[ "$DRY_RUN" != "true" ]]; then
   validate_path "skills/utilities/visualize/SKILL.md" "Visualize skill"
   validate_path "skills/utilities/visualize/scripts/validate_mermaid.py" "Visualize Mermaid validator"
   validate_path "skills/utilities/visualize/templates/architecture.svg" "Visualize SVG template"
-  validate_path "skills/utilities/visualize/fixtures/architecture-style-1.json" "Visualize regression fixture"
-  validate_path "skills/utilities/visualize/references/example-flow.mmd" "Visualize Mermaid sample"
   validate_path "memories/repo" "Memory layer"
-  validate_path "memories/repo/INDEX.md" "Memory router"
+  validate_path "memories/repo/core-policies.md" "Core policies"
   validate_path "memories/repo/core-policies.md" "Constitution"
-  validate_path "memories/repo/core-policies.md" "Harness config"
-  validate_path "memories/repo/security-policy.md" "Security policy"
-  validate_path "HARNESS_CARD.md" "Harness card"
   validate_path "AGENTS.md" "Runtime entrypoint"
   validate_path "docs/rules/python.md" "Python rules"
   validate_path "docs/rules/security.md" "Security rules"
+  validate_path "docs/rules/ponytail.md" "Ponytail rules"
+  validate_path "skills/utilities/ponytail/SKILL.md" "Ponytail skill"
   validate_path "scripts/install.sh" "Installer (self-shipped)"
+  validate_path "scripts/harness/gate-runner.sh" "Harness Gate Runner"
+  validate_path "scripts/harness/telemetry-collector.sh" "Harness Telemetry Collector"
 fi
 
 log ""
@@ -378,15 +400,14 @@ fi
 
 log ""
 log "Next steps:"
-log "  1. Read docs/guides/onboarding.md for the installation, upgrade, and adoption walkthrough"
-log "  2. Run /starter-init in your AI agent"
-log "  3. Start the first feature with /spec-requirements (or /spec-research for brownfield/unknown behavior)"
-log "  4. Use /context-session only after a feature slug and status.md already exist"
-log "  5. Deliver through /spec-plan, /spec-implement"
-log "  6. Close out with /harness-verify"
-log "  7. Governance bundle: /context-status, /harness-maintain, /spec-adr"
-log "  8. Docs bundle: /technical-docs, /codebase-documenter"
-log "  9. Specialist visualization: /visualize (Mermaid validation bundled; Mermaid render optional with mmdc)"
+log "  1. Run /starter-init in your AI agent"
+log "  2. Start the first feature with /spec-requirements (or /spec-research for brownfield/unknown behavior)"
+log "  3. Use /context-session only after a feature slug and status.md already exist"
+log "  4. Deliver through /spec-plan, /spec-implement"
+log "  5. Close out with /harness-verify"
+log "  6. Governance bundle: /context-status, /harness-maintain, /spec-adr"
+log "  7. Docs bundle: /technical-docs, /codebase-documenter"
+log "  8. Specialist visualization: /visualize (Mermaid validation bundled; Mermaid render optional with mmdc)"
 log "  10. Use documents/ only in the source repository when maintaining the kit itself"
 log ""
 log "Upgrade later: re-run this command. Memory and artifacts are preserved."

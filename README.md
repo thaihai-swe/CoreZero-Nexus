@@ -1,6 +1,6 @@
-# CoreZero Nexus
+# CoreZero
 
-CoreZero Nexus has two explicit products:
+CoreZero has two explicit products:
 
 - `kit/` — the installable adopter package
 - `documents/` plus `page-document/` — maintainer and public explainer surfaces
@@ -12,7 +12,7 @@ curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scr
   | bash -s -- /path/to/your/project
 ```
 
-After install, start with [kit/docs/README.md](kit/docs/README.md) and [kit/docs/guides/onboarding.md](kit/docs/guides/onboarding.md).
+After install, start with [kit/docs/README.md](kit/docs/README.md) and [documents/onboarding.md](documents/onboarding.md).
 
 ## Shipped Commands
 
@@ -40,7 +40,7 @@ The installed package now ships the full workflow surface: core delivery, govern
 The installed surface comes from `kit/` and includes:
 
 - root entrypoints: `AGENTS.md`, `INDEX.md`, `HARNESS_CARD.md`
-- first-read docs: `docs/README.md`, `docs/guides/onboarding.md`, `docs/policies/code-design.md`
+- first-read docs: `docs/README.md`, `docs/policies/code-design.md`
 - adopter-owned seeded docs under `docs/project/*`
 - seeded placeholders under `docs/generated/*`
 - shipped memories under `memories/repo/*` and `memories/domain/*`

@@ -1,4 +1,4 @@
-# CoreZero Nexus Project Knowledge Base
+# CoreZero Project Knowledge Base
 
 ## System Reference Documents
 
@@ -22,7 +22,7 @@ Refer to `docs/project/architecture.md` for static component paths and integrati
 
 ### 1. Shipped Template Copy Posture
 The installer script (`scripts/install.sh`) handles files using three distinct postures specified in `manifest.json`:
-- **`overwrite`**: Core kit tools and guides (e.g. `skills/**`, `rules/**`, `docs/README.md`, `docs/guides/onboarding.md`) that are refreshed on every upgrade to keep the automation framework up to date.
+- **`overwrite`**: Core kit tools and guides (e.g. `skills/**`, `rules/**`, `MASTER_INDEX.md`) that are refreshed on every upgrade to keep the automation framework up to date.
 - **`copyIfMissing`**: Starter template files and memory baselines (e.g., `AGENTS.md`, `core-policies.md`, `project-knowledge-base.md`). If the adopter project has customized these, the installer respects their edits and does not overwrite them.
 - **`preserve`**: Feature-specific state folders (`artifacts/features/`, local settings). These are completely owned by the adopter project and are never touched by the installer.
 
@@ -30,10 +30,10 @@ The installer script (`scripts/install.sh`) handles files using three distinct p
 Profile definitions (Tiny / Standard / Complex) and what each mandates live in `skills/_shared/rigor-profiles.md`. This repo's chosen default and promotion triggers are recorded in `memories/repo/core-policies.md` `## Adaptive Rigor`.
 
 ### 3. The Memory Governance Loop
-Tier definitions (Instruction / Auto / Extracted) and the promotion loop live in `skills/context-memory/SKILL.md` `## Memory Tiers`. Intent-based routing of these tiers lives in `memories/repo/INDEX.md`.
+Tier definitions (Instruction / Auto / Extracted) and the promotion loop live in `skills/context/context-memory/SKILL.md` `## Memory Tiers`. Intent-based routing of these tiers lives in `MASTER_INDEX.md`.
 
 ### 4. Gated Integration vs. Standalone Review Distinction
-The dual-purpose behavior of `code-review` (standalone PR mode vs. `/harness-verify`-gated blocking mode) is defined in `skills/code-review/SKILL.md`.
+The dual-purpose behavior of `code-review` (standalone PR mode vs. `/harness-verify`-gated blocking mode) is defined in `skills/utilities/code-review/SKILL.md`.
 
 ### 5. Shipped Command Ownership
 The shipped helpers own the following durable surfaces:
@@ -48,7 +48,7 @@ The shipped helpers own the following durable surfaces:
 
 - **Baseline Testing**: `/starter-init` checks whether the target repository is greenfield or brownfield. It requires running the canonical baseline test or compile check. If none exists, the adopter must document the best available proof surface before autonomous feature work can proceed.
 - **Drift in Routers**: `AGENTS.md` must stay under 50 lines for its router portion to prevent context window saturation. Standard operating guidelines should remain in `core-policies.md` and only be linked from `AGENTS.md`.
-- **Generated Placeholder Ownership**: `docs/generated/codemap.md` and `docs/generated/references-index.md` are shipped placeholders refreshed by `/harness-maintain`. `docs/generated/dashboard.html` is refreshed by `/context-status`.
+- **Generated Placeholder Ownership**: `docs/project/codemap.md` is a shipped placeholder refreshed by `/harness-maintain`. `docs/generated/dashboard.html` is refreshed by `/context-status`.
 
 ## Feature Lifecycle Handoff Patterns
 

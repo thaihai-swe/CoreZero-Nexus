@@ -25,5 +25,5 @@ Long-running agentic workflows require structured sessions to maintain continuit
 *   Utilize pre-commit hooks or continuous CI to provide immediate, out-of-band feedback if the agent strays from the harness constraints.
 
 ## 6. Security And Evaluators
-*   Repositories should define a durable `security-policy.md` before sensitive work begins.
+*   Repositories should define a durable `core-policies.md` `## Security Policy` before sensitive work begins.
 *   Long-running flows should use explicit evaluator passes, not only a single generic closeout review.

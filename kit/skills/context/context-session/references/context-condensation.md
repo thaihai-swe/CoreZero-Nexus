@@ -14,6 +14,6 @@ As a session progresses, the context window fills up with conversation history, 
 
 ## Token Budgeting & Amnesia Warnings
 
-1.  **Monitor Saturation:** Read the `Session Token Capacity` in `HARNESS_CARD.md`. Calculate your current token usage at each checkpoint.
+1.  **Monitor Saturation:** Read the `Session Token Capacity` in `memories/repo/core-policies.md`. Calculate your current token usage at each checkpoint.
 2.  **Amnesia Warning (80% Saturation):** When the token count exceeds 80% of capacity (e.g., 160k out of 200k tokens), print: `[WARNING: Session Context Saturated at XX% (X/Y tokens). Amnesia risk is high. Re-initialize session to clear.]`.
 3.  **Hard Reset Trigger:** If the token count remains above 80% after applying all condensation strategies, do not attempt further code changes in the current session. Run `/context-session END` to generate a handoff and progress log, then immediately start a new session conversation window to clear the context history.

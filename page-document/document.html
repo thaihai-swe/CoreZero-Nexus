@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoreZero Nexus — Spec-Anchored AI Software Delivery · Thai Hai</title>
+    <title>CoreZero — Spec-Anchored AI Software Delivery · Thai Hai</title>
     <meta name="description"
         content="An engineering harness for AI coding agents. Locks specs before code, plans every task, verifies every claim, and keeps memory durable across sessions — turning chat-driven drift into reproducible, evidence-backed delivery.">
     <meta name="author" content="Thai Hai">
@@ -12,17 +12,17 @@
 
     <!-- Open Graph / LinkedIn / Slack / Discord -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="CoreZero Nexus — Spec-Anchored AI Software Delivery">
+    <meta property="og:title" content="CoreZero — Spec-Anchored AI Software Delivery">
     <meta property="og:description"
         content="An engineering harness for AI coding agents. Locks specs before code, plans every task, verifies every claim, and keeps memory durable across sessions.">
     <meta property="og:url" content="https://github.com/thaihai-swe/CoreZero-Nexus">
-    <meta property="og:site_name" content="CoreZero Nexus">
+    <meta property="og:site_name" content="CoreZero">
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CoreZero Nexus — Spec-Anchored AI Software Delivery">
+    <meta name="twitter:title" content="CoreZero — Spec-Anchored AI Software Delivery">
     <meta name="twitter:description"
-        content="An engineering harness for AI coding agents. 15 skills, durable memory, mechanical verification gates, full traceability.">
+        content="An engineering harness for AI coding agents. 16 skills, durable memory, mechanical verification gates, full traceability.">
 
     <link rel="stylesheet" href="common.css">
     <link
@@ -57,9 +57,9 @@
 
     <header class="main-header">
         <nav class="main-nav container" aria-label="Primary">
-            <a href="#start-here" class="nav-brand" aria-label="CoreZero Nexus home">
+            <a href="#start-here" class="nav-brand" aria-label="CoreZero home">
                 <span class="nav-brand-mark">CoZeNe</span>
-                <span class="nav-brand-text">CoreZero Nexus</span>
+                <span class="nav-brand-text">CoreZero</span>
             </a>
 
             <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"
@@ -131,7 +131,7 @@
     <main id="main" class="container">
         <div class="hero">
             <span class="eyebrow-mono accent">v0.1.2 · Spec-Anchored Delivery</span>
-            <h1>CoreZero Nexus</h1>
+            <h1>CoreZero</h1>
             <p class="subtitle">An engineering harness for AI coding agents. Locks specs before code, plans every task,
                 verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
                 reproducible, evidence-backed delivery.</p>
@@ -164,7 +164,7 @@
             <h2 id="about-heading" class="about-title">A personal R&amp;D project on agent-first software delivery</h2>
             <p>
                 I built this kit to answer a question I kept hitting in real work: <em>how do you make AI coding agents
-                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 15-skill
+                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 16-skill
                 harness that anchors every change to a locked spec, plans tasks in 2&ndash;5 minute units, gates
                 completion behind mechanical verification, and grows a durable memory tier over time so the next session
                 doesn't start from zero.
@@ -181,7 +181,7 @@
                 <span class="about-tag">Spec-anchored delivery</span>
                 <span class="about-tag">Mechanical verification</span>
                 <span class="about-tag">Durable memory</span>
-                <span class="about-tag">11 core skills · 4 specialist tools</span>
+                <span class="about-tag">12 core skills · 4 specialist tools</span>
             </div>
         </aside>
 
@@ -332,12 +332,12 @@
                     <div class="nn-item"><strong>Keep design SOLID.</strong> <strong>SHOULD</strong> follow SOLID
                         principles when changing or adding software design.</div>
                     <div class="nn-item"><strong>Apply code-design rules.</strong> Check
-                        <code>docs/policies/code-design.md</code> for cross-cutting pitfalls (hidden coupling, swallowed errors,
+                        <code>docs/policies/code-design.md</code> for cross-cutting pitfalls (hidden coupling, swallowed
+                        errors,
                         etc.).
                     </div>
-                    <div class="nn-item"><strong>Read the Harness Card.</strong> Before non-trivial work,
-                        <strong>SHOULD</strong> skim <code>HARNESS_CARD.md</code> at the repo root for limits, rigor settings,
-                        status, and constraints.
+                    <div class="nn-item"><strong>Read the Master Index.</strong> Before non-trivial work,
+                        <strong>SHOULD</strong> consult <code>INDEX.md</code> at the repo root for context routing and key memory files (such as <code>memories/repo/core-policies.md</code> which declares active status and limits).
                     </div>
                 </div>
             </div>
@@ -540,7 +540,7 @@
 
         <section id="architecture">
             <h2>3. System Architecture</h2>
-            <p class="node-desc">CoreZero Nexus standardizes developer actions into structured artifacts. Below is the
+            <p class="node-desc">CoreZero standardizes developer actions into structured artifacts. Below is the
                 System Context showing how the developer, the agent runtime, and the repository memory databases
                 interact:</p>
             <figure class="kit-diagram">
@@ -567,8 +567,9 @@
                 </div>
                 <div class="arch-card">
                     <h3>C. The Harness Layer (Environment)</h3>
-                    <p class="node-desc">Implements the six Harness Engineering subsystems: Instructions, State,
-                        Verification, Scope, Lifecycle, and Security. Controls agent runtime environment and establishes
+                    <p class="node-desc">Implements the 7-pillar ETCLOVG Taxonomy: Execution, Tools, Context, Logic,
+                        Observability, Verification, and Governance. Controls the agent runtime environment and
+                        establishes
                         structural guardrails.</p>
                 </div>
                 <div class="arch-card">
@@ -579,7 +580,8 @@
                 <div class="arch-card">
                     <h3>E. The Memory Layer (Durable Guidance)</h3>
                     <p class="node-desc">Located in <code>memories/repo/</code>. Organized into three tiers behind a
-                        routing index (<code>memories/repo/INDEX.md</code>). The knowledge base operates as a <strong>Semantic Memory
+                        routing index (<code>memories/repo/INDEX.md</code>). The knowledge base operates as a
+                        <strong>Semantic Memory
                             Knowledge Graph</strong> using Markdown links to bind heuristics to domain specs. The tiers
                         are: the <strong>Instruction tier</strong> (human-curated
                         rules and knowledge), the <strong>Auto tier</strong> (failure-driven
@@ -593,10 +595,11 @@
                 <p><strong>Three Memory Tiers:</strong></p>
                 <ul>
                     <li><strong>Instruction tier (human-curated):</strong> durable rules and knowledge &mdash;
-                        <code>core-policies.md</code>, <code>security-policy.md</code>, <code>core-policies.md</code>,
+                        <code>core-policies.md</code>,
                         <code>project-knowledge-base.md</code>,
                         <code>learned-heuristics.md</code>,
-                        and <code>docs/project/architecture.md</code>. Edited by humans and <code>/context-memory</code>.
+                        and <code>docs/project/architecture.md</code>. Edited by humans and
+                        <code>/context-memory</code>.
                     </li>
                     <li><strong>Auto tier (agent-written):</strong> <code>harness-telemetry.md</code> &mdash;
                         failure-driven
@@ -612,7 +615,8 @@
                 </ul>
                 <p>Flow: <strong>session extracts &rarr; triage &rarr; instruction tier (or discard)</strong>, with the
                     auto
-                    tier capturing failures along the way. The memory router <code>memories/repo/INDEX.md</code> decides which
+                    tier capturing failures along the way. The memory router <code>memories/repo/INDEX.md</code> decides
+                    which
                     files
                     a session loads by matching the task against trigger keywords.</p>
             </div>
@@ -645,7 +649,6 @@
                 <h3>Minimum Safe Repository Shape</h3>
                 <pre><code>AGENTS.md
 INDEX.md
-HARNESS_CARD.md
 skills/
 rules/
 scripts/
@@ -675,7 +678,8 @@ docs/generated/
 artifacts/features/</code></pre>
                 <p class="node-desc">The installer copies <code>skills/</code> and <code>rules/</code> into the target
                     repository, seeds
-                    the master index (<code>INDEX.md</code>), the memory router (<code>memories/repo/INDEX.md</code>), and the three memory tiers, generated references,
+                    the master index (<code>INDEX.md</code>), the memory router (<code>memories/repo/INDEX.md</code>),
+                    and the three memory tiers, generated references,
                     architecture,
                     the harness card, and a thin repo entrypoint &mdash; without overwriting your
                     <code>memories/repo/</code>
@@ -707,7 +711,8 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><code>INDEX.md</code></td>
                                 <td>Master context index</td>
-                                <td>Central registry mapping load-on-demand category-specific context indexes (memories, rules, codemaps).</td>
+                                <td>Central registry mapping load-on-demand category-specific context indexes (memories,
+                                    rules, codemaps).</td>
                             </tr>
                             <tr>
                                 <td><code>memories/repo/INDEX.md</code></td>
@@ -722,14 +727,8 @@ artifacts/features/</code></pre>
                             </tr>
                             <tr>
                                 <td><code>memories/repo/core-policies.md</code></td>
-                                <td>Repo operating defaults</td>
-                                <td>Command conventions, artifact paths, tracker mode, and session startup defaults.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>memories/repo/security-policy.md</code></td>
-                                <td>Security contract</td>
-                                <td>Safe vs confirm vs blocked actions, trust boundaries, and prompt-injection rules.
+                                <td>Repo operating defaults & rules</td>
+                                <td>Command conventions, boundaries, trust levels, and session startup defaults.
                                 </td>
                             </tr>
                             <tr>
@@ -747,7 +746,8 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><code>memories/domain/</code></td>
                                 <td>Domain language</td>
-                                <td>Adopter-owned templates for bounded-context glossary, boundaries, patterns, anti-patterns, and canonical specifications.</td>
+                                <td>Adopter-owned templates for bounded-context glossary, boundaries, patterns,
+                                    anti-patterns, and canonical specifications.</td>
                             </tr>
                             <tr>
                                 <td><code>memories/repo/harness-telemetry.md</code></td>
@@ -815,11 +815,13 @@ artifacts/features/</code></pre>
                     </li>
                     <li><strong>Post-ship sync:</strong> a passing <code>/harness-verify</code> verdict triggers a
                         mandatory
-                        memory sweep. Every file in <code>memories/repo/INDEX.md</code> is either updated or named with a one-line
+                        memory sweep. Every file in <code>memories/repo/INDEX.md</code> is either updated or named with
+                        a one-line
                         reason it
                         was untouched. A generic "no updates needed" fails the gate.</li>
                     <li><strong>Promotion thresholds:</strong> a memory file at &ge;800 lines, 3+ distinct subtopics, or
-                        5+ artifact references is added to the <code>memories/repo/INDEX.md</code> promotion watchlist with a split
+                        5+ artifact references is added to the <code>memories/repo/INDEX.md</code> promotion watchlist
+                        with a split
                         proposal &mdash;
                         it is never auto-split.</li>
                     <li>Keep feature-local notes, temporary debugging context, and one-off rationale inside feature
@@ -857,12 +859,10 @@ artifacts/features/</code></pre>
             </div>
 
             <div class="section-card">
-                <h3>Harness Card</h3>
-                <p class="node-desc">Every adopted repo gets a <code>HARNESS_CARD.md</code> at its root &mdash; a
-                    one-page
-                    summary of the active session limits, rigor settings, telemetry constraints, and known limits. Read it
-                    before
-                    non-trivial work; if reality diverges from the card, fix one of them.</p>
+                <h3>Core Policies</h3>
+                <p class="node-desc">The <code>memories/repo/core-policies.md</code> file stores the repo-wide constitution
+                    and active session limits, rigor settings, telemetry constraints, and known limits. Read
+                    it at session start and before non-trivial work; if reality diverges from the policies, fix one of them.</p>
             </div>
             <div class="section-card">
                 <h3>Memory Promotion Thresholds</h3>
@@ -920,7 +920,8 @@ artifacts/features/</code></pre>
                     <span class="tier-badge">TIER 1</span>
                     <div class="tier-content">
                         <strong>Router &amp; Entrypoint</strong>
-                        <span><code>AGENTS.md</code>, <code>INDEX.md</code> (master index), <code>CLAUDE.md</code>, skill registry, priority rules.</span>
+                        <span><code>AGENTS.md</code>, <code>INDEX.md</code> (master index), <code>CLAUDE.md</code>,
+                            skill registry, priority rules.</span>
                     </div>
                     <div class="tier-load">Always loaded</div>
                 </div>
@@ -928,7 +929,8 @@ artifacts/features/</code></pre>
                     <span class="tier-badge">TIER 2</span>
                     <div class="tier-content">
                         <strong>Always-On Memory</strong>
-                        <span>Constitution, security policy, harness config, memory <code>memories/repo/INDEX.md</code>.</span>
+                        <span>Constitution, security policy, harness config, memory
+                            <code>memories/repo/INDEX.md</code>.</span>
                     </div>
                     <div class="tier-load">Always loaded</div>
                 </div>
@@ -981,13 +983,12 @@ artifacts/features/</code></pre>
                 <h3>Smart Context Routing</h3>
                 <p class="node-desc">Active sessions load only matching memories based on trigger keywords declared in
                     the routing index. This keeps context windows lean, lowers token usage, and prevents LLM context
-                    fatigue. If <code>memories/repo/INDEX.md</code> is missing or stale, the session falls back to loading every
+                    fatigue. If <code>memories/repo/INDEX.md</code> is missing or stale, the session falls back to
+                    loading every
                     memory file and routes the gap to <code>/context-memory</code> for index repair.</p>
                 <div class="audience-grid" style="margin-bottom: var(--space-6);">
                     <div class="metric-card">
                         <strong>Always</strong>
-                        <p><code>core-policies.md</code>,</p>
-                        <p><code>security-policy.md</code>,</p>
                         <p><code>core-policies.md</code></p>
                         <p>&mdash; every session.</p>
                     </div>
@@ -1077,13 +1078,13 @@ artifacts/features/</code></pre>
 
         <section id="workflow">
             <span class="eyebrow-mono">§04 · End-to-End Lifecycle</span>
-            <h2>7. Full Workflow — End-to-End Lifecycle (15 Skills)</h2>
-            <p class="node-desc">The full end-to-end flow across all 15 skills. Solid nodes are the required path;
+            <h2>7. Full Workflow — End-to-End Lifecycle (16 Skills)</h2>
+            <p class="node-desc">The full end-to-end flow across all 16 skills. Solid nodes are the required path;
                 dashed/optional nodes run only when their condition is met. Diamonds are routing decisions; blue nodes
                 are
                 mechanical gates.</p>
             <p class="node-desc">First, here is the subsystems mapping diagram showing how skills are partitioned into
-                Project Starter, Context Engineering, Spec-Driven Development, and Harness Engineering subsystems,
+                Project Starter, Context Engineering, Spec-Driven Development, and Harness Engineering categories,
                 alongside their relationships to evidence and terminology memory files:</p>
             <figure class="kit-diagram">
                 <div class="mermaid-render"
@@ -1204,11 +1205,7 @@ artifacts/features/</code></pre>
                                 contract, and manage the <strong>Project Dictionary</strong>.</div>
                             <div class="artifacts-list">
                                 <span class="artifact-item"
-                                    data-tooltip="Normative rules/guardrails">core-policies.md</span>
-                                <span class="artifact-item"
-                                    data-tooltip="Repo defaults, command conventions, and artifact routing">core-policies.md</span>
-                                <span class="artifact-item"
-                                    data-tooltip="Permission tiers, trust boundaries, and blocked actions">security-policy.md</span>
+                                    data-tooltip="Normative rules, guardrails, and security boundaries">core-policies.md</span>
                                 <span class="artifact-item"
                                     data-tooltip="Repeated, evidence-backed heuristics">learned-heuristics.md</span>
                                 <span class="artifact-item"
@@ -1409,8 +1406,7 @@ artifacts/features/</code></pre>
                             <tr>
                                 <td><strong>Memory</strong></td>
                                 <td>Load repo rules, maintain durable memory, and synthesize the coding contract.</td>
-                                <td><code>core-policies.md</code>, <code>core-policies.md</code>,
-                                    <code>security-policy.md</code>, <code>learned-heuristics.md</code>,
+                                <td><code>core-policies.md</code>, <code>learned-heuristics.md</code>,
                                     <code>project-knowledge-base.md</code>, <code>docs/project/architecture.md</code>
                                 </td>
                             </tr>
@@ -1459,7 +1455,8 @@ artifacts/features/</code></pre>
                             </tr>
                             <tr>
                                 <td><strong>Harness</strong></td>
-                                <td>Assess, evaluate, or improve the environment across the six harness subsystems.</td>
+                                <td>Assess, evaluate, or improve the environment across the 7-pillar ETCLOVG framework.
+                                </td>
                                 <td><code>harness-assessment.md</code>, <code>eval-report.md</code>,
                                     <code>harness-telemetry.md</code>, <code>docs/generated/codemap.md</code>,
                                     <code>docs/generated/references-index.md</code>
@@ -1488,19 +1485,13 @@ artifacts/features/</code></pre>
                             </tr>
                             <tr>
                                 <td><code>core-policies.md</code></td>
-                                <td>Repo workflow defaults</td>
-                                <td>Captures commands, paths, tracker mode, and session setup choices.</td>
+                                <td>Repo workflow defaults & rules</td>
+                                <td>Captures rules, boundaries, commands, tracker mode, and session defaults.</td>
                             </tr>
                             <tr>
                                 <td><code>project-knowledge-base.md</code></td>
                                 <td>Descriptive repo memory</td>
                                 <td>Stores stack conventions, recurring patterns, and the Project Dictionary.</td>
-                            </tr>
-                            <tr>
-                                <td><code>security-policy.md</code></td>
-                                <td>Permission model</td>
-                                <td>Captures trust boundaries, sandbox expectations, and confirm-vs-blocked actions.
-                                </td>
                             </tr>
                             <tr>
                                 <td><code>learned-heuristics.md</code></td>
@@ -1643,7 +1634,8 @@ artifacts/features/</code></pre>
                 <h3>Self-Improving Knowledge</h3>
                 <p class="node-desc">The knowledge base compounds as features ship. A passing
                     <code>/harness-verify</code>
-                    verdict triggers a <strong>mandatory post-ship sync</strong>: every file in <code>memories/repo/INDEX.md</code> is
+                    verdict triggers a <strong>mandatory post-ship sync</strong>: every file in
+                    <code>memories/repo/INDEX.md</code> is
                     either
                     updated or named with a one-line reason it was untouched. The sweep distills lessons into
                     <code>session-extracts.md</code> candidates, which <code>/context-memory</code> then promotes,
@@ -1658,7 +1650,8 @@ artifacts/features/</code></pre>
                     </div>
                     <div class="metric-card">
                         <strong>2. Sweep</strong>
-                        Post-ship sync walks every file in <code>memories/repo/INDEX.md</code>; updates land where evidence supports
+                        Post-ship sync walks every file in <code>memories/repo/INDEX.md</code>; updates land where
+                        evidence supports
                         them.
                     </div>
                     <div class="metric-card">
@@ -1862,7 +1855,7 @@ artifacts/features/</code></pre>
         <section id="skills-catalog">
             <span class="eyebrow-mono">§07 · Skill Catalog</span>
             <h2>11. Complete Skill Catalog</h2>
-            <p class="node-desc">CoreZero Nexus provides 15 specialized skills to handle the end-to-end lifecycle. The
+            <p class="node-desc">CoreZero provides 16 specialized skills to handle the end-to-end lifecycle. The
                 sequence diagram below shows how the agent runtime interacts with the user, skill files, and memories
                 during execution:</p>
             <figure class="kit-diagram" style="max-width: 80%; margin: 1.5rem auto;">
@@ -1879,8 +1872,7 @@ artifacts/features/</code></pre>
                     <h4>starter-init</h4>
                     <p>Bootstraps repo routing, AGENTS.md router, workflow defaults, starter memory, and verifies
                         clean-state prerequisites. Interviews for tech stack (Node.js, Python, Go, Rust), test
-                        runners, and linters, captures operating defaults in <code>core-policies.md</code>, generates
-                        <code>HARNESS_CARD.md</code> at repo root, and seeds generated references
+                        runners, and linters, captures operating defaults in <code>core-policies.md</code>, and seeds generated references
                         (<code>docs/generated/codemap.md</code>, <code>references-index.md</code>).
                         <strong>Phase A (Archaeology):</strong> runs automatically on repositories with existing code,
                         mapping module dependencies, seeding heuristics, and generating the
@@ -1902,8 +1894,8 @@ artifacts/features/</code></pre>
                 </div>
                 <div class="skill-card">
                     <h4>harness-maintain</h4>
-                    <p>Assesses, evaluates, and improves the repository harness across Instructions, State,
-                        Verification, Scope, Lifecycle, and Security.</p>
+                    <p>Assesses, evaluates, and improves the repository harness across the 7-pillar ETCLOVG framework.
+                    </p>
                     <p><strong>References:</strong> assessment rubric, eval modes, security model, generated
                         references, failure-driven improvement.
                     </p>
@@ -1915,6 +1907,14 @@ artifacts/features/</code></pre>
                         state (compacts after use).</p>
                     <p><strong>References:</strong> constitution, harness config, security policy, learned heuristics,
                         knowledge base, shared language.</p>
+                </div>
+                <div class="skill-card">
+                    <h4>context-compact</h4>
+                    <p>Compresses and garbage-collects oversized memory files to preserve token context. Summarizes,
+                        deduplicates, and prunes verbose descriptions or deprecated rules in repository memory files
+                        while retaining 100% of their critical intent.</p>
+                    <p><strong>References:</strong> compaction rules, data preservation, memory pruning, size
+                        thresholds.</p>
                 </div>
                 <div class="skill-card">
                     <h4>spec-research</h4>
@@ -2144,10 +2144,12 @@ artifacts/features/</code></pre>
             </div>
 
             <h3 style="margin-top: var(--space-8);">Project Templates (Fillable)</h3>
-            <p class="node-desc">The fillable project templates ship under <code>docs/project/</code> for the surrounding
+            <p class="node-desc">The fillable project templates ship under <code>docs/project/</code> for the
+                surrounding
                 project &mdash; not for individual features. Adopters customize them once per repo to anchor product
                 intent and implementation expectations.
-                <strong>Note:</strong> <code>docs/project/architecture.md</code> is a <em>living document</em> updated as the
+                <strong>Note:</strong> <code>docs/project/architecture.md</code> is a <em>living document</em> updated
+                as the
                 system evolves, not a fillable template.
             </p>
             <div class="data-table-container">
@@ -2216,7 +2218,7 @@ artifacts/features/</code></pre>
                 <pre><code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /path/to/your/project</code></pre>
                 <p>Installer output looks like this:</p>
-                <pre><code>CoreZero Nexus installer
+                <pre><code>CoreZero installer
   Target:   /path/to/your/project
 
 Installing kit content (overwrite)...
@@ -2229,11 +2231,9 @@ Summary
   Files backed up: 0 -> .corezero-backup-&lt;timestamp&gt;
 
 Next steps:
-  1. Review HARNESS_CARD.md and fill in repo-specific values
-  2. Review memories/repo/core-policies.md (set rigor profile)
-  3. Review memories/repo/core-policies.md, security-policy.md
-  4. Run /starter-init in your AI agent to bootstrap the repo
-  5. Start a feature under artifacts/features/&lt;slug&gt;/</code></pre>
+  1. Review memories/repo/core-policies.md (set rigor profile and limits)
+  2. Run /starter-init in your AI agent to bootstrap the repo
+  3. Start a feature under artifacts/features/&lt;slug&gt;/</code></pre>
                 <p>Already cloned the kit? Run the installer locally instead:</p>
                 <pre><code>bash scripts/install.sh /path/to/your/project</code></pre>
                 <p>Then bootstrap the harness and create durable memory:</p>
@@ -2755,9 +2755,7 @@ Feature slug: my-first-feature</code></pre>
             <h2>11. Entrypoints and Integrations</h2>
             <div class="icon-grid">
                 <div class="icon-card"><strong>AGENTS.md</strong>Repository entrypoint baseline</div>
-                <div class="icon-card"><strong>memories/repo/core-policies.md</strong>Normative repo contract</div>
-                <div class="icon-card"><strong>memories/repo/security-policy.md</strong>Permission model and trust
-                    boundaries</div>
+                <div class="icon-card"><strong>memories/repo/core-policies.md</strong>Constitution, config & security</div>
                 <div class="icon-card"><strong>memories/repo/project-knowledge-base.md</strong>Descriptive repo guidance
                 </div>
                 <div class="icon-card"><strong>docs/generated/</strong>Codemap and reusable reference index</div>
@@ -2825,9 +2823,9 @@ Feature slug: my-first-feature</code></pre>
                 <ol>
                     <li>Read the repo entrypoint such as <code>AGENTS.md</code>.</li>
                     <li>Load <code>memories/repo/core-policies.md</code>.</li>
-                    <li>Load <code>memories/repo/security-policy.md</code>.</li>
                     <li>Load <code>memories/repo/project-knowledge-base.md</code>.</li>
-                    <li>Load <code>docs/project/architecture.md</code> and <code>docs/generated/codemap.md</code> when present.
+                    <li>Load <code>docs/project/architecture.md</code> and <code>docs/generated/codemap.md</code> when
+                        present.
                     </li>
                     <li>Read the current feature folder under <code>artifacts/features/&lt;slug&gt;/</code>.</li>
                 </ol>
@@ -2855,20 +2853,21 @@ Feature slug: my-first-feature</code></pre>
                 <div class="coordination-list" style="margin-top: 1.5rem;">
                     <p><strong>The Five Execution Modes:</strong></p>
                     <ul>
-                        <li><strong>Assess Mode (Audit &amp; Score):</strong> Scores the repository against the six core
-                            harness subsystems (Instructions, State, Verification, Scope, Lifecycle, Security) using a
+                        <li><strong>Assess Mode (Audit &amp; Score):</strong> Scores the repository against the 7-pillar
+                            ETCLOVG Taxonomy (Execution, Tools, Context, Logic, Observability, Verification, Governance)
+                            using a
                             1-5 rubric. It checks pending feature candidates (flagging when they exceed 5) and generates
                             the <code>harness-assessment.md</code> report.</li>
                         <li><strong>Create Mode (Bootstrap &amp; Setup):</strong> Bootstraps a brand new harness
                             environment for a repository. It runs <code>starter-init</code>, generates the
-                            <code>core-policies.md</code>, <code>security-policy.md</code>,
+                            <code>core-policies.md</code>,
                             <code>project-knowledge-base.md</code>, and <code>learned-heuristics.md</code> files, and
                             indexes the project structure.
                         </li>
                         <li><strong>Improve Mode (Observability Triage):</strong> Analyzes failures from the auto-tier
                             <code>harness-telemetry.md</code>. It categorizes issues (Mechanical, Alignment, or LLM
                             limits), generates prioritized remediation tasks, applies durable fixes to the owning
-                            subsystem, and queues instruction-tier promotions.
+                            ETCLOVG pillar, and queues instruction-tier promotions.
                         </li>
                         <li><strong>Eval Mode (Split Evaluation):</strong> Runs split evaluations (Mechanical,
                             Alignment, Adversarial/Security, Continuity) over a feature execution flow. It produces
@@ -3056,7 +3055,7 @@ Feature slug: my-first-feature</code></pre>
     <a href="#" id="back-to-top" title="Back to top">↑</a>
 
     <footer class="main-footer">
-        <p>CoreZero Nexus &bull; Document standard</p>
+        <p>CoreZero &bull; Document standard</p>
     </footer>
 
     <script src="common.js"></script>

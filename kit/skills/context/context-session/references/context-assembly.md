@@ -8,20 +8,19 @@ Load context from highest-signal to lowest-signal:
 
 1. **Router**
    - `AGENTS.md` — runtime instruction router (always loaded)
-   - `INDEX.md` — master context routing index (always loaded)
-   - `memories/repo/INDEX.md` — memory router (always loaded)
+   - `MASTER_INDEX.md` — master context routing index (always loaded)
+   - `MASTER_INDEX.md` — memory router (always loaded)
    - Purpose: locate the workflow contract, repo entry rules, and the memory map
 2. **Repo Memory — Always**
    - `memories/repo/core-policies.md`
    - `memories/repo/core-policies.md`
-   - `memories/repo/security-policy.md`
    - Purpose: durable rules, commands, and trust boundaries needed every session
 3. **Repo Memory — By Intent**
-   - Resolve by matching the active task against trigger keywords listed in `memories/repo/INDEX.md`.
+   - Resolve by matching the active task against trigger keywords listed in `MASTER_INDEX.md`.
 
    - **Knowledge group** (`project-knowledge-base.md`) — loaded when the task touches patterns, conventions, stack, or domain language.
    - **Learned group** (`learned-heuristics.md`) — loaded when the task echoes a heuristic trigger (recurring instinct, "we always/never", "last time").
-   - **Architecture group** (`docs/project/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
+   - **Architecture group** (`docs/project/architecture.md`, `docs/project/codemap.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
    - **Debug group** (`memories/repo/harness-telemetry.md`, prior `session-extracts.md`) — loaded only on debug, retro, failure, or post-mortem work.
    - Purpose: durable knowledge, but loaded by relevance, not by default. Skip groups whose triggers do not match.
 4. **Feature Artifacts**
@@ -37,9 +36,9 @@ Load context from highest-signal to lowest-signal:
 
 ## Assembly Order
 
-1. Load tier 1 on every session start. Read `memories/repo/INDEX.md` before loading any other memory file.
+1. Load tier 1 on every session start. Read `MASTER_INDEX.md` before loading any other memory file.
 2. Load tier 2 (Always group) on every session start.
-3. Load tier 3 by intent — match the task against `memories/repo/INDEX.md` trigger keywords and load only the groups that hit. Record which groups were loaded and which were skipped in `progress.md` or the session opener.
+3. Load tier 3 by intent — match the task against `MASTER_INDEX.md` trigger keywords and load only the groups that hit. Record which groups were loaded and which were skipped in `progress.md` or the session opener.
 
 4. Load tier 4 before editing or verifying anything.
 5. Load tier 5 just-in-time for the current task.
@@ -51,7 +50,7 @@ Load context from highest-signal to lowest-signal:
 - **Semantic Trigger Evaluation:** Evaluate the task requirements. If they align conceptually with architecture patterns, API contracts, codebase constraints, or previous heuristics, trigger the load even if literal keyword matching is absent.
 - When the task is genuinely cross-cutting, load multiple groups but state which and why.
 - When no by-intent group matches conceptually, proceed with the Always tier only and record "no by-intent groups matched" in the session opener — silent skipping is not allowed.
-- If `INDEX.md` is missing or stale, fall back to loading every memory file and route the gap to `context-memory` for index repair.
+- If `MASTER_INDEX.md` is missing or stale, fall back to loading every memory file and route the gap to `context-memory` for index repair.
 
 ## Compaction Triggers
 
