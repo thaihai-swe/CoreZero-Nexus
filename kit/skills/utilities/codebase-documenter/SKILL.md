@@ -8,3 +8,6 @@ compatibility: Designed for AI coding agents.
 
 ## Overview
 Generates large-scale documentation.
+
+## Workflow
+1. When generating large-scale documentation, use `references/templates.md` and `references/best-practices.md` to structure the documents.

@@ -19,7 +19,7 @@ Investigate system behaviors and produce `artifacts/features/<slug>/analysis.md`
 1.5 **Domain Pack Scan**: For each installed pack listed in `MASTER_INDEX.md` `## By Domain Packs`, read `memories/domain/<name>/glossary.md` frontmatter `triggers:`. If any trigger keyword appears in the user's task description or proposal, note the matched pack name in `status.md` under `## Loaded Domain Packs`. Load that pack's `glossary.md` now. Do this before conducting research.
 2. **Reproduce**: For bugs, recreate the failure first.
 3. **Map**: Map target files, trace dependencies, and identify boundaries.
-4. **Document**: Write findings, risks, and next steps in `artifacts/features/<slug>/analysis.md`.
+4. **Document**: Write findings, risks, and next steps in `artifacts/features/<slug>/analysis.md` using `references/analysis-template.md`.
 5. **Handoff**: Set `artifacts/features/<slug>/status.md` to `Research Complete`. Route to `/spec-requirements` if scope is clear, or `/spec-plan` if a formal plan is needed first.
 
 ## Core Rules

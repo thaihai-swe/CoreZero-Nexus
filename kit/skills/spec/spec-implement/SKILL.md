@@ -17,7 +17,7 @@ Perform the coding work. Follow `artifacts/features/<slug>/tasks.md` and execute
 ## Workflow
 1. **Initialize State**: Update the `## Current State` section of `artifacts/features/<slug>/status.md` to set phase to `Implementing`.
 2. **Select Task**: Choose the first unblocked task ID from `artifacts/features/<slug>/tasks.md`.
-3. **Coding**: Implement code and tests within the task boundary.
+3. **Coding**: Implement code and tests within the task boundary, following guidelines in `references/implementation-standards.md` and `references/design-standards.md`.
 4. **Validation**: Run `bash kit/scripts/harness/gate-runner.sh` for all mechanical validation. If the gate fails, pipe the output into `bash kit/scripts/harness/telemetry-collector.sh` to log the failure, then resolve the root cause.
 5. **Log & Close**: Mark task `Done` in `artifacts/features/<slug>/tasks.md`.
 6. **Next Step**: If tasks remain, continue. If complete, route to `/harness-verify`.

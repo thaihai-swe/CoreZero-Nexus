@@ -17,7 +17,7 @@ Record significant architectural decisions.
 ## Workflow
 1. Identify the decision to be made.
 2. Consider context, options, and consequences.
-3. Append the decision to `docs/project/architecture.md`.
+3. Append the decision to `docs/project/architecture.md` using `references/adr-template.md`.
 
 ## Core Rules
 - Keep ADRs concise but informative.

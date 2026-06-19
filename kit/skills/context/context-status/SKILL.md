@@ -20,7 +20,7 @@ Aggregates status across all active feature branches, updates the repo-wide stat
    - Active phase (Spec'ing, Planning, Implementing, Verifying, Done).
    - Current active task ID.
    - Blockers or open clarification flags.
-3. **Compile Dashboard**: Format a text-based status dashboard containing:
+3. **Compile Dashboard**: Format a text-based status dashboard using `references/status-report-template.md` containing:
    - A list of all active features, their current phase, and active task.
    - Any currently active blocker flags.
    - Current failure logs summary.

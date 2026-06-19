@@ -17,7 +17,7 @@ Bootstraps the `docs/` and `memories/` directories with standard templates, then
 ## Workflow
 
 ### Phase 1 — Bootstrap Structure
-1. Ensure `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain` exist.
+1. Ensure `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain` exist. (Use `references/init-checklist.md` to guide the bootstrap process.)
 2. Confirm the installer seeded `memories/repo/harness-telemetry.md`. Create any that are missing.
 3. **Gitignore**: Detect or create `.gitignore` at the repository root. For each of the following entries — `docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh` — check whether an identical line already exists in `.gitignore`. Append **only** entries that are absent. Do not duplicate existing entries.
 

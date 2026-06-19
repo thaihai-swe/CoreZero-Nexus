@@ -24,7 +24,7 @@ Regenerate project maps, audit installation integrity, or evaluate harness logic
 ## Workflow
 
 ### Codemap Mode (Default)
-1. Walk the repository directory structure to compile a structured file map of core files.
+1. Walk the repository directory structure to compile a structured file map of core files using guidelines in `references/codemap-generation.md`.
 2. Overwrite `docs/project/codemap.md` with the updated hierarchy.
 3. Call `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard at `docs/generated/dashboard.html`.
 
