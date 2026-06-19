@@ -106,7 +106,7 @@ The delta names what changes against the canonical spec — not what the feature
   - Reason:
   - Migration / compensating behavior:
 
-The merge into `memories/domain/spec.md` happens during `/harness-verify` post-ship sync per `kit/skills/spec/spec-requirements/references/delta-spec-operations.md`. The feature's own `## Functional Requirements` section remains the source of truth for what was built; the delta exists so the canonical spec stays accurate after this feature lands.
+The merge into `memories/domain/spec.md` happens during `/harness-verify` post-ship sync per `kit/skills/spec-requirements/references/delta-spec-operations.md`. The feature's own `## Functional Requirements` section remains the source of truth for what was built; the delta exists so the canonical spec stays accurate after this feature lands.
 
 ## Gray-Area Decisions
 
