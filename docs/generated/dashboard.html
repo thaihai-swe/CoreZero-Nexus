@@ -343,7 +343,7 @@
             <div class="controls">
                 <input type="text" id="search-bar" class="search-input" placeholder="Search features by name or slug..." oninput="filterCards()">
             </div>
-            
+
             <div id="features-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <!-- Dynamically generated features go here -->
             </div>
@@ -414,7 +414,7 @@
                 container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-secondary);">No active features found.</div>';
                 return;
             }
-            
+
             container.innerHTML = features.map((feat, index) => {
                 const phaseClass = 'badge-' + feat.phase.toLowerCase().replace(/[' ]/g, '');
                 return `
@@ -422,19 +422,12 @@
                         <div class="card-header">
                             <div>
                                 <div class="card-title">${escapeHtml(feat.title)}</div>
+                                
                                 <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">${escapeHtml(feat.slug)}</div>
                             </div>
                             <span class="badge ${phaseClass}">${escapeHtml(feat.phase)}</span>
                         </div>
                         <div class="meta-list">
-                            <div class="meta-item">
-                                <div class="meta-label">Claimed By</div>
-                                <div class="meta-value" id="claim-val-${index}">${escapeHtml(feat.claimed_by)}</div>
-                            </div>
-                            <div class="meta-item">
-                                <div class="meta-label">Lease Expires</div>
-                                <div class="meta-value">${escapeHtml(feat.lease)}</div>
-                            </div>
                             <div class="meta-item">
                                 <div class="meta-label">Next Step</div>
                                 <div class="meta-value">${escapeHtml(feat.next_step)}</div>

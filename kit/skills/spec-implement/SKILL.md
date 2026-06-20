@@ -27,7 +27,7 @@ Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tas
     - **Decision Provenance**: If implementation requires a design decision not covered in `spec.md` or `plan.md` (e.g., swapping a library), stop coding. Route to `/spec-adr` if architectural. For minor choices: append a `## Decision Record` block to `progress.md` (choice, reason) before writing code. Do not implement undocumented mid-flight decisions silently.
     - **Proof Policy**: Satisfy planned proof surfaces. If the plan mandates tests, implement them.
 7. **Mechanical Validation**: Re-run the local task proof to verify passes. Then, run `bash kit/scripts/harness/gate-runner.sh` for all mechanical validation. If the gate fails, pipe the output into `bash kit/scripts/harness/telemetry-collector.sh` to log the failure, then resolve the root cause.
-8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done`. Update `progress.md` with session notes.
+8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done` and explicitly toggle the `- [ ]` markdown checkbox to `- [x]` in the task list. Update `progress.md` with session notes.
 9. **Next Step**: If tasks remain, continue `/spec-implement`. If complete, hand off to `/harness-verify`. If issues arise (scope break, planning gaps), stop and route to `/spec-plan`.
 
 ## Core Rules

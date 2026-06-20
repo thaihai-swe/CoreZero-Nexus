@@ -36,19 +36,21 @@ def parse_feature_status(status_file: Path):
     if not status_file.exists():
         return {}
     content = status_file.read_text(encoding="utf-8")
-    
+
     # Simple regex to extract metadata fields
     title_match = re.search(r"^#\s+(.*)", content, re.MULTILINE)
-    phase_match = re.search(r"-\s+(Phase|State):\s*(.*)", content, re.IGNORECASE)
-    claim_match = re.search(r"-\s+Claimed\s*by:\s*(.*)", content, re.IGNORECASE)
-    lease_match = re.search(r"-\s+Lease\s*expires:\s*(.*)", content, re.IGNORECASE)
+    phase_match = re.search(r"## .*Current Phase:\s*(.*)", content, re.IGNORECASE)
+    if not phase_match:
+        phase_match = re.search(r"-\s+(Phase|State):\s*(.*)", content, re.IGNORECASE)
+
     blocker_match = re.search(r"-\s+Blockers?:\s*(.*)", content, re.IGNORECASE)
-    
+
+    next_step_match = re.search(r"## .*Next Step\n+(.*)", content, re.IGNORECASE)
     return {
+        "next_step_explicit": next_step_match.group(1).strip() if next_step_match else None,
         "title": title_match.group(1).strip() if title_match else status_file.parent.name,
-        "phase": phase_match.group(2).strip() if phase_match else "Unknown",
-        "claimed_by": claim_match.group(1).strip() if claim_match else "None",
-        "lease": lease_match.group(1).strip() if lease_match else "N/A",
+        "phase": phase_match.group(1).strip() if phase_match else "Unknown",
+
         "blockers": blocker_match.group(1).strip() if blocker_match else "None",
         "last_updated": datetime.fromtimestamp(
             status_file.stat().st_mtime,
@@ -56,16 +58,16 @@ def parse_feature_status(status_file: Path):
         ).strftime("%Y-%m-%d")
     }
 
-def parse_feature_progress(progress_file: Path):
-    if not progress_file.exists():
+def parse_feature_progress(tasks_file: Path):
+    if not tasks_file.exists():
         return {"total": 0, "completed": 0, "percent": 0}
-    content = progress_file.read_text(encoding="utf-8")
-    
+    content = tasks_file.read_text(encoding="utf-8")
+
     # Match checkbox tasks like - [x] or - [ ]
     tasks = re.findall(r"-\s+\[([ xX])\]\s+(.*)", content)
     if not tasks:
         return {"total": 0, "completed": 0, "percent": 0}
-    
+
     completed = sum(1 for status, _ in tasks if status.strip().lower() == "x")
     total = len(tasks)
     percent = int((completed / total) * 100) if total > 0 else 0
@@ -103,17 +105,16 @@ def scan_workspace(root_path: Path):
             if item.is_dir():
                 slug = item.name
                 status = parse_feature_status(item / "status.md")
-                progress = parse_feature_progress(item / "progress.md")
-                
+                progress = parse_feature_progress(item / "tasks.md")
+
                 features.append({
                     "slug": slug,
                     "title": status.get("title", slug),
                     "phase": status.get("phase", "Unknown"),
-                    "claimed_by": status.get("claimed_by", "None"),
-                    "lease": status.get("lease", "N/A"),
+
                     "blockers": status.get("blockers", "None"),
                     "last_updated": status.get("last_updated", "N/A"),
-                    "next_step": infer_next_step(status.get("phase", "Unknown"), progress),
+                    "next_step": status.get("next_step_explicit") or infer_next_step(status.get("phase", "Unknown"), progress),
                     "has_blocker": has_blocker(status.get("blockers", "None")),
                     "progress": progress
                 })
@@ -465,7 +466,7 @@ def get_html_template(features_json):
             <div class="controls">
                 <input type="text" id="search-bar" class="search-input" placeholder="Search features by name or slug..." oninput="filterCards()">
             </div>
-            
+
             <div id="features-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <!-- Dynamically generated features go here -->
             </div>
@@ -536,7 +537,7 @@ def get_html_template(features_json):
                 container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-secondary);">No active features found.</div>';
                 return;
             }}
-            
+
             container.innerHTML = features.map((feat, index) => {{
                 const phaseClass = 'badge-' + feat.phase.toLowerCase().replace(/[' ]/g, '');
                 return `
@@ -544,19 +545,12 @@ def get_html_template(features_json):
                         <div class="card-header">
                             <div>
                                 <div class="card-title">${{escapeHtml(feat.title)}}</div>
+                                
                                 <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">${{escapeHtml(feat.slug)}}</div>
                             </div>
                             <span class="badge ${{phaseClass}}">${{escapeHtml(feat.phase)}}</span>
                         </div>
                         <div class="meta-list">
-                            <div class="meta-item">
-                                <div class="meta-label">Claimed By</div>
-                                <div class="meta-value" id="claim-val-${{index}}">${{escapeHtml(feat.claimed_by)}}</div>
-                            </div>
-                            <div class="meta-item">
-                                <div class="meta-label">Lease Expires</div>
-                                <div class="meta-value">${{escapeHtml(feat.lease)}}</div>
-                            </div>
                             <div class="meta-item">
                                 <div class="meta-label">Next Step</div>
                                 <div class="meta-value">${{escapeHtml(feat.next_step)}}</div>
@@ -603,19 +597,19 @@ def get_html_template(features_json):
 def main():
     args = parse_args()
     root = Path(args.root).resolve()
-    
+
     if args.output is None:
         output_path = root / "docs/generated/dashboard.html"
     else:
         output_path = Path(args.output).resolve()
-        
+
     # Scan for features
     try:
         features = scan_workspace(root)
     except Exception as exc:
         print(f"Error scanning workspace: {exc}", file=sys.stderr)
         return 1
-        
+
     # Render dashboard
     try:
         html_content = get_html_template(
@@ -624,22 +618,22 @@ def main():
     except Exception as exc:
         print(f"Error rendering dashboard: {exc}", file=sys.stderr)
         return 1
-        
+
     if args.check_only:
         print(f"Generator structure check passed. Scanned {len(features)} feature(s) successfully.")
         return 0
-        
+
     if args.dry_run:
         print(f"Features scanned: {len(features)}")
         return 0
-        
+
     try:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(html_content, encoding="utf-8")
     except Exception as exc:
         print(f"Error writing output dashboard: {exc}", file=sys.stderr)
         return 1
-    
+
     print(f"Successfully generated visual dashboard at: {output_path}")
     return 0
 
