@@ -1,6 +1,8 @@
-# Tech Stack Reference
+# Project Tech Stack
 
-> Ownership: `Adopter-owned`
+> **Note:** This is a seeded placeholder for your project's technical stack.
+> The `/starter-init` skill will attempt to automatically pre-fill this document by scanning your package and configuration files (e.g., `package.json`, `pyproject.toml`, etc.). 
+> You and the kit's skills should collaboratively maintain this document as your dependencies and conventions evolve.
 
 <!-- LLM-friendly reference of your project's dependencies, APIs, tools, and conventions. Designed for agent consumption — agents read this to understand what's available without searching the codebase. /spec-research, /spec-plan, and /spec-implement use this for context. -->
 

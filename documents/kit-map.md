@@ -8,20 +8,22 @@ CoreZero is an installable AI software delivery framework. It is copied into an 
 
 The kit is not a single application. It is a repo-local harness made of instructions, skills, memory files, docs, and helper scripts.
 
-## The Four Layers
+## The Kit Layers
 
 ### Core Delivery
 
 Use this path for normal feature work:
 
-`/starter-init` -> `/spec-research` or `/spec-requirements` -> `/spec-plan` -> `/spec-implement` -> `/harness-verify`
+`/starter-init` -> `/spec-research` or `/spec-requirements` -> `/spec-plan` -> `/spec-implement` -> `/code-review` -> `/harness-verify`
 
 - `/starter-init` prepares the adopter repo for harnessed work.
 - `/spec-research` maps unknown or brownfield behavior before requirements are locked.
 - `/spec-requirements` defines the feature contract.
 - `/spec-plan` turns the contract into a design and task sequence.
 - `/spec-implement` performs the planned implementation.
+- `/code-review` performs an adversarial or constructive code review against policies and spec.
 - `/harness-verify` proves the work against the spec, plan, and available checks.
+- `/ponytail` modifies agent behavior to force the simplest, laziest working solution.
 
 ### Session And Memory
 
@@ -58,6 +60,7 @@ Use this layer when the repo needs durable explanation:
 | `skills/` | Kit-managed | Slash-command contracts and references. |
 | `scripts/` | Kit-managed | Installer, gate runner, telemetry, dashboard generator. |
 | `docs/rules/` | Kit-managed | Language and security rules. |
+| `docs/policies/` | Kit-managed | Cross-cutting code design and architectural policies. |
 | `docs/project/` | Adopter-owned seed | Project facts the adopter fills in and maintains. |
 | `docs/generated/` | Adopter-owned seed | Generated codemap, references, and dashboard outputs. |
 | `memories/repo/` | Adopter-owned seed | Durable memory, policies, heuristics, and telemetry. |
@@ -84,6 +87,7 @@ When in doubt, check `manifest.json` before editing a file as part of a kit upgr
 | Ready to define a feature | `/spec-requirements` |
 | Requirements are approved | `/spec-plan` |
 | Plan and tasks are ready | `/spec-implement` |
+| Ready to review completed code | `/code-review` |
 | Work appears complete | `/harness-verify` |
 | Resuming an existing feature | `/context-session START` |
 | Pausing but not done | `/context-session CHECKPOINT` |
@@ -91,6 +95,8 @@ When in doubt, check `manifest.json` before editing a file as part of a kit upgr
 | Memory files are too large | `/context-compact` |
 | Need project-wide status | `/context-status` |
 | Need to repair or evaluate the harness | `/harness-maintain` |
+| Need to document an architectural decision | `/spec-adr` |
+| Need the simplest, laziest working solution | `/ponytail` |
 | Need durable API or flow docs | `/technical-docs` |
 | Need broader repo documentation | `/codebase-documenter` |
 | Need a diagram | `/visualize` |

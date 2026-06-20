@@ -1,5 +1,9 @@
 # Example Domain — Patterns
 
+> **Ownership:** Collaborative — skill-updated + user-maintained.
+> **Updated by:** `/context-memory` post-ship sync when a new reusable pattern is confirmed by a completed feature.
+> **Read by:** `/spec-plan`, `/spec-implement` to reuse proven approaches and avoid reinvention.
+
 Proven implementation patterns for this domain. Replace with your domain's actual patterns.
 
 ## **Repository Pattern**

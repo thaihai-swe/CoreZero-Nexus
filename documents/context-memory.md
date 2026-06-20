@@ -95,7 +95,7 @@ flowchart TB
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
 **Intent groups (Tier 3) — defined in `MASTER_INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/codemap.md`).
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/code-map.md`).
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`).
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`).
 

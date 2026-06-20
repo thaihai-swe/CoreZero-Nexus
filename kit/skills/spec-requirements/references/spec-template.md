@@ -4,6 +4,7 @@
 
 - Feature name:
 - Feature slug:
+- Delivery profile: Tiny | Standard | Complex
 - Owner:
 - Status: Draft | In Review | Approved | In Progress | Done
 - Last updated:
@@ -74,40 +75,6 @@ What problem are we solving, for whom, and why now?
   - Medium: shared module, partial coverage, or known fragile integrations
   - High: load-bearing path, weak coverage, external dependents, or migration required
 
-## Delta
-
-*Optional. Fill in only when this feature modifies a canonical domain spec at `memories/domain/spec.md`. Skip for greenfield features and for brownfield features that do not touch a tracked domain. Required for Complex brownfield features whose `Impacted boundaries` overlap a domain pack listed in `MASTER_INDEX.md`.*
-
-The delta names what changes against the canonical spec — not what the feature does in total. A reader of the canonical spec plus this delta should see the post-merge target state.
-
-- **Target domain spec:** `memories/domain/spec.md`
-- **Domain pack triggers matched:** <list keywords from the pack's `glossary.md` frontmatter that this feature exercises>
-
-### ADDED Requirements
-
-*New REQ-IDs that did not exist in the canonical spec. Each entry must use the same `REQ-NNN` block format as `## Functional Requirements`.*
-
-- REQ-NNN (ADDED):
-
-### MODIFIED Requirements
-
-*Existing REQ-IDs whose behavior, priority, or validation surface changes. Quote the canonical text being replaced and give the new text. The merge rule in `references/delta-spec-operations.md` rejects a MODIFIED entry that does not show a before/after.*
-
-- REQ-NNN (MODIFIED):
-  - Before: <quote from canonical spec>
-  - After: <new text>
-  - Reason:
-
-### REMOVED Requirements
-
-*Existing REQ-IDs that no longer apply after this feature ships. Removed requirements must name the migration or compensating behavior — silent removal is rejected.*
-
-- REQ-NNN (REMOVED):
-  - Reason:
-  - Migration / compensating behavior:
-
-The merge into `memories/domain/spec.md` happens during `/harness-verify` post-ship sync per `kit/skills/spec-requirements/references/delta-spec-operations.md`. The feature's own `## Functional Requirements` section remains the source of truth for what was built; the delta exists so the canonical spec stays accurate after this feature lands.
-
 ## Gray-Area Decisions
 
 - Locked decisions that shape this spec:
@@ -167,13 +134,8 @@ The merge into `memories/domain/spec.md` happens during `/harness-verify` post-s
   - Linked scenario or success criteria:
   - Validation method:
   - Proof target:
-  - Scenario (Given / When / Then):           # recommended for high-risk or user-visible behaviors
-    - Given:
-    - When:
-    - Then:
-  - Test path:                                 # file path or test name exercising the scenario above; matches Proof target
 
-*(Add AC-002, AC-003, ... as needed. Each AC should have at least one scenario block when the behavior is user-visible, security-sensitive, or high-risk.)*
+*(Add AC-002, AC-003, ... as needed.)*
 
 ## Notes
 

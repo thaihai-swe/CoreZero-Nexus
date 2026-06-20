@@ -7,7 +7,7 @@
 
 | File | Contents | When to load |
 |------|----------|--------------|
-| `docs/project/codemap.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
+| `docs/project/code-map.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
 | `docs/rules/*.md` | Per-language and per-domain coding rules (e.g., Python style, security rules). | When the active task touches a specific language or security-sensitive domain. |
 | `manifest.json` | Installation manifest listing kit-managed (overwrite) and adopter-owned (copyIfMissing/preserve) files. | When auditing or modifying the kit file structure or installation behavior. |
 | memories/repo/core-policies.md | Repo-wide normative rules, canonical commands, limits, and security policy. | Read at session start and before changing core policies or security rules. |
@@ -40,7 +40,7 @@ Broad Intent Keywords: `architecture`, `pattern`, `convention`, `stack`, `module
 - `docs/project/glossary.md` — shared vocabulary and naming conventions. Load when naming or terminology matters.
 - `docs/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations.
 - `docs/project/project-constraints.md` — budgets, compliance, deploy, security constraints. Load when constraints bound the change.
-- `docs/project/codemap.md` — generated map of code locations.
+- `docs/project/code-map.md` — generated map of code locations.
 
 ### By Intent — Rules
 
@@ -96,14 +96,14 @@ The Always group loads every session. This matrix says what to **add** at each p
 | `docs/project/tech-stack.md` | Skip | Should | Should | Skip |
 | `docs/project/project-constraints.md` | Should | Should | Skip | Should |
 | `learned-heuristics.md` | Should | Should | Should | Should |
-| `docs/project/codemap.md` | Should | Should | Should | Skip |
+| `docs/project/code-map.md` | Should | Should | Should | Skip |
 | `docs/rules/*.md` (on language/domain match) | Skip | Should | Must | Should |
 | `docs/policies/code-design.md` (on software-design change) | Skip | Should | Should | Skip |
 | `domain/glossary.md` (on match) | Should | Should | Should | Skip |
 | `domain/boundaries.md` (on match) | Should | Should | Skip | Should |
 | `domain/patterns.md` (on match) | Skip | Should | Must | Skip |
 | `domain/anti-patterns.md` (on match) | Skip | Skip | Skip | Must |
-| `domain/spec.md` (when present & match) | Should | Must | Must | Skip |
+
 | `harness-telemetry.md` | Skip | Skip | Skip | Should |
 | Prior `session-extracts.md` | Skip | Should | Skip | Skip |
 
@@ -182,7 +182,7 @@ Skip it when:
 - The domain has no shared contract — only ad-hoc utilities.
 - The codebase is small enough that the source-of-truth can stay in code.
 
-When present, feature specs that change this domain's behavior file a `## Delta` (ADDED / MODIFIED / REMOVED). The merge happens in `/harness-verify` post-ship sync.
+When a feature changes a domain's behavior or boundaries, the agent directly edits `boundaries.md` to update its `## Invariants` and appends a row to the `## Change Log`. This happens in the `/context-memory` post-ship sync.
 
 ### Lifecycle
 

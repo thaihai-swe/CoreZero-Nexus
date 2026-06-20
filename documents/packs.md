@@ -108,7 +108,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
 - `docs/project/architecture.md`
-- `docs/generated/codemap.md`
+- `docs/generated/code-map.md`
 
 
 ---

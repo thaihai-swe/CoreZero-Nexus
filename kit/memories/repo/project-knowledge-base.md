@@ -45,7 +45,7 @@ The shipped helpers own the following durable surfaces:
 
 - **Baseline Testing**: `/starter-init` checks whether the target repository is greenfield or brownfield. It requires running the canonical baseline test or compile check. If none exists, the adopter must document the best available proof surface before autonomous feature work can proceed.
 - **Drift in Routers**: `AGENTS.md` must stay under 50 lines for its router portion to prevent context window saturation. Standard operating guidelines should remain in `core-policies.md` and only be linked from `AGENTS.md`.
-- **Generated Placeholder Ownership**: `docs/project/codemap.md` is a shipped placeholder refreshed by `/harness-maintain`. `docs/generated/dashboard.html` is refreshed by `/context-status`.
+- **Generated Placeholder Ownership**: `docs/project/code-map.md` is a shipped placeholder refreshed by `/harness-maintain`. `docs/generated/dashboard.html` is refreshed by `/context-status`.
 
 ## Feature Lifecycle Handoff Patterns
 

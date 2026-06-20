@@ -8,7 +8,7 @@
 | File | Contents | When to load |
 |------|----------|--------------|
 | `kit/memories/repo/INDEX.md` | Index of shipped package memories, rules, and domain-specific memories. | To locate kit constraints, heuristics, and routing rules. |
-| `kit/docs/generated/codemap.md` | Placeholder map of installed package locations. | Before changing shipped package structure. |
+| `kit/docs/generated/code-map.md` | Placeholder map of installed package locations. | Before changing shipped package structure. |
 | `kit/docs/generated/references-index.md` | Placeholder index of installed package references. | When tracing shipped doc and rules links. |
 | `kit/docs/rules/` | Shipped Python and security rules. | When the active task touches language or security guidance. |
 | `kit/manifest.json` | Installation manifest for the shipped package. | When auditing or changing what adopters receive. |
@@ -23,7 +23,7 @@ graph TD
     INDEX --> MEM["kit/memories/repo/INDEX.md"]
     INDEX --> RULES["kit/docs/rules/README.md"]
     INDEX --> DOCS["kit/docs/generated/references-index.md"]
-    INDEX --> MAP["kit/docs/generated/codemap.md"]
+    INDEX --> MAP["kit/docs/generated/code-map.md"]
     INDEX --> MANIFEST["kit/manifest.json"]
     INDEX --> POLICIES["kit/memories/repo/core-policies.md"]
     INDEX --> MAINT["documents/README.md"]

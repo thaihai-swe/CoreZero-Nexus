@@ -15,12 +15,10 @@ Procedure (Standard and above):
    - **Update** — apply the diff (route through the matching skill section: constitution, security policy, learned heuristics, PKB, architecture, observability log).
    - **Untouched, with reason** — name the file and give a one-line reason it was not changed (e.g., "no normative rule emerged", "no new architectural boundary", "all candidates already deferred").
    - **Skipped** — (Domain pack files only) if the file's granular load condition (e.g., cross-domain API work for `boundaries.md`) was not met during the feature lifecycle, it can be marked Skipped without a distinct reason.
-3a. **Domain Spec Delta Merge** (only if `spec.md` contains a `## Delta` section):
-    - Read the feature `spec.md` `## Delta` block — it lists ADDED / MODIFIED / REMOVED requirements.
-    - Open `memories/domain/spec.md`. If it does not exist, create it from the template surface.
-    - Apply ADDED / MODIFIED / REMOVED per the rules in `skills/spec/spec-requirements/references/delta-spec-operations.md`. Preserve REQ IDs and their history table.
-    - Run the post-merge checks (no orphan ACs, no duplicate REQ IDs, history table updated). If any check fails, abort the merge, write the failure to `session-extracts.md` under `## Domain Spec Merge — failed`, and surface to `harness-verify` as a verdict-blocking issue.
-    - On success, record `Updated: <REQ-IDs added/modified/removed> -> memories/domain/spec.md` in the sweep record alongside the other memory file decisions.
+3a. **Domain Boundary Update** (only if the feature touched a tracked domain):
+    - Check whether the feature changed a domain's ownership, integration contract, or invariants by reviewing `spec.md`'s `## Current Context` → `Impacted boundaries`.
+    - If yes: open `memories/domain/boundaries.md` (or the relevant named domain pack). Edit the `## Owns`, `## Does Not Own`, `## Integration Contracts`, or `## Invariants` sections directly to reflect the post-feature state. Append one row to `## Change Log` with today's date, the feature slug, and a plain-English summary of what changed.
+    - If no: mark the domain files `Untouched: feature did not affect domain boundaries or invariants`.
 4. **Heuristic Distillation & Deduplication:** When sweeping `learned-heuristics.md`, analyze the file contents before appending any new candidate. Compare new candidates against existing heuristics. If a candidate overlaps, has identical triggers, or addresses the same codebase boundary, do not add a duplicate rule. Instead, merge the lessons, increment the existing heuristic's `recurrence-count`, and distill the text to keep it concise, active-voice, and evidence-grounded.
 5. **Run promotion-threshold check**: for each updated file, compare against the thresholds in `core-policies.md` (lines, distinct subtopics, artifact references). If a file crosses a threshold, add it to the `## Promotion Watchlist` section in `MASTER_INDEX.md` and write a one-paragraph promotion proposal to `artifacts/features/<slug>/promotions.md`. Promotion itself requires user approval — never split a file unprompted.
 6. **Write the sweep record** to `artifacts/features/<slug>/session-extracts.md` under a new heading `## Post-Ship Sync — <ISO date>`. The record must list every memory file from `MASTER_INDEX.md` with one of:

@@ -11,7 +11,7 @@ Regenerate project maps, audit installation integrity, or evaluate harness logic
 
 ## I/O Hand-off Protocol
 - **Reads**: Entire codebase, `kit/manifest.json`, `kit/memories/repo/core-policies.md`.
-- **Writes**: `docs/project/codemap.md`, `docs/generated/dashboard.html`.
+- **Writes**: `docs/project/code-map.md`, `docs/generated/dashboard.html`.
 
 ## Modes
 
@@ -25,7 +25,7 @@ Regenerate project maps, audit installation integrity, or evaluate harness logic
 
 ### Codemap Mode (Default)
 1. Walk the repository directory structure to compile a structured file map of core files using guidelines in `references/codemap-generation.md`.
-2. Overwrite `docs/project/codemap.md` with the updated hierarchy.
+2. Overwrite `docs/project/code-map.md` with the updated hierarchy.
 3. Call `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard at `docs/generated/dashboard.html`.
 
 ### Audit Mode (`--audit`)
@@ -41,5 +41,5 @@ Regenerate project maps, audit installation integrity, or evaluate harness logic
 4. Verify `telemetry-collector.sh` correctly appends YAML-formatted telemetry log entries.
 
 ## Core Rules
-- **No Manual Codemaps**: Never edit `docs/project/codemap.md` by hand; always regenerate it programmatically.
+- **No Manual Codemaps**: Never edit `docs/project/code-map.md` by hand; always regenerate it programmatically.
 - **Audit Before Ship**: Every package release requires running Audit mode to ensure manifest consistency.

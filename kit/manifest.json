@@ -47,13 +47,12 @@
       "docs/project/project-constraints.md",
       "docs/project/glossary.md",
       "docs/project/tech-stack.md",
-      "docs/project/codemap.md",
+      "docs/project/code-map.md",
       "docs/generated/dashboard.html",
       "memories/domain/glossary.md",
       "memories/domain/patterns.md",
       "memories/domain/anti-patterns.md",
-      "memories/domain/boundaries.md",
-      "memories/domain/spec.md"
+      "memories/domain/boundaries.md"
     ],
     "crossTreeOverwrite": [],
     "preserve": [

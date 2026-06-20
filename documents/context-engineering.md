@@ -8,9 +8,9 @@ Defines how the kit assembles, budgets, compacts, and evicts context during long
 
 ## The Minimum Viable Context (MVC) Principle (Rule CC-011)
 
-To prevent cognitive drift, context window saturation, and high execution costs, the kit enforces the **Minimum Viable Context (MVC)** principle (**Rule CC-011**). 
+To prevent cognitive drift, context window saturation, and high execution costs, the kit enforces the **Minimum Viable Context (MVC)** principle (**Rule CC-011**).
 
-The core directive of MVC is: **Only load the minimal, high-signal context required to execute the active task.** 
+The core directive of MVC is: **Only load the minimal, high-signal context required to execute the active task.**
 
 Never dump full files, large directories, or entire database schemas into the agent's context window. Instead, follow progressive JIT (Just-In-Time) loading and enforce strict, aggressive compaction and eviction of stale data.
 
@@ -23,7 +23,7 @@ To structure workspace information efficiently, the kit divides memory into thre
 ```mermaid
 flowchart TD
     %% Three-Track Memory Model
-    
+
     subgraph Track1["1. Native Stack (Ephemeral Runtime)"]
         NS1["Router (AGENTS.md)"]
         NS2["JIT Code Content (T5)"]
@@ -45,15 +45,15 @@ flowchart TD
     Track2 -->|triage & promote lessons to| Track3
 ```
 
-1. **Native Stack (Ephemeral Runtime):** 
+1. **Native Stack (Ephemeral Runtime):**
    - **What**: The direct, live token context loaded into the LLM during the active session. This includes the entrypoint router (`AGENTS.md`), JIT-loaded target code files, and transient execution outputs (Tiers 1, 5, and 6).
    - **Lifespan**: Volatile. Evicted and summarized aggressively within the session.
-   
-2. **Cross-Session Tools (Durable Local Repository):** 
+
+2. **Cross-Session Tools (Durable Local Repository):**
    - **What**: Git-tracked markdown files that store local feature state and repository-wide memories (Tiers 2, 3, and 4). Includes feature plans, tasks, progress logs, `learned-heuristics.md`, and `harness-telemetry.md`.
    - **Lifespan**: Persistent across sessions, versioned via Git.
-   
-3. **Team Sharing (Domain & Exporter Surface):** 
+
+3. **Team Sharing (Domain & Exporter Surface):**
    - **What**: Shared knowledge domain templates, boundaries, glossaries (`memories/domain/`), and system references that propagate to other developers and peer agent sessions.
    - **Lifespan**: Extremely durable, highly curated.
 
@@ -106,7 +106,7 @@ flowchart TB
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
 **Intent groups (Tier 3) — defined in `memories/repo/MASTER_INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/codemap.md`)
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/code-map.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
 - **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
@@ -304,7 +304,7 @@ memories/domain/
 ├── patterns.md      — proven domain patterns
 ├── anti-patterns.md — failure modes to avoid
 ├── boundaries.md    — domain ownership and integration contracts
-└── spec.md          — optional: canonical domain spec (REQ/AC contract)
+
 ```
 
 ### How Loading Works

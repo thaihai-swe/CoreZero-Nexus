@@ -21,7 +21,7 @@ Use this checklist to ensure the repository is fully prepared for harnessed agen
 - [ ] `memories/repo/project-knowledge-base.md` exists and contains descriptive stack details, patterns, and conventions.
 - [ ] Seeded adopter-owned docs under `docs/project/*.md` exist before pre-fill begins.
 - [ ] `docs/project/architecture.md` exists when the repository has meaningful subsystem boundaries, runtime layers, or external integrations.
-- [ ] `docs/project/codemap.md` exists when the repo is large enough to benefit from a generated structural map.
+- [ ] `docs/project/code-map.md` exists when the repo is large enough to benefit from a generated structural map.
 - [ ] Language runtime and dependency config files (e.g. package.json, requirements.txt, Cargo.toml) identified from manual code search.
 - [ ] Test runner command identified from manifests and documented in `core-policies.md`.
 - [ ] Lint/format/type-check commands identified from configurations and documented in `core-policies.md`.

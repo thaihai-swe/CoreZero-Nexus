@@ -35,7 +35,7 @@ When a public command, artifact contract, or skill workflow changes, update `doc
 Promote only what the repository or artifacts already support. Speculative rules and unverified observations do not belong in instruction-tier memory.
 
 ### CC-010 — Domain specs are descriptive; the constitution is normative
-The canonical domain spec contract lives in `memories/domain/spec.md`. Do not put repo-wide normative rules in domain specs or project facts in the constitution.
+Do not put repo-wide normative rules in domain packs or project facts in the constitution.
 
 ### CC-011 — Maintain Minimum Viable Context (MVC)
 To prevent memory drift, context must be tiered via the Three-Track Memory Model (Native Stack, Cross-Session Tools, Team Sharing). Use `MASTER_INDEX.md` for semantic routing and avoid dumping full-project context into the agent window.
@@ -84,7 +84,7 @@ Any change to an approved `spec.md` MUST be recorded in the spec's `## Spec Amen
 - Learned heuristics path: `memories/repo/learned-heuristics.md`
 - ADR location: `artifacts/features/<slug>/adr-*.md`
 - Generated documentation location: `docs/generated/`
-- Codemap path: `docs/project/codemap.md`
+- Codemap path: `docs/project/code-map.md`
 
 ## Verification Commands
 

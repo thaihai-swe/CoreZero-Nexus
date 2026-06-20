@@ -32,7 +32,7 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Trigger:
   - the repo grows enough that repeated codebase rediscovery is happening
 - Working heuristic:
-  - maintain `docs/project/codemap.md` as a compact landing surface
+  - maintain `docs/project/code-map.md` as a compact landing surface
 - Evidence:
   - repeated review and documentation passes required broad repo sweeps
 - Confidence: Medium

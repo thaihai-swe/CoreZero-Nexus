@@ -212,7 +212,7 @@ To build a template compatible with both greenfield and brownfield initiatives t
 │   ├── README.md                  # Project overview & command list
 │   ├── project/                   # Structural docs and project-specific context
 │   ├── policies/                  # Kit-managed coding policy guidance (e.g. code-design.md)
-│   └── generated/                 # Generated files (codemap.md, references-index.md)
+│   └── generated/                 # Generated files (code-map.md, references-index.md)
 ├── memories/
 │   ├── repo/                      # Durable Repo-wide Memory Track
 │   │   ├── INDEX.md               # Memory intent router
@@ -226,7 +226,7 @@ To build a template compatible with both greenfield and brownfield initiatives t
 │       ├── patterns.md            # Domain patterns template
 │       ├── anti-patterns.md       # Domain anti-patterns template
 │       ├── boundaries.md          # Domain boundaries template
-│       └── spec.md                # Canonical domain spec template
+
 ├── skills/                        # Shipped agent capability definitions (SKILL.md)
 ├── docs/rules/                    # Shipped syntax/lint coding standards
 └── scripts/                       # Harness validation & repair utilities

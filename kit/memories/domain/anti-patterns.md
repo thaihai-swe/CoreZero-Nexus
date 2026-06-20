@@ -1,5 +1,9 @@
 # Example Domain — Anti-Patterns
 
+> **Ownership:** Collaborative — skill-updated + user-maintained.
+> **Updated by:** `/context-memory` post-ship sync when a failure mode is observed during a completed feature.
+> **Read by:** `/spec-plan`, `/harness-verify` to prevent known failure modes from recurring.
+
 Known failure modes for this domain. Replace with your domain's actual anti-patterns.
 
 ## **Anemic Domain Model**
