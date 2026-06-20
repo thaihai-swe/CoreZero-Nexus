@@ -21,8 +21,14 @@ Investigate system behaviors and produce `artifacts/features/<slug>/analysis.md`
 
 1. **Initialization**: Create `status.md` if missing. Update the `## Current State` section to set phase to `Researching`. Load the rigor profile from `status.md` or fallback to `memories/repo/harness-config.md` default (use Automated Profile Selection from `../_shared/rigor-profiles.md` if not set).
 2. **Context Alignment**: For each installed pack listed in `MASTER_INDEX.md`, read `memories/domain/<name>/glossary.md` frontmatter `triggers:`. If matched, note in `status.md` and load that pack's `glossary.md` before conducting research.
-3. **Reproduce & Trace**: For bugs, recreate the failure with a script or concrete steps before investigating (Reproduce -> Hypothesize -> Instrument -> Observe). Follow the request path from symptoms to the first failing boundary.
-   - **Subagent-First Exploration (SFE):** Before reading large subsystems manually, delegate exploration to subagents. Assign each subagent a bounded area and return summary reports to the main context.
+3. **Bug Diagnosis Mode (For Bugs/Regressions)**: Recreate the failure with a script or concrete steps before investigating. You MUST follow this strict debugging loop:
+   1. **Build a Feedback Loop**: Create a red-capable command (a fast, deterministic test, curl, or script) that asserts the exact bug symptom. Do not proceed without this.
+   2. **Reproduce & Minimize**: Shrink the repro to the smallest scenario that still goes red.
+   3. **Hypothesize**: Generate 3-5 ranked, falsifiable hypotheses before testing any.
+   4. **Instrument**: Add targeted logs or debugger probes to test one hypothesis at a time.
+   5. **Propose Fix**: Document the verified root cause and propose the regression test seam and fix in `analysis.md` (to be handed off to implementation).
+   6. **Cleanup**: Ensure all debug instrumentation is removed.
+   - **Subagent-First Exploration (SFE):** For large unknown subsystems, delegate bounded explorations to subagents and return summaries.
 4. **Brownfield Mapping**: Map target files, trace dependencies, identify preserved behaviors, boundary contracts, reuse patterns, risks, and migration constraints. 
 5. **Document**: Write all findings, risks, and next steps in `artifacts/features/<slug>/analysis.md` using the Brownfield Readiness Artifact structure from `references/analysis-template.md` (or `references/brownfield-mapping-template.md`).
 6. **Handoff**: Update `status.md` to `Research Complete`. Route based on findings:

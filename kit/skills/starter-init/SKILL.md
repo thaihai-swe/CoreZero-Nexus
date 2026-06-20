@@ -23,7 +23,7 @@ Establishes the repository baseline for the harness before feature work begins. 
 3. **Step 3: Memory Customization (Phase B)**: This is mandatory. The installer seeds `memories/repo/*.md` with generic kit content. Run each step interactively by prompting the user for details to rewrite them:
    - **`core-policies.md`**: Prompt for project identity, default branch, and verification commands. Mark missing commands as `N/A`.
    - **`core-policies.md` Security**: Prompt for trust boundaries and sensitive paths (use Phase A findings). Keep `Prompt-Injection Defense` verbatim.
-   - **`project-knowledge-base.md`**: Prompt for main components, integration boundaries, and preserved behaviors.
+   - **`project-knowledge-base.md`**: Prompt for main components, integration boundaries, preserved behaviors, and **Domain Jargon / Ubiquitous Language**. Capturing project-specific jargon radically reduces verbosity and ambiguity in future sessions.
    - **`learned-heuristics.md`**: Drop kit-specific LH-* entries unless explicitly kept.
    - **Domain Packs**: Read `memories/domain/glossary.md` triggers. Prompt if subdomains exist. If yes, copy the domain scaffold into `memories/domain/<name>/` and update `MASTER_INDEX.md`.
 4. **Step 4: Confirm and Handoff**: Run `/context-memory --audit` to confirm all kit-internal paths are removed from the memory files and triggers are populated. Route the user to `/spec-research` (brownfield) or `/spec-requirements` (greenfield).
