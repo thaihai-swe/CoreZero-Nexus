@@ -28,13 +28,6 @@
 ## ⏭ Next Step
 Run `/spec-plan` or the exact next public command to [do next thing].
 
-## 📚 Active Artifacts
-- Proposal:
-- Context:
-- Spec:
-- Plan:
-- Tasks:
-- Review:
 
 ---
 *Last updated: [Date]*
