@@ -121,7 +121,7 @@ To conserve context window budget and prevent AI hallucination, the kit structur
 
 ### 3. End-to-End Workflow Lifecycle
 
-A complete feature delivery lifecycle follows a rigorous chronological sequence of commands and phases:
+A complete feature delivery lifecycle follows a structured chronological sequence of commands and phases:
 
 ```text
        1. Bootstrap           2. Session START        3. Requirements Intake

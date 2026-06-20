@@ -112,15 +112,7 @@ The support skills are real shipped skills, but they are not all mandatory for e
 
 ---
 
-## 3. Ceremony Scaling — How Much Rigor Runs
-
-The agent scales ceremony based on the risk, scope, and complexity of each feature. There is no separate rigor-profiles configuration file — the agent detects the appropriate level by reading the task, the repo state, and the spec.
-
-| Scale | What runs |
-|---|---|
-| Tiny | Minimal requirements, lean plan, implementation, and focused verification. Usually skips `/spec-research`, `/spec-adr`, and `/visualize` unless explicitly requested. |
-| Standard | Normal feature flow. Research runs if the codebase is unfamiliar. ADRs and diagrams are optional and used when they clarify real decisions or boundaries. |
-| Complex | Strongest ceremony. Research is required, ADRs are required for locked technical choices, diagrams are required when system structure changes, verification is deeper, and harness changes require `/harness-maintain eval`. |
+## 3. Canonical Feature Phases
 
 The canonical feature phases are defined in [`kit/skills/_shared/status-phases.md`](../kit/skills/_shared/status-phases.md). Core phases move forward through `Researching`, `Spec Approved`, `Plan Approved`, `Implementing`, `Verifying`, and `Done`. Optional states such as `ADR In Progress` and `Blocked` should not hide the underlying core phase.
 
@@ -167,7 +159,7 @@ Start a feature with either research or requirements:
 /spec-research
 ```
 
-Use `/spec-research` when current behavior, root cause, or brownfield structure is unknown. It is required for Complex work and strongly recommended when the agent cannot safely define requirements from the user request alone.
+Use `/spec-research` when current behavior, root cause, or brownfield structure is unknown. It is strongly recommended when the agent cannot safely define requirements from the user request alone.
 
 ```text
 /spec-requirements
@@ -215,7 +207,7 @@ If a non-obvious architecture decision is locked during planning, branch to:
 /spec-adr
 ```
 
-`/spec-adr` is conditional in Tiny and Standard work. It is required for each locked technical choice in Complex work.
+`/spec-adr` is conditional. It is required for each locked technical choice when establishing architectural boundaries.
 
 ### Phase 6: Implementation
 
@@ -239,7 +231,7 @@ Run:
 /harness-verify
 ```
 
-Verification is required per feature. It checks mechanical proof, spec alignment, task evidence, and regressions according to the feature profile.
+Verification is required per feature. It checks mechanical proof, spec alignment, task evidence, and regressions.
 
 `/code-review` can be run manually, and verification may also call for review when quality, security, or design concerns need a focused audit:
 
@@ -331,7 +323,7 @@ Use `/harness-maintain` when maintaining the kit or repairing the harness, not a
 | `eval` | Run evaluator passes, especially after cross-cutting or harness changes. |
 | `doctor` | Detect drift, broken references, stale generated files, or install/package issues. |
 
-For Complex work that changes the harness itself, `/harness-maintain eval` is part of the verification expectation.
+For major cross-cutting work that changes the harness itself, `/harness-maintain eval` is part of the verification expectation.
 
 ---
 
@@ -363,7 +355,7 @@ For Complex work that changes the harness itself, `/harness-maintain eval` is pa
 
 ## 6. Practical End-To-End Example
 
-For a Standard feature in a known codebase:
+For a typical feature in a known codebase:
 
 ```text
 /starter-init                         # once per repo
@@ -375,7 +367,7 @@ For a Standard feature in a known codebase:
 /context-session END                  # if the session was long or needs handoff
 ```
 
-For a Complex brownfield feature:
+For a brownfield feature with unknown behavior:
 
 ```text
 /starter-init                         # once per repo

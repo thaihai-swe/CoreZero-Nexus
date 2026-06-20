@@ -19,7 +19,7 @@ Investigate system behaviors and produce `artifacts/features/<slug>/analysis.md`
 
 ## Workflow
 
-1. **Initialization**: Create `status.md` if missing. Update the `## Current State` section to set phase to `Researching`. Load the rigor profile from `status.md` or fallback to `memories/repo/harness-config.md` default (use Automated Profile Selection from `../_shared/rigor-profiles.md` if not set).
+1. **Initialization**: Create `status.md` if missing. Update the `## Current State` section to set phase to `Researching`.
 2. **Context Alignment**: For each installed pack listed in `MASTER_INDEX.md`, read `memories/domain/<name>/glossary.md` frontmatter `triggers:`. If matched, note in `status.md` and load that pack's `glossary.md` before conducting research.
 3. **Bug Diagnosis Mode (For Bugs/Regressions)**: Recreate the failure with a script or concrete steps before investigating. You MUST follow this strict debugging loop:
    1. **Build a Feedback Loop**: Create a red-capable command (a fast, deterministic test, curl, or script) that asserts the exact bug symptom. Do not proceed without this.

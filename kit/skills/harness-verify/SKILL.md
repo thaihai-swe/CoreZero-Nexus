@@ -16,7 +16,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 
 ## Workflow
 
-1. **Initialization**: Update `artifacts/features/<slug>/status.md` to `Verifying`. Load the active rigor profile.
+1. **Initialization**: Update `artifacts/features/<slug>/status.md` phase to `Verifying`.
 2. **Mechanical Gate Audit**: Run `bash kit/scripts/harness/gate-runner.sh` to mechanically verify the workspace. Do not guess commands. Write the results into `review.md`.
 3. **Gate Failure Telemetry**: If the gate in Step 2 fails, increment a failure counter in `memories/repo/harness-telemetry.md`. If failures < 2, hand off to `/spec-implement`. If failures >= 2 on the same task, escalate to the user for a rethink or route to `/code-review`. Do not proceed.
 4. **Clean-State Check**: Ensure no uncommitted changes or broken builds.

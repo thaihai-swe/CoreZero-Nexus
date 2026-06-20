@@ -1,8 +1,8 @@
 # Intake (Opening Wave)
 
-The intake gate is the first step in `spec-requirements`. It runs **before** any grilling, codebase reading, or spec authoring. Its job is to classify the work in two dimensions — *what kind of work this is* and *what risk it carries* — and produce a one-line lane decision recorded in `status.md`.
+The intake gate is the first step in `spec-requirements`. It runs **before** any grilling, codebase reading, or spec authoring. Its job is to classify the work in two dimensions — *what kind of work this is* and *what risk it carries* — and produce a one-line classification recorded in `status.md`.
 
-The principle: **classification first, ceremony second.** A misclassified piece of work either drowns in ceremony it didn't need or skips checks it required. The intake step makes that classification explicit and durable.
+The principle: **classification first.** A misclassified piece of work may skip critical checks it required. The intake step makes that classification explicit and durable.
 
 ## Output
 
