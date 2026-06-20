@@ -301,29 +301,30 @@ Use `/codebase-documenter` for broader onboarding, architecture, setup, and repo
 
 Use `/visualize` when a diagram clarifies architecture, data flow, sequence, state, ER, or agent/memory structure. Supported outputs are SVG and Mermaid. Mermaid-to-SVG rendering is optional and only available when `mmdc` is installed. Do not claim PlantUML, draw.io, PNG export, or interactive HTML output unless those capabilities are later added.
 
-### Phase 11: Harness Maintenance
+### Phase 11: Harness Maintenance (`/harness-maintain`)
 
-Run:
+You don't need to run `/harness-maintain` while building normal features. Think of it like a "system tune-up" tool. 
 
-```text
-/harness-maintain assess
-/harness-maintain create
-/harness-maintain improve
-/harness-maintain eval
-/harness-maintain doctor
-```
+#### What exactly is the "Harness"?
+The "Harness" refers to the entire invisible scaffolding that keeps your AI agent disciplined. It includes:
+- **Memory files** (where the AI stores its learned rules)
+- **Status dashboards** (like `dashboard.html` that tracks progress)
+- **Review templates** (what the AI uses to grade its own work)
+- **Directory structures** (like `artifacts/` or `memories/repo/`)
 
-Use `/harness-maintain` when maintaining the kit or repairing the harness, not as a routine feature step.
+Over time, as an AI agent builds more code, this background harness can get messy, outdated, or corrupted. `/harness-maintain` is an administrative skill to help you clean it up and keep the agent working smoothly. This is also called **Harness Engineering**.
 
-| Mode | Use when |
-|---|---|
-| `assess` | Evaluate harness quality, structure, and readiness. |
-| `create` | Build missing harness structure from scratch. |
-| `improve` | Use observed failures to improve harness rules, references, or checks. |
-| `eval` | Run evaluator passes, especially after cross-cutting or harness changes. |
-| `doctor` | Detect drift, broken references, stale generated files, or install/package issues. |
+#### How to use the 5 maintenance modes:
 
-For major cross-cutting work that changes the harness itself, `/harness-maintain eval` is part of the verification expectation.
+Run `/harness-maintain [mode]` whenever you notice the AI getting confused or the system feeling stale:
+
+- **`doctor` (Fix broken things)**: Use this when your workspace feels "broken". For example: if a markdown link goes nowhere, your generated dashboard stops updating, or you're missing important folders. The agent will scan everything and automatically repair the drift.
+- **`improve` (Teach the AI a permanent lesson)**: Use this when the AI keeps making the exact same coding mistake over and over again. The agent will read its recent failure logs and write new *permanent rules* into its memory files so it never makes that mistake again.
+- **`assess` (Get a health report)**: Use this to generate a "report card" on the health of your AI workspace. It tells you if you are missing any crucial memory files or if your system context is getting too chaotic.
+- **`create` (Rebuild from scratch)**: Use this if `assess` tells you that you are missing core AI memory structures and need the agent to regenerate the scaffolding.
+- **`eval` (Test the dev kit itself)**: You will almost never use this unless you are modifying the CoreZero dev kit rules themselves and need to rigorously test if your modifications broke the harness.
+
+**Summary:** If you're just building a normal app feature, skip this phase! But if your AI is ignoring rules, your dashboard is broken, or your project feels disorganized, stop what you are doing and run `/harness-maintain doctor` or `/harness-maintain improve` to get things back on track.
 
 ---
 
