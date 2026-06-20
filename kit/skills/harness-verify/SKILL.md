@@ -20,7 +20,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 2. **Mechanical Gate Audit**: Run `bash kit/scripts/harness/gate-runner.sh` to mechanically verify the workspace. Do not guess commands. Write the results into `review.md`.
 3. **Gate Failure Telemetry**: If the gate in Step 2 fails, increment a failure counter in `memories/repo/harness-telemetry.md`. If failures < 2, hand off to `/spec-implement`. If failures >= 2 on the same task, escalate to the user for a rethink or route to `/code-review`. Do not proceed.
 4. **Clean-State Check**: Ensure no uncommitted changes or broken builds.
-5. **Traceability & Alignment Audit**: For each AC in `spec.md`, identify the task ID (`T-NN`) in `tasks.md` whose validation covers it.
+5. **Alignment Audit**: For each AC in `spec.md`, identify the task ID (`T-NN`) in `tasks.md` whose validation covers it.
    **Pass/Fail threshold**: Zero tolerance — every `AC-*` item in `spec.md` must map to at least one task with recorded validation evidence in `tasks.md`. A single AC with no implementation evidence = `Fail`. There is no partial pass.
 6. **Security Lens**: Audit verified scope against `memories/repo/core-policies.md ## Security Policy`.
 7. **Fallow Pass (Optional)**: Simplify touched files by removing dead code/unused imports.

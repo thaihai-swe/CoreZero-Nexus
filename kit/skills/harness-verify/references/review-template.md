@@ -34,7 +34,7 @@ List findings first. If there are no findings, say `No findings.`
 - Fresh manual evidence reviewed:
 - Stale or missing evidence:
 
-## Traceability Review
+## Alignment Review
 
 - Requirements covered:
 - Acceptance criteria covered:

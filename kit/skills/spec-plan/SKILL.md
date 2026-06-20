@@ -10,15 +10,15 @@ Converts an approved spec into a concrete execution strategy. Creates `plan.md`,
 
 ## I/O Hand-off Protocol
 - **Reads**: `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `kit/docs/rules/ponytail.md`.
-- **Writes**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/status.md`.
+- **Writes**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/status.md`, optionally `artifacts/features/<slug>/design.md`.
 - **Next Skill**: `/spec-implement`
 
 ## Workflow
 1. **Initialize State**: Update the `## Current State` section of `artifacts/features/<slug>/status.md` to set phase to `Planning`.
-2. **Design**: Write `artifacts/features/<slug>/plan.md` using `references/plan-template.md`, defining impacted areas, execution order, rollback steps, and verification strategies. The plan must pass the **Architectural Gates** (see Core Rules) and conform to `ponytail.md` guidelines or explicitly document justified exceptions in a "Complexity Tracking" section.
+2. **Design**: Optionally write `artifacts/features/<slug>/design.md` using `references/design-template.md` for major architectural or technical changes. Then, write `artifacts/features/<slug>/plan.md` using `references/plan-template.md`, defining impacted areas, execution order, rollback steps, and verification strategies. The plan must pass the **Architectural Gates** (see Core Rules) and conform to `ponytail.md` guidelines or explicitly document justified exceptions in a "Complexity Tracking" section.
 3. **Task Breakdown**: Create `artifacts/features/<slug>/tasks.md` using `references/tasks-template.md` with unique task IDs (`T-01`), clear targets, and specific proof validations. Mark independent, non-blocking tasks with `[P]` to indicate safe parallel execution zones.
 4. **Traceability**: Verify every requirement in `artifacts/features/<slug>/spec.md` maps to a task in `artifacts/features/<slug>/tasks.md`.
-5. **Handoff**: Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
+5. **Readiness & Handoff**: Run a completeness check using `references/definition-of-ready.md` to ensure the plan and tasks meet all preconditions. Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
 
 ## Core Rules
 - **Hierarchical Detail Management**: Keep `plan.md` high-level and readable. Do NOT dump raw code or algorithms into the plan; extract those to separate implementation detail files if necessary.

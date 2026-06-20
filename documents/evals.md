@@ -35,12 +35,11 @@ flowchart TD
     GPASS -- Yes --> CLEAN[2 - Clean-State Check<br/>no uncommitted changes]
 
     CLEAN --> ALIGN[3 - Alignment Audit<br/>REQ vs code: Missing / Ghost / Misaligned]
-    ALIGN --> TRACE[4 - Traceability Audit<br/>REQ to AC to TASK to validation]
-    TRACE --> SEC[5 - Security Lens<br/>auth, permissions, data handling]
+    ALIGN --> SEC[4 - Security Lens<br/>auth, permissions, data handling]
     SEC --> FALLOW{Debt introduced?}
-    FALLOW -- Yes --> CLEANUP[6 - Optional Fallow Pass<br/>behavior-neutral cleanup + re-run proof]
+    FALLOW -- Yes --> CLEANUP[5 - Optional Fallow Pass<br/>behavior-neutral cleanup + re-run proof]
     FALLOW -- No --> SCEN
-    CLEANUP --> SCEN[7 - Testing Scenarios<br/>testing-scenarios.md]
+    CLEANUP --> SCEN[6 - Testing Scenarios<br/>testing-scenarios.md]
 
     SCEN --> VERDICT{Verdict}
     VERDICT -- Issues --> FAIL
@@ -68,7 +67,6 @@ flowchart TD
 
 - Compares every REQ-* from spec.md against delivered code
 - Detects: Missing behavior, Excess (ghost) behavior, Misaligned behavior
-- Checks traceability: REQ → AC → TASK → validation
 - Uses spec quality scoring (30-point rubric)
 
 **Failure class:** Drift, scope creep, missed requirements

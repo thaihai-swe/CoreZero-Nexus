@@ -10,20 +10,19 @@ flowchart TD
 
     GPASS -- Yes --> CLEAN["3 - Clean-State Check<br/>No uncommitted changes"]:::step
     CLEAN --> ALIGN["4 - Alignment Audit<br/>REQ/AC mapping to tasks"]:::step
-    ALIGN --> TRACE["5 - Traceability Audit<br/>REQ -> AC -> TASK -> proof"]:::step
-    TRACE --> SEC["6 - Security Lens<br/>Audit vs core-policies.md"]:::step
-    SEC --> HELPERS["7 - Helper Skills<br/>Code Review / Harness Maintain"]:::step
+    ALIGN --> SEC["5 - Security Lens<br/>Audit vs core-policies.md"]:::step
+    SEC --> HELPERS["6 - Helper Skills<br/>Code Review / Harness Maintain"]:::step
 
     HELPERS --> FALLOW{Fallow Cleanup?}:::decision
-    FALLOW -- Yes --> CLEANUP["8 - Optional Fallow Pass<br/>Cleanup targets & re-run proof"]:::step
+    FALLOW -- Yes --> CLEANUP["7 - Optional Fallow Pass<br/>Cleanup targets & re-run proof"]:::step
     FALLOW -- No --> WRITE_REV
 
-    CLEANUP --> WRITE_REV["9 - Write Review<br/>Write findings to review.md"]:::step
-    WRITE_REV --> SCEN["10 - Scenarios<br/>Draft testing-scenarios.md"]:::step
+    CLEANUP --> WRITE_REV["8 - Write Review<br/>Write findings to review.md"]:::step
+    WRITE_REV --> SCEN["9 - Scenarios<br/>Draft testing-scenarios.md"]:::step
 
-    SCEN --> VERDICT{11 - Verdict}:::decision
+    SCEN --> VERDICT{10 - Verdict}:::decision
     VERDICT -- Fail --> FAIL
-    VERDICT -- Pass / Pass with Debt --> SYNC["12 - Post-Ship Sync<br/>Post-Ship Sync memory sweep"]:::pass
+    VERDICT -- Pass / Pass with Debt --> SYNC["11 - Post-Ship Sync<br/>Post-Ship Sync memory sweep"]:::pass
 
     SYNC --> DONE([status = Done]):::terminal
 
