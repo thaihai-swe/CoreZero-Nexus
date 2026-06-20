@@ -8,11 +8,9 @@ Load context from highest-signal to lowest-signal:
 
 1. **Router**
    - `AGENTS.md` — runtime instruction router (always loaded)
-   - `MASTER_INDEX.md` — master context routing index (always loaded)
-   - `MASTER_INDEX.md` — memory router (always loaded)
+   - `MASTER_INDEX.md` — master context routing index and memory router (always loaded)
    - Purpose: locate the workflow contract, repo entry rules, and the memory map
 2. **Repo Memory — Always**
-   - `memories/repo/core-policies.md`
    - `memories/repo/core-policies.md`
    - Purpose: durable rules, commands, and trust boundaries needed every session
 3. **Repo Memory — By Intent**
@@ -78,7 +76,7 @@ Never evict:
 - locked product or technical decisions still affecting execution
 - active blockers
 - last known verification state
-- repo-wide guardrails from constitution, security policy, and harness config
+- repo-wide guardrails from `core-policies.md`
 
 ## Output Expectation
 

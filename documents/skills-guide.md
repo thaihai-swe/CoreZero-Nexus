@@ -30,7 +30,7 @@ Use this guide after installing the kit into an adopter repository.
 | `/harness-verify` | Verify proof, alignment, and closeout | Shipped now |
 | `/context-session` | Manage feature-session continuity | Shipped now |
 | `/context-memory` | Maintain durable repo memory | Shipped now |
-| `/context-compact` | Compress and garbage-collect oversized memory files to preserve token context | Shipped now |
+| `/context-compact` | Compact a named oversized memory file (>600 lines). Preserves all normative identifiers (CC-\*, LH-\*, INV-\*) with a mandatory pre/post safety protocol | Shipped now |
 | `/context-status` | Report multi-feature status and regenerate dashboard | Shipped now |
 | `/harness-maintain` | Assess and improve the harness itself | Shipped now |
 | `/spec-adr` | Capture durable architecture decisions | Shipped now |

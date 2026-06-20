@@ -69,7 +69,7 @@ When there are multiple viable approaches, present the tradeoff briefly and choo
 
 ## 3. Engineering Standards
 
-* **Simplicity first:** Implement the minimum code that solves the stated problem.
+* **Simplicity first:** Implement the minimum code that solves the stated problem. **You MUST load `kit/docs/rules/ponytail.md` whenever you are proposing an architecture, writing an implementation plan, or writing/refactoring code.**
 * **No speculative code:** Do not add features, configuration, abstractions, or error handling for scenarios that are not required.
 * **Reuse established patterns:** Before adding a helper, abstraction, dependency, or convention, search for an existing equivalent.
 * **Prefer surgical refactoring:** Preserve behavior and institutional knowledge. Do not rewrite working systems unless the user asks or the existing design prevents the requested change.

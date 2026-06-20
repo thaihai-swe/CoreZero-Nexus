@@ -12,6 +12,16 @@
 *   **Active Blockers:**
     *   [Description of any blocker preventing progress]
 
+## Context State
+
+*   **Context Loaded:** [Always group + by-intent groups loaded with the keywords that matched]
+*   **Context Skipped:** [by-intent groups intentionally skipped, with one-line reason each]
+*   **Stale Context:** [None, or describe stale tasks/plans found]
+
+## Delegations
+
+*   **Active Subagents:** [List subagent Conversation IDs, roles, target tasks, current status, and branched workspace URIs if any]
+
 ## Session Log
 
 *   **Decisions Made:**
@@ -20,4 +30,4 @@
     *   `path/to/file1`
     *   `path/to/file2`
 *   **Validation Status:**
-    *   [Current state of tests, e.g., "All tests passing", "Failing test on X"]
+    *   [None, or current state of tests, e.g., "All tests passing", "Failing test on X"]

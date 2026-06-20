@@ -1,4 +1,4 @@
-# Spec Template: Multi-Agent System
+# Spec Template: Agentic System
 
 <!-- Use this template when the feature involves multiple AI agents coordinating, delegating, or communicating. Extends the standard spec template with agent-specific sections. -->
 

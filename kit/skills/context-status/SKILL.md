@@ -1,7 +1,7 @@
 ---
 name: context-status
-description: Display or update the current project status dashboard.
-compatibility: Designed for AI coding agents.
+description: Orchestrate and report on the status of all active features. This meta-skill acts as a project manager, providing a high-level view of progress, blockers, and next steps across the repository.
+
 ---
 
 # Context Status

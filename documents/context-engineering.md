@@ -335,10 +335,3 @@ Brownfield artifacts under `memories/repo/project-knowledge-base.md ## Repositor
 
 > **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract only the `## Index` section or first 50 lines of a memory file, preserving context budget without agent interpretation.
 
----
-
-## Context Compaction & Claim Gaps
-
-During the system-wide evaluation (detailed in [evaluation-report.md](evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
-
-* **Workspace Claim Lock Contention**: The file-backed claim protocol manages multi-agent coordination but lacks automated collision resolution. To prevent distributed agent workspace blockages, claim files should be explicitly mapped to Git branch states rather than single absolute paths.

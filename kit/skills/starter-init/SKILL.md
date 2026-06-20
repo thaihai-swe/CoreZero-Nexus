@@ -1,14 +1,14 @@
 ---
 name: starter-init
-description: Initialize the kit structure in a new repository.
-compatibility: Designed for AI coding agents.
+description: Initialize the kit structure in a new repository.  Initialize a project for harnessed agentic development.
+
 ---
 
 # Starter Init
 
 ## Overview
 Bootstraps the `docs/` and `memories/` directories with standard templates, then guides the adopter through customizing the seeded memory files for their project.
-
+Establishes the repository baseline for the harness before feature work begins. Detects repo type, runs a read-only archaeology pass for brownfield repositorys, and sets up the initial memory scaffold with adopter-specific content.
 ## I/O Hand-off Protocol
 - **Reads**: target repo structure, `memories/repo/*.md` seeded by the installer.
 - **Writes**: Generates `docs/` and `memories/` folders, baseline markdown files, `.gitignore` entries, and customized memory files.
@@ -16,54 +16,33 @@ Bootstraps the `docs/` and `memories/` directories with standard templates, then
 
 ## Workflow
 
-### Phase 1 — Bootstrap Structure
-1. Ensure `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain` exist. (Use `references/init-checklist.md` to guide the bootstrap process.)
-2. Confirm the installer seeded `memories/repo/harness-telemetry.md`. Create any that are missing.
-3. **Gitignore**: Detect or create `.gitignore` at the repository root. For each of the following entries — `docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh` — check whether an identical line already exists in `.gitignore`. Append **only** entries that are absent. Do not duplicate existing entries.
-
-### Phase 2 — Baseline Detection
-4. Detect greenfield vs. brownfield:
-   - Greenfield: empty repo or only the kit's own files. Skip baseline test discovery.
-   - Brownfield: existing source tree. Search for the canonical baseline test or compile command (`pytest`, `npm test`, `cargo test`, `go test`, `make test`). Record the result and any discovered high-risk or migration-prone areas in `memories/repo/project-knowledge-base.md` `## Repository Overview`.
-   - If no baseline exists in a brownfield repo, ask the adopter to declare the best available proof surface and record their answer.
-
-### Phase 3 — Memory Customization (mandatory)
-
-The installer seeds `memories/repo/*.md` with the kit's *own* content. Those files describe the kit, not the adopter's project. This phase rewrites them to fit the target project. Run each step interactively — ask the adopter the listed prompts and write their answers into the corresponding file.
-
-5. **Customize `core-policies.md`**:
-   - Prompt: "What is this project's name and primary code roots? What is the default working branch? Which agent clients are supported?"
-   - Update the `# Harness Config` `## Repository Identity` block.
-   - Prompt: "What are the canonical install, lint, typecheck, build, and test commands?"
-   - Update the `## Verification Commands` block. Mark commands as `N/A` only when the project genuinely has none.
-   - Leave the `## Normative Rules` (CC-001 through CC-010) untouched unless the adopter wants to amend a rule. Amendments must follow `## Amendment Rules` in that file.
-
-6. **Customize `core-policies.md` `## Security Policy`**:
-   - Prompt: "What paths in this repo are security-sensitive? What external services or secrets does the project depend on? Which actions require explicit confirmation?"
-   - Update `## Trust Boundaries`, `## Permission Tiers`, and `## Sandbox And Access Rules` with project-specific paths and rules.
-   - Keep `## Prompt-Injection Defense` rules verbatim — they are kit-wide.
-
-7. **Customize `project-knowledge-base.md`**:
-   - Prompt: "What are this project's main components, integration boundaries, and bootstrap watchouts?"
-   - Replace the kit-specific `## Repository Overview` and `## Key Architectural Boundaries` sections with the adopter's content.
-   - Leave references to other memory files (e.g., `core-policies.md`, `architecture.md`) intact; they remain valid.
-
-8. **Customize `learned-heuristics.md`**:
-   - Drop the kit's LH-001 through LH-008 entries unless the adopter wants to keep any.
-   - Tell the adopter that this file fills naturally as `/context-memory` runs after features. Leave it minimal at start.
-
-9. **Domain pack selection**:
-   - Read `memories/domain/glossary.md` frontmatter triggers.
-   - Prompt: "Does this project have one or more bounded subdomains (auth, payments, data pipeline, etc.) that deserve a domain pack? If yes, list them."
-   - For each domain the adopter names: copy the seeded `memories/domain/` scaffold into a per-domain subdirectory (`memories/domain/<name>/`) — only if multiple packs are needed; otherwise customize the existing files in place. Update `MASTER_INDEX.md` `## By Domain Packs` with the new pack name and trigger keywords.
-   - If the adopter declines all packs, leave the existing scaffold.
-
-### Phase 4 — Confirm and Hand Off
-10. Run `/context-memory --audit` to confirm the seeded files no longer reference kit-internal paths and that domain pack triggers are populated.
-11. Inform the adopter the kit is ready and route them to `/spec-research` (brownfield) or `/spec-requirements` (greenfield).
+1. **Step 1: Initialization**: Create `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain`. Ensure `.gitignore` is populated with kit ignores (`docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh`). Use `references/init-checklist.md` to guide the bootstrap process.
+2. **Step 2: Archaeology Sweep (Phase A)**: Detect greenfield vs. brownfield.
+   - Greenfield: empty repo or only the kit's own files. Skip archaeology.
+   - Brownfield: Follow `references/brownfield-mode.md` to conduct a read-only archaeology sweep. Delegate broad searches using subagents (Subagent-First Exploration). Create `memories/repo/brownfield/brownfield-map.md` to document the findings. Record the baseline test command and high-risk paths. If no baseline exists, prompt the adopter.
+3. **Step 3: Memory Customization (Phase B)**: This is mandatory. The installer seeds `memories/repo/*.md` with generic kit content. Run each step interactively by prompting the user for details to rewrite them:
+   - **`core-policies.md`**: Prompt for project identity, default branch, and verification commands. Mark missing commands as `N/A`.
+   - **`core-policies.md` Security**: Prompt for trust boundaries and sensitive paths (use Phase A findings). Keep `Prompt-Injection Defense` verbatim.
+   - **`project-knowledge-base.md`**: Prompt for main components, integration boundaries, and preserved behaviors.
+   - **`learned-heuristics.md`**: Drop kit-specific LH-* entries unless explicitly kept.
+   - **Domain Packs**: Read `memories/domain/glossary.md` triggers. Prompt if subdomains exist. If yes, copy the domain scaffold into `memories/domain/<name>/` and update `MASTER_INDEX.md`.
+4. **Step 4: Confirm and Handoff**: Run `/context-memory --audit` to confirm all kit-internal paths are removed from the memory files and triggers are populated. Route the user to `/spec-research` (brownfield) or `/spec-requirements` (greenfield).
 
 ## Core Rules
-- **Mandatory customization**: Skipping Phase 3 leaves the adopter with kit-content masquerading as project memory. The bootstrap is not complete until Phase 3 is done or explicitly deferred with a written `[DEFERRED]` marker in each affected file.
-- **Ask, don't guess**: Every memory rewrite comes from an adopter answer, not from agent inference. Mark `[UNKNOWN]` per CC-003 when the adopter cannot answer yet.
-- **Surgical edits**: Update only the sections this skill names. Preserve formatting, IDs (CC-*, LH-*), and cross-file references.
-- **No code changes**: This skill only writes documentation, configuration, and memory files. It must not modify project source code.
+- **Mandatory Customization**: Skipping Phase B leaves the adopter with kit-content masquerading as project memory. The bootstrap is not complete until Phase B is done or explicitly deferred with `[DEFERRED]`.
+- **Ask, Don't Guess**: Every memory rewrite comes from an adopter answer or explicit code evidence, not from agent inference. Mark `[UNKNOWN]` per CC-003 when the adopter cannot answer yet.
+- **Surgical Edits**: Update only the sections this skill names. Preserve formatting, IDs (CC-*, LH-*), and cross-file references.
+- **Read-Only Archaeology**: The subagent exploration (Phase A) MUST be read-only. No source code modifications during the sweep.
+- **Subagent Summaries Only**: Raw subagent output (file listings, grep output) never floods the main context. Only summary reports merge back.
+- **Profile Auto-Promotion**: Record in `brownfield-map.md` under `## Profile Rules`: any feature touching a path rated `high` or `critical` MUST be promoted to `Complex` in its `status.md`.
+- **No Shadow Installer**: Do not create missing harness files that `install.sh` was supposed to seed. Stop and repair the install surface instead.
+- **Router Entrypoint**: `AGENTS.md` is the canonical shipped router. Downstream init seeds from that source.
+- **Security Baseline**: Formulate trust boundaries in `security-policy.md` during bootstrap.
+
+## Output Rules
+- **Can update**: Seeded installer files (`AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/harness-config.md`, `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/observability-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`, and project-policy docs under `docs/*.md`).
+- **Can create** (Brownfield Phase A only): `memories/repo/brownfield/brownfield-map.md`, `memories/repo/brownfield/dependency-graph.md`.
+- **Cannot create**: Missing harness surface files that `install.sh` was supposed to seed; stop and repair the install surface instead.
+- **Cannot create**: `spec.md`, `plan.md`, `tasks.md`, `design.md`.
+
+`starter-init` creates and seeds memory files at init time. It does not overwrite non-empty versions of these files on re-init. Ongoing updates are owned by `/context-memory`.

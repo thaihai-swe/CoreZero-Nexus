@@ -10,10 +10,7 @@ As a session progresses, the context window fills up with conversation history, 
 6.  **Evict By Tier:** Drop transient logs before raw code, raw code before unrelated feature artifacts, and unrelated artifacts before repo memory.
 7.  **Preserve The Resume Surface:** Keep the current task, proof state, blockers, and active files even when aggressively compacting.
 
----
+## Token Budget Escalation
 
-## Token Budgeting & Amnesia Warnings
-
-1.  **Monitor Saturation:** Read the `Session Token Capacity` in `memories/repo/core-policies.md`. Calculate your current token usage at each checkpoint.
-2.  **Amnesia Warning (80% Saturation):** When the token count exceeds 80% of capacity (e.g., 160k out of 200k tokens), print: `[WARNING: Session Context Saturated at XX% (X/Y tokens). Amnesia risk is high. Re-initialize session to clear.]`.
-3.  **Hard Reset Trigger:** If the token count remains above 80% after applying all condensation strategies, do not attempt further code changes in the current session. Run `/context-session END` to generate a handoff and progress log, then immediately start a new session conversation window to clear the context history.
+- **Amnesia Threshold**: As defined in `core-policies.md`, when the session token budget reaches 80% (approx. 160,000 tokens), you are at risk of amnesia. If condensation strategies are not enough to bring the budget down, you must end the session with `/context-session END` and hand off to a new session.
+- **Persistent Memory Bloat**: If a `memories/repo/*.md` file itself exceeds 600 lines, do not condense it in-session — route to `/context-compact` instead.

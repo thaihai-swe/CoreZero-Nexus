@@ -1,7 +1,7 @@
 ---
 name: harness-maintain
 description: Maintain harness configuration and update system indexes.
-compatibility: Designed for AI coding agents.
+
 ---
 
 # Harness Maintain

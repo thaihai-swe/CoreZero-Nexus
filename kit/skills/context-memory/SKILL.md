@@ -1,7 +1,7 @@
 ---
 name: context-memory
 description: Update repository memories and learned heuristics.
-compatibility: Designed for AI coding agents.
+
 ---
 
 # Context Memory
@@ -19,7 +19,7 @@ Updates persistent AI memories (e.g., rules, architecture) so future agents don'
 2. **Session Extracts**: Read `artifacts/features/<slug>/session-extracts.md`. For each entry marked `[CANDIDATE]`: promote confirmed durable lessons to `learned-heuristics.md` (using `references/learned-heuristics-template.md`) or the relevant domain pack's `patterns.md`; discard noise. Remove promoted entries from the candidates list.
 3. **Config Drift Check**: Identify any new file paths, canonical commands, or module roots introduced during the session. Update `core-policies.md` `## Harness Config` and `project-knowledge-base.md` `## Repository Overview` to reflect them (consult `references/pkb-*-template.md` as needed). Mark unknowns `[UNKNOWN]` per CC-003 — do not guess.
 4. **Domain Pack Update**: If the active feature touched a domain with an installed pack, check whether any new patterns or anti-patterns emerged. Update `memories/domain/<name>/patterns.md` or `anti-patterns.md` with evidence-backed entries only.
-5. **Size Check**: For every file modified in Steps 2–4, count lines. If any file exceeds 600 lines, open a promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` Section 2 Rule 5.
+5. **Size Check**: For every file modified in Steps 2–4, count lines. If any file exceeds 600 lines, open a promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` Section 2 Rule 5. If the file should be compacted in-place rather than split, route to `/context-compact`.
 
 ## Core Rules
 - No fabrication: do not invent patterns or heuristics; only record what was observed.

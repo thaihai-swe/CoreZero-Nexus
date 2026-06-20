@@ -13,7 +13,7 @@
 
 ## Verdict
 
-- Verdict: Pass | Fail
+- Verdict: Pass | Pass with Follow-Up Debt | Fail
 - Release recommendation:
 - Short summary:
 

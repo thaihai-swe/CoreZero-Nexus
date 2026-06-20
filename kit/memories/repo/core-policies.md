@@ -151,7 +151,7 @@ Used by `context-memory` post-ship sync to propose memory restructuring when thr
 - Distinct subtopics: 3 or more H2 sections covering separable concerns
 - Artifact references: 5 or more `artifacts/features/<slug>/` files cite the same slice of one memory file
 - Action when threshold hit: add the file to `## Promotion Watchlist` in `MASTER_INDEX.md` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`
-- Tier definitions and promotion loop: `skills/context/context-memory/SKILL.md` `## Memory Tiers`
+- Compaction (shrink in-place) is handled by `/context-compact`. See `kit/skills/context-compact/SKILL.md` for the full safety protocol and eligible target files.
 
 # Security Policy & Trust Boundaries
 

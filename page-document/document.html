@@ -396,11 +396,7 @@
                                 <td>Breaks when context resets</td>
                                 <td>Handoff artifacts preserve intent and next action</td>
                             </tr>
-                            <tr>
-                                <td><strong>Multi-agent safety</strong></td>
-                                <td>High collision risk</td>
-                                <td>Phase locking, task ownership, and artifact boundaries</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -2470,20 +2466,7 @@ Feature slug: my-first-feature</code></pre>
                     <li>Resume by pasting the generated next-step prompt into a fresh session.</li>
                 </ol>
             </div>
-            <div class="section-card">
-                <h3>Multi-Agent Coordination (No-Race Rules)</h3>
-                <ul>
-                    <li><strong>Phase Locking:</strong> only one agent edits a locked planning artifact such as
-                        <code>spec.md</code> or <code>plan.md</code> at a time.
-                    </li>
-                    <li><strong>Task Ownership:</strong> assign explicit Task IDs from <code>tasks.md</code> when
-                        multiple agents implement in parallel.</li>
-                    <li><strong>Branch Isolation:</strong> each agent works in its own branch; reintegrate only after
-                        verification passes.</li>
-                    <li><strong>Shared Memory:</strong> update the knowledge base after new discoveries so other agents
-                        learn instantly.</li>
-                </ul>
-            </div>
+
             <div class="section-card">
                 <h3>Brownfield Adoption Rules</h3>
                 <ul>

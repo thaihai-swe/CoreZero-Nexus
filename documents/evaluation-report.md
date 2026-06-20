@@ -17,7 +17,6 @@ Autonomous coding agents are highly capable but prone to hallucination, context 
 
 ### Core Gaps & Recommended Enhancements
 * **Complex Tech-Stack Auto-Configuration**: The `starter-init` questionnaire is highly conversational and manual. A script-driven detection layer for common runtimes (Node, Python, Go, Rust) would improve reliability.
-* **Multi-Agent Workspace Lock Contention**: The file-backed claim protocol is effective but prone to race conditions if agents write concurrently without a lock manager.
 
 ---
 
@@ -272,5 +271,3 @@ To build a template compatible with both greenfield and brownfield initiatives t
 
 > [!IMPORTANT]
 > **1. Script-Driven Stack Archaeology**: Auto-detect package managers, test runners, and build commands during `/starter-init` instead of relying entirely on user text inputs.
->
-> **2. Active Workspace Claims**: Support multi-agent environments by mapping claim files to git branches, preventing lockouts and race conditions across distributed agent runs.

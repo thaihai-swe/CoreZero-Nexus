@@ -1,6 +1,6 @@
-# Multi-Agent Coordination
+# Subagent Coordination
 
-When tasks are complex, a single agent context becomes a bottleneck. Harnesses use multi-agent patterns to distribute load.
+When tasks are complex, a single agent context becomes a bottleneck. Harnesses use subagent patterns to distribute load.
 
 ## 1. Subagent Delegation
 *   **Exploration:** Use a research subagent to search the codebase and summarize findings.
