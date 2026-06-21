@@ -13,15 +13,19 @@ Used to resume, checkpoint, or close work for an existing feature slug. This ski
 
 | Mode | Use When | Primary Outputs |
 |---|---|---|
-| `START` | Resuming an existing feature session. | Readiness summary with loaded context, current phase, next task, blockers. |
-| `CHECKPOINT` | Pausing after a completed skill, major edit wave, or meaningful progress. | Updated `progress.md`, and next-step summary. |
-| `END` | Closing a long session or preparing a handoff to a future session. | `handoff.md`, updated `progress.md`, and candidate `session-extracts.md` entries when durable lessons exist. |
+| `START` | Starting a new day, switching branches, or opening a new chat window. | Readiness summary with loaded context, current phase, next task, blockers. |
+| `CHECKPOINT` | Pausing before a break or after meaningful progress. | Updated `progress.md` with session notes. |
+| `END` | Handoff to another developer/agent or closing a long session. | `handoff.md`, `progress.md` notes, and candidate `session-extracts.md` entries. |
 
 `END` is required for long sessions because chat history is volatile. It is not the only mode.
 
 ## I/O Hand-off Protocol
-- **Reads**: `AGENTS.md`, `MASTER_INDEX.md`, feature `status.md`, `progress.md`, optional `handoff.md`, and routed memory files.
+- **Reads**: `AGENTS.md`, `MASTER_INDEX.md`, feature `status.md`, `tasks.md`, `progress.md`, optional `handoff.md`, and routed memory files.
 - **Writes**: feature `progress.md`, `handoff.md`, optional `session-extracts.md`, and telemetry pruning updates when required.
+
+> **Note on Artifact Responsibilities**:
+> - `tasks.md` is strictly for machine-readable task checklists and validation evidence (parsed by the dashboard).
+> - `progress.md` is for free-form human-readable session logs, daily blockers, and developer notes.
 
 ## Workflow
 
@@ -33,16 +37,16 @@ Used to resume, checkpoint, or close work for an existing feature slug. This ski
 4. **Report & Log**: Update `progress.md` with resumption details and name the exact next core command.
 
 ### Session Checkpoint
-1. Review completed tasks. Append a snapshot to `progress.md`.
+1. Review completed tasks. Append a snapshot or session notes to `progress.md`.
 2. Check context budget. If crowded, run condensation/eviction per `references/context-condensation.md`. Prune raw logs and broad searches.
 
 ### Session End
 1. Summarize completion state, proof status, and blockers.
 2. **Delegation**: Document Conversation ID, role, and branch URIs for active subagents.
 3. **Log & Extract**: Append end entry to `progress.md`. Extract lessons to `artifacts/features/<slug>/session-extracts.md`:
-   - `Complex` profile: **Required**. Document at least 3 candidate lessons.
-   - `Standard` profile: **Required** when reusable lessons exist. Document "no extractable lessons" explicitly if none.
-   - `Tiny` profile: Optional. Candidates can be brief or omitted.
+   - `Complex` complexity: **Required**. Document at least 3 candidate lessons.
+   - `Moderate` complexity: **Required** when reusable lessons exist. Document "no extractable lessons" explicitly if none.
+   - `Simple` complexity: Optional. Candidates can be brief or omitted.
 4. **Handoff**: Write `handoff.md` using `references/session-handoff-template.md`, ending with the next core command.
 
 

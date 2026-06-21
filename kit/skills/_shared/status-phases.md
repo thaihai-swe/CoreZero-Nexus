@@ -17,7 +17,7 @@ that transitions phase reads from this table, not from memory.
 | `Researching` | `spec-research` | Investigation is active | — |
 | `Research Complete` | `spec-research` | `analysis.md` is ready; root cause or brownfield map is written | `spec-requirements` |
 | `Spec'ing` | `spec-requirements` | Spec authoring is active | — |
-| `Spec Approved` | `spec-requirements` | `spec.md` is locked; `requirements-review.md` verdict is `ready` | `spec-plan` |
+| `Spec Approved` | `spec-requirements` | `spec.md` is locked | `spec-plan` |
 | `Planning` | `spec-plan` | Plan authoring is active | — |
 | `Plan Approved` | `spec-plan` | `plan.md` and `tasks.md` are ready; first unblocked task is executable | `spec-implement` |
 | `Implementing` | `spec-implement` | Code work is active | — |

@@ -12,9 +12,13 @@ Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tas
 
 
 ## I/O Hand-off Protocol
-- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`.
+- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `kit/docs/rules/ponytail.md`.
 - **Writes**: Source code, `artifacts/features/<slug>/tasks.md` (to mark tasks done), `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`, `artifacts/features/<slug>/progress.md`.
 - **Next Skill**: `/harness-verify`
+
+> **Note on Artifact Responsibilities**:
+> - `tasks.md` is strictly for machine-readable task checklists and validation evidence (parsed by the dashboard).
+> - `progress.md` is for free-form human-readable session logs, daily blockers, and developer notes.
 
 ## Workflow
 

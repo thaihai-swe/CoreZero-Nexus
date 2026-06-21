@@ -17,6 +17,15 @@ enough reason to fix it even when the local code "works."
 - **MUST** check existing files of a similar type before creating a new file or module. Match their structure, not a generic template.
 - **SHOULD** prefer the smallest file that satisfies the task over a boilerplate scaffold. Over-generation of boilerplate sections that the codebase never uses (e.g., full docstrings, empty method stubs, placeholder configs) is an anti-pattern.
 
+## Practical SOLID and Object-Oriented Design
+
+- **Single Responsibility (SRP):** **MUST NOT** mix data fetching, business logic, and presentation in the same class or module. A component should have one primary reason to change.
+- **Liskov Substitution (LSP):** **MUST NOT** implement interfaces or extend classes only to throw `NotImplementedException` for methods you don't want to support. If an object cannot fulfill the contract, it should not inherit from it.
+- **Interface Segregation (ISP):** **SHOULD** favor small, role-specific interfaces over massive "god interfaces." Callers should only depend on methods they actually invoke.
+- **Dependency Inversion (DIP):** **SHOULD** depend on abstractions rather than concrete implementations *when crossing an architectural boundary* (like database access or external APIs), but respect the "No premature seams" rule for internal logic.
+- **Encapsulation:** **MUST NOT** expose mutable internal state as public fields. State mutations must pass through methods that validate invariants.
+- **Composition over Inheritance:** **MUST NOT** build deep inheritance trees (more than 2 levels). Build complex behavior by composing smaller objects rather than relying on deep subclassing.
+
 ## One way to say one thing
 
 - **MUST NOT** accept two spellings of the same intent — e.g. a magic

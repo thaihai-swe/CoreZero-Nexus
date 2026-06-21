@@ -95,12 +95,12 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | [`/starter-init`](../kit/skills/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `docs/`, `memories/`, `.gitignore`, project memory seeds |
 | [`/spec-research`](../kit/skills/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, or root cause is unclear | `artifacts/features/<slug>/analysis.md`, `status.md` |
 | [`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md) | Required per feature | Requirements authoring | Define what must be built and how it will be accepted | `spec.md`, `status.md` |
-| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into design and tasks | `plan.md`, `tasks.md`, `status.md` |
+| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into design and tasks | `design.md`, `plan.md`, `tasks.md`, `status.md` |
 | [`/spec-implement`](../kit/skills/spec-implement/SKILL.md) | Required per feature | Task execution | Implement approved tasks one at a time | Source changes, `tasks.md`, `status.md`, telemetry on failures |
 | [`/harness-verify`](../kit/skills/harness-verify/SKILL.md) | Required per feature | Verification | Prove implementation against tasks and spec | `status.md`, verification output, `harness-telemetry.md` |
-| [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md`, optional `claim.md` |
+| [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md` |
 | [`/context-memory`](../kit/skills/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
-| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/repo/` |
+| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/`, `artifacts/`, or `docs/generated/` |
 | [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `docs/generated/dashboard.html` |
 | [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/generated/code-map.md`, eval reports |
 | [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `docs/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
@@ -173,9 +173,9 @@ Use `/context-session` only after the feature slug and `status.md` exist. It is 
 
 | Mode | Use when | Output |
 |---|---|---|
-| `START` | Resuming an existing feature or beginning a new work session on an existing slug. | Readiness summary, routed context, current phase, blockers, next task. |
-| `CHECKPOINT` | Pausing after meaningful progress while work remains active. | Updated `progress.md`, claim/status notes, next-step summary. |
-| `END` | Closing a long session or preparing handoff to another session. | `handoff.md`, updated `progress.md`, candidate `session-extracts.md`. |
+| `START` | Starting a new day, switching branches, or opening a new chat window. | Readiness summary with loaded context, current phase, next task, blockers. |
+| `CHECKPOINT` | Pausing before a break or after meaningful progress. | Updated `progress.md` with session notes. |
+| `END` | Handoff to another developer/agent or closing a long session. | `handoff.md`, `progress.md` notes, and candidate `session-extracts.md` entries. |
 
 `/context-session END` is emphasized because it protects handoff state when chat history disappears. It is not the only context-session mode.
 
@@ -199,7 +199,7 @@ Run:
 /spec-plan
 ```
 
-Planning is required after the spec is approved. It creates `plan.md` and `tasks.md`, maps acceptance criteria to implementation tasks, and defines proof commands for each task.
+Planning is required after the spec is approved. It creates `design.md`, `plan.md`, and `tasks.md`, by breaking down the technical approach from the design, mapping acceptance criteria to implementation tasks, and defining proof commands for each task.
 
 If a non-obvious architecture decision is locked during planning, branch to:
 
@@ -217,7 +217,7 @@ Run:
 /spec-implement
 ```
 
-Implementation is required per feature. It executes the approved tasks one at a time, keeps scope tied to `tasks.md`, and runs the mechanical gate through `kit/scripts/harness/gate-runner.sh` when appropriate.
+Implementation is required per feature. It executes the approved tasks one at a time, keeps scope tied to `tasks.md`, flags candidate lessons for memory extraction, and runs the mechanical gate through `kit/scripts/harness/gate-runner.sh` when appropriate.
 
 If implementation reveals missing requirements or an unsafe design, do not improvise. Route back to `/spec-requirements` or `/spec-plan` and record the reason in `status.md`.
 
@@ -231,7 +231,7 @@ Run:
 /harness-verify
 ```
 
-Verification is required per feature. It checks mechanical proof, spec alignment, task evidence, and regressions.
+Verification is required per feature. It checks mechanical proof, spec alignment, architectural drift against `design.md`, task evidence, and regressions.
 
 `/code-review` can be run manually, and verification may also call for review when quality, security, or design concerns need a focused audit:
 

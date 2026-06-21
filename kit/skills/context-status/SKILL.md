@@ -10,16 +10,19 @@ description: Orchestrate and report on the status of all active features. This m
 Aggregates status across all active feature branches, updates the repo-wide status dashboard, and synchronizes the active task phase.
 
 ## I/O Hand-off Protocol
-- **Reads**: `memories/repo/harness-telemetry.md`, `artifacts/features/*/status.md`.
+- **Reads**: `memories/repo/harness-telemetry.md`, `artifacts/features/*/status.md`, `artifacts/features/*/tasks.md`.
 - **Writes**: `memories/repo/harness-telemetry.md` `# Current State` section, command line status dashboard.
 
 ## Workflow
 1. **Load Current State**: Read `memories/repo/harness-telemetry.md` to load the current global phase and failure counters.
-2. **Scan Features**: Scan all feature subdirectories under `artifacts/features/` and read their respective `status.md` files. Identify:
+2. **Scan Features**: Scan all feature subdirectories under `artifacts/features/` and read their respective `status.md` and `tasks.md` files. Identify:
    - Feature slug name.
-   - Active phase (Spec'ing, Planning, Implementing, Verifying, Done).
-   - Current active task ID.
-   - Blockers or open clarification flags.
+   - Active phase (`## Current Phase`).
+   - Complexity (`## Complexity`).
+   - Current active task (`## Active Task`).
+   - Blockers or open clarification flags (`## Blockers`).
+   - Task completion percentage (from `tasks.md`).
+   *Note: If `status.md` does not strictly follow the sections in `kit/skills/_shared/status-template.md`, the dashboard parser will fail. Flag any malformed status files.*
 3. **Compile Dashboard**: Format a text-based status dashboard using `references/status-report-template.md` containing:
    - A list of all active features, their current phase, and active task.
    - Any currently active blocker flags.

@@ -10,10 +10,10 @@ description: Define the "What & Why" of a feature. Handles specification authori
 - **Use `/spec-requirements`** to define requirements and acceptance criteria.
 - **Use `/spec-research`** first if the problem space, bug root cause, or brownfield codebase state is unknown.
 ## Overview
-Create or refine `status.md`, `proposal.md`, `spec.md`, and `requirements-review.md` in `artifacts/features/<slug>/`. This skill aligns the team on what is being built and how it will be verified.
+Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found) `requirements-review.md` in `artifacts/features/<slug>/`. This skill aligns the team on what is being built and how it will be verified.
 ## I/O Hand-off Protocol
 - **Reads**: `artifacts/features/<slug>/analysis.md` (if exists), `artifacts/features/<slug>/status.md`, `memories/repo/adr-log.md`, domain packs.
-- **Writes**: `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/status.md`, `artifacts/features/<slug>/proposal.md`, `artifacts/features/<slug>/requirements-review.md`.
+- **Writes**: `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/status.md`, `artifacts/features/<slug>/proposal.md`, optional `artifacts/features/<slug>/requirements-review.md`.
 - **Next Skill**: `/spec-plan`
 
 ## When to Use
@@ -39,7 +39,7 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and `requirements-review
     - **Complex**: Cross-cutting, multiple integrations, or unknown dependencies.
 6. **Proposal & Scope Definition**: Draft `proposal.md` to align scope before spec'ing. Explicitly list `In Scope`, `Out Of Scope`, and `Non-Goals`.
 7. **Spec Authoring**: Draft `spec.md` (`what` & `why`) using `references/spec-template.md`. Record key gray-area design/UX choices. Define testable, observable acceptance criteria (AC-*) using strict markdown checklists or Gherkin. Specify verification surfaces (unit, integration, manual check).
-8. **Completeness Check**: Ensure NO `[NEEDS CLARIFICATION]`, `[UNRESOLVED]`, or `[ADR CONFLICT]` tags remain. Create and pass `requirements-review.md`.
+8. **Completeness Check**: Ensure NO `[NEEDS CLARIFICATION]`, `[UNRESOLVED]`, or `[ADR CONFLICT]` tags remain. Conduct a requirements review using `references/requirements-review-template.md`. Only create `requirements-review.md` if issues or gaps are found; do NOT create the artifact if the review passes.
 9. **Handoff**: Update `status.md` phase to `Spec Approved` and route to `/spec-plan`.
 ## Core Rules
 - **Anti-Hallucination**: Never invent plausible but unspecified business logic. Mark all unknowns explicitly.

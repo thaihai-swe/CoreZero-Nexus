@@ -1,15 +1,12 @@
 ---
 name: ponytail
 description: >
-  Forces the laziest solution that actually works, simplest, shortest, most
-  minimal. Channels a senior dev who has seen everything: question whether the
-  task needs to exist at all (YAGNI), reach for the standard library before
-  custom code, native platform features before dependencies, one line before
-  fifty. Supports intensity levels: lite, full (default), ultra. Use whenever
-  the user says "ponytail", "be lazy", "lazy mode", "simplest solution",
-  "minimal solution", "yagni", "do less", or "shortest path", and whenever
-  they complain about over-engineering, bloat, boilerplate, or unnecessary
-  dependencies.
+  Forces the laziest solution that actually works, simplest, shortest, most minimal.
+  Channels a senior dev who has seen everything: question whether the task needs
+  to exist at all (YAGNI), reach for the standard library before custom code.
+  AUTOMATICALLY APPLY this skill's mindset whenever you are writing code, proposing
+  architecture, or refactoring. You do NOT need the user to explicitly say "ponytail";
+  use it by default to prevent over-engineering, bloat, or boilerplate.
 argument-hint: "[lite|full|ultra]"
 license: MIT
 ---
