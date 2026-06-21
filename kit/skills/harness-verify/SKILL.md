@@ -10,7 +10,7 @@ description: Verify implemented work against the spec and plan. Handles split ve
 Use this skill to close the loop on a feature. It updates `status.md` to `Verifying`, runs mechanical gates, audits alignment and traceability, performs a security lens check, runs optional code-review or harness maintenance, executes fallow-pass cleanup, drafts testing scenarios, runs post-ship memory sync, and writes the final verdict in `review.md`.
 
 ## I/O Hand-off Protocol
-- **Reads**: `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/design.md`, `artifacts/features/<slug>/status.md`
+- **Reads**: `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/status.md`
 - **Writes**: `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`
 - **Next Skill**: `/context-memory` (to log lessons learned) or done.
 
@@ -22,7 +22,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 4. **Clean-State Check**: Ensure no uncommitted changes or broken builds.
 5. **Alignment Audit**: For each AC in `spec.md`, identify the task ID (`T-NN`) in `tasks.md` whose validation covers it.
    **Pass/Fail threshold**: Zero tolerance — every `AC-*` item in `spec.md` must map to at least one task with recorded validation evidence in `tasks.md`. A single AC with no implementation evidence = `Fail`. There is no partial pass.
-6. **Design Conformance Check**: Read `design.md`. For each major component or decision listed in the design, confirm it is reflected in the delivered code and task list. Any component in `design.md` with zero corresponding implementation evidence in `tasks.md` is a `Fail`.
+6. **Design Conformance Check**: Read `plan.md`. For each major component or decision listed in the Technical Design section, confirm it is reflected in the delivered code and task list. Any component in the design section with zero corresponding implementation evidence in `tasks.md` is a `Fail`.
 7. **Security Lens**: Audit verified scope against `memories/repo/core-policies.md ## Security Policy`.
 8. **Fallow Pass (Optional)**: Simplify touched files by removing dead code/unused imports.
    **Scope limit**: Applies only to files explicitly listed in this feature's `tasks.md` task targets. No structural refactors are allowed during this step. Re-run the mechanical gate after cleanup before proceeding.

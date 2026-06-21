@@ -136,7 +136,6 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/proposal.md`
 - `artifacts/features/<slug>/spec.md`
 - `artifacts/features/<slug>/requirements-review.md` (optional)
-- `artifacts/features/<slug>/design.md`
 - `artifacts/features/<slug>/plan.md`
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`

@@ -9,7 +9,7 @@ Managing the agent's context budget is critical for long-running tasks. Overload
 
 ## 2. Just-In-Time (JIT) Loading
 *   Instruct the agent to load only the artifacts relevant to the immediate task.
-*   If working on Task 3, load the `plan.md` section for Task 3, not the entire `design.md` and `spec.md` history.
+*   If working on Task 3, load the `plan.md` section for Task 3, not the entire plan and `spec.md` history.
 
 ## 3. Context Condensation
 *   When approaching context limits, deliberately pause and summarize.

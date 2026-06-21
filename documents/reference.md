@@ -36,8 +36,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 | `proposal.md` | `/spec-requirements` | High-level alignment |
 | `spec.md` | `/spec-requirements` | Locked requirements + AC |
 | `requirements-review.md` | `/spec-requirements` | Conditional readiness gate |
-| `design.md` | `/spec-plan` | Technical design when needed |
-| `plan.md` | `/spec-plan` | Execution strategy + mechanical gate |
+| `plan.md` | `/spec-plan` | Technical design + execution strategy |
 | `tasks.md` | `/spec-plan` / `/spec-implement` | Task breakdown + evidence |
 | `review.md` | `/harness-verify` | Verification verdict |
 | `testing-scenarios.md` | `/harness-verify` | Manual test guide |

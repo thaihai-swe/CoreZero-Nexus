@@ -25,6 +25,6 @@ Record significant architectural decisions.
 
 ## Core Rules
 - **Comparative Analysis:** Always include at least two options with pros and cons.
-- **Traceability:** Link ADRs to `spec.md` when writing during the spec phase. Link to `design.md` only when the planning phase has completed and `design.md` exists.
+- **Traceability:** Link ADRs to `spec.md` when writing during the spec phase. Link to `plan.md` only when the planning phase has completed and the plan exists.
 - **Immutability:** Once "Accepted," ADRs should be superseded or deprecated, not deleted or significantly altered.
 - **Surgical Scope:** Focus on the architectural decision, not the implementation details.

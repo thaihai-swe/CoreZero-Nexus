@@ -16,7 +16,7 @@ Agent memory is volatile across context windows and sessions. A robust harness r
 
 ## 4. Decision Durability
 *   Never leave important product or technical decisions in the chat history.
-*   If a choice materially affects the outcome, record it in `spec.md` (for product) or `plan.md` / `design.md` (for tech).
+*   If a choice materially affects the outcome, record it in `spec.md` (for product) or `plan.md` (for tech).
 
 ## 5. Memory Promotion
 *   Local findings (e.g., "this specific API endpoint is flaky") should be promoted to the Knowledge Base if they are likely to affect future features.

@@ -43,6 +43,6 @@ Establishes the repository baseline for the harness before feature work begins. 
 - **Can update**: Seeded installer files (`AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/harness-config.md`, `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/observability-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`, and project-policy docs under `docs/*.md`).
 - **Can create** (Brownfield Phase A only): `memories/repo/brownfield/brownfield-map.md`, `memories/repo/brownfield/dependency-graph.md`.
 - **Cannot create**: Missing harness surface files that `install.sh` was supposed to seed; stop and repair the install surface instead.
-- **Cannot create**: `spec.md`, `plan.md`, `tasks.md`, `design.md`.
+- **Cannot create**: `spec.md`, `plan.md`, `tasks.md`.
 
 `starter-init` creates and seeds memory files at init time. It does not overwrite non-empty versions of these files on re-init. Ongoing updates are owned by `/context-memory`.

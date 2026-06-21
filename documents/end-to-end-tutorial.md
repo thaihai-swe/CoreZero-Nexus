@@ -95,7 +95,7 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | [`/starter-init`](../kit/skills/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `docs/`, `memories/`, `.gitignore`, project memory seeds |
 | [`/spec-research`](../kit/skills/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, or root cause is unclear | `artifacts/features/<slug>/analysis.md`, `status.md` |
 | [`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md) | Required per feature | Requirements authoring | Define what must be built and how it will be accepted | `spec.md`, `status.md` |
-| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into design and tasks | `design.md`, `plan.md`, `tasks.md`, `status.md` |
+| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into technical design and tasks | `plan.md`, `tasks.md`, `status.md` |
 | [`/spec-implement`](../kit/skills/spec-implement/SKILL.md) | Required per feature | Task execution | Implement approved tasks one at a time | Source changes, `tasks.md`, `status.md`, telemetry on failures |
 | [`/harness-verify`](../kit/skills/harness-verify/SKILL.md) | Required per feature | Verification | Prove implementation against tasks and spec | `status.md`, verification output, `harness-telemetry.md` |
 | [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md` |
@@ -199,7 +199,7 @@ Run:
 /spec-plan
 ```
 
-Planning is required after the spec is approved. It creates `design.md`, `plan.md`, and `tasks.md`, by breaking down the technical approach from the design, mapping acceptance criteria to implementation tasks, and defining proof commands for each task.
+Planning is required after the spec is approved. It creates `plan.md` (which includes both Technical Design and Delivery Strategy) and `tasks.md`, mapping acceptance criteria to implementation tasks, and defining proof commands for each task.
 
 If a non-obvious architecture decision is locked during planning, branch to:
 
@@ -231,7 +231,7 @@ Run:
 /harness-verify
 ```
 
-Verification is required per feature. It checks mechanical proof, spec alignment, architectural drift against `design.md`, task evidence, and regressions.
+Verification is required per feature. It checks mechanical proof, spec alignment, architectural drift against `plan.md`, task evidence, and regressions.
 
 `/code-review` can be run manually, and verification may also call for review when quality, security, or design concerns need a focused audit:
 
