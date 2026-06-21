@@ -42,15 +42,21 @@ def parse_feature_status(status_file: Path):
     phase_match = re.search(r"## .*Current Phase:\s*(.*)", content, re.IGNORECASE)
     if not phase_match:
         phase_match = re.search(r"-\s+(Phase|State):\s*(.*)", content, re.IGNORECASE)
+    
+    complexity_match = re.search(r"## .*Complexity:\s*(.*)", content, re.IGNORECASE)
+    active_task_match = re.search(r"## .*Active Task\n+([^\n]+)", content, re.IGNORECASE)
 
-    blocker_match = re.search(r"-\s+Blockers?:\s*(.*)", content, re.IGNORECASE)
+    blocker_match = re.search(r"## .*Blockers\n+([^\n]+)", content, re.IGNORECASE)
+    if not blocker_match:
+        blocker_match = re.search(r"-\s+Blockers?:\s*(.*)", content, re.IGNORECASE)
 
-    next_step_match = re.search(r"## .*Next Step\n+(.*)", content, re.IGNORECASE)
+    next_step_match = re.search(r"## .*Next Step\n+([^\n]+)", content, re.IGNORECASE)
     return {
         "next_step_explicit": next_step_match.group(1).strip() if next_step_match else None,
         "title": title_match.group(1).strip() if title_match else status_file.parent.name,
         "phase": phase_match.group(1).strip() if phase_match else "Unknown",
-
+        "complexity": complexity_match.group(1).strip() if complexity_match else "Unknown",
+        "active_task": active_task_match.group(1).strip() if active_task_match else "None",
         "blockers": blocker_match.group(1).strip() if blocker_match else "None",
         "last_updated": datetime.fromtimestamp(
             status_file.stat().st_mtime,
@@ -111,7 +117,8 @@ def scan_workspace(root_path: Path):
                     "slug": slug,
                     "title": status.get("title", slug),
                     "phase": status.get("phase", "Unknown"),
-
+                    "complexity": status.get("complexity", "Unknown"),
+                    "active_task": status.get("active_task", "None"),
                     "blockers": status.get("blockers", "None"),
                     "last_updated": status.get("last_updated", "N/A"),
                     "next_step": status.get("next_step_explicit") or infer_next_step(status.get("phase", "Unknown"), progress),
@@ -551,6 +558,14 @@ def get_html_template(features_json):
                             <span class="badge ${{phaseClass}}">${{escapeHtml(feat.phase)}}</span>
                         </div>
                         <div class="meta-list">
+                            <div class="meta-item">
+                                <div class="meta-label">Complexity</div>
+                                <div class="meta-value">${{escapeHtml(feat.complexity)}}</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Active Task</div>
+                                <div class="meta-value">${{escapeHtml(feat.active_task)}}</div>
+                            </div>
                             <div class="meta-item">
                                 <div class="meta-label">Next Step</div>
                                 <div class="meta-value">${{escapeHtml(feat.next_step)}}</div>

@@ -28,7 +28,8 @@ Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tas
     - **Proof Policy**: Satisfy planned proof surfaces. If the plan mandates tests, implement them.
 7. **Mechanical Validation**: Re-run the local task proof to verify passes. Then, run `bash kit/scripts/harness/gate-runner.sh` for all mechanical validation. If the gate fails, pipe the output into `bash kit/scripts/harness/telemetry-collector.sh` to log the failure, then resolve the root cause.
 8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done` and explicitly toggle the `- [ ]` markdown checkbox to `- [x]` in the task list. Update `progress.md` with session notes.
-9. **Next Step**: If tasks remain, continue `/spec-implement`. If complete, hand off to `/harness-verify`. If issues arise (scope break, planning gaps), stop and route to `/spec-plan`.
+9. **Lesson Capture**: Check if any non-trivial design/approach decisions were made during this task that weren't in `design.md`. If so, append a `[CANDIDATE]` entry to `artifacts/features/<slug>/session-extracts.md` documenting the decision and rationale for later memory promotion.
+10. **Next Step**: If tasks remain, continue `/spec-implement`. If complete, hand off to `/harness-verify`. If issues arise (scope break, planning gaps), stop and route to `/spec-plan`.
 
 ## Core Rules
 - **No "Vibe Coding"**: Stick strictly to task scopes.

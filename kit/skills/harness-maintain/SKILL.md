@@ -1,45 +1,64 @@
 ---
 name: harness-maintain
-description: Maintain harness configuration and update system indexes.
+description: Maintain harness configuration, assess health, and self-improve from telemetry.
 
 ---
 
 # Harness Maintain
 
 ## Overview
-Regenerate project maps, audit installation integrity, or evaluate harness logic updates.
+Administrative tools to assess harness health, repair missing state, and evolve rules based on telemetry logs.
 
 ## I/O Hand-off Protocol
-- **Reads**: Entire codebase, `kit/manifest.json`, `kit/memories/repo/core-policies.md`.
-- **Writes**: `docs/project/code-map.md`, `docs/generated/dashboard.html`.
+- **Reads**: Entire codebase, `memories/repo/`, `manifest.json`, `harness-telemetry.md`.
+- **Writes**: `docs/generated/harness-assessment.md`, `memories/repo/learned-heuristics.md`, `docs/project/code-map.md`, `docs/generated/dashboard.html`.
 
 ## Modes
 
+When invoking this skill, you must specify one of the following modes:
+
 | Mode | Trigger | Focus |
 |---|---|---|
-| **Codemap** | default | Regenerates codemaps and triggers dashboard refresh. |
-| **Audit** | `--audit` | Compares manifest JSON with the actual kit folder tree to catch drift. |
-| **Eval** | `--eval` | Runs validation checking that core policies (CC-*) and scripts are intact. |
+| **assess** | `assess` | Generates a health report checking memory sizes, stale references, and orphaned artifacts. |
+| **create** | `create` | Scaffolds missing harness directories or files. |
+| **improve** | `improve` | Self-healing: reads telemetry logs and drafts new heuristics/rules from failures. |
+| **eval** | `eval` | Validates internal consistency of CC-* rules, manifest, and harness scripts. |
+| **doctor** | `doctor` | The "fix it" mode. Runs assess + regenerates stale codemaps and dashboard. |
 
 ## Workflow
 
-### Codemap Mode (Default)
-1. Walk the repository directory structure to compile a structured file map of core files using guidelines in `references/codemap-generation.md`.
-2. Overwrite `docs/project/code-map.md` with the updated hierarchy.
-3. Call `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard at `docs/generated/dashboard.html`.
+### 1. Assess Mode (`assess`)
+1. Read all files in `memories/repo/`. Count line lengths. Flag any file > 600 lines as a warning, > 800 lines as a critical compaction risk.
+2. Check for orphaned feature artifacts (e.g., a directory in `artifacts/features/` with no `status.md`).
+3. Check for missing required sections in `memories/repo/core-policies.md`.
+4. Output a structured health report to `docs/generated/harness-assessment.md`.
 
-### Audit Mode (`--audit`)
-1. Read `manifest.json` and extract the expected files list.
-2. Crawl the local directory tree under `kit/`. Compare the discovered files with the `overwrite` and `copyIfMissing` files listed in the manifest.
-3. Report any untracked, missing, or misclassified files as a validation audit failure.
-4. Verify all reference links inside `skills/**/*.md` point to existing files.
+### 2. Create Mode (`create`)
+1. Read the health report or system baseline.
+2. Scaffold any missing standard directories (e.g., `memories/domain/`, `docs/generated/`).
+3. Create missing placeholder files if they were accidentally deleted.
 
-### Eval Mode (`--eval`)
-1. Required before shipping updates to the verification harness or core policy files.
-2. Verify all `CC-*` identifiers defined in `memories/repo/core-policies.md` are present and mapped.
-3. Run `gate-runner.sh` and capture output to verify stack detection exits code `1` on unknown stacks.
-4. Verify `telemetry-collector.sh` correctly appends YAML-formatted telemetry log entries.
+### 3. Improve Mode (`improve`)
+1. Read `memories/repo/harness-telemetry.md` `## Entries`.
+2. Find all `open` entries (OBS-*) where `promotion_candidate: true`.
+3. For each candidate, draft a new rule or heuristic that would prevent the failure.
+4. Append the draft to `memories/repo/learned-heuristics.md` clearly marked as `[DRAFT]`.
+5. Update the `## Trend Summary` table in `harness-telemetry.md`.
+6. Set the entry status to `promoted`.
+7. **Rule**: Never finalize a `[DRAFT]` rule without explicit user review.
+
+### 4. Eval Mode (`eval`)
+1. Verify all `CC-*` identifiers defined in `memories/repo/core-policies.md` are present and sequential.
+2. Run `scripts/harness/gate-runner.sh` (or `gate-runner.local.sh` if it exists) and capture output to verify stack detection.
+3. Compare `manifest.json` against the actual file tree to catch drift.
+
+### 5. Doctor Mode (`doctor`)
+1. Run Assess steps to check for structural health.
+2. Check for broken markdown file links inside `skills/**/*.md`.
+3. Regenerate `docs/project/code-map.md` with the updated repository hierarchy.
+4. Run `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard.
+5. Report what was fixed and what still requires manual intervention.
 
 ## Core Rules
-- **No Manual Codemaps**: Never edit `docs/project/code-map.md` by hand; always regenerate it programmatically.
-- **Audit Before Ship**: Every package release requires running Audit mode to ensure manifest consistency.
+- **No Silent Promotion**: Improve mode drafts rules but the user must approve them.
+- **Audit Before Ship**: Every package release requires running Eval mode to ensure manifest consistency.

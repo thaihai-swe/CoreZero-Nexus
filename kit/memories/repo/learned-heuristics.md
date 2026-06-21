@@ -47,8 +47,8 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Evidence:
   - repeated over-generation of boilerplate sections that the codebase never uses (e.g., full docstrings, empty method stubs, placeholder configs)
 - Confidence: High
-- Last reviewed: 2026-06-18
-- Promote to stronger rule? Yes — candidate for `docs/policies/code-design.md`
+- Last reviewed: 2026-06-20
+- Promote to stronger rule? **[PROMOTED]** Added to `docs/policies/code-design.md`
 
 ### LH-006: Token budget underestimation causes context compaction mid-complex task
 - Trigger:
@@ -80,5 +80,5 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Evidence:
   - features built without loading domain packs repeated patterns that were already captured in the pack, or violated boundary rules
 - Confidence: High
-- Last reviewed: 2026-06-18
-- Promote to stronger rule? Yes — candidate for `docs/policies/code-design.md`
+- Last reviewed: 2026-06-20
+- Promote to stronger rule? **[PROMOTED]** Added as a MUST rule in `spec-requirements/SKILL.md`

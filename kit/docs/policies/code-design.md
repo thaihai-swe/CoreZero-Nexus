@@ -12,6 +12,11 @@ where features fail silently and bug fixes have to be applied N times. The
 principles below are the lessons; if a piece of code violates one, that is
 enough reason to fix it even when the local code "works."
 
+## Read before you write
+
+- **MUST** check existing files of a similar type before creating a new file or module. Match their structure, not a generic template.
+- **SHOULD** prefer the smallest file that satisfies the task over a boilerplate scaffold. Over-generation of boilerplate sections that the codebase never uses (e.g., full docstrings, empty method stubs, placeholder configs) is an anti-pattern.
+
 ## One way to say one thing
 
 - **MUST NOT** accept two spellings of the same intent — e.g. a magic

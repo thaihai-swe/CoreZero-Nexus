@@ -14,10 +14,12 @@ Converts an approved spec into a concrete execution strategy. Always produces `d
 - **Next Skill**: `/spec-implement`
 
 ## Workflow
-1. **Initialize State**: Update the `## Current State` section of `artifacts/features/<slug>/status.md` to set phase to `Planning`.
-2. **Design First**: You MUST write `artifacts/features/<slug>/design.md` using `references/design-template.md` before breaking down any tasks. Choose depth based on complexity:
-   - **Lightweight** (simple, contained changes with no new components or integrations): fill only the Lightweight section of the template.
-   - **Comprehensive** (new architecture, new components, external integrations, or cross-cutting changes): fill the Comprehensive section.
+1. **Initialize State**: Update the `## Current Phase` section of `artifacts/features/<slug>/status.md` to set phase to `Planning`.
+2. **Design First**: You MUST write `artifacts/features/<slug>/design.md` using `references/design-template.md` before breaking down any tasks. Read the `## Complexity` from `status.md` and choose depth:
+   - **Simple**: fill only the Lightweight section of the template.
+   - **Moderate**: fill the Comprehensive section.
+   - **Complex**: fill the Comprehensive section. If uncertainties remain, halt and invoke `/spec-research`.
+   If the design reveals a contested decision with ≥2 viable approaches and material tradeoffs (e.g., build vs. buy, sync vs. async, new dependency vs. in-house), STOP. Invoke `/spec-adr` to record the decision before proceeding. Do not silently pick an approach.
    Once `design.md` is written, write `artifacts/features/<slug>/plan.md` using `references/plan-template.md` deriving the execution approach directly from the design. The plan must pass the **Architectural Gates** (see Core Rules) and conform to `ponytail.md` guidelines or explicitly document justified exceptions in a "Complexity Tracking" section.
 3. **Task Breakdown**: Create `artifacts/features/<slug>/tasks.md` using `references/tasks-template.md` with unique task IDs (`T-01`), clear targets, and specific proof validations. Mark independent, non-blocking tasks with `[P]` to indicate safe parallel execution zones.
 4. **Traceability**: Verify every requirement in `artifacts/features/<slug>/spec.md` maps to a task in `artifacts/features/<slug>/tasks.md`.
