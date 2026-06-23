@@ -10,7 +10,7 @@
 ## Rule
 
 - Do not duplicate the router body here.
-- If the router contract changes, update `kit/AGENTS.md`, then verify the install surface and `starter-init` references still align.
+- If the router contract changes, update `AGENTS.md`, then verify the install surface and `starter-init` references still align.
 
 ## Why
 

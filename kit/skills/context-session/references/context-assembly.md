@@ -50,6 +50,13 @@ Load context from highest-signal to lowest-signal:
 - When no by-intent group matches conceptually, proceed with the Always tier only and record "no by-intent groups matched" in the session opener — silent skipping is not allowed.
 - If `MASTER_INDEX.md` is missing or stale, fall back to loading every memory file and route the gap to `context-memory` for index repair.
 
+## Confidence-Scored Loading
+
+- Count keyword matches between the active task and a group's trigger keywords (declared in `MASTER_INDEX.md`).
+- **0–2 matches (low confidence)**: partial-load via `scripts/context-loader.py <file> --mode summary`.
+- **3+ matches (high confidence)**: full-load the file.
+- **Semantic match allowed**: if the file's core purpose matches the task intent even without literal keyword overlap, treat as high confidence.
+
 ## Compaction Triggers
 
 Compact or checkpoint when any of these are true:

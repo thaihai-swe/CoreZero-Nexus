@@ -19,7 +19,7 @@ Question categories:
 
 Minimum: 2 questions. Maximum: 3.
 
-### Wave 2: Behavior & Decisions (Standard + Complex)
+### Wave 2: Behavior & Decisions (Moderate + Complex)
 
 Goal: Surface user-facing choices and interaction decisions that affect implementation.
 
@@ -47,8 +47,8 @@ Minimum: 2 questions. Maximum: 4.
 
 | Complexity | Waves | Total Questions |
 |------------|-------|-----------------|
-| Tiny | Wave 1 only | 2-3 |
-| Standard | Waves 1 + 2 | 4-7 |
+| Simple | Wave 1 only | 2-3 |
+| Moderate | Waves 1 + 2 | 4-7 |
 | Complex | Waves 1 + 2 + 3 | 6-11 |
 
 ## Question Quality Rules
@@ -57,7 +57,7 @@ Minimum: 2 questions. Maximum: 4.
 - **Concrete:** Ask about specific scenarios, not abstract preferences
 - **Non-leading:** Don't embed assumptions in the question
 - **Actionable:** The answer must change what you'd write in the spec
-- **Proportional:** Don't ask Complex-level questions for Tiny work
+- **Proportional:** Don't ask Complex-level questions for Simple work
 - **Batch by wave:** Send the wave's full 2-4 questions together as a numbered list, then wait for answers. Do not send one question, wait, then send the next — that triples the round trips and breaks the user's flow. The dependency-ordered walking happens *across waves*, not within a wave.
 - **Pair every question with your recommended answer:** Format: *"My recommendation: X, because [reason]. Disagree?"* Committing to a best guess is faster than neutral interviewing and reveals where the user actually disagrees.
 - **Don't ask what the codebase can answer:** If `grep`, file reads, or `git log` would resolve the question in seconds, investigate first. Reserve questions for user-owned decisions (intent, priority, UX, scope) — not facts that already exist in the repo.
@@ -70,7 +70,7 @@ Minimum: 2 questions. Maximum: 4.
 | "Do you want me to add tests?" | Obvious answer, wastes a question | Ask about WHAT to test, not WHETHER |
 | "Should I follow best practices?" | Vague, non-actionable | Ask about specific tradeoffs |
 | "Is there anything else?" | Open-ended, low-signal | Ask about a specific gap you noticed |
-| Asking 10 questions for a Tiny change | Disproportionate ceremony | Scale to complexity |
+| Asking 10 questions for a Simple change | Disproportionate ceremony | Scale to complexity |
 | Asking only 1 question for Complex work | Insufficient coverage | Minimum 6 for Complex |
 
 ## Escalation Triggers

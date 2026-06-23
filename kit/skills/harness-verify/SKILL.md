@@ -16,21 +16,23 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 
 ## Workflow
 
-1. **Initialization**: Update `artifacts/features/<slug>/status.md` phase to `Verifying`.
-2. **Mechanical Gate Audit**: Run `bash kit/scripts/harness/gate-runner.sh` to mechanically verify the workspace. Do not guess commands. Write the results into `review.md`.
-3. **Gate Failure Telemetry**: If the gate in Step 2 fails, increment a failure counter in `memories/repo/harness-telemetry.md`. If failures < 2, hand off to `/spec-implement`. If failures >= 2 on the same task, escalate to the user for a rethink or route to `/code-review`. Do not proceed.
-4. **Clean-State Check**: Ensure no uncommitted changes or broken builds.
-5. **Alignment Audit**: For each AC in `spec.md`, identify the task ID (`T-NN`) in `tasks.md` whose validation covers it.
+1. **Initialization**: Run `bash scripts/harness/phase-gate.sh <slug> "Verifying"` to verify preconditions. If it fails, fix the root cause before proceeding. Update `artifacts/features/<slug>/status.md` phase to `Verifying`.
+2. **Mechanical Gate Audit**: Run `bash scripts/harness/gate-runner.sh` to mechanically verify the workspace. Do not guess commands. Write the results into `review.md`.
+3. **Gate Failure Telemetry**: If the gate in Step 2 fails, pipe the output into `bash scripts/harness/telemetry-collector.sh --task <TASK-NNN> --feature <slug>`. Then count failures for this task using `bash scripts/harness/telemetry-count.sh --task <TASK-NNN>`. If failures < 2, hand off to `/spec-implement`. If failures >= 2 on the same task, escalate to the user for a rethink or route to `/code-review`. Do not proceed.
+4. **Clean-State Check**: Ensure no uncommitted changes or broken builds. This is a precondition — state must be clean before the alignment audit begins. If the gate in Step 2 passed, reset the failure counter: post-fallow failures count fresh, not against the Step 2 count.
+5. **Alignment Audit**: Run `bash scripts/harness/traceability-audit.sh <slug>` as the mechanical first pass. If it exits non-zero, fix unmapped items before proceeding. For each AC in `spec.md`, identify the task ID (`TASK-NNN`) in `tasks.md` whose validation covers it.
    **Pass/Fail threshold**: Zero tolerance — every `AC-*` item in `spec.md` must map to at least one task with recorded validation evidence in `tasks.md`. A single AC with no implementation evidence = `Fail`. There is no partial pass.
 6. **Design Conformance Check**: Read `plan.md`. For each major component or decision listed in the Technical Design section, confirm it is reflected in the delivered code and task list. Any component in the design section with zero corresponding implementation evidence in `tasks.md` is a `Fail`.
-7. **Security Lens**: Audit verified scope against `memories/repo/core-policies.md ## Security Policy`.
-8. **Fallow Pass (Optional)**: Simplify touched files by removing dead code/unused imports.
-   **Scope limit**: Applies only to files explicitly listed in this feature's `tasks.md` task targets. No structural refactors are allowed during this step. Re-run the mechanical gate after cleanup before proceeding.
-9. **Helper Skills**:
-   - **Code Review**: For substantial changes, invoke `/code-review` and merge findings into `review.md`.
-   - **Harness Maintain**: Invoke `/harness-maintain` if changes touch the kit structure.
-10. **Artifact Generation**: Write findings into `review.md`. Draft `testing-scenarios.md` using `references/testing-scenarios-template.md` (Required for `Moderate` and `Complex`, optional for `Simple`).
-11. **Finalization & Handoff**: Set verdict (`Pass`, `Pass with Follow-Up Debt`, or `Fail`). If passed, update `status.md` to `Done` and explicitly hand off to `/context-memory` for post-ship sync.
+7. **Security Lens**: Audit verified scope against `memories/repo/core-policies.md` `## Security Policy`.
+8. **Production Readiness (Optional)**: If the change is production-bound, run `references/production-readiness-checklist.md` and append findings to `review.md`.
+9. **Fallow Pass (Optional)**: Simplify touched files by removing dead code/unused imports.
+   **Scope limit**: Applies only to files explicitly listed in this feature's `tasks.md` task targets. No structural refactors are allowed during this step.
+   **Ordering**: Step 4 (Clean-State) is a precondition checked before alignment. This step (Fallow Pass) is optional post-alignment simplification. Re-run the mechanical gate after cleanup before proceeding — this is a fresh verification, counted against a reset counter (Step 4 resets the failure counter after a successful pre-fallow gate).
+10. **Helper Skills**:
+    - **Code Review**: For substantial changes, invoke `/code-review` and merge findings into `review.md`.
+    - **Harness Maintain**: Invoke `/harness-maintain` if changes touch the kit structure.
+11. **Artifact Generation**: Write findings into `review.md`. Draft `testing-scenarios.md` using `references/testing-scenarios-template.md` (Required for `Moderate` and `Complex`, optional for `Simple`).
+12. **Finalization & Handoff**: Apply `references/definition-of-done.md` checklist before issuing verdict. Set verdict (`Pass`, `Pass with Follow-Up Debt`, or `Fail`). If passed, update `status.md` to `Done` and explicitly hand off to `/context-memory` for post-ship sync.
 
 ## Core Rules
 

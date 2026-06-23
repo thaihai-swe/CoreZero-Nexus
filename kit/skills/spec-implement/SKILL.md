@@ -12,8 +12,8 @@ Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tas
 
 
 ## I/O Hand-off Protocol
-- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `kit/docs/rules/ponytail.md`.
-- **Writes**: Source code, `artifacts/features/<slug>/tasks.md` (to mark tasks done), `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`, `artifacts/features/<slug>/progress.md`.
+- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `docs/rules/ponytail.md`.
+- **Writes**: Source code, `artifacts/features/<slug>/tasks.md` (to mark tasks done), `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`, `artifacts/features/<slug>/progress.md`, `artifacts/features/<slug>/session-extracts.md` (candidate-only; promoted by `/context-memory` post-ship-sync).
 - **Next Skill**: `/harness-verify`
 
 > **Note on Artifact Responsibilities**:
@@ -22,15 +22,15 @@ Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tas
 
 ## Workflow
 
-1. **Initialization**: Update `artifacts/features/<slug>/status.md` phase to `Implementing`.
+1. **Initialization**: Run `bash scripts/harness/phase-gate.sh <slug> "Implementing"` to verify preconditions. If it fails, fix the root cause before proceeding. Update `artifacts/features/<slug>/status.md` phase to `Implementing`.
 2. **Resumption Check**: (If resuming mid-task) Read the last entry in `progress.md` to identify the interrupted task. Re-run the task's proving command from pre-flight. If the proving command now fails, treat the task as not started: reset its status to `Pending` and restart from Step 3.
-3. **Select Task**: Choose the first unblocked task ID (e.g., `T-01`) from `artifacts/features/<slug>/tasks.md`. Declare the target task before coding.
+3. **Select Task**: Choose the first unblocked task ID (e.g., `TASK-001`) from `artifacts/features/<slug>/tasks.md`. Declare the target task before coding.
 4. **Status Update**: Mark the task `In Progress` in `tasks.md`.
 5. **Pre-Flight Baseline**: Read the task requirements. **Run the task's validation/proving command once in the terminal before editing** to establish a baseline. If files don't exist, create skeleton files first.
 6. **Coding & Provenance**: Implement code and tests within the task boundary. Follow `rules/` (including `ponytail.md` for simplicity) and guidelines in `references/implementation-standards.md`.
     - **Decision Provenance**: If implementation requires a design decision not covered in `spec.md` or `plan.md` (e.g., swapping a library), stop coding. Route to `/spec-adr` if architectural. For minor choices: append a `## Decision Record` block to `progress.md` (choice, reason) before writing code. Do not implement undocumented mid-flight decisions silently.
     - **Proof Policy**: Satisfy planned proof surfaces. If the plan mandates tests, implement them.
-7. **Mechanical Validation**: Re-run the local task proof to verify passes. Then, run `bash kit/scripts/harness/gate-runner.sh` for all mechanical validation. If the gate fails, pipe the output into `bash kit/scripts/harness/telemetry-collector.sh` to log the failure, then resolve the root cause.
+7. **Mechanical Validation**: Re-run the local task proof to verify passes. Then, run `bash scripts/harness/gate-runner.sh` for all mechanical validation. If the gate fails, pipe the output into `bash scripts/harness/telemetry-collector.sh --task <TASK-NNN> --feature <slug>` to log the failure, then resolve the root cause.
 8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done` and explicitly toggle the `- [ ]` markdown checkbox to `- [x]` in the task list. Update `progress.md` with session notes.
 9. **Lesson Capture**: Check if any non-trivial design/approach decisions were made during this task that weren't in `plan.md`. If so, append a `[CANDIDATE]` entry to `artifacts/features/<slug>/session-extracts.md` documenting the decision and rationale for later memory promotion.
 10. **Next Step**: If tasks remain, continue `/spec-implement`. If complete, hand off to `/harness-verify`. If issues arise (scope break, planning gaps), stop and route to `/spec-plan`.

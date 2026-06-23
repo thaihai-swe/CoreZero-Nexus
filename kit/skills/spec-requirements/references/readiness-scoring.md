@@ -10,8 +10,8 @@ Each dimension is scored 1-5:
 |-------|---------|
 | 1 | Critical gaps — cannot proceed |
 | 2 | Significant gaps — needs rework |
-| 3 | Adequate — minor gaps acceptable for Tiny work |
-| 4 | Good — ready for Standard work |
+| 3 | Adequate — minor gaps acceptable for Simple work |
+| 4 | Good — ready for Moderate work |
 | 5 | Excellent — ready for Complex or high-risk work |
 
 ## Dimensions
@@ -93,7 +93,7 @@ Each dimension is scored 1-5:
 | Total Score | Verdict | Action |
 |-------------|---------|--------|
 | 25-30 | Ready | Proceed to planning |
-| 19-24 | Ready with caveats | Proceed for Standard/Tiny; iterate for Complex |
+| 19-24 | Ready with caveats | Proceed for Moderate/Simple; iterate for Complex |
 | 13-18 | Not ready | Iterate on weak dimensions before planning |
 | 6-12 | Critical gaps | Major rework required |
 

@@ -8,7 +8,7 @@
 | File | Contents | When to load |
 |------|----------|--------------|
 | `docs/project/code-map.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
-| `docs/rules/*.md` | Per-language and per-domain coding rules (e.g., Python style, security rules). | When the active task touches a specific language or security-sensitive domain. |
+| `docs/rules/*.md` | Per-domain coding and policy rules (security, simplicity, etc.). | When the active task touches a security-sensitive domain or when loading a specific rule set. |
 | `manifest.json` | Installation manifest listing kit-managed (overwrite) and adopter-owned (copyIfMissing/preserve) files. | When auditing or modifying the kit file structure or installation behavior. |
 | memories/repo/core-policies.md | Repo-wide normative rules, canonical commands, limits, and security policy. | Read at session start and before changing core policies or security rules. |
 
@@ -18,7 +18,7 @@
 2. Files in the **By Intent** groups are evaluated individually. Do not load a group all at once.
    - **Granular Routing:** Evaluate the active task against *each individual file's* description. Load ONLY the specific files whose contents are strictly required for the current task.
    - **Semantic Triggers:** You may load a file if its core purpose matches the task's intent, even if exact literal keywords are absent.
-   - **Partial Loading:** For low-confidence matches or when you only need an overview, use `kit/scripts/context-loader.py <file> --mode summary` to extract just the file's index or summary, preserving token budget.
+   - **Partial Loading:** For low-confidence matches or when you only need an overview, use `scripts/context-loader.py <file> --mode summary` to extract just the file's index or summary, preserving token budget.
 3. Files in the **By Debug** group load only when debugging, retro, or post-mortem work begins.
 4. The **Phase × Guidance Matrix** below tells you what to add (and what to stop reading) at each phase of the delivery loop.
 5. If a file outgrows its slot (>800 lines, 3+ distinct subtopics, or 5+ artifacts reference one slice), open a promotion proposal under `artifacts/features/<slug>/promotions.md`.
@@ -44,11 +44,10 @@ Broad Intent Keywords: `architecture`, `pattern`, `convention`, `stack`, `module
 
 ### By Intent — Rules
 
-Broad Intent Keywords: `python`, `security`, `secret`, `auth`, `input validation`, `injection`, `simplicity`, `yagni`, `refactor`, `ponytail`, `minimal`, plus the language or domain name of any rule file added here.
+Broad Intent Keywords: `security`, `secret`, `auth`, `input validation`, `injection`, `simplicity`, `yagni`, `refactor`, `ponytail`, `minimal`, plus the domain name of any rule file added here.
 
 *(Evaluate files individually; do not block-load the group)*
 
-- `docs/rules/python.md` — Python conventions and style; load on Python work.
 - `docs/rules/security.md` — cross-language security do/don't patterns; load on security-sensitive work (secrets, auth, external input).
 - `docs/rules/ponytail.md` — lazy senior dev rules (YAGNI, minimal code); load when writing, planning, or refactoring code to enforce simplicity.
 - `docs/policies/code-design.md` — normative cross-cutting coding policy (overengineering pitfalls, spec/behavior drift); load when changing or adding software design. Its `MUST`/`MUST NOT` rules carry priority-rule weight.
@@ -73,7 +72,7 @@ Domain packs live in `memories/domain/`. Trigger keywords are declared in `gloss
 - **No packs installed:** Skip this section entirely.
 
 Installed packs:
-- **example** (`memories/domain/`) — triggers: `example`, `sample`, `demo`, `template`, `walkthrough`. Worked-example pack shipped as a schema demo; replace with a real domain pack.
+- **example** (`memories/domain/example/`) — triggers: `example`, `sample`, `demo`, `template`, `walkthrough`. Worked-example pack shipped as a schema demo; replace with a real domain pack.
 
 ### By Debug (load on debug, retro, or failure)
 
@@ -190,3 +189,15 @@ When a feature changes a domain's behavior or boundaries, the agent directly edi
 - Update packs during `/context-memory` Post-Ship Sync when new patterns emerge from features.
 - Promote durable patterns from `artifacts/features/<slug>/session-extracts.md` into the domain pack.
 - Remove outdated entries when the codebase no longer uses a pattern.
+
+## 5. Promotion Watchlist
+
+Files flagged for structural action (split, extract, or retire) when they exceed the thresholds in `core-policies.md ## Memory Promotion Thresholds`. Written by `/context-memory` post-ship sync; read by `/context-compact` to abort if a file is flagged for splitting rather than compaction.
+
+| File | Proposal | Proposed action | Date | Status |
+|------|----------|-----------------|------|--------|
+| (path to file) | artifacts/features/<slug>/promotions.md | split / extract / retire | YYYY-MM-DD | open / approved / done |
+
+- **open**: proposal submitted, awaiting review.
+- **approved**: user approved the action; `/context-compact` or manual split may proceed.
+- **done**: action completed; row retained for audit trail.

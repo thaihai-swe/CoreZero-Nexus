@@ -69,8 +69,9 @@ elif [ -f "pytest.ini" ] || [ -f "pyproject.toml" ]; then
     fi
 else
     echo "ERROR: No recognizable project configuration found (no package.json, pytest.ini, or pyproject.toml)."
-    echo "=> Configure scripts/harness/gate-runner.local.sh for your language stack."
-    echo "=> See kit/docs/README.md for configuration instructions."
+    echo "=> Copy the generic template and customize it:"
+    echo "   cp scripts/harness/gate-runner.local.example.sh scripts/harness/gate-runner.local.sh"
+    echo "=> Then edit gate-runner.local.sh with your build/lint/test commands."
     exit 1
 fi
 

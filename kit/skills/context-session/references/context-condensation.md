@@ -13,4 +13,4 @@ As a session progresses, the context window fills up with conversation history, 
 ## Token Budget Escalation
 
 - **Amnesia Threshold**: As defined in `core-policies.md`, when the session token budget reaches 80% (approx. 160,000 tokens), you are at risk of amnesia. If condensation strategies are not enough to bring the budget down, you must end the session with `/context-session END` and hand off to a new session.
-- **Persistent Memory Bloat**: If a `memories/repo/*.md` file itself exceeds 600 lines, do not condense it in-session — route to `/context-compact` instead.
+- **Persistent Memory Bloat**: If a `memories/repo/*.md` file itself exceeds the thresholds in `core-policies.md ## Memory Promotion Thresholds`, do not condense it in-session — route to `/context-compact` instead.

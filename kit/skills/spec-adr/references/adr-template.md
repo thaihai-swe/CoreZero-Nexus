@@ -3,6 +3,9 @@
 **Status:** Proposed | Accepted | Deprecated | Superseded
 **Date:** [Date]
 **Deciders:** [Who needs to sign off]
+**Feature slug:** [slug]
+**Related spec:** [link to spec.md]
+**Related plan:** [link to plan.md]
 
 ## Context
 [What is the situation? What forces are at play? What is the problem we are trying to solve?]
@@ -52,6 +55,8 @@ Use this shorter format for minor, low-ceremony, but worth-recording architectur
 
 **Status:** Proposed | Accepted | Deprecated | Superseded
 **Date:** [Date]
+**Feature slug:** [slug]
+**Related spec:** [link to spec.md]
 
 ### 1. Decision
 [One sentence specifying the choice made.]

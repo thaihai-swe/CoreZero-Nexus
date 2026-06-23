@@ -30,7 +30,7 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found
 3. **Context Alignment**: 
     - **Domain Pack Scan**: If any keyword from the feature description matches a domain pack trigger in `memories/domain/<name>/glossary.md` frontmatter, you MUST load that pack before writing the spec and note it in `status.md`.
     - **Analysis Check**: Read `artifacts/features/<slug>/analysis.md` (if exists) and record open research questions.
-    - **Domain Spec Check**: Read relevant domain specs (e.g., `memories/repo/domain-specs.md`).
+    - **Domain Spec Check**: If `memories/repo/domain-specs.md` exists, read relevant domain specs.
     - **ADR Conflict Check**: Load `memories/repo/adr-log.md`. Verify the proposed spec does not contradict locked decisions. If a contradiction exists, insert `[ADR CONFLICT: ADR-NNN — <decision summary>]` and block Handoff.
 4. **Clarification (Grilling Phase)**: Do NOT guess missing details. Engage in a relentless interview (Socratic refinement) to resolve decision trees and eliminate ambiguity before writing the spec. Never just mark items as `[UNKNOWN]` and move on. Ask batch clarifying questions with recommended answers per `references/grilling-waves.md`. If answers remain contradictory after 2 rounds, write `[UNRESOLVED: <description>]` and stop.
 5. **Complexity Classification**: Evaluate the scope of the work and update `status.md` with one of the following:
@@ -39,8 +39,8 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found
     - **Complex**: Cross-cutting, multiple integrations, or unknown dependencies.
 6. **Proposal & Scope Definition**: Draft `proposal.md` to align scope before spec'ing. Explicitly list `In Scope`, `Out Of Scope`, and `Non-Goals`.
 7. **Spec Authoring**: Draft `spec.md` (`what` & `why`) using `references/spec-template.md`. Record key gray-area design/UX choices. Define testable, observable acceptance criteria (AC-*) using strict markdown checklists or Gherkin. Specify verification surfaces (unit, integration, manual check).
-8. **Completeness Check**: Ensure NO `[NEEDS CLARIFICATION]`, `[UNRESOLVED]`, or `[ADR CONFLICT]` tags remain. Conduct a requirements review using `references/requirements-review-template.md`. Only create `requirements-review.md` if issues or gaps are found; do NOT create the artifact if the review passes.
-9. **Handoff**: Update `status.md` phase to `Spec Approved` and route to `/spec-plan`.
+8. **Completeness Check**: Ensure NO `[NEEDS CLARIFICATION]`, `[UNRESOLVED]`, or `[ADR CONFLICT]` tags remain. Run readiness scoring per `references/readiness-scoring.md`. Conduct a requirements review using `references/requirements-review-template.md`. Only create `requirements-review.md` if issues or gaps are found; do NOT create the artifact if the review passes.
+9. **Handoff**: Run `bash scripts/harness/phase-gate.sh <slug> "Spec Approved"` to verify preconditions. If it fails, fix the root cause before proceeding. Update `status.md` phase to `Spec Approved` and route to `/spec-plan`.
 ## Core Rules
 - **Anti-Hallucination**: Never invent plausible but unspecified business logic. Mark all unknowns explicitly.
 - **What, not How**: Focus on requirements, not technical implementation.

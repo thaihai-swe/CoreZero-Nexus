@@ -1,6 +1,15 @@
 
 # CoreZero Constitution
 
+## Index
+
+- **CC-001 to CC-012** — Normative rules (skill contracts, evidence, unknowns, permissions, surgical updates, spec truth, alignment, handoff, promotion, domain vs. normative, MVC, spec mutation logging)
+- **Release Guardrails** — manifest/dry-run checks before shipping
+- **Amendment Rules** — how to add or refine CC-* rules
+- **Harness Config** — identity, work tracking, artifact routing, verification commands, session defaults
+- **Memory Promotion Thresholds** — canonical line-count ladder (Healthy <600, Warning 600-799, Breach 800-1199, Hard Cap >=1200)
+- **Security Policy** — trust boundaries, permission tiers, sandbox rules, prompt-injection defense, validation
+
 ## Purpose
 
 This file stores the durable normative rules for maintaining the AI Agents Development Kit. Rules here are repo-wide, evidence-backed, and mandatory. Descriptive patterns and implementation facts belong in `memories/repo/project-knowledge-base.md`.
@@ -146,14 +155,24 @@ Every feature lifecycle follows the canonical 7-Phase Delivery Loop:
 
 ## Memory Promotion Thresholds
 
-Used by `context-memory` post-ship sync to propose memory restructuring when thresholds are exceeded.
-- File length: warn at 800 lines, hard threshold at 1200 lines
-- Distinct subtopics: 3 or more H2 sections covering separable concerns
-- Artifact references: 5 or more `artifacts/features/<slug>/` files cite the same slice of one memory file
-- Action when threshold hit: add the file to `## Promotion Watchlist` in `MASTER_INDEX.md` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`
-- Compaction (shrink in-place) is handled by `/context-compact`. See `kit/skills/context-compact/SKILL.md` for the full safety protocol and eligible target files.
+Canonical threshold ladder. All skills and reference files quote this section by reference — do not restate these numbers elsewhere.
 
-# Security Policy & Trust Boundaries
+| Lines | State | Action |
+|-------|-------|--------|
+| < 600 | Healthy | No action |
+| 600–799 | Early warning | Open promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` `## Promotion Watchlist` |
+| 800–1199 | Threshold breach | Compaction required before new appends; proposal must be reviewed by user |
+| >= 1200 | Hard cap | Block all appends; split or compact mandatory |
+
+Additional triggers:
+- **Distinct subtopics:** 3 or more H2 sections covering separable concerns → open promotion proposal.
+- **Artifact references:** 5 or more `artifacts/features/<slug>/` files cite the same slice of one memory file → open promotion proposal.
+
+**Actions:**
+- **Structural promotion (split/extract/retire):** add the file to `## Promotion Watchlist` in `MASTER_INDEX.md` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`. Promotion requires user approval.
+- **Compaction (shrink in-place):** handled by `/context-compact`. See `skills/context-compact/SKILL.md` for the full safety protocol and eligible target files.
+
+## Security Policy
 
 ## Purpose
 

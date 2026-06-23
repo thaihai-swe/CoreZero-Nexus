@@ -25,7 +25,7 @@ This directory holds the agent capability contracts. Each subdirectory (except `
 
 - [`code-review`](code-review/SKILL.md) — Perform code review following Google's Engineering Practices. Evaluates code health, design, functionality, complexity, testing, naming, and style.
 - [`ponytail`](ponytail/SKILL.md) — Enforce the "lazy senior dev" ladder before writing code. Reviews diffs for over-engineering, trims bloated abstractions, and ensures maximum use of platform-native features.
-- [`harness-maintain`](harness-maintain/SKILL.md) — Evaluate, construct, or repair an agent harness across six core subsystems (Instructions, State, Verification, Scope, Lifecycle, Security), including evaluation architecture and failure-driven improvement from observability findings.
+- [`harness-maintain`](harness-maintain/SKILL.md) — Evaluate, construct, or repair an agent harness across seven core subsystems (Instructions, State, Verification, Scope, Lifecycle, Security, Context Engineering), including evaluation architecture and failure-driven improvement from observability findings.
 - [`codebase-documenter`](codebase-documenter/SKILL.md) — Generate comprehensive codebase documentation covering architecture, components, data flow, setup, deployment, and contributing — produces a multi-file doc set.
 - [`technical-docs`](technical-docs/SKILL.md) — Create technical documentation including HTTP/REST API contracts, end-to-end event and logical workflow flows, system boundaries, and actor interactions. Supports mode-based routing (api, flow, both).
 

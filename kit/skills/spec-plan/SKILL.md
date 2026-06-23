@@ -9,7 +9,7 @@ description: Design the technical solution and sequence execution. Handles archi
 Converts an approved spec into a concrete execution strategy. Produces `plan.md` (which explicitly defines the Technical Design first) and `tasks.md` in `artifacts/features/<slug>/`. Tasks are derived from the design portion of the plan. It answers: how will we build this safely, and what task does implementation start with?
 
 ## I/O Hand-off Protocol
-- **Reads**: `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `kit/docs/rules/ponytail.md`.
+- **Reads**: `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `docs/rules/ponytail.md`.
 - **Writes**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/status.md`.
 - **Next Skill**: `/spec-implement`
 
@@ -21,9 +21,9 @@ Converts an approved spec into a concrete execution strategy. Produces `plan.md`
    - **Complex**: fill the Comprehensive Design section. If uncertainties remain, halt and invoke `/spec-research`.
    If the design reveals a contested decision with ≥2 viable approaches and material tradeoffs (e.g., build vs. buy, sync vs. async, new dependency vs. in-house), STOP. Invoke `/spec-adr` to record the decision before proceeding. Do not silently pick an approach.
    The delivery strategy (Part 2 of the plan) must pass the **Architectural Gates** (see Core Rules) and conform to `ponytail.md` guidelines.
-3. **Task Breakdown**: Create `artifacts/features/<slug>/tasks.md` using `references/tasks-template.md` by breaking down the technical approach from the `plan.md`. Each task MUST be traceable to a design decision or component defined in the Technical Design. Use unique task IDs (`T-01`), clear targets, and specific proof validations. Mark independent, non-blocking tasks with `[P]` to indicate safe parallel execution zones.
+3. **Task Breakdown**: Create `artifacts/features/<slug>/tasks.md` using `references/tasks-template.md` by breaking down the technical approach from the `plan.md`. Each task MUST be traceable to a design decision or component defined in the Technical Design. Use unique task IDs (`TASK-001`), clear targets, and specific proof validations. Mark independent, non-blocking tasks with `[P]` to indicate safe parallel execution zones.
 4. **Traceability**: Verify every requirement in `artifacts/features/<slug>/spec.md` maps to a task in `artifacts/features/<slug>/tasks.md`.
-5. **Readiness & Handoff**: Run a completeness check using `references/definition-of-ready.md` to ensure the plan and tasks meet all preconditions. Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
+5. **Readiness & Handoff**: Run a completeness check using `references/definition-of-ready.md` to ensure the plan and tasks meet all preconditions. Run `bash scripts/harness/phase-gate.sh <slug> "Plan Approved"` to verify preconditions. If it fails, fix the root cause before proceeding. Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
 
 ## Core Rules
 - **Hierarchical Detail Management**: Keep `plan.md` high-level and readable. Do NOT dump raw code or algorithms into the plan; extract those to separate implementation detail files if necessary.

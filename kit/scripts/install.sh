@@ -318,7 +318,6 @@ warn_orphans() {
     ".github/workflows/harness-check.yml"
     "rules/README.md"
     "rules/security.md"
-    "rules/python.md"
     "skills/context-memory/references/architecture-template.md"
     "skills/context-memory/references/constitution-template.md"
     "skills/context-memory/references/index-template.md"
@@ -372,15 +371,24 @@ if [[ "$DRY_RUN" != "true" ]]; then
   validate_path "skills/visualize/templates/architecture.svg" "Visualize SVG template"
   validate_path "memories/repo" "Memory layer"
   validate_path "memories/repo/core-policies.md" "Core policies"
-  validate_path "memories/repo/core-policies.md" "Constitution"
+  validate_path "memories/repo/core-policies.md" "Core policies"
   validate_path "AGENTS.md" "Runtime entrypoint"
-  validate_path "docs/rules/python.md" "Python rules"
   validate_path "docs/rules/security.md" "Security rules"
   validate_path "docs/rules/ponytail.md" "Ponytail rules"
   validate_path "skills/ponytail/SKILL.md" "Ponytail skill"
   validate_path "scripts/install.sh" "Installer (self-shipped)"
   validate_path "scripts/harness/gate-runner.sh" "Harness Gate Runner"
   validate_path "scripts/harness/telemetry-collector.sh" "Harness Telemetry Collector"
+  validate_path "scripts/harness/telemetry-count.sh" "Harness Telemetry Counter"
+  validate_path "scripts/harness/doctor.sh" "Harness Doctor"
+  log ""
+  log "Running kit doctor..."
+  if bash "$TARGET_DIR/scripts/harness/doctor.sh"; then
+    log "  [OK]   All doctor checks passed"
+  else
+    errors=$((errors + 1))
+    log "  [FAIL] Doctor check failed"
+  fi
 fi
 
 log ""

@@ -9,7 +9,7 @@ The scope of the sweep is determined by the size and complexity of the change:
 
 Procedure (Standard and above):
 
-1. **Read `MASTER_INDEX.md`** to enumerate the current memory file set. If `MASTER_INDEX.md` is missing, create it from `references/index-template.md` before continuing.
+1. **Read `MASTER_INDEX.md`** to enumerate the current memory file set. If `MASTER_INDEX.md` is missing, recreate it from the kit source by re-running `scripts/install.sh <target> --dry-run` to inspect the default, or manually create a minimal `MASTER_INDEX.md` with `## 1. Context Indexes` and the always-load group (`memories/repo/core-policies.md`).
 2. **Read the feature artifacts**: `spec.md`, `plan.md`, `review.md`, `session-extracts.md`, and any `adr-*.md` files under `artifacts/features/<slug>/`.
 3. **For each memory file in `MASTER_INDEX.md`**, decide one of:
    - **Update** — apply the diff (route through the matching skill section: constitution, security policy, learned heuristics, PKB, architecture, observability log).

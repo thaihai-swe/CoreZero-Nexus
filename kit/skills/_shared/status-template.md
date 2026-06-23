@@ -1,7 +1,7 @@
 # Status: [Feature Name]
 
 ## Current Phase: [Phase Name]
-(Choose from: Researching, Spec'ing, Planning, Implementing, Verifying, Done)
+(Choose from: Researching, Research Complete, Spec'ing, Spec Approved, Planning, Plan Approved, Implementing, Verifying, Done)
 
 ## Complexity: [Simple | Moderate | Complex]
 (Filled by `spec-requirements`. Defines execution and verification depth.)
@@ -16,7 +16,7 @@
 - **Reasoning:**
 
 ## Active Task
-[T-NN or None]
+[TASK-NNN or None]
 
 ## High-Level Progress
 - [ ] Research complete

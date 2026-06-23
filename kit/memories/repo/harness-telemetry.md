@@ -1,6 +1,17 @@
 # Harness Telemetry (State & Logs)
 
-# Current State
+## Index
+
+- **Current State** — owned by context-status; phase, active task, profile
+- **Observability Log** — auto-tier failure ledger owned by harness-verify and harness-maintain
+- **Trend Summary** — counts by classification (harness/model/spec), promotion queue
+- **Entry Schema** — OBS-NNN format with required YAML fields
+- **Entries** — append-only log of discrete failures
+- **Retired Entries** — failures promoted into instruction-tier memory
+
+## Current State
+
+Owned by `/context-status`. Updated when feature status changes.
 
 - **Phase**: None
 - **Active Task**: None
@@ -10,6 +21,7 @@
 # Observability Log
 
 Auto-tier memory. Structured failure ledger for harness, model, and spec failures.
+Owned by `harness-verify` (writes entries via `telemetry-collector.sh`) and `harness-maintain` (triages and promotes).
 
 ## Trend Summary
 
@@ -30,7 +42,8 @@ Auto-tier memory. Structured failure ledger for harness, model, and spec failure
 - Append entries in `OBS-NNN` order. Newest at the bottom.
 - Every entry is a fenced `yaml` block.
 - `harness-maintain` Improve Mode updates `## Trend Summary` after each triage run.
-- `harness-verify` and `harness-maintain` are the governance owners of failure capture and triage in the shipped package.
+- `harness-verify` (writes entries via `telemetry-collector.sh`) and `harness-maintain` (triages via Improve Mode) are the governance owners of the `# Observability Log` and its entries.
+- `/context-status` owns the `## Current State` section only.
 - For promotion, route to `/context-memory` Post-Ship Sync.
 
 ## Entry Schema

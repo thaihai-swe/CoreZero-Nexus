@@ -10,6 +10,17 @@ Phase strings are scattered across individual SKILL.md files and historically
 differ slightly between them. This file is the single source of truth. Any skill
 that transitions phase reads from this table, not from memory.
 
+## Complexity Tiers (Canonical Vocabulary)
+
+The canonical complexity scale is `Simple | Moderate | Complex`. All skills use
+these three terms. Legacy aliases (`Tiny`, `Standard`) map as follows:
+
+| Canonical | Legacy alias | Depth |
+|-----------|--------------|-------|
+| Simple    | Tiny         | Lightweight |
+| Moderate  | Standard     | Standard |
+| Complex   | Complex      | Comprehensive |
+
 ## Phase Reference
 
 | Phase | Set by | Meaning | Unlocks next skill |
@@ -80,5 +91,5 @@ A minimal `status.md` must always contain:
 
 ## Cross-References
 
-- Template: `skills/spec-requirements/references/status-template.md`
+- Template: `_shared/status-template.md`
 - Skill preconditions: each core skill's `## Preconditions` section

@@ -4,7 +4,7 @@
 
 - Feature name:
 - Feature slug:
-- Delivery profile: Tiny | Standard | Complex
+- Delivery profile: Simple | Moderate | Complex
 - Owner:
 - Status: Draft | In Review | Approved | In Progress | Done
 - Last updated:
@@ -136,6 +136,12 @@ What problem are we solving, for whom, and why now?
   - Proof target:
 
 *(Add AC-002, AC-003, ... as needed.)*
+
+## Related ADRs
+
+<!-- List ADR-NNN entries that shaped this spec. Link to memories/repo/adr-log.md. -->
+
+- ADR-NNN: <description> (see `memories/repo/adr-log.md`)
 
 ## Notes
 

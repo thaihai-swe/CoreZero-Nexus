@@ -14,14 +14,14 @@ Record significant architectural decisions.
 - **System Proposals:** Reviewing and refining new component designs.
 - **Refactoring Decisions:** Documenting major structural changes and their rationale.
 ## I/O Hand-off Protocol
-- **Reads**: Codebase context, `kit/docs/rules/ponytail.md`.
-- **Writes**: `docs/project/adr/[number]-[slug].md` (new file) and `docs/project/adr/index.md` (append entry).
+- **Reads**: Codebase context, `docs/rules/ponytail.md`.
+- **Writes**: `docs/project/adr/[number]-[slug].md` (new file) and `memories/repo/adr-log.md` (append entry via Write Contract).
 - **Next Skill**: Return to previous skill (e.g., `/spec-plan` or `/spec-implement`).
 
 ## Workflow
 1. Identify the decision to be made.
 2. Consider context, options, and consequences.
-3. Create the decision file in `docs/project/adr/` using `references/adr-template.md` and append an entry to `docs/project/adr/index.md`.
+3. Create the decision file in `docs/project/adr/` using `references/adr-template.md` and append an entry to `memories/repo/adr-log.md` using the format defined in its `## Entry Template`.
 
 ## Core Rules
 - **Comparative Analysis:** Always include at least two options with pros and cons.

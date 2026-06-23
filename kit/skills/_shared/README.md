@@ -1,6 +1,6 @@
 # Shared skill references
 
-Cross-skill references that more than one skill loads on demand. This directory is exempt from the rule that every `kit/skills/<name>/` must contain a `SKILL.md`.
+Cross-skill references that more than one skill loads on demand. This directory is exempt from the rule that every `skills/<name>/` must contain a `SKILL.md`.
 
 ## Index
 

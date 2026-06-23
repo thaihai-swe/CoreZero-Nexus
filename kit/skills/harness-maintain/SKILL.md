@@ -7,7 +7,7 @@ description: Maintain harness configuration, assess health, and self-improve fro
 # Harness Maintain
 
 ## Overview
-Administrative tools to assess harness health, repair missing state, and evolve rules based on telemetry logs.
+Administrative tools to assess harness health, repair missing state, and evolve rules based on telemetry logs. The harness is evaluated across seven core subsystems: Instructions, State, Verification, Scope, Lifecycle, Security, and Context Engineering. See `references/assessment-rubric.md` for the full scoring model.
 
 ## I/O Hand-off Protocol
 - **Reads**: Entire codebase, `memories/repo/`, `manifest.json`, `harness-telemetry.md`.

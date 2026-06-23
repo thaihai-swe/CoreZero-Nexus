@@ -22,7 +22,7 @@ Aggregates status across all active feature branches, updates the repo-wide stat
    - Current active task (`## Active Task`).
    - Blockers or open clarification flags (`## Blockers`).
    - Task completion percentage (from `tasks.md`).
-   *Note: If `status.md` does not strictly follow the sections in `kit/skills/_shared/status-template.md`, the dashboard parser will fail. Flag any malformed status files.*
+   *Note: If `status.md` does not strictly follow the sections in `skills/_shared/status-template.md`, the dashboard parser will fail. Flag any malformed status files.*
 3. **Compile Dashboard**: Format a text-based status dashboard using `references/status-report-template.md` containing:
    - A list of all active features, their current phase, and active task.
    - Any currently active blocker flags.

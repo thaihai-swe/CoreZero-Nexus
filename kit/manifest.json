@@ -28,11 +28,13 @@
       "scripts/harness/**",
       "scripts/generate-dashboard.py",
       "scripts/context-loader.py",
-      "docs/rules/python.md",
+      "scripts/harness/gate-runner.local.example.sh",
       "docs/rules/security.md",
       "docs/rules/ponytail.md",
       "docs/index.html",
-      "docs/policies/code-design.md"
+      "docs/policies/code-design.md",
+      "docs/rules/README.md",
+      "docs/rules/*.md"
     ],
     "copyIfMissing": [
       "AGENTS.md",
@@ -48,11 +50,15 @@
       "docs/project/glossary.md",
       "docs/project/tech-stack.md",
       "docs/project/code-map.md",
+      "docs/project/agent-capabilities.md",
       "docs/generated/dashboard.html",
-      "memories/domain/glossary.md",
-      "memories/domain/patterns.md",
-      "memories/domain/anti-patterns.md",
-      "memories/domain/boundaries.md"
+      "artifacts/features/README.md",
+      "memories/domain/README.md",
+      "memories/domain/example/glossary.md",
+      "memories/domain/example/patterns.md",
+      "memories/domain/example/anti-patterns.md",
+      "memories/domain/example/boundaries.md",
+      "skills/context-memory/references/project-knowledge-base-template.md"
     ],
     "crossTreeOverwrite": [],
     "preserve": [
@@ -61,16 +67,16 @@
     ]
   },
   "templateMap": {},
-  "directories": [
-    "skills",
-    "memories/repo",
-    "memories/domain",
-    "artifacts/features",
-    "docs",
-    "docs/project",
-    "docs/policies",
-    "docs/generated",
-    "docs/rules",
-    "scripts"
-  ]
+    "directories": [
+      "skills",
+      "memories/repo",
+      "memories/domain",
+      "artifacts/features",
+      "docs",
+      "docs/project",
+      "docs/policies",
+      "docs/generated",
+      "docs/rules",
+      "scripts"
+    ]
 }

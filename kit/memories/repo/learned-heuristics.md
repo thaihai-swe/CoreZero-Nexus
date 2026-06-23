@@ -1,5 +1,15 @@
 # CoreZero Learned Heuristics
 
+## Index
+
+- **LH-001** — Docs drift at workflow surface; update in same wave
+- **LH-002** — Bootstrap and docs verified together
+- **LH-003** — Generated references worth seeding early (code-map.md)
+- **LH-004** — Agent overscaffolds new files (PROMOTED to code-design.md)
+- **LH-006** — Token budget underestimation triggers mid-task compaction
+- **LH-007** — Memory thresholds trigger post-oversize; track proactively
+- **LH-008** — Domain packs ignored when building features (PROMOTED to spec-requirements)
+
 ## Purpose
 
 This file captures repeated, evidence-backed heuristics that improve maintenance of the kit.

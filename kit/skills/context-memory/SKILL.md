@@ -26,13 +26,47 @@ Updates persistent AI memories (e.g., rules, architecture) so future agents don'
 - Incremental growth: add detail over time rather than creating new files for minor insights.
 - Evidence-based: every entry should trace to a specific observation or session extract.
 
+## Memory Tiers
+
+The kit uses three durability tiers for persistent memory. Each tier has a different owner, lifecycle, and promotion path.
+
+### Instruction Tier
+- **Files:** `memories/repo/core-policies.md` (CC-* rules), `docs/policies/code-design.md`.
+- **Owner:** `/context-memory` + user.
+- **Promotion:** Candidate rules from `learned-heuristics.md` are promoted when recurrence-count >= 3.
+- **Demotion:** Rules are deprecated via CC-* amendment, never deleted silently.
+
+### Auto Tier
+- **Files:** `memories/repo/harness-telemetry.md` (OBS-* entries).
+- **Owner:** `telemetry-collector.sh` writes; `harness-verify` and `harness-maintain` govern.
+- **Promotion:** When an OBS-* entry reaches `recurrence-count >= 3`, a promotion candidate is proposed to `learned-heuristics.md` or `core-policies.md`.
+- **Demotion:** Entries are moved to `## Retired Entries` when the corresponding failure mode is resolved or the context no longer applies.
+
+### Extracted Tier
+- **Files:** `artifacts/features/<slug>/session-extracts.md` (EXT-* candidates).
+- **Owner:** `/context-session` writes candidates; `/context-memory` triages via `references/extraction-triage.md`.
+- **Promotion:** Candidate → triage (promote/defer/discard) → destination by category (Heuristic → `learned-heuristics.md` LH-*; Pattern → `project-knowledge-base.md` or `docs/project/architecture.md`; Rule → `core-policies.md` CC-*).
+- **Demotion:** Discarded candidates remain in `## Triaged` with a reason. The trail matters — do not delete.
+
+### Identifier Namespaces
+| Prefix | File | Purpose |
+|--------|------|---------|
+| CC- | `core-policies.md` | Normative rules |
+| LH- | `learned-heuristics.md` | Learned heuristics |
+| OBS- | `harness-telemetry.md` | Auto-tier observations |
+| EXT- | `session-extracts.md` | Extracted-tier candidates |
+| INV- | `domain/*/boundaries.md` | Domain invariants |
+| ADR- | `adr-log.md` | Architecture decisions |
+| TASK- | `tasks.md` | Implementation tasks |
+| REQ-/AC- | `spec.md` | Requirements and acceptance criteria |
+
 ## Audit Mode
 
 ### Usage
 Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
 
 ### Checks
-1. **File size thresholds** — for every `memories/repo/*.md`, count lines and report:
+1. **File size thresholds** — for every `memories/repo/*.md`, count lines and report against the canonical ladder in `core-policies.md ## Memory Promotion Thresholds`:
    - >= 600 lines: early warning (start a promotion proposal)
    - >= 800 lines: threshold breached (open `artifacts/features/<slug>/promotions.md`)
    - >= 1200 lines: hard cap (block further appends until promotion lands)

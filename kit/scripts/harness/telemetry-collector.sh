@@ -6,6 +6,8 @@ set -euo pipefail
 
 ROOT_DIR=""
 ERROR_MSG=""
+TASK_ID=""
+FEATURE_SLUG=""
 
 # Parse options
 while [[ $# -gt 0 ]]; do
@@ -16,6 +18,24 @@ while [[ $# -gt 0 ]]; do
         shift 2
       else
         echo "ERROR: --root requires an argument" >&2
+        exit 1
+      fi
+      ;;
+    --task)
+      if [[ $# -gt 1 ]]; then
+        TASK_ID="$2"
+        shift 2
+      else
+        echo "ERROR: --task requires an argument" >&2
+        exit 1
+      fi
+      ;;
+    --feature)
+      if [[ $# -gt 1 ]]; then
+        FEATURE_SLUG="$2"
+        shift 2
+      else
+        echo "ERROR: --feature requires an argument" >&2
         exit 1
       fi
       ;;
@@ -41,7 +61,7 @@ ${STDIN_MSG}"
 fi
 
 if [[ -z "$ERROR_MSG" ]]; then
-  echo "Usage: $0 [--root <path>] \"Error message or log snippet\""
+  echo "Usage: $0 [--root <path>] [--task <TASK-NNN>] [--feature <slug>] \"Error message or log snippet\""
   echo "       or pipe output to $0"
   exit 1
 fi
@@ -104,6 +124,8 @@ cat >> "$TELEMETRY_FILE" << EOF
   classification: "[UNKNOWN: harness | model | spec]"
   severity: medium
   skill: "[UNKNOWN: <active-skill>]"
+  task: "${TASK_ID:-[UNKNOWN]}"
+  feature: "${FEATURE_SLUG:-[UNKNOWN]}"
   description: "${CLEAN_DESC}"
   root_cause: "[UNKNOWN]"
   fix_applied: "none yet"

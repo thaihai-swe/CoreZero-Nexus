@@ -16,16 +16,21 @@ Establishes the repository baseline for the harness before feature work begins. 
 
 ## Workflow
 
-1. **Step 1: Initialization**: Create `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain`. Ensure `.gitignore` is populated with kit ignores (`docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh`). Use `references/init-checklist.md` to guide the bootstrap process.
+1. **Step 1: Initialization**: Read `docs/project/agent-capabilities.md` and check that the current agent has all Required capabilities (shell execution, file editing, skill invocation). Warn if Recommended (subagent) or Optional (Python 3, mmdc) capabilities are missing. Create `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain`. Ensure `.gitignore` is populated with kit ignores (`docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh`). Use `references/init-checklist.md` to guide the bootstrap process.
 2. **Step 2: Archaeology Sweep (Phase A)**: Detect greenfield vs. brownfield.
    - Greenfield: empty repo or only the kit's own files. Skip archaeology.
    - Brownfield: Follow `references/brownfield-mode.md` to conduct a read-only archaeology sweep. Delegate broad searches using subagents (Subagent-First Exploration). Create `memories/repo/brownfield/brownfield-map.md` to document the findings. Record the baseline test command and high-risk paths. If no baseline exists, prompt the adopter.
 3. **Step 3: Memory Customization (Phase B)**: This is mandatory. The installer seeds `memories/repo/*.md` with generic kit content. Run each step interactively by prompting the user for details to rewrite them:
-   - **`core-policies.md`**: Prompt for project identity, default branch, and verification commands. Mark missing commands as `N/A`.
-   - **`core-policies.md` Security**: Prompt for trust boundaries and sensitive paths (use Phase A findings). Keep `Prompt-Injection Defense` verbatim.
-   - **`project-knowledge-base.md`**: Prompt for main components, integration boundaries, preserved behaviors, and **Domain Jargon / Ubiquitous Language**. Capturing project-specific jargon radically reduces verbosity and ambiguity in future sessions.
-   - **`learned-heuristics.md`**: Drop kit-specific LH-* entries unless explicitly kept.
-   - **Domain Packs**: Read `memories/domain/glossary.md` triggers. Prompt if subdomains exist. If yes, copy the domain scaffold into `memories/domain/<name>/` and update `MASTER_INDEX.md`.
+    - **`core-policies.md`**: Prompt for project identity, default branch, and verification commands. Mark missing commands as `N/A`.
+    - **`core-policies.md` Security**: Prompt for trust boundaries and sensitive paths (use Phase A findings). Keep `Prompt-Injection Defense` verbatim.
+    - **`project-knowledge-base.md`**: Prompt for main components, integration boundaries, preserved behaviors, and **Domain Jargon / Ubiquitous Language**. Capturing project-specific jargon radically reduces verbosity and ambiguity in future sessions.
+    - **`learned-heuristics.md`**: Drop kit-specific LH-* entries unless explicitly kept.
+    - **Domain Packs**: Read `memories/domain/glossary.md` triggers. Prompt if subdomains exist. If yes, copy the domain scaffold into `memories/domain/<name>/` and update `MASTER_INDEX.md`.
+    - **Gate Runner Setup**: Prompt for project build/lint/test commands. If provided, copy the generic template to `scripts/harness/gate-runner.local.sh` and seed it with the adopter's commands.
+      ```
+      cp scripts/harness/gate-runner.local.example.sh scripts/harness/gate-runner.local.sh
+      ```
+      Then edit `gate-runner.local.sh` to set the actual commands.
 4. **Step 4: Confirm and Handoff**: Run `/context-memory --audit` to confirm all kit-internal paths are removed from the memory files and triggers are populated. Route the user to `/spec-research` (brownfield) or `/spec-requirements` (greenfield).
 
 ## Core Rules
@@ -37,10 +42,10 @@ Establishes the repository baseline for the harness before feature work begins. 
 - **Profile Auto-Promotion**: Record in `brownfield-map.md` under `## Profile Rules`: any feature touching a path rated `high` or `critical` MUST be promoted to `Complex` in its `status.md`.
 - **No Shadow Installer**: Do not create missing harness files that `install.sh` was supposed to seed. Stop and repair the install surface instead.
 - **Router Entrypoint**: `AGENTS.md` is the canonical shipped router. Downstream init seeds from that source.
-- **Security Baseline**: Formulate trust boundaries in `security-policy.md` during bootstrap.
+- **Security Baseline**: Formulate trust boundaries in `memories/repo/core-policies.md` `## Security Policy` during bootstrap.
 
 ## Output Rules
-- **Can update**: Seeded installer files (`AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/harness-config.md`, `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/observability-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`, and project-policy docs under `docs/*.md`).
+- **Can update**: Seeded installer files (`AGENTS.md`, `memories/repo/core-policies.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/learned-heuristics.md`, `docs/project/architecture.md`, `docs/project/code-map.md`, `docs/project/glossary.md`, `docs/project/tech-stack.md`, `docs/project/product-sense.md`, `docs/project/project-constraints.md`, and project-policy docs under `docs/project/*.md`).
 - **Can create** (Brownfield Phase A only): `memories/repo/brownfield/brownfield-map.md`, `memories/repo/brownfield/dependency-graph.md`.
 - **Cannot create**: Missing harness surface files that `install.sh` was supposed to seed; stop and repair the install surface instead.
 - **Cannot create**: `spec.md`, `plan.md`, `tasks.md`.

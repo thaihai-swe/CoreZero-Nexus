@@ -16,7 +16,7 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 
 - PR description and diff
 - `memories/repo/core-policies.md` (code standards, naming, principles, security boundaries, and sensitive paths)
-- `kit/docs/rules/ponytail.md` (simplicity, anti-abstraction, and verifiable increments)
+- `docs/rules/ponytail.md` (simplicity, anti-abstraction, and verifiable increments)
 - Style guides under `docs/rules/`
 
 ## When to Use
