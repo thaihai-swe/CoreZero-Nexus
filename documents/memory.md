@@ -6,24 +6,21 @@ The memory layer stores durable cross-feature knowledge that agents need repeate
 
 ## Memory Architecture
 
-The kit organizes memory into three tiers with a routing index. Sessions read `INDEX.md` first, then load only the groups that match the task.
+The kit organizes memory into three tiers with a routing index. Sessions read `MASTER_INDEX.md` first, then load only the groups that match the task.
 
 ```mermaid
 flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
     subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[constitution.md<br/>Repo-wide rules]
-        SEC[security-policy.md<br/>Trust boundaries]
-        HARN[harness-config.md<br/>Canonical commands]
+        CONST[core-policies.md<br/>Normative rules, boundaries & config]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
-        DOM[domain-specs.md<br/>Domain language]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
-        ARCH[docs/architecture.md<br/>System structure]
+        ARCH[docs/project/architecture.md<br/>System structure]
     end
 
     subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
-        OBS[observability-log.md<br/>Harness/Model/Spec failures]
+        OBS[harness-telemetry.md<br/>Harness/Model/Spec failures]
     end
 
     subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
@@ -31,15 +28,12 @@ flowchart TD
     end
 
     subgraph ROUTER["Memory Router"]
-        IDX[INDEX.md<br/>Always-loaded routing index]
+        IDX[MASTER_INDEX.md<br/>Always-loaded routing index]
     end
 
     %% Routing
     IDX -->|Always group| CONST
-    IDX -->|Always group| SEC
-    IDX -->|Always group| HARN
     IDX -->|By-Intent: Knowledge| PKB
-    IDX -->|By-Intent: Knowledge| DOM
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
     IDX -->|By-Debug| OBS
@@ -48,7 +42,6 @@ flowchart TD
     %% Promotion flow (extracted -> instruction)
     EXT -.->|context-memory<br/>Extraction Triage| HEUR
     EXT -.->|promote rule| CONST
-    EXT -.->|promote security| SEC
     OBS -.->|context-memory<br/>Triage| PKB
     OBS -.->|durable lesson| HEUR
 
@@ -63,7 +56,7 @@ flowchart TD
     classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
 
-    class CONST,SEC,HARN,PKB,DOM,HEUR,ARCH instr
+    class CONST,PKB,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router
@@ -76,25 +69,22 @@ flowchart TD
 
 | File | Purpose |
 |------|---------|
-| `INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug groups. Sessions read this first. |
+| `MASTER_INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug groups. Sessions read this first. |
 
 ### Instruction Tier — Human-Curated, Durable
 
 | File | Type | Content | Update Frequency |
 |------|------|---------|-----------------|
-| `constitution.md` | Normative | Repo-wide rules (CC-* identifiers) | Rare — only when rules change |
-| `security-policy.md` | Normative | Permission tiers, trust boundaries, sandbox rules | Rare |
-| `harness-config.md` | Operational | Commands, paths, trackers, session defaults, promotion thresholds | During init or when tooling changes |
+| `core-policies.md` | Normative & Operational | Repo-wide rules, security boundaries, commands, paths, and defaults | Rare — during init or when tooling/policies change |
 | `project-knowledge-base.md` | Descriptive | Durable facts, patterns, conventions | As project evolves |
-| `domain-specs.md` | Descriptive | Domain-specific subsystem baselines | When subsystems are documented |
 | `learned-heuristics.md` | Descriptive | Evidence-backed execution patterns | After repeated observations |
-| `docs/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
+| `docs/project/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
 
 ### Auto Tier — Failure-Driven, Append-Only
 
 | File | Type | Content | Written By |
 |------|------|---------|-----------|
-| `observability-log.md` | Auto | Harness/Model/Spec failure entries | `/harness-maintain` Improve Mode, `/harness-verify` |
+| `harness-telemetry.md` | Auto | Harness/Model/Spec failure entries | `/harness-maintain` Improve Mode, `/harness-verify` |
 
 ### Extracted Tier — Per-Feature Candidates
 
@@ -109,7 +99,7 @@ flowchart TD
 | **Normative** | Rules that MUST be followed | "must", "must not", "requires" | "Tests must pass before marking done" |
 | **Descriptive** | Facts that ARE true | "uses", "follows", "prefers" | "The API uses JWT with 24h expiry" |
 
-Normative rules go in `constitution.md` or `security-policy.md`.
+Normative rules go in `core-policies.md`.
 Descriptive facts go in `project-knowledge-base.md` or `learned-heuristics.md`.
 
 ## Promotion Rules
@@ -123,11 +113,10 @@ When a finding emerges from analysis, implementation, or review:
 1. **Check durability:** Is it evidence-based, stable, and useful beyond this feature?
 2. **Classify:** Normative rule? Descriptive pattern? Still feature-local?
 3. **Route:**
-   - Repo-wide rule → `constitution.md`
-   - Security/permission rule → `security-policy.md`
+   - Repo-wide or security/permission rule → `core-policies.md`
    - Repeated execution pattern (2+ features) → `learned-heuristics.md`
    - Durable fact or convention → `project-knowledge-base.md`
-   - Structural map → `docs/architecture.md`
+   - Structural map → `docs/project/architecture.md`
    - Still local → Keep in `artifacts/features/<slug>/`
 
 ### Extraction Triage
@@ -142,7 +131,7 @@ When a finding emerges from analysis, implementation, or review:
 
 Security candidates always escalate immediately regardless of repetition count.
 
-### Promotion Thresholds (from `harness-config.md`)
+### Promotion Thresholds (from `core-policies.md`)
 
 A memory file approaching these thresholds is added to `INDEX.md ## Promotion Watchlist`:
 - File length ≥ 800 lines (warn) / 1200 lines (hard)
@@ -153,11 +142,11 @@ Threshold breach opens a proposal in `artifacts/features/<slug>/promotions.md` �
 
 ## Context Assembly Tiers
 
-Sessions read `INDEX.md` first, then load only the groups that match the task. The 6-tier context model — load order, intent groups, compaction triggers, and eviction rules — is canonical in [`context-engineering.md`](context-engineering.md). Read that file for the full assembly contract.
+Sessions read `MASTER_INDEX.md` first, then load only the groups that match the task. The 6-tier context model — load order, intent groups, compaction triggers, and eviction rules — is canonical in [`context-engineering.md`](context-engineering.md). Read that file for the full assembly contract.
 
 A short reference for memory authors:
-- `INDEX.md` is the router. Always-loaded files belong to the Always group.
-- By-Intent groups (Knowledge / Learned / Architecture / Debug) load only when their trigger keywords match the task.
+- `MASTER_INDEX.md` is the router. Always-loaded files belong to the Always group.
+- By-Intent groups (Knowledge / Learned / Domain Packs / Debug) load only when their trigger keywords match the task.
 - When no intent group matches, sessions load Always-tier only and record "no by-intent groups matched" in the session opener.
 
 ## Learned Heuristics Format
@@ -167,7 +156,7 @@ Each heuristic has:
 - **Heuristic:** What to do
 - **Evidence:** What proved this works
 - **Recurrence count:** Tracks how many times a heuristic has been repeatedly observed.
-- **Semantic links:** Standard markdown links forming a **Semantic Knowledge Graph** tying the heuristic to `docs/architecture.md` or domain specs.
+- **Semantic links:** Standard markdown links forming a **Semantic Knowledge Graph** tying the heuristic to `docs/project/architecture.md` or domain specs.
 - **Confidence:** High / Medium / Low
 - **Review date:** When to re-evaluate
 
@@ -198,23 +187,21 @@ flowchart LR
     SYNC -->|sweep every file in INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
 
     FILES -->|durable lesson| EXT[Append candidate<br/>session-extracts.md]
-    FILES -->|harness failure| OBS[Append entry<br/>observability-log.md]
+    FILES -->|harness failure| OBS[Append entry<br/>harness-telemetry.md]
     FILES -->|no change| RECORD[Record reason in<br/>Post-Ship Sync block]
 
     EXT --> TRIAGE[context-memory<br/>Extraction Triage]
     OBS --> TRIAGE
 
     TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
-    TRIAGE -->|normative rule| CONST[Promote to<br/>constitution.md]
+    TRIAGE -->|normative rule or security finding| CONST[Promote to<br/>core-policies.md]
     TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
-    TRIAGE -->|security finding| SEC[Promote to<br/>security-policy.md]
     TRIAGE -->|defer| DEF[Wait for next signal]
     TRIAGE -->|feature-local| DISC[Discard<br/>with reason]
 
     HEUR --> SMARTER[KB grows<br/>next session is smarter]
     CONST --> SMARTER
     PKB --> SMARTER
-    SEC --> SMARTER
 
     SMARTER -.->|loop back| SHIP
 
@@ -266,6 +253,43 @@ sequenceDiagram
         M-->>V: REJECT — re-run sweep
         Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
     end
-
-    Note over V,F: Profile gating:<br/>Tiny = heuristic-only sweep<br/>Standard+ = full sweep
 ```
+
+## Skill Write Access
+
+Under the `kit/memories` directory, files are primarily updated by three major categories of skills: Initialization, Ongoing Context Maintenance, and Execution Telemetry.
+
+### 1. Initialization (`/starter-init`)
+
+This skill is responsible for creating the initial scaffolding and performing the first-pass customization of all core memory files:
+
+- `memories/repo/core-policies.md`
+- `memories/repo/security-policy.md`
+- `memories/repo/project-knowledge-base.md`
+- `memories/repo/learned-heuristics.md`
+- `memories/repo/harness-config.md`
+- `memories/repo/domain-specs.md`
+- `memories/repo/brownfield/brownfield-map.md` (Created only if analyzing a legacy codebase)
+- `memories/domain/<name>/glossary.md`
+
+### 2. Ongoing Knowledge Promotion (`/context-memory`)
+
+After `starter-init` finishes the bootstrap, `/context-memory` takes over permanent ownership of the knowledge base. At the end of every feature, it reads `session-extracts.md` and surgically updates:
+
+- `memories/repo/project-knowledge-base.md` (Promotes newly discovered domain jargon and project boundaries)
+- `memories/repo/learned-heuristics.md` (Promotes newly learned "rules of thumb" or recurring traps to avoid)
+- `memories/repo/security-policy.md` (Updates trust boundaries if they changed)
+- `memories/repo/core-policies.md`
+- `memories/repo/domain-specs.md`
+
+### 3. Harness Telemetry & Diagnostics
+
+The `memories/repo/harness-telemetry.md` file tracks failure states and dashboard metrics. It is actively updated by three active execution skills:
+
+- `/harness-verify`: Increments failure counters if a mechanical gate fails.
+- `/spec-implement`: Logs failures when the test suite or mechanical gates break during implementation.
+- `/context-status`: Overwrites the `# Current State` section of the telemetry file so the dashboard stays up to date.
+
+### 4. Harness Upgrades (`/harness-maintain`)
+
+- `/harness-maintain`: Periodically updates `memories/repo/learned-heuristics.md` when running structural audits of the kit itself.

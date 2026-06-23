@@ -8,7 +8,7 @@
 6.  **No Clean-State Check:** Next session inherits a broken build. *Fix: Require passing tests before session end.*
 7.  **No Context Condensation:** Context window exhausted mid-task. *Fix: Summarize and prune actively.*
 8.  **No Scope Constraint:** Agent drifts and refactors unrelated code. *Fix: Strict adherence to exact Task IDs.*
-9.  **No Decision Durability:** Same architectural debates happen every session. *Fix: Record decisions in `spec.md` or `constitution.md`.*
+9.  **No Decision Durability:** Same architectural debates happen every session. *Fix: Record decisions in `spec.md` or `core-policies.md`.*
 10. **No Mechanical Enforcement:** Rules in prompts are forgotten. *Fix: Translate rules into lint checks or gate policies.*
 11. **Monolithic Test Suite:** Slow feedback loops cause the agent to skip testing. *Fix: Run targeted unit tests during implementation.*
 12. **No Error Taxonomy:** Model hallucination is blamed when the harness simply lacked documentation. *Fix: Use `harness-maintain` Improve Mode to classify errors correctly.*

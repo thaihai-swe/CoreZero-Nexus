@@ -31,7 +31,7 @@ After any code change, verify that previously-passing features still pass.
 1. Stop current work
 2. Identify which change caused the regression
 3. Fix the regression before continuing
-4. Record in `observability-log.md` if the harness should have caught it earlier
+4. Record in `harness-telemetry.md` if the harness should have caught it earlier
 
 ## Level 2: Harness Regression
 
@@ -58,7 +58,7 @@ The harness itself can degrade — skills get stale, templates drift, cross-refe
 1. Run `/harness-maintain` Assess Mode
 2. Classify as Harness/Model/Spec problem
 3. Apply fix via Improve Mode
-4. Record in `observability-log.md`
+4. Record in `harness-telemetry.md`
 
 ## Level 3: Agent Behavior Regression
 
@@ -69,7 +69,7 @@ Agent quality can degrade across sessions — context loss, pattern drift, or mo
 | Check | Method | Frequency |
 |-------|--------|-----------|
 | Agent follows skill contracts | Review against SKILL.md | Per feature |
-| Agent uses correct commands | Check harness-config.md compliance | Per session |
+| Agent uses correct commands | Check core-policies.md compliance | Per session |
 | Agent produces complete artifacts | Check against templates | Per phase |
 | Agent doesn't skip verification | Audit task evidence | Per verify phase |
 
@@ -83,7 +83,7 @@ Agent quality can degrade across sessions — context loss, pattern drift, or mo
 
 ### Response
 
-1. Record the behavior in `observability-log.md`
+1. Record the behavior in `harness-telemetry.md`
 2. Classify: Is this a harness problem (environment allowed it) or model problem (agent ignored constraints)?
 3. If harness: strengthen the gate or add a mechanical check
 4. If model: add explicit guidance to the relevant skill's Core Rules

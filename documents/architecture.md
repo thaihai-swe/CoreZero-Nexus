@@ -2,7 +2,7 @@
 
 ## Overview
 
-CoreZero Nexus implements **Harness Engineering** — the discipline of designing environments that make AI agents reliable. It provides a complete spec-anchored delivery framework through four pillars: Harness Engineering, Spec Development, Advanced Pack, and Starter Layout.
+CoreZero implements **Harness Engineering** — the discipline of designing environments that make AI agents reliable. It provides a complete spec-anchored delivery framework through four pillars: Harness Engineering, Spec Development, Advanced Pack, and Starter Layout.
 
 ## Five-Layer Model
 
@@ -10,7 +10,7 @@ CoreZero Nexus implements **Harness Engineering** — the discipline of designin
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin router → skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  11 core delivery + 4 specialist (15 total)
+│  2. Skill Layer (skills/*/SKILL.md)         │  12 core delivery + 5 specialist (17 total)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (6 subsystems)            │  Environment control
 ├─────────────────────────────────────────────┤
@@ -66,20 +66,18 @@ Per-feature state lives in `artifacts/features/<slug>/`:
 ### Layer 5: Memory
 
 Durable cross-feature guidance in `memories/repo/`:
-- `INDEX.md` — Memory router; lists Always / By-Intent / By Domain Packs / By-Debug groups so sessions load only what the task needs
-- `constitution.md` — Normative rules (CC-* identifiers)
-- `security-policy.md` — Permission model and trust boundaries
+- `core-policies.md` — Repo-wide normative rules, security policy, and operational defaults
 - `learned-heuristics.md` — Evidence-backed execution patterns
 - `project-knowledge-base.md` — Durable facts and conventions
-- `domain-specs.md` — Bounded-context vocabulary and domain rules
-- `harness-config.md` — Operational defaults (commands, paths, trackers)
-- `observability-log.md` — Auto-tier failure log with structured YAML entries and trend summary
+- `harness-telemetry.md` — Auto-tier failure log and telemetry data
 - `adr-log.md` — ADR index (lazy-created on first ADR)
-- `memories/domains/<name>/` — Adopter-owned domain packs (glossary, patterns, anti-patterns, boundary rules)
+
+And bounded-context guidance in `memories/domain/`:
+- Domain packs containing: `glossary.md`, `patterns.md`, `anti-patterns.md`, `boundaries.md`
 
 **3-Tier Memory Architecture:**
-- **Instruction tier** (human-curated): constitution, security-policy, learned-heuristics, project-knowledge-base, domain-specs, harness-config, docs/architecture.md
-- **Auto tier** (agent-written): observability-log.md (written by `harness-maintain` Improve Mode)
+- **Instruction tier** (human-curated): core-policies.md, learned-heuristics.md, project-knowledge-base.md, memories/domain/*, docs/project/architecture.md
+- **Auto tier** (agent-written): harness-telemetry.md (written by `harness-maintain` Improve Mode)
 - **Extracted tier** (per-feature candidates): artifacts/features/<slug>/session-extracts.md (written by `context-session` end and `harness-verify` post-ship sync)
 
 ## Data Flow
@@ -150,7 +148,7 @@ When something goes wrong, the kit classifies the failure:
 | **Model Problem** | Environment was adequate but execution was poor | Add explicit guidance to skill Core Rules, record in observability-log.md |
 | **Spec Problem** | Artifact contract was underspecified or contradictory | Return to `/spec-requirements` |
 
-Failures are classified by `harness-maintain` Improve Mode and recorded in `memories/repo/observability-log.md` (auto tier). Extraction Triage later promotes durable lessons to the instruction tier.
+Failures are classified by `harness-maintain` Improve Mode and recorded in `memories/repo/harness-telemetry.md` (auto tier). Extraction Triage later promotes durable lessons to the instruction tier.
 
 ## Repository Layouts
 
@@ -165,25 +163,21 @@ CoreZero-Nexus/
 │   ├── manifest.json            # Inventory mapping file copy/overwrite rules
 │   ├── VERSION                  # Current kit semver
 │   ├── AGENTS.md                # Template entrypoint (seeded to root)
-│   ├── HARNESS_CARD.md          # Template harness card (seeded to root)
+│   ├── MASTER_INDEX.md          # Master routing index for the repository
 │   ├── docs/                    # Adopter-facing documentation surface
-│   │   ├── README.md
-│   │   ├── ADOPTION_GUIDE.md
-│   │   ├── INSTALL.md
-│   │   ├── architecture.md
-│   │   ├── PRODUCT_SENSE.md     # Seeded adopter-owned project doc
-│   │   ├── GLOSSARY.md          # Seeded adopter-owned glossary
-│   │   ├── TECH_STACK_REFERENCE.md
-│   │   ├── PROJECT_CONSTRAINTS.md
+│   │   ├── index.html           # Documentation portal
+│   │   ├── policies/            # Adopter-owned design policies
+│   │   ├── project/             # Adopter-owned project docs (architecture, product sense, etc)
+│   │   ├── rules/               # Shipped coding and security standards
 │   │   └── generated/           # Codemap and reference index placeholders
-│   ├── skills/                  # 16 core/utility skills for coding agents
+│   ├── skills/                  # 17 core/utility skills for coding agents
+│   │   ├── _shared/             # Shared resources across skills
 │   │   └── <skill>/
 │   │       ├── SKILL.md         # Compressed token-efficient skill card
 │   │       └── references/      # Templates and checklist references
 │   ├── memories/                # Scaffolding memory layer
 │   │   ├── repo/                # Templates for the 3 memory tiers
-│   │   └── domains/             # Seeded domain-pack schema + example pack
-│   ├── rules/                   # Shipped coding and security standards
+│   │   └── domain/              # Seeded domain-pack schema + example pack
 │   └── scripts/                 # Shipped install, repair, eval, and truth-check helpers
 ├── documents/                   # Maintainer-only project documents (not shipped)
 │   ├── architecture.md          # Maintainer architecture map (this file)
@@ -199,34 +193,32 @@ This is the layout created in a downstream project after running the installer s
 ```
 <your-project>/
 ├── AGENTS.md                    # Runtime instruction router (adopter-owned)
-├── HARNESS_CARD.md              # One-page harness status card (adopter-owned)
-├── .corezero-version               # Installed semver stamp
+├── MASTER_INDEX.md              # Master routing index for the repository
+├── .corezero-version            # Installed semver stamp
 ├── docs/                        # Installed documentation surface
-│   ├── README.md, ADOPTION_GUIDE.md, INSTALL.md
-│   ├── architecture.md          # Adopter-specific architecture map
-│   ├── PRODUCT_SENSE.md, GLOSSARY.md, TECH_STACK_REFERENCE.md
-│   ├── PROJECT_CONSTRAINTS.md, GOVERNANCE.md, QUALITY_POLICY.md
-│   ├── RELIABILITY_POLICY.md, TECH_DEBT_REGISTER.md
+│   ├── index.html               # Documentation portal
+│   ├── policies/                # Adopter-owned design policies
+│   ├── project/                 # Adopter-owned project docs
+│   ├── rules/                   # Shipped rules and standards (kit-managed)
 │   └── generated/               # Project codemap and index (regenerated)
 ├── skills/                      # Shipped skills (kit-managed)
-├── rules/                       # Shipped rules and standards (kit-managed)
 ├── scripts/
 │   ├── install.sh               # Shipped installer script for easy upgrades
 │   ├── doctor.sh                # Shipped repair and drift-check entrypoint
 │   ├── check-surface-truth.py   # Shipped structural truth validator
 │   └── evals/                   # Shipped structural eval suite
 ├── memories/repo/               # Durable repository memory (3 tiers)
-│   ├── INDEX.md                 # Intent-based memory router
-│   ├── constitution.md          # Core repository operating rules
-│   ├── security-policy.md       # Target project security boundary
+│   ├── adr-log.md               # ADR index
+│   ├── core-policies.md         # Core repository operating rules and security
+│   ├── harness-telemetry.md     # Failure logs and telemetry
 │   ├── learned-heuristics.md    # Discovered project insights
-│   ├── project-knowledge-base.md # Project continuity knowledge
-│   ├── domain-specs.md          # Ubiquitous language definition
-│   ├── harness-config.md        # Commands, tools, and thresholds
-│   └── observability-log.md     # Failure logs
-├── memories/domains/            # Adopter-owned domain context packs
-│   ├── README.md                # Domain-pack schema and trigger rules
-│   └── example/                 # Seeded example pack
+│   └── project-knowledge-base.md # Project continuity knowledge
+├── memories/domain/             # Adopter-owned domain context packs
+
+│   ├── glossary.md              # Ubiquitous language definition
+│   ├── boundaries.md            # Domain boundary rules
+│   ├── patterns.md              # Domain patterns
+│   └── anti-patterns.md         # Domain anti-patterns
 └── artifacts/features/          # Per-feature specs, plans, tasks, and reviews
 ```
 
@@ -238,11 +230,12 @@ Full file/folder structure the kit ships and the artifacts it produces during wo
 mindmap
   root((CoreZero Nexus))
     skills/
-      Core 11
+      Core 12
         starter-init
         context-session
         context-status
         context-memory
+        context-compact
         spec-research
         spec-requirements
         spec-adr
@@ -250,27 +243,24 @@ mindmap
         spec-implement
         harness-verify
         harness-maintain
-      Specialist 4
+      Specialist 5
         code-review
         visualize
         codebase-documenter
         technical-docs
+        ponytail
     memories/repo/
-      INDEX.md
-      constitution.md
-      security-policy.md
-      harness-config.md
-      project-knowledge-base.md
-      domain-specs.md
+      adr-log.md
+      core-policies.md
+      harness-telemetry.md
       learned-heuristics.md
-      observability-log.md
-    memories/domains/
-      README.md
-      example/
-        glossary.md
-        patterns.md
-        anti-patterns.md
-        boundary-rules.md
+      project-knowledge-base.md
+    memories/domain/
+      anti-patterns.md
+      boundaries.md
+      glossary.md
+      patterns.md
+      spec.md
     artifacts/features/slug/
       status.md
       spec.md
@@ -280,17 +270,16 @@ mindmap
       handoff.md
       session-extracts.md
     docs/
-      architecture.md
-      templates/
       generated/
-    rules/
-      python.md
-      security.md
+      policies/
+      project/
+      rules/
+      index.html
 ```
 
 ## Skill Grouping
 
-The 15 skills (11 core delivery + 4 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
+The 17 skills (12 core delivery + 5 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
 
 ```mermaid
 flowchart TB
@@ -298,6 +287,7 @@ flowchart TB
         START["starter-init"]
         STATUS["context-status"]
         MEMORY["context-memory"]
+        COMPACT["context-compact"]
         RESEARCH["spec-research"]
         SPEC["spec-requirements"]
     end
@@ -316,11 +306,13 @@ flowchart TB
         TECDOC["technical-docs"]
         CODE["codebase-documenter"]
         MAINTAIN["harness-maintain"]
+        PONY["ponytail"]
     end
 
     START --> STATUS
     STATUS --> MEMORY
-    MEMORY --> RESEARCH
+    MEMORY --> COMPACT
+    COMPACT --> RESEARCH
     RESEARCH --> SPEC
     SPEC --> ADR
     SPEC --> PLAN

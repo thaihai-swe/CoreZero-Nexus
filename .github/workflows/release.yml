@@ -15,16 +15,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify VERSION matches tag
+      - name: Verify version surfaces match tag
         run: |
           tag="${GITHUB_REF#refs/tags/}"
           tag="${tag#v}"
-          version="$(tr -d '[:space:]' < VERSION)"
-          if [[ "$tag" != "$version" ]]; then
-            echo "ERROR: tag v$tag does not match VERSION file ($version)" >&2
-            exit 1
-          fi
+          python3 - "$tag" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
 
+          tag = sys.argv[1]
+          root_version = Path("VERSION").read_text(encoding="utf-8").strip()
+          kit_version = Path("kit/VERSION").read_text(encoding="utf-8").strip()
+          manifest_version = json.loads(Path("kit/manifest.json").read_text(encoding="utf-8"))["version"]
+
+          mismatches = []
+          for label, value in (
+              ("VERSION", root_version),
+              ("kit/VERSION", kit_version),
+              ("kit/manifest.json", manifest_version),
+          ):
+              if value != tag:
+                  mismatches.append(f"{label}={value}")
+
+          if mismatches:
+              joined = ", ".join(mismatches)
+              raise SystemExit(f"ERROR: tag v{tag} does not match {joined}")
+          PY
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

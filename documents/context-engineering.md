@@ -4,6 +4,61 @@
 
 Defines how the kit assembles, budgets, compacts, and evicts context during long-running work. Context is the agent's working memory — too little and it forgets, too much and it loses focus.
 
+---
+
+## The Minimum Viable Context (MVC) Principle (Rule CC-011)
+
+To prevent cognitive drift, context window saturation, and high execution costs, the kit enforces the **Minimum Viable Context (MVC)** principle (**Rule CC-011**).
+
+The core directive of MVC is: **Only load the minimal, high-signal context required to execute the active task.**
+
+Never dump full files, large directories, or entire database schemas into the agent's context window. Instead, follow progressive JIT (Just-In-Time) loading and enforce strict, aggressive compaction and eviction of stale data.
+
+---
+
+## The Three-Track Memory Model
+
+To structure workspace information efficiently, the kit divides memory into three distinct operational tracks:
+
+```mermaid
+flowchart TD
+    %% Three-Track Memory Model
+
+    subgraph Track1["1. Native Stack (Ephemeral Runtime)"]
+        NS1["Router (AGENTS.md)"]
+        NS2["JIT Code Content (T5)"]
+        NS3["Transient Logs (T6)"]
+    end
+
+    subgraph Track2["2. Cross-Session Tools (Durable Local Repo)"]
+        CS1["MASTER_INDEX.md (Router Index)"]
+        CS2["Repo Memories (memories/repo/)"]
+        CS3["Feature Artifacts (status/plan/tasks)"]
+    end
+
+    subgraph Track3["3. Team Sharing (Domain & Exporter Surface)"]
+        TS1["Domain Packs (memories/domain/)"]
+        TS2["Adopter-facing APIs & Docs"]
+    end
+
+    Track1 -->|evicted/summarized into| Track2
+    Track2 -->|triage & promote lessons to| Track3
+```
+
+1. **Native Stack (Ephemeral Runtime):**
+   - **What**: The direct, live token context loaded into the LLM during the active session. This includes the entrypoint router (`AGENTS.md`), JIT-loaded target code files, and transient execution outputs (Tiers 1, 5, and 6).
+   - **Lifespan**: Volatile. Evicted and summarized aggressively within the session.
+
+2. **Cross-Session Tools (Durable Local Repository):**
+   - **What**: Git-tracked markdown files that store local feature state and repository-wide memories (Tiers 2, 3, and 4). Includes feature plans, tasks, progress logs, `learned-heuristics.md`, and `harness-telemetry.md`.
+   - **Lifespan**: Persistent across sessions, versioned via Git.
+
+3. **Team Sharing (Domain & Exporter Surface):**
+   - **What**: Shared knowledge domain templates, boundaries, glossaries (`memories/domain/`), and system references that propagate to other developers and peer agent sessions.
+   - **Lifespan**: Extremely durable, highly curated.
+
+---
+
 ## Context Tiers
 
 The kit assembles context across 6 tiers, from highest signal to lowest. Each tier has its own load rule.
@@ -12,7 +67,7 @@ The kit assembles context across 6 tiers, from highest signal to lowest. Each ti
 flowchart TB
     %% 6-Tier Context Assembly — highest signal to lowest
 
-    T1["Tier 1 — Router<br/>AGENTS.md + INDEX.md"]:::t1
+    T1["Tier 1 — Router<br/>AGENTS.md + MASTER_INDEX.md"]:::t1
     T2["Tier 2 — Repo Memory (Always)<br/>constitution + security + harness-config"]:::t2
     T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Domain Packs / Debug groups"]:::t3
     T4["Tier 4 — Feature Artifacts<br/>status / spec / plan / tasks / handoff"]:::t4
@@ -43,18 +98,18 @@ flowchart TB
 
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
-| 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `constitution.md`, `harness-config.md`, `security-policy.md` | Always — every session |
+| 1 | `AGENTS.md` + `MASTER_INDEX.md` (router) | Always — first thing loaded every session |
+| 2 | Always group: `core-policies.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Domain Packs / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
-**Intent groups (Tier 3) — defined in `memories/repo/INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, domain-specs, `adr-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`)
+**Intent groups (Tier 3) — defined in `memories/repo/MASTER_INDEX.md`:**
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/code-map.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
-- **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domains/<name>/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
-- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `observability-log.md` and per-feature `session-extracts.md`)
+- **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
+- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
 
 ## Assembly Rules
 
@@ -65,9 +120,11 @@ flowchart TB
 - Load Tier 5 minimally — only the files the current task touches
 - Tier 6 is ephemeral — extract the signal, then evict the noise
 
-## Smart Routing via INDEX.md
+---
 
-Tier 3 (memory by intent) is no longer "load everything." `memories/repo/INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
+## Smart Routing via MASTER_INDEX.md
+
+Tier 3 (memory by intent) is no longer "load everything." `memories/repo/MASTER_INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
 
 **Confidence-Scored Loading (Partial Loads):**
 When loading by-intent groups, the harness evaluates a confidence score based on keyword matches:
@@ -76,14 +133,14 @@ When loading by-intent groups, the harness evaluates a confidence score based on
 
 ```mermaid
 flowchart TD
-    %% Smart Context Routing via INDEX.md
+    %% Smart Context Routing via MASTER_INDEX.md
 
-    START([Session Start]) --> IDX[Read INDEX.md<br/>memory router]
+    START([Session Start]) --> IDX[Read MASTER_INDEX.md<br/>memory router]
     IDX --> ALWAYS[Load Always group<br/>constitution + security-policy + harness-config]
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
 
-    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + domain-specs + architecture]
+    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + architecture]
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
     MATCH -->|domain glossary triggers| DOMAIN[Load Domain Pack<br/>glossary only or full pack]
     MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
@@ -98,7 +155,7 @@ flowchart TD
     FEAT --> REPORT[Report Context Loaded<br/>+ Context Skipped with reasons]
     REPORT --> WORK([Begin work])
 
-    STALE[INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
+    STALE[MASTER_INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
     IDX -.->|if missing| STALE
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
@@ -114,14 +171,32 @@ flowchart TD
     class STALE,ALL fallback
 ```
 
+---
+
+## Context Eviction & Telemetry Control
+
+Raw console output, compiler errors, and test execution traces (Tier 6) are extremely token-dense and low-signal once analyzed. Retaining them in the active context window wastes token budget and accelerates model saturation, leading to hallucinations.
+
+To prevent this, the `/spec-implement` workflow enforces **Mandatory Context Eviction**:
+1. **Execute**: Run the mechanical validation gate via `gate-runner.sh`.
+2. **Analyze**: Parse the success or failure output to identify the root cause or confirm completion.
+3. **Summarize**: Record a 3-5 line high-level summary of the run in the active verification/task log (e.g. `tests passed` or `linter failed with syntax error in lines 12-14`).
+4. **Evict**: Immediately remove the raw terminal stderr/stdout from the active context window. Do not keep the raw command dump in subsequent turns.
+5. **Log Telemetry**: If the run failed, pipe the output to `telemetry-collector.sh` which appends it to `memories/repo/harness-telemetry.md` (removing it from the active session runtime).
+
+---
+
 ## Compaction Triggers
 
 Compact context when:
+- `harness-telemetry.md` exceeds 500 lines or the session is ending
 - Raw grep/search output exceeds 50 lines
 - Full file contents are loaded but only a section is needed
 - Previous task's code context is no longer relevant
 - Logs or error output has been analyzed and findings recorded
 - The context window is approaching capacity
+
+---
 
 ## Compaction Strategies
 
@@ -131,6 +206,8 @@ Compact context when:
 | **Scope-narrow** | Full file loaded, only function needed | Drop to relevant section |
 | **Evict** | Previous task context no longer needed | Remove entirely |
 | **Promote** | Finding is durable | Write to memory/artifact, then evict source |
+
+---
 
 ## Stale Context Rules
 
@@ -142,6 +219,8 @@ Context becomes stale when:
 
 Stale context MUST be evicted — carrying it forward dilutes attention and wastes budget.
 
+---
+
 ## Session Checkpoints
 
 Checkpoint when:
@@ -152,6 +231,8 @@ Checkpoint when:
 
 Checkpoint = update progress.md + apply compaction + verify context is lean.
 
+---
+
 ## Anti-Patterns
 
 | Anti-Pattern | Why It's Bad | Instead |
@@ -161,6 +242,8 @@ Checkpoint = update progress.md + apply compaction + verify context is lean.
 | Loading all feature artifacts at once | Most aren't needed for the current task | Load JIT based on task dependencies |
 | Never checkpointing | Context grows until quality degrades | Checkpoint after each completed task |
 | Relying on chat history for state | Chat is volatile and gets truncated | Use progress.md as system of record |
+
+---
 
 ## Subagent-Driven Development
 
@@ -177,11 +260,11 @@ flowchart TD
     DECIDE -- Yes --> SPAWN[Spawn subagents]
 
     SPAWN --> SA1[Subagent A<br/>isolated context]
-    SPAWN --> SA2[Subagent B<br/>isolated context]
-    SPAWN --> SA3[Subagent C<br/>isolated context]
+    SPAWNOW[Subagent B<br/>isolated context]
+    SA3[Subagent C<br/>isolated context]
 
     SA1 -->|raw exploration<br/>stays isolated| R1[Summary Report A]
-    SA2 -->|raw exploration<br/>stays isolated| R2[Summary Report B]
+    SPAWNOW -->|raw exploration<br/>stays isolated| R2[Summary Report B]
     SA3 -->|raw exploration<br/>stays isolated| R3[Summary Report C]
 
     R1 --> MERGE[Merge ONLY summaries<br/>into main context]
@@ -202,31 +285,32 @@ flowchart TD
     classDef note fill:#f7f7f5,stroke:#e0e0e0,color:#111
 
     class MAIN,MERGE,STATUS main
-    class SA1,SA2,SA3 sub
+    class SA1,SPAWNOW,SA3 sub
     class R1,R2,R3 report
     class DECIDE decision
 ```
 
+---
+
 ## Domain Packs
 
-Domain packs extend the memory router with project-specific semantic context. Each pack
-captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for
-a specific business or technical domain.
+Domain packs extend the memory router with project-specific semantic context. Each pack captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for a specific business or technical domain.
 
 ### Where They Live
 
 ```
-memories/domains/<name>/
-├── glossary.md       — ubiquitous language + trigger keywords
-├── patterns.md       — proven domain patterns
-├── anti-patterns.md  — failure modes to avoid
-└── boundary-rules.md — domain ownership and integration contracts
+memories/domain/
+├── glossary.md      — ubiquitous language + trigger keywords
+├── patterns.md      — proven domain patterns
+├── anti-patterns.md — failure modes to avoid
+├── boundaries.md    — domain ownership and integration contracts
+
 ```
 
 ### How Loading Works
 
 Domain packs use confidence-scored loading (same principle as Tier 3 intent groups):
-- **3+ keyword matches** → full pack load (all 4 files)
+- **3+ keyword matches** → full pack load (all files)
 - **1–2 keyword matches** → partial load (glossary.md only)
 - **0 matches** → pack skipped
 
@@ -238,26 +322,16 @@ triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
 
 ### Authoring a Pack
 
-1. Create `memories/domains/<name>/` with the 4 required files.
+1. Create `memories/domain/` with the required files.
 2. Declare triggers in `glossary.md` frontmatter.
-3. Register the pack in `memories/repo/INDEX.md` under `## By Domain Packs`.
-4. See `memories/domains/README.md` for the full schema.
+3. Register the pack in `memories/repo/MASTER_INDEX.md` under `## By Domain Packs`.
+4. See `memories/domain/README.md` for the full schema.
 
 ### Lifecycle
 
-Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content.
-During `/context-memory` Post-Ship Sync, promote durable patterns from
-`session-extracts.md` into the appropriate domain pack file.
+Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content. During `/context-memory` Post-Ship Sync, promote durable patterns from `session-extracts.md` into the appropriate domain pack file.
 
-Brownfield artifacts under `memories/repo/brownfield/` are separate from domain packs.
-As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet
-auto-routed by `INDEX.md`; sessions need to load them intentionally when relevant.
+Brownfield artifacts under `memories/repo/project-knowledge-base.md ## Repository Overview` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `MASTER_INDEX.md`; sessions need to load them intentionally when relevant.
 
----
-
-## Context Compaction & Claim Gaps
-
-During the system-wide evaluation (detailed in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)), several context-engineering gaps and corresponding recommendations were identified:
-
-* **Workspace Claim Lock Contention**: The file-backed claim protocol manages multi-agent coordination but lacks automated collision resolution. To prevent distributed agent workspace blockages, claim files should be explicitly mapped to Git branch states rather than single absolute paths.
+> **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract only the `## Index` section or first 50 lines of a memory file, preserving context budget without agent interpretation.
 

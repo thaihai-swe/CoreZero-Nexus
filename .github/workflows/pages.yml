@@ -15,9 +15,15 @@ jobs:
       - name: Copy docs to site directory
         run: |
           mkdir -p _site
-          cp -R kit/docs/* _site/
+          mkdir -p _site/adopters _site/maintainers
+          cp -R kit/docs/* _site/adopters/
           cp -R page-document/* _site/
-          cp -R documents/ _site/
+          cp documents/README.md _site/maintainers/
+          cp documents/architecture.md _site/maintainers/
+          cp documents/TEMPLATE_SURFACE.md _site/maintainers/
+          cp documents/INSTALL.md _site/maintainers/
+          cp documents/skills-guide.md _site/maintainers/
+          cp documents/releasing.md _site/maintainers/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:

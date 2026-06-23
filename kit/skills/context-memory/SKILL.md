@@ -1,154 +1,91 @@
 ---
 name: context-memory
-description: Create, maintain, and route durable repository memory. Manage INDEX.md (memory router), constitution.md, security-policy.md, learned-heuristics.md, project-knowledge-base.md, docs/architecture.md, decide where findings belong, and run the post-ship knowledge sync after harness-verify passes.
-compatibility: Designed for Claude, Codex, and other Agent Skills-compatible tools working in spec-driven repositories that use memories/repo/ and artifacts/features/<slug>/.
+description: Update repository memories and learned heuristics.
 
 ---
 
-# Kit Memory
-
+# Context Memory
 
 ## Overview
+Updates persistent AI memories (e.g., rules, architecture) so future agents don't repeat mistakes.
 
-Use this skill to manage durable repository memory across eleven functions:
+## I/O Hand-off Protocol
+- **Reads**: Current context, `memories/repo/`.
+- **Writes**: Files in `memories/repo/`.
+- **Next Skill**: `/context-status` (if audit mode used)
 
-1. **Memory Router (INDEX.md)** - Maintain `memories/repo/INDEX.md`. Routes session loads, declares groups, and tracks watchlist.
-2. **Constitution** - Repo-wide normative rules (CC-*).
-3. **Security Policy** - Repo-wide permission, trust-boundary, and sandbox rules.
-4. **Learned Heuristics** - Descriptive, evidence-backed instincts.
-5. **Project Knowledge Base** - Durable descriptive facts, patterns, boundaries.
-6. **Architecture Baseline** - Durable system structure, boundaries, and integration seams.
-7. **AI Coding Contract Synthesis** - Turn stack and conventions into coding rules.
-8. **Project-Level Continuity** - Preserve durable multi-feature context.
-9. **Memory Promotion** - Route findings to the right destination.
-10. **Extraction Triage** - Classify candidates from session extracts and observability log.
-11. **Post-Ship Sync (Knowledge Sweep)** - Run post-ship knowledge sweep after verification passes.
+## Workflow
+1. **Mode Selection**: Determine if this is a regular update or audit (see Audit Mode below).
+2. **Session Extracts**: Read `artifacts/features/<slug>/session-extracts.md`. For each entry marked `[CANDIDATE]`: promote confirmed durable lessons to `learned-heuristics.md` (using `references/learned-heuristics-template.md`) or the relevant domain pack's `patterns.md`; discard noise. Remove promoted entries from the candidates list.
+3. **Config Drift Check**: Identify any new file paths, canonical commands, or module roots introduced during the session. Update `core-policies.md` `## Harness Config` and `project-knowledge-base.md` `## Repository Overview` to reflect them (consult `references/pkb-*-template.md` as needed). Mark unknowns `[UNKNOWN]` per CC-003 — do not guess.
+4. **Domain Pack Update**: If the active feature touched a domain with an installed pack, check whether any new patterns or anti-patterns emerged. Update `memories/domain/<name>/patterns.md` or `anti-patterns.md` with evidence-backed entries only.
+5. **Size Check**: For every file modified in Steps 2–4, count lines. If any file exceeds 600 lines, open a promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` Section 2 Rule 5. If the file should be compacted in-place rather than split, route to `/context-compact`.
 
-This is an advanced helper path. Feature work stays in the 6-step core flow and reaches this skill only when routed for sync, promotion, or repair.
+## Core Rules
+- No fabrication: do not invent patterns or heuristics; only record what was observed.
+- Incremental growth: add detail over time rather than creating new files for minor insights.
+- Evidence-based: every entry should trace to a specific observation or session extract.
 
 ## Memory Tiers
 
-| Tier | Files | Who writes | Durability | Triage |
-|---|---|---|---|---|
-| **Instruction** | `constitution.md`, `security-policy.md`, `learned-heuristics.md`, `project-knowledge-base.md`, `harness-config.md`, `domain-specs.md`, `adr-log.md`, `docs/architecture.md` | Humans + `context-memory` | Durable | Direct edit, evidence-required |
-| **Auto** | `observability-log.md` | `harness-maintain` Improve Mode, `harness-verify` | Append-only | Reviewed for promotion |
-| **Extracted** | `artifacts/features/<slug>/session-extracts.md` | `context-session END` | Per-feature | Reviewed in Extraction Triage |
+The kit uses three durability tiers for persistent memory. Each tier has a different owner, lifecycle, and promotion path.
 
-## Read First
+### Instruction Tier
+- **Files:** `memories/repo/core-policies.md` (CC-* rules), `docs/policies/code-design.md`.
+- **Owner:** `/context-memory` + user.
+- **Promotion:** Candidate rules from `learned-heuristics.md` are promoted when recurrence-count >= 3.
+- **Demotion:** Rules are deprecated via CC-* amendment, never deleted silently.
 
-- `memories/repo/INDEX.md` (memory router)
-- `memories/repo/constitution.md`
-- `memories/repo/security-policy.md` (if it exists)
-- `memories/repo/learned-heuristics.md` (if it exists)
-- `memories/repo/project-knowledge-base.md`
-- `docs/architecture.md` (if it exists)
-- feature artifacts, review outputs, and repo code paths
+### Auto Tier
+- **Files:** `memories/repo/harness-telemetry.md` (OBS-* entries).
+- **Owner:** `telemetry-collector.sh` writes; `harness-verify` and `harness-maintain` govern.
+- **Promotion:** When an OBS-* entry reaches `recurrence-count >= 3`, a promotion candidate is proposed to `learned-heuristics.md` or `core-policies.md`.
+- **Demotion:** Entries are moved to `## Retired Entries` when the corresponding failure mode is resolved or the context no longer applies.
 
-## When to Use
+### Extracted Tier
+- **Files:** `artifacts/features/<slug>/session-extracts.md` (EXT-* candidates).
+- **Owner:** `/context-session` writes candidates; `/context-memory` triages via `references/extraction-triage.md`.
+- **Promotion:** Candidate → triage (promote/defer/discard) → destination by category (Heuristic → `learned-heuristics.md` LH-*; Pattern → `project-knowledge-base.md` or `docs/project/architecture.md`; Rule → `core-policies.md` CC-*).
+- **Demotion:** Discarded candidates remain in `## Triaged` with a reason. The trail matters — do not delete.
 
-Use this skill to:
-- **Create/maintain `INDEX.md`**: Bootstrap memory router, add groups/watchlist.
-- **Run post-ship sync**: Sweeps and updates memory files in `INDEX.md`.
-- **Maintain Instruction files**: Edit constitution, security-policy, heuristics, PKB, and architecture baseline.
-- **Triage extracts**: Process `session-extracts.md` and `observability-log.md` candidates (promote, defer, or discard).
-- **Synthesize Coding Contract**: Build rule-sets from stack evidence.
+### Identifier Namespaces
+| Prefix | File | Purpose |
+|--------|------|---------|
+| CC- | `core-policies.md` | Normative rules |
+| LH- | `learned-heuristics.md` | Learned heuristics |
+| OBS- | `harness-telemetry.md` | Auto-tier observations |
+| EXT- | `session-extracts.md` | Extracted-tier candidates |
+| INV- | `domain/*/boundaries.md` | Domain invariants |
+| ADR- | `adr-log.md` | Architecture decisions |
+| TASK- | `tasks.md` | Implementation tasks |
+| REQ-/AC- | `spec.md` | Requirements and acceptance criteria |
 
-Do not use for:
-- Writing feature-specific artifacts (`spec.md`, `plan.md`, `tasks.md`).
-- Temporary findings or speculative future design.
-- Post-implementation code review (use `harness-verify`).
+## Audit Mode
 
-## Workflow
+### Usage
+Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
 
-### Memory Promotion & File Management
-0. **INDEX.md Bootstrap**: If `memories/repo/INDEX.md` does not exist, create it from `references/index-template.md` before routing any findings. All subsequent steps depend on the router being initialized.
-1. **Identify the finding** and its source.
-2. **Classify and Route**:
-   - **Normative repo rule** -> `constitution.md`
-   - **Security/sandbox rule** -> `security-policy.md`
-   - **Descriptive repeated instinct** -> `learned-heuristics.md`
-   - **Durable fact/pattern** -> `project-knowledge-base.md`
-   - **Structural architecture map** -> `docs/architecture.md`
-   - **Feature-local** -> Keep in feature artifacts.
-3. **Constitution Updates**: Use stable CC-* identifiers, maintain semantic versioning, and avoid overlapping rules.
-4. **Security Policy**: Define permissions, safe vs confirm actions, network/fs/secret boundaries, and prompt-injection handling.
-5. **Learned Heuristics**: Record repeated, evidence-backed execution heuristics (trigger, heuristic, evidence, recurrence count, semantic links, confidence). If you find a matching heuristic, increment its `recurrence-count`. If `recurrence-count` hits 3 or more, automatically draft a CC-* promotion proposal. After drafting, **stop and surface the draft to the user for explicit approval before committing to `constitution.md`**. Write the draft to a temporary `memories/repo/cc-proposals/<draft-id>.md` file and note it in `INDEX.md` watchlist. Do not auto-merge.
-6. **Project Knowledge Base**: Integrate findings into descriptive sections, avoiding duplicates. Ensure every new entry uses markdown links (Semantic Knowledge Graph) to connect to relevant `docs/architecture.md` components or domain specs.
-7. **Architecture Baseline**: Map component structure, runtime boundaries, data flow, and external integrations in `docs/architecture.md`.
-8. **AI Coding Contract**: Synthesize stack conventions into normative rules (`constitution.md`) and descriptive examples (`project-knowledge-base.md`).
-9. **Post-Ship Sync**: Sweeps memory files in `INDEX.md`. `Tiny` profile sweeps `learned-heuristics.md`; `Standard` and above run full sweeps. Follow [references/post-ship-sync.md](references/post-ship-sync.md).
-10. **Extraction Triage**: Classify candidates from `session-extracts.md` and `observability-log.md`. Follow [references/extraction-triage.md](references/extraction-triage.md).
+### Checks
+1. **File size thresholds** — for every `memories/repo/*.md`, count lines and report against the canonical ladder in `core-policies.md ## Memory Promotion Thresholds`:
+   - >= 600 lines: early warning (start a promotion proposal)
+   - >= 800 lines: threshold breached (open `artifacts/features/<slug>/promotions.md`)
+   - >= 1200 lines: hard cap (block further appends until promotion lands)
+2. **Domain pack trigger relevance** — for every pack under `memories/domain/`, read trigger keywords from `glossary.md` frontmatter and grep the codebase for occurrences. Flag triggers with zero matches as candidates for removal or rewording.
+3. **Memory-to-code accuracy** — sample referenced paths, file names, and module roots from `project-knowledge-base.md`, `core-policies.md` `## Harness Config`, and `MASTER_INDEX.md` and confirm each still exists. Flag stale references.
+4. **Domain pack usage** — read `harness-telemetry.md` (when populated) and `artifacts/features/*/session-extracts.md` for pack-load events; list packs not loaded in any recent session.
+5. **Promotion watchlist sync** — compare files flagged in checks 1–4 against `MASTER_INDEX.md` `## Promotion Watchlist`. Surface drift in either direction.
 
-## Stop Conditions
+### Output
+Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `docs/generated/memory-audit.md` (global). Sections:
 
-- Finding is speculative or lacks repository evidence.
-- The content is feature-local.
-- Proposed coding rules cannot be justified by repo patterns.
+- `## Summary` — counts by severity (info / warn / error)
+- `## Size Findings` — table of file, line count, severity, suggested action
+- `## Trigger Drift` — domain packs with stale or unmatched triggers
+- `## Stale References` — paths and identifiers that no longer exist
+- `## Unused Packs` — domain packs with zero recent loads
+- `## Watchlist Sync` — proposed updates to `MASTER_INDEX.md` `## Promotion Watchlist`
 
-## Core Rules
-
-- **Normative vs. Descriptive**: Rules go in Constitution/Security Policy; facts go in Knowledge Base/Heuristics.
-- **Structure**: Structural maps belong in `docs/architecture.md`, not PKB.
-- **Durable Only**: Do not save session residue or diary logs.
-- **Surgical Amendments**: Refine existing rules instead of adding duplicates. Use semantic versioning for Constitution.
-- **Evidence-First**: Promote only what is supported by repository evidence.
-
-## Rationalization vs. Reality
-
-| Rationalization | Reality |
-|---|---|
-| "I'll save everything to the knowledge base." | Knowledge base is for durable, reusable patterns, not session residue. |
-| "I don't need to update INDEX.md for new files." | INDEX.md routes sessions. Unlisted files are invisible to future sessions. |
-| "Post-ship sync is busywork." | Every memory file must be reviewed with a one-line reason if untouched. |
-| "I'll promote now and evidence later." | Evidence is required at promotion time. |
-| "Both files can hold this rule." | Duplication across constitution and knowledge base creates drift. |
-
-## Red Flags
-
-- Architecture maps buried in PKB.
-- Descriptive notes written as rules or normative language in descriptive files.
-- Rules overlap existing CC-* items.
-- Feature-local notes or temporary workarounds promoted as durable memory.
-- Coding contract duplicates rules in both constitution and knowledge base.
-
-## Ownership Boundaries
-
-- **`starter-init`** creates and seeds memory files at initialization time. On re-init, it does not overwrite non-empty memory files.
-- **`context-memory`** is the sole ongoing maintenance owner of instruction-tier memory files after seeding. It updates only files that `starter-init` has already created.
-- `context-memory` reads `memories/repo/adr-log.md` for architecture drift detection but does not append entries (owned by `spec-adr`).
-
-## Verification
-
-- [ ] Normative rules in constitution/security-policy; descriptive facts in heuristics/PKB.
-- [ ] Durable structures mapped in `docs/architecture.md`.
-- [ ] Stable identifiers and semantic version bumps are coherent.
-- [ ] No placeholders; duplicate sections merged.
-- [ ] Memory is grounded in repository evidence.
-
-## Output Standard
-
-Memory files must contain durable, evidence-grounded repo knowledge, separating normative rules from descriptive facts, and using stable identifiers.
-
-## Output Rules
-
-- Update only: `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/domain-specs.md`, `docs/architecture.md`, `memories/repo/INDEX.md`, `memories/repo/observability-log.md`, or `memories/repo/adr-log.md`.
-- `memories/repo/harness-config.md` is owned by `starter-init` and `harness-maintain`. This skill may propose config changes to the user but does not write `harness-config.md` directly.
-- Route findings to the owning skill with a short reason.
-- Preserve heading structure and identifier stability.
-
-## References
-
-- [references/index-template.md](references/index-template.md)
-- [references/constitution-template.md](references/constitution-template.md)
-- [references/security-policy-template.md](references/security-policy-template.md)
-- [references/learned-heuristics-template.md](references/learned-heuristics-template.md)
-- [references/project-knowledge-base-template.md](references/project-knowledge-base-template.md)
-- [references/architecture-template.md](references/architecture-template.md)
-- [references/pkb-tech-stack-template.md](references/pkb-tech-stack-template.md)
-- [references/pkb-conventions-template.md](references/pkb-conventions-template.md)
-- [references/decision-template.md](references/decision-template.md)
-- [references/observability-log-template.md](references/observability-log-template.md)
-- [references/post-ship-sync.md](references/post-ship-sync.md)
-- [references/extraction-triage.md](references/extraction-triage.md)
-- [../context-session/references/session-extracts-template.md](../context-session/references/session-extracts-template.md)
-- [references/adr-log-template.md](references/adr-log-template.md)
+### Core Rules — Audit Mode
+- Mechanical only — count lines, grep keywords, stat paths. Do not interpret content.
+- Evidence-required — every finding cites the file and the check that produced it.
+- No edits — the audit produces a report only. Promotions and rewrites stay manual or route through a regular `/context-memory` invocation.

@@ -1,12 +1,12 @@
 flowchart TD
     user["👤 Developer<br/>(Initiates tasks & reviews artifacts)"]:::userClass
-    
-    subgraph corezero_boundary["CoreZero Nexus Ecosystem"]
-        corezero["⚙️ CoreZero Nexus<br/>(Standardizes speculative logic into durable, git-tracked artifacts)"]:::coreClass
+
+    subgraph corezero_boundary["CoreZero Ecosystem"]
+        corezero["⚙️ CoreZero<br/>(Standardizes speculative logic into durable, git-tracked artifacts)"]:::coreClass
     end
-    
+
     llm["🤖 LLM Agent (External)<br/>(Executes commands, provides reasoning)"]:::extClass
-    
+
     repo[("💾 Git Repository<br/>(Stores code, memories, & specs)")]:::dbClass
 
     %% Relationships

@@ -4,15 +4,16 @@ When processing extracted-tier or auto-tier memory entries:
 
 1. **Locate candidate sources**:
    - Per-feature: `artifacts/features/<slug>/session-extracts.md` (extracted tier)
-   - Repo-level: `memories/repo/observability-log.md` (auto tier)
+   - Repo-level: `memories/repo/harness-telemetry.md` (auto tier)
 2. **Process each pending candidate** in order:
    - Read the candidate's category, confidence, and evidence
    - Decide: **promote**, **defer**, or **discard**
+   - **Distillation & Deduplication Check:** Before promoting any candidate, cross-reference it with the existing guidelines/heuristics in the target file. If there is semantic overlap or the target already covers the core lesson, merge the evidence, increment the recurrence count, and distill the rule to keep the descriptions concise, active-voice, and distinct. Do not append separate duplicate entries.
 3. **Promote** when the candidate is durable, evidence-backed, and matches an instruction-tier file:
    - Heuristic with confirming evidence -> append to `learned-heuristics.md`
-   - Pattern or boundary fact -> integrate into `project-knowledge-base.md` or `docs/architecture.md`
-   - Normative rule with team agreement -> amend `constitution.md` (CC-*)
-   - Permission, trust, or sandbox rule -> amend `security-policy.md`
+   - Pattern or boundary fact -> integrate into `project-knowledge-base.md` or `docs/project/architecture.md`
+   - Normative rule with team agreement -> amend `core-policies.md` (CC-*)
+   - Permission, trust, or sandbox rule -> amend `core-policies.md` `## Security Policy`
    - Harness gap -> route to `harness-maintain` Improve Mode
    - Spec gap -> route back to `spec-requirements`
 4. **Defer** when the candidate is plausible but under-evidenced:
@@ -23,7 +24,7 @@ When processing extracted-tier or auto-tier memory entries:
    - Do not delete — the trail matters
 6. **Update the source file**:
    - Move processed candidates from `## Pending Candidates` to `## Triaged` in `session-extracts.md`
-   - Update `Status:` and add `Triage notes:` in `observability-log.md`; move retired entries to `## Retired Entries`
+   - Update `Status:` and add `Triage notes:` in `harness-telemetry.md`; move retired entries to `## Retired Entries`
 7. **Verify**:
    - No candidate left in `pending` without an explicit triage decision in this pass
    - Promoted content actually changed an instruction-tier file (link the new identifier)

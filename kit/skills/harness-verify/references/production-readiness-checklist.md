@@ -33,11 +33,10 @@ Verify that a feature is not just functionally correct but operationally ready f
 - [ ] SQL injection / XSS / CSRF protections in place
 - [ ] Rate limiting on public endpoints
 - [ ] Sensitive data not logged or exposed in error messages
-- [ ] Security review completed (if required by GOVERNANCE.md)
 
 ### Performance
 
-- [ ] Response time within budget (check PROJECT_CONSTRAINTS.md)
+- [ ] Response time within budget (check `docs/project/project-constraints.md`)
 - [ ] No N+1 queries or unbounded loops
 - [ ] Database queries have appropriate indexes
 - [ ] Caching strategy implemented where needed
@@ -92,7 +91,7 @@ Verify that a feature is not just functionally correct but operationally ready f
 
 ## When to Use
 
-- All High and Critical risk deployments (per GOVERNANCE.md risk classification)
+- All deployments that the active feature profile classifies as `High` or `Critical`
 - Any deployment touching auth, payments, or user data
 - First deployment of a new service or major feature
 - Optional for Low/Medium risk (use judgment)

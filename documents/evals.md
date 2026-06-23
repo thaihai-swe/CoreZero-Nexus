@@ -4,14 +4,17 @@
 
 The evaluation layer provides structured quality assessment beyond the normal verify closeout. It uses split evaluator passes — each targeting a different failure class — rather than one generic "review."
 
+---
+
 ## Split Evaluator Modes
 
 ### 1. Mechanical Gate Audit
 
 **What it checks:** Do the exact verification commands pass?
 
-- Runs the bash commands defined in `plan.md` Mechanical Verification Gate
+- Runs the mechanical verification gate via `kit/scripts/harness/gate-runner.sh`
 - Checks exit codes (must be 0)
+- Pipes errors to `telemetry-collector.sh` and logs to `harness-telemetry.md` if any occur
 - Verifies evidence is fresh (from current session)
 - No subjective judgment — purely mechanical
 
@@ -24,7 +27,7 @@ flowchart TD
     %% Verification Gate — split modes, sole completion authority
 
     START([Implementation complete]) --> PHASE[status = Verifying]
-    PHASE --> GATE[1 - Mechanical Gate Audit<br/>run exact bash commands from plan.md]
+    PHASE --> GATE[1 - Mechanical Gate Audit<br/>run kit/scripts/harness/gate-runner.sh]
 
     GATE --> GPASS{Gate passes?}
     GPASS -- No --> FAIL[Write failure to review.md<br/>reopen tasks]
@@ -32,12 +35,11 @@ flowchart TD
     GPASS -- Yes --> CLEAN[2 - Clean-State Check<br/>no uncommitted changes]
 
     CLEAN --> ALIGN[3 - Alignment Audit<br/>REQ vs code: Missing / Ghost / Misaligned]
-    ALIGN --> TRACE[4 - Traceability Audit<br/>REQ to AC to TASK to validation]
-    TRACE --> SEC[5 - Security Lens<br/>auth, permissions, data handling]
+    ALIGN --> SEC[4 - Security Lens<br/>auth, permissions, data handling]
     SEC --> FALLOW{Debt introduced?}
-    FALLOW -- Yes --> CLEANUP[6 - Optional Fallow Pass<br/>behavior-neutral cleanup + re-run proof]
+    FALLOW -- Yes --> CLEANUP[5 - Optional Fallow Pass<br/>behavior-neutral cleanup + re-run proof]
     FALLOW -- No --> SCEN
-    CLEANUP --> SCEN[7 - Testing Scenarios<br/>testing-scenarios.md]
+    CLEANUP --> SCEN[6 - Testing Scenarios<br/>testing-scenarios.md]
 
     SCEN --> VERDICT{Verdict}
     VERDICT -- Issues --> FAIL
@@ -65,7 +67,6 @@ flowchart TD
 
 - Compares every REQ-* from spec.md against delivered code
 - Detects: Missing behavior, Excess (ghost) behavior, Misaligned behavior
-- Checks traceability: REQ → AC → TASK → validation
 - Uses spec quality scoring (30-point rubric)
 
 **Failure class:** Drift, scope creep, missed requirements
@@ -95,6 +96,8 @@ flowchart TD
 
 **Failure class:** Amnesia, context corruption, lost state
 
+---
+
 ## Advanced Evaluation Features
 
 ### Spec Quality Scoring
@@ -112,6 +115,8 @@ Three levels: Feature regression (code broke), Harness regression (kit degraded)
 ### Production Readiness
 
 8-category checklist for high-risk deployments: Functional, Observability, Security, Performance, Data, Rollback, Operational, Documentation. See `skills/harness-verify/references/production-readiness-checklist.md`.
+
+---
 
 ## When to Use Eval Mode
 

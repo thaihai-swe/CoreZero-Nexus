@@ -17,7 +17,7 @@ flowchart TD
     ALIGN -- Yes --> SCOPE[Scope Cut<br/>In / Out / Non-Goals]
     SCOPE --> AUTHOR[Author spec.md<br/>REQ + AC + Verification Surface]
     AUTHOR --> GRAY[Lock Gray-Area Decisions<br/>in spec.md]
-    GRAY --> REVIEW[requirements-review.md<br/>6-dimension readiness score]
+    GRAY --> REVIEW[optional requirements-review.md<br/>6-dimension readiness score]
 
     REVIEW --> SCORE{Score >= 19/30?}
     SCORE -- No --> AUTHOR

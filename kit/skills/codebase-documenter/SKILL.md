@@ -21,7 +21,7 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ## Read First
 
-- `memories/repo/constitution.md` and `memories/repo/project-knowledge-base.md`
+- `memories/repo/core-policies.md` and `memories/repo/project-knowledge-base.md`
 - Root config and package/build files (`package.json`, `pom.xml`, etc.).
 - References: `references/templates.md`, `references/best-practices.md`, `references/diagram-patterns.md`, `../_shared/doc-conventions.md`, and `../_shared/diagram-catalog.md`.
 
@@ -31,7 +31,7 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
    - `Quick`: Produce `README.md` and `ARCHITECTURE.md` only. No component-level deep dives. Use when the user needs a fast orientation.
    - `Standard` (default): All 6 output files (README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md). Standard component depth.
    - `Deep`: All 6 files plus: inline code walkthrough for 2–3 key flows, test coverage map, and a runnable onboarding validation script. Use when new team members need hands-on depth.
-   
+
    If the user does not specify, default to `Standard`.
 2. **Explore**: Map folders, dependencies, and main entry points.
 3. **Trace**: Trace key execution flows through code to construct mental models.
@@ -83,15 +83,7 @@ Do not regenerate from scratch unless explicitly requested.
 
 - Ground all claims in source code. Do not guess structure.
 
-## Rationalization vs. Reality
 
-| Rationalization | Reality |
-|---|---|
-| "I can generate setup steps based on standard stack assumptions." | Config files often have custom variables. Real commands must be cited. |
-
-## Red Flags
-
-- Outdated setup steps or dependencies listed in documentation.
 
 ## Verification
 

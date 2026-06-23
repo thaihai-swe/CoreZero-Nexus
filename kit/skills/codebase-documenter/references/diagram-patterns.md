@@ -1,6 +1,6 @@
 # Diagram Patterns
 
-Composite Mermaid patterns specific to codebase documentation. For base patterns (sequence, flowchart, ERD, state, container view) and selection rules, see [../../_shared/diagram-catalog.md](../../_shared/diagram-catalog.md).
+See [diagram-catalog.md](../../../_shared/diagram-catalog.md) for available Mermaid structures.
 
 These are larger, project-shaped patterns that combine multiple base diagrams.
 

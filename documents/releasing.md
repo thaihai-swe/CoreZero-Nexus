@@ -49,13 +49,13 @@ The tag push fires `release.yml` → consistency check → GitHub release page.
 ### 6. Watch and verify
 
 - GitHub → Actions → Release should turn green
-- Release page lives at `https://github.com/<user>/CoreZero-Nexus/releases/tag/v0.1.0`
+- Release page lives at `https://github.com/thaihai-swe/CoreZero-Nexus/releases/tag/v0.1.0`
 - Branch `release/0.1.x` exists on origin
 
 ### 7. Public install smoke test
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<user>/CoreZero-Nexus/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
   | bash -s -- /tmp/post-release-test
 cat /tmp/post-release-test/.corezero-version    # should print: 0.1.0
 ```
@@ -129,7 +129,7 @@ Strict semver. The bump level is decided by commit prefix (auto) or by you (manu
 
 | Bump | Use for | Examples |
 |---|---|---|
-| **Major (1.0.0 → 2.0.0)** | Adopter-visible breaking change | `INDEX.md` schema change, manifest categories renamed, skill removed or renamed, command-line flag dropped |
+| **Major (1.0.0 → 2.0.0)** | Adopter-visible breaking change | `MASTER_INDEX.md` schema change, manifest categories renamed, skill removed or renamed, command-line flag dropped |
 | **Minor (0.1.0 → 0.2.0)** | New public surface, backward-compatible | New skill, new memory file, new template, new CLI flag, new manifest entry |
 | **Patch (0.1.0 → 0.1.1)** | Behavior-preserving fixes | Prompt edits, installer bug fix, doc correction, dead-link fix |
 
@@ -235,7 +235,7 @@ The workflow logs will say which step failed. Common cases:
 ### Quick reference: prefixes you'll actually use
 
 ```
-major: rename INDEX.md schema      # 0.5.0 → 1.0.0
+major: rename MASTER_INDEX.md schema      # 0.5.0 → 1.0.0
 minor: add corezero-predict skill     # 0.5.0 → 0.6.0
 patch: fix install.sh on macOS     # 0.5.0 → 0.5.1
 chore: rename internal var         # no release
@@ -297,7 +297,7 @@ Use this when you want to:
 
 7. **Verify the public install works** (optional, from a clean target):
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/<user>/CoreZero-Nexus/main/scripts/install.sh \
+   curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
      | bash -s -- /tmp/post-release-test
    cat /tmp/post-release-test/.corezero-version
    ```
@@ -382,7 +382,7 @@ Before tagging:
 - [ ] All target changes merged to `main`
 - [ ] `VERSION` bumped using the semver decision rule
 - [ ] Skills, memory schema, or templates that changed are reflected in `manifest.json` if needed
-- [ ] If skills changed materially, `HARNESS_CARD.md` subsystem table is up to date
+- [ ] If skills changed materially, `documents/architecture.md` subsystem table is up to date
 - [ ] If `manifest.json` changed, smoke-tested fresh install in `/tmp/`
 - [ ] Commit pushed to `main` with `release:` prefix
 

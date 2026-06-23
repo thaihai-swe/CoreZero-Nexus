@@ -11,6 +11,7 @@ Use this checklist before implementation starts.
 - Non-functional requirements are identified where relevant.
 - Dependencies and external constraints are known.
 - Risks and open questions are documented.
+- Technical design exists in `plan.md` and has been written before tasks were broken down.
 - The implementation approach is clear enough to start.
-- The task breakdown is actionable.
+- The task breakdown is actionable and derived from the design.
 - Requirements, plan items, tasks, and acceptance criteria can be traced by ID.

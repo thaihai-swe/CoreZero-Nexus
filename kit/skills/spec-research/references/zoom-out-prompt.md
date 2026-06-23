@@ -16,7 +16,7 @@ A canned prompt for stepping up a level of abstraction when research is too deep
 > 1. The 3-7 modules that matter for this question, and what each one owns.
 > 2. The callers that cross the boundary into those modules.
 > 3. The data or contracts that flow between them.
-> 4. The terms from `docs/GLOSSARY.md` (or `memories/repo/project-knowledge-base.md`) that name what is happening.
+> 4. The terms from `docs/project/glossary.md` (or `memories/repo/project-knowledge-base.md`) that name what is happening.
 >
 > Skip line-level detail. Skip files that are not on the critical path. The goal is a one-screen map that lets the next decision get made without re-reading the code.
 

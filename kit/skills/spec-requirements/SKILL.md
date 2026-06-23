@@ -1,29 +1,20 @@
 ---
 name: spec-requirements
-description: Define the "What & Why" of a feature. Handles specification authoring, Socratic refinement to resolve ambiguity, and a built-in readiness review to ensure requirements are testable and complete before planning.
-compatibility: Designed for Claude, Codex, and other Agent Skills-compatible tools working in spec-driven repositories that use memories/repo/ and artifacts/features/<slug>/.
 
+description: Define the "What & Why" of a feature. Handles specification authoring, Socratic refinement to resolve ambiguity, and a built-in readiness review to ensure requirements are testable and complete before planning.
 ---
 
 # Kit Spec
-
-
 ## Routing Guide
 
 - **Use `/spec-requirements`** to define requirements and acceptance criteria.
 - **Use `/spec-research`** first if the problem space, bug root cause, or brownfield codebase state is unknown.
-
 ## Overview
-
-Create or refine `status.md`, `proposal.md`, `spec.md`, and `requirements-review.md` in `artifacts/features/<slug>/`. This skill aligns the team on what is being built and how it will be verified.
-
-## Read First
-
-- `memories/repo/constitution.md`
-- `memories/repo/project-knowledge-base.md`
-- `memories/repo/domain-specs.md` (if relevant)
-- `artifacts/features/<slug>/analysis.md` (if it exists)
-- References: `references/intake.md`, `references/status-template.md`, `references/proposal-template.md`, `references/spec-template.md`, `references/requirements-review-template.md`, and `../_shared/rigor-profiles.md`.
+Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found) `requirements-review.md` in `artifacts/features/<slug>/`. This skill aligns the team on what is being built and how it will be verified.
+## I/O Hand-off Protocol
+- **Reads**: `artifacts/features/<slug>/analysis.md` (if exists), `artifacts/features/<slug>/status.md`, `memories/repo/adr-log.md`, domain packs.
+- **Writes**: `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/status.md`, `artifacts/features/<slug>/proposal.md`, optional `artifacts/features/<slug>/requirements-review.md`.
+- **Next Skill**: `/spec-plan`
 
 ## When to Use
 
@@ -33,74 +24,25 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and `requirements-review
 
 ## Workflow
 
-0. **Claim Check**: Check `artifacts/features/<slug>/claim.md` before writing any artifact. Same protocol as `spec-research` Step 0.
-1. **Initialization**: Create `status.md` if missing (from `references/status-template.md`). Set phase to `Spec'ing`.
-2. **Profile Load**: Load active rigor profile from `status.md` (`## 🧭 Delivery Profile`) or fallback to `memories/repo/harness-config.md` default.
-3. **Intake (Required)**: Classify input type (`new_spec`, `spec_slice`, `change_request`, `new_initiative`, `maintenance`, `harness_improvement`) and risk flags (`auth`, `authorization`, `data_model`, `provider`, `migration`, `cross_boundary`, `public_api`, `security`, `harness-maintain`, `none`) in `status.md`. Determine lane (Tiny/Standard/Complex) per rules in `references/intake.md`.
-3a. **System Spec Mode Routing**: After Intake, check: is the request cross-cutting (affects multiple features) or system-wide (harness, auth, schema)? If yes → switch to System Spec Mode immediately. Output target becomes `docs/system-specs/<name>.md` instead of `artifacts/features/<slug>/spec.md`. All subsequent steps run in this mode. Do not continue into Step 4 in feature mode.
-3b. **Analysis Check**: If `artifacts/features/<slug>/analysis.md` exists, read it before proceeding. Record any open research questions as explicit constraints in Step 4 (Domain Spec Check).
-4. **Domain Spec Check**: Read relevant domain specs (e.g. `memories/repo/domain-specs.md`) to anchor feature behavior.
-5. **Rigor Triage**: Promote profile to match intake lane decision. Set to `Complex` if security/migration/auth/harness-maintain flags exist.
-6. **Grilling Phase**: Ask batch clarifying questions with recommended answers (1-2 for `Tiny`, 3-5 for `Standard`, 5+ for `Complex`). Do not ask what the codebase itself can answer.
-   **Stop rule**: If after 2 grilling rounds the user's answers remain contradictory on a core requirement, stop. Write the contradictions to `spec.md` as `[UNRESOLVED: <description>]` items and surface to user. Do not proceed to Step 7 while core requirements are unresolved.
-7. **Proposal**: Draft `proposal.md` for `Standard`/`Complex` to align scope before spec'ing. (For `Tiny`, embed in the spec).
-8. **Gray-Area Decisions**: Record key design/UX/policy choices directly in `spec.md`.
-9. **Scope Cut**: Explicitly list `In Scope`, `Out Of Scope`, and `Non-Goals`.
-10. **Authoring**: Draft `spec.md` (`what` & `why`). Define scenarios and verify requirements.
-11. **Acceptance Criteria**: Design testable, observable acceptance criteria (AC-*).
-12. **Verification Surface**: Specify test methods (unit, integration, manual check).
-13. **Self-Review**: Create `requirements-review.md` for `Standard`/`Complex`. Update `status.md` to `Spec Approved` and route to `/spec-plan`.
-
-## System Spec Mode
-
-Use when defining cross-cutting policies or standards spanning multiple features/harness changes.
-- **Trigger**: Request affects multiple feature slugs or defines shared rules.
-- **Output**: Write to `docs/system-specs/<name>.md` using `references/system-spec-template.md`. Do not create a feature directory.
-- **Workflow**: Map policy decisions in `## Policy Decisions` table. Downstream specs must anchor to it. Route normative policy to `constitution.md` or `security-policy.md`.
-
-## Stop Conditions
-
-- Product ambiguity is too high to define outcomes.
-- Grilling answers remain contradictory.
-
-## Preconditions
-
-- **Required Phase**: None or `Research Complete`. If `analysis.md` exists, read it first.
-- **Phase sets**: `Spec'ing` → `Spec Approved`.
-
+1. **Initialization**: Create `status.md` if missing (from `_shared/status-template.md`). Set phase to `Spec'ing`.
+2. **Intake & Routing**: Classify input type (`new_spec`, `spec_slice`, `change_request`, `new_initiative`, `maintenance`, `harness_improvement`) and risk flags in `status.md` per `references/intake.md`.
+    - **System Spec Mode**: If the request is cross-cutting or system-wide, switch to System Spec Mode. Output target becomes `docs/system-specs/<name>.md`.
+3. **Context Alignment**: 
+    - **Domain Pack Scan**: If any keyword from the feature description matches a domain pack trigger in `memories/domain/<name>/glossary.md` frontmatter, you MUST load that pack before writing the spec and note it in `status.md`.
+    - **Analysis Check**: Read `artifacts/features/<slug>/analysis.md` (if exists) and record open research questions.
+    - **Domain Spec Check**: If `memories/repo/domain-specs.md` exists, read relevant domain specs.
+    - **ADR Conflict Check**: Load `memories/repo/adr-log.md`. Verify the proposed spec does not contradict locked decisions. If a contradiction exists, insert `[ADR CONFLICT: ADR-NNN — <decision summary>]` and block Handoff.
+4. **Clarification (Grilling Phase)**: Do NOT guess missing details. Engage in a relentless interview (Socratic refinement) to resolve decision trees and eliminate ambiguity before writing the spec. Never just mark items as `[UNKNOWN]` and move on. Ask batch clarifying questions with recommended answers per `references/grilling-waves.md`. If answers remain contradictory after 2 rounds, write `[UNRESOLVED: <description>]` and stop.
+5. **Complexity Classification**: Evaluate the scope of the work and update `status.md` with one of the following:
+    - **Simple**: One area of the codebase, no new integrations, no data model changes, clear spec.
+    - **Moderate**: Multiple areas OR one external integration OR schema change.
+    - **Complex**: Cross-cutting, multiple integrations, or unknown dependencies.
+6. **Proposal & Scope Definition**: Draft `proposal.md` to align scope before spec'ing. Explicitly list `In Scope`, `Out Of Scope`, and `Non-Goals`.
+7. **Spec Authoring**: Draft `spec.md` (`what` & `why`) using `references/spec-template.md`. Record key gray-area design/UX choices. Define testable, observable acceptance criteria (AC-*) using strict markdown checklists or Gherkin. Specify verification surfaces (unit, integration, manual check).
+8. **Completeness Check**: Ensure NO `[NEEDS CLARIFICATION]`, `[UNRESOLVED]`, or `[ADR CONFLICT]` tags remain. Run readiness scoring per `references/readiness-scoring.md`. Conduct a requirements review using `references/requirements-review-template.md`. Only create `requirements-review.md` if issues or gaps are found; do NOT create the artifact if the review passes.
+9. **Handoff**: Run `bash scripts/harness/phase-gate.sh <slug> "Spec Approved"` to verify preconditions. If it fails, fix the root cause before proceeding. Update `status.md` phase to `Spec Approved` and route to `/spec-plan`.
 ## Core Rules
-
-- **Clarify, Don't Re-litigate**: Ask minimum high-signal questions, then stick to decisions.
+- **Anti-Hallucination**: Never invent plausible but unspecified business logic. Mark all unknowns explicitly.
 - **What, not How**: Focus on requirements, not technical implementation.
-- **Validation-Aware**: Every acceptance criterion must name its proof surface.
-- **Brownfield Protection**: Explicitly state unchanged behavior to prevent regressions.
-- **Spec-Anchored**: Requirements change requires returning to this skill first.
-
-## Rationalization vs. Reality
-
-| Rationalization | Reality |
-|---|---|
-| "Fill in product gaps later." | Leaks ambiguity into design and planning. |
-| "A big umbrella spec is faster." | Oversized specs hide scope creep and weaken reviews. |
-| "User prompt is clear enough." | Fuzzy requirements always benefit from targeted questions. |
-| "Define How here to save time." | Prescribing design in specs creates early technical debt. |
-
-## Red Flags
-
-- Spec details design, tasks, or code.
-- Criteria are not observable or lack verification methods.
-- Spec keeps broadening instead of shipping smaller slices.
-- `Tiny` work is treated with heavy ceremony without justification.
-
-## Verification
-
-- [ ] No placeholder text.
-- [ ] Requirements are observable, non-contradictory, and testable.
-- [ ] In/Out of Scope and Non-Goals are explicit.
-- [ ] Rigor profile matches intake lane.
-- [ ] Next command is `/spec-plan`.
-
-## Output Rules
-
-- Update only: `proposal.md`, `spec.md`, `requirements-review.md`, `status.md` (or `docs/system-specs/*`).
-- Do not create: `design.md`, `plan.md`, `tasks.md`.
+- **Validation-Aware**: Every acceptance criterion must be testable.
+- **Deterministic ACs**: ACs must be binary (pass/fail) and clearly mapped to a verification command or script.

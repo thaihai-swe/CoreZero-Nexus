@@ -10,7 +10,7 @@ description: >-
 compatibility: Designed for all Agent Skills-compatible tools.
 ---
 
-# CoreZero Nexus Visualize
+# CoreZero Visualize
 
 ## Overview
 
@@ -24,7 +24,6 @@ This skill is not prompt-only. It ships with:
 - `scripts/validate_mermaid.py` for Mermaid syntax validation
 - `scripts/render_mermaid.py` for Mermaid-to-SVG rendering when `mmdc` is installed
 - `templates/*.svg` starter templates
-- `fixtures/*.json` regression examples
 
 ## Read First
 
@@ -60,7 +59,7 @@ Do not claim deferred outputs as completed work.
 - User requests a diagram explicitly ("draw a diagram", "visualize the flow", "create an architecture diagram")
 - A spec, plan, or design doc would benefit from visual clarity
 - Explaining system boundaries, data flow, or component relationships
-- Documenting agent architecture, memory systems, or multi-agent coordination
+- Documenting agent architecture, memory systems, or system coordination
 - Creating sequence diagrams for API interactions or user flows
 - Mapping state machines, decision trees, or process flows
 
@@ -195,16 +194,6 @@ Do not claim deferred outputs as completed work.
 - Feature-scoped: `artifacts/features/<slug>/diagrams/<name>.svg` (or `.mmd`)
 - Global/standalone: `docs/generated/diagrams/<name>.svg` (or `.mmd`)
 
-## Verification
-
-Regression fixtures live in `fixtures/`.
-Run the SVG regression suite with:
-
-```bash
-source .venv/bin/activate
-./skills/visualize/scripts/test-all-styles.sh
-```
-
 Validate Mermaid with:
 
 ```bash
@@ -229,12 +218,4 @@ python3 ./skills/visualize/scripts/validate_mermaid.py path/to/diagram.mmd
 - Ask for clarification when the description is too vague to resolve into nodes and edges.
 - Do not generate a one-box diagram with no relationships.
 
-## Rationalization vs. Reality
 
-| Rationalization | Reality |
-|---|---|
-| "I can make a diagram without reading the code." | Diagrams must map to actual code structures and variables. |
-
-## Red Flags
-
-- Diagrams that have generic, non-semantic shapes for every element.

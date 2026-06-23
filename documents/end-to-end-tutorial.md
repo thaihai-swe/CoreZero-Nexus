@@ -1,261 +1,408 @@
 # End-to-End Tutorial
 
-This tutorial provides a complete step-by-step guide for using the **CoreZero Nexus**. It covers all 15 public commands across the 4 core packs and 4 specialist tools, walking you through the entire lifecycle from installation to closeout.
+This tutorial explains the full CoreZero skill flow from install to closeout. It covers all 16 shipped skills, their modes, and whether each skill is required, conditional, optional, or maintenance-only.
+
+CoreZero has one required feature-delivery spine. The other skills are supporting branches for session continuity, memory health, governance, documentation, diagrams, and harness repair.
 
 ---
 
-## 1. Complete Command Taxonomy
+## 1. Full Skill System
+
+### Required-vs-Optional Legend
+
+| Label | Meaning |
+|---|---|
+| Required once per repo | Run during initial adopter setup. |
+| Required per feature | Run for every feature that moves through the delivery lifecycle. |
+| Conditional | Run when the stated condition applies. |
+| Optional helper | Use when it improves clarity, documentation, review depth, or operator visibility. |
+| Maintenance-only | Use when maintaining or repairing the harness itself. |
+
+### Five Skill Bands
 
 ```mermaid
-graph TD
-    A[Install Kit] --> B3["/starter-init"]
-    B3 --> C{"Is existing repo & behavior unknown?"}
+flowchart TD
+    Install[Install kit] --> Starter["/starter-init<br/>Required once per repo"]
 
-    subgraph SDD [Spec-Driven Development Flow]
-        C -->|Yes| D["/spec-research"]
-        C -->|No| E["/spec-requirements"]
-        D --> E["/spec-requirements"]
-        E --> F["/spec-adr"]
-        E --> G["/spec-plan"]
-        G --> H["/spec-implement"]
+    Starter --> Intake{"Feature behavior known?"}
+    Intake -->|"No, brownfield, unknown, or Complex"| Research["/spec-research<br/>Conditional"]
+    Intake -->|"Yes"| Requirements["/spec-requirements<br/>Required per feature"]
+    Research --> Requirements
+
+    Requirements --> ADR{"Architecture decision needed?"}
+    ADR -->|"Yes"| SpecADR["/spec-adr<br/>Conditional"]
+    ADR -->|"No"| Plan["/spec-plan<br/>Required per feature"]
+    SpecADR --> Plan
+
+    Plan --> Implement["/spec-implement<br/>Required per feature"]
+    Implement --> Verify["/harness-verify<br/>Required per feature"]
+    Verify --> Memory["/context-memory<br/>Conditional post-ship sync"]
+    Verify --> Done[Done]
+    Memory --> Done
+
+    subgraph SessionMemory["Session + Memory"]
+        SessionStart["/context-session START"]
+        SessionCheckpoint["/context-session CHECKPOINT"]
+        SessionEnd["/context-session END"]
+        Compact["/context-compact"]
     end
 
-    subgraph Specialist Docs & Diagrams
-        I["/visualize"]
-        J["/codebase-documenter"]
-        K["/technical-docs"]
+    subgraph Governance["Governance + Verification"]
+        Status["/context-status"]
+        Maintain["/harness-maintain"]
+        Review["/code-review"]
     end
 
-    H --> M["/harness-verify"]
-    M --> N["/code-review"]
-    M --> O["/context-memory Post-Ship Sync"]
-    M --> P["/context-session END"]
+    subgraph DocsViz["Docs + Visualization"]
+        TechDocs["/technical-docs"]
+        CodebaseDocs["/codebase-documenter"]
+        Visualize["/visualize"]
+    end
 
-    M --> Q["/harness-maintain"]
-
-    style B3 fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-    style H fill:#fbb,stroke:#333,stroke-width:2px
-    style M fill:#bfb,stroke:#333,stroke-width:2px
+    SessionStart -. "resume existing feature" .-> Requirements
+    Implement -. "pause" .-> SessionCheckpoint
+    Done -. "long-session closeout" .-> SessionEnd
+    Verify -. "review branch" .-> Review
+    Requirements -. "system structure affected" .-> Visualize
+    Plan -. "docs needed" .-> TechDocs
+    Done -. "repo docs needed" .-> CodebaseDocs
+    Done -. "status view" .-> Status
+    Verify -. "harness changed or drift found" .-> Maintain
+    Memory -. "oversized memory" .-> Compact
 ```
+
+### Required Feature Path
+
+The normal delivery spine is:
+
+```text
+/starter-init
+/spec-research      # required when behavior is unknown, brownfield, or Complex
+/spec-requirements
+/spec-plan
+/spec-implement
+/harness-verify
+```
+
+The support skills are real shipped skills, but they are not all mandatory for every feature. Their use depends on risk, feature profile, session length, documentation needs, and whether the harness itself is changing.
 
 ---
 
-## 2. Phase 0: Installation
+## 2. Command Matrix
 
-Before executing any commands, you must bootstrap the CoreZero Nexus in your target repository.
+| Skill | Required? | Modes | Use when | Primary artifacts |
+|---|---|---|---|---|
+| [`/starter-init`](../kit/skills/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `docs/`, `memories/`, `.gitignore`, project memory seeds |
+| [`/spec-research`](../kit/skills/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, or root cause is unclear | `artifacts/features/<slug>/analysis.md`, `status.md` |
+| [`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md) | Required per feature | Requirements authoring | Define what must be built and how it will be accepted | `spec.md`, `status.md` |
+| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into technical design and tasks | `plan.md`, `tasks.md`, `status.md` |
+| [`/spec-implement`](../kit/skills/spec-implement/SKILL.md) | Required per feature | Task execution | Implement approved tasks one at a time | Source changes, `tasks.md`, `status.md`, telemetry on failures |
+| [`/harness-verify`](../kit/skills/harness-verify/SKILL.md) | Required per feature | Verification | Prove implementation against tasks and spec | `status.md`, verification output, `harness-telemetry.md` |
+| [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md` |
+| [`/context-memory`](../kit/skills/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
+| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/`, `artifacts/`, or `docs/generated/` |
+| [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `docs/generated/dashboard.html` |
+| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/generated/code-map.md`, eval reports |
+| [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `docs/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
+| [`/code-review`](../kit/skills/code-review/SKILL.md) | Optional helper | Review | Manual review is requested or verification calls for deeper review | Review findings, usually feature-scoped |
+| [`/ponytail`](../kit/skills/ponytail/SKILL.md) | Optional helper | `lite`, `full` (default), `ultra` | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features | Advisory — no artifacts |
+| [`/technical-docs`](../kit/skills/technical-docs/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
+| [`/codebase-documenter`](../kit/skills/codebase-documenter/SKILL.md) | Optional helper | Codebase documentation | Need broader repo onboarding or architecture documentation | README-style guides, architecture docs, setup docs |
+| [`/visualize`](../kit/skills/visualize/SKILL.md) | Optional helper, conditional for complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts |
 
-### Requirements
-Ensure your system has the following tools installed:
-- `bash` (v4+)
-- `python3`
-- `git`
-- Standard POSIX utilities (`cp`, `find`, `sed`)
+---
 
-### Run the Installer
-Pipe the installer script into `bash`, specifying the path to your target project:
+## 3. Canonical Feature Phases
+
+The canonical feature phases are defined in [`kit/skills/_shared/status-phases.md`](../kit/skills/_shared/status-phases.md). Core phases move forward through `Researching`, `Spec Approved`, `Plan Approved`, `Implementing`, `Verifying`, and `Done`. Optional states such as `ADR In Progress` and `Blocked` should not hide the underlying core phase.
+
+---
+
+## 4. Phase-By-Phase Tutorial
+
+### Phase 0: Install
+
+Install the kit into a target repository:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
-  | bash -s -- /path/to/your-project
+bash kit/scripts/install.sh /path/to/target-repo
 ```
 
----
+The installer uses [`kit/manifest.json`](../kit/manifest.json) to decide which files are kit-managed, which files are adopter-owned seeds, and which state directories are preserved during upgrades.
 
-## 3. Phase 1: Repository Bootstrapping (`/starter-init`)
+After install, the adopter-facing entrypoints are:
 
-Once installed, bootstrap the CoreZero Nexus in your repository.
+- `AGENTS.md`
+- `MASTER_INDEX.md`
+- `docs/README.md`
 
-### Step 1: Initialize the Harness and Run Archaeology (if applicable)
-Run the initialization command:
+### Phase 1: Bootstrap With `/starter-init`
+
+Run:
+
 ```text
 /starter-init
 ```
-*Effect*: Detects the repository type. If it is an existing repository, it automatically runs the legacy archaeology sweep (Phase A) first, generating the brownfield map, dependency graph, and seeding risk heuristics under `memories/repo/brownfield/`. It then bootstraps the active harness configuration, status, and verification settings (Phase B).
 
-### Step 3: Verify Output Files
-Ensure the following files have been created in your repository root:
-- [`AGENTS.md`](../kit/AGENTS.md) — The agent router configuration.
-- [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md) — Active harness status and verification settings.
-- [`memories/repo/harness-config.md`](../kit/memories/repo/harness-config.md) — Command and path configuration.
-- `memories/repo/brownfield/` (if brownfield) — Brownfield archaeology map and dependency graph.
-- [`docs/architecture.md`](../kit/docs/architecture.md) — System architecture baseline.
-- [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md), [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md), and the other seeded adopter docs.
+Required once per adopter repo. This prepares `docs/`, `memories/`, and baseline project memory. It has two practical paths:
 
----
+- **Greenfield path:** bootstrap the harness and seed unknown project facts with `[UNKNOWN]`.
+- **Brownfield path:** inspect existing code/tests/CI enough to record baseline proof surfaces and project-specific memory.
 
-## 4. Phase 2: Session & Context Management
+`/starter-init` does not implement product code. It prepares the repo so future feature work has stable instructions, memory, and verification commands.
 
-Manage active feature boundaries and keep context lean.
+### Phase 2: Feature Intake
 
-### Step 1: Start a Session (`/context-session`)
-After `/spec-requirements` or `/spec-research` has created the feature slug and `status.md`, boot the context window with the feature's unique slug:
-```text
-/context-session START --slug <feature-slug>
-```
-*Effect*: Loads the memory router [`INDEX.md`](../kit/memories/repo/INDEX.md), gathers memory tiers matching the task, and restores the latest checkpoint.
+Start a feature with either research or requirements:
 
-### Step 2: View Project Status (`/context-status`)
-If working in a large repository with multiple active features, get a high-level summary of active work:
-```text
-/context-status
-```
-*Effect*: Scans all feature folders under `artifacts/features/` and produces a progress report matching current phases (e.g. `Spec'ing`, `Implementing`) and recommended next commands.
-
-### Step 3: Checkpoint Session Progress
-Save intermediate session states without ending the session:
-```text
-/context-session CHECKPOINT
-```
-
-### Step 4: Manage Durable Memory (`/context-memory`)
-Manually triage, amend, or synthesize repo-wide memory (such as [`constitution.md`](../kit/memories/repo/constitution.md), [`security-policy.md`](../kit/memories/repo/security-policy.md), [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md)):
-```text
-/context-memory
-```
-*Effect*: Promotes candidates from feature session extracts or observability logs into instruction-tier memory.
-
----
-
-## 5. Phase 3: The SDD Workflow (Spec-Driven Development)
-
-Deliver code changes incrementally using spec-anchored discipline.
-
-### Step 1: Research & Discovery (`/spec-research`)
-For brownfield codebases, bug investigations, or unknown behavior, run research before authoring specifications:
 ```text
 /spec-research
 ```
-*Effect*: Spawns parallel subagents to explore files, compacts context, and writes `artifacts/features/<slug>/analysis.md`, which doubles as the brownfield readiness artifact for inherited systems.
 
-### Step 2: Author Requirements (`/spec-requirements`)
-Specify what the feature must do and lock the acceptance criteria:
+Use `/spec-research` when current behavior, root cause, or brownfield structure is unknown. It is strongly recommended when the agent cannot safely define requirements from the user request alone.
+
 ```text
 /spec-requirements
 ```
-*Effect*: Conducts Socratic grilling waves, writes `proposal.md`, and generates the locked `spec.md` with explicit `AC-*` identifiers.
 
-### Step 3: Record Architectural Choices (`/spec-adr`)
-If requirements introduce structural changes or technical tradeoffs, document them formally:
+Use `/spec-requirements` when the desired behavior can be specified. This is required per feature. It creates or updates the feature slug under `artifacts/features/<slug>/` and locks testable acceptance criteria in `spec.md`.
+
+### Phase 3: Context Session
+
+Use `/context-session` only after the feature slug and `status.md` exist. It is not the command that creates a new feature.
+
+| Mode | Use when | Output |
+|---|---|---|
+| `START` | Starting a new day, switching branches, or opening a new chat window. | Readiness summary with loaded context, current phase, next task, blockers. |
+| `CHECKPOINT` | Pausing before a break or after meaningful progress. | Updated `progress.md` with session notes. |
+| `END` | Handoff to another developer/agent or closing a long session. | `handoff.md`, `progress.md` notes, and candidate `session-extracts.md` entries. |
+
+`/context-session END` is emphasized because it protects handoff state when chat history disappears. It is not the only context-session mode.
+
+### Phase 4: Spec
+
+Run:
+
 ```text
-/spec-adr
+/spec-requirements
 ```
-*Effect*: Records alternatives in `artifacts/features/<slug>/adr-[number].md` and registers them in the central index [`memories/repo/adr-log.md`](../kit/memories/repo/adr-log.md).
 
-### Step 4: Create an Engineering Plan (`/spec-plan`)
-Design the solution and map out implementation steps:
+The spec phase answers “what and why,” not “how.” It should produce deterministic acceptance criteria. Unknowns must remain explicit as `[UNKNOWN]` or `[NEEDS CLARIFICATION]` until resolved.
+
+Route back to `/spec-research` if the requirements depend on behavior that has not been observed.
+
+### Phase 5: Plan
+
+Run:
+
 ```text
 /spec-plan
 ```
-*Effect*: Generates `design.md`, `plan.md`, and breaks the spec down into a granular task list in `tasks.md` with concrete proof commands.
 
-### Step 5: Surgical Implementation (`/spec-implement`)
-Write code task-by-task, ensuring every change is backed by verification evidence:
+Planning is required after the spec is approved. It creates `plan.md` (which includes both Technical Design and Delivery Strategy) and `tasks.md`, mapping acceptance criteria to implementation tasks, and defining proof commands for each task.
+
+If a non-obvious architecture decision is locked during planning, branch to:
+
 ```text
-/spec-implement --task <task-id>
+/spec-adr
 ```
-*Effect*: Executes the selected task, runs its associated proof command, and records validation evidence in `tasks.md`.
 
----
+`/spec-adr` is conditional. It is required for each locked technical choice when establishing architectural boundaries.
 
-## 6. Phase 4: Verification, Review, & Closeout
+### Phase 6: Implementation
 
-Verify correctness, audit alignment, sync knowledge, and end the session.
+Run:
 
-### Step 1: Run Verification Gates (`/harness-verify`)
-Verify the entire feature against mechanical gates and specifications:
+```text
+/spec-implement
+```
+
+Implementation is required per feature. It executes the approved tasks one at a time, keeps scope tied to `tasks.md`, flags candidate lessons for memory extraction, and runs the mechanical gate through `kit/scripts/harness/gate-runner.sh` when appropriate.
+
+If implementation reveals missing requirements or an unsafe design, do not improvise. Route back to `/spec-requirements` or `/spec-plan` and record the reason in `status.md`.
+
+Use `/context-session CHECKPOINT` when a long implementation wave reaches a natural pause.
+
+### Phase 7: Verification
+
+Run:
+
 ```text
 /harness-verify
 ```
-*Effect*:
-- Runs mechanical verification tests (lints, builds, tests).
-- Conducts the alignment audit (verifies all ACs map to task proofs).
-- Sweeps and updates traceability links.
 
-### Step 2: Code Review Audit (`/code-review`)
-As part of the verification process, `harness-verify` invokes `/code-review` to inspect the code changes:
+Verification is required per feature. It checks mechanical proof, spec alignment, architectural drift against `plan.md`, task evidence, and regressions.
+
+`/code-review` can be run manually, and verification may also call for review when quality, security, or design concerns need a focused audit:
+
 ```text
 /code-review
 ```
-*Effect*: Evaluates code health, design complexity, naming, and style guide compliance against Google's Engineering Practices.
 
-### Step 3: Post-Ship Sync (`/context-memory`)
-If `harness-verify` passes, it triggers a Post-Ship Sync:
-- Automatically sweeps all memory files listed in [`INDEX.md`](../kit/memories/repo/INDEX.md).
-- Distills new heuristics or patterns into [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) or [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md).
-- Updates `artifacts/features/<slug>/session-extracts.md` with the sweep record.
+If verification fails repeatedly on the same task or approach, route back to `/spec-plan` rather than looping on implementation.
 
-### Step 4: Close the Session
-Save the final feature state, extract lessons, and clear the active boundary:
+### Phase 8: Memory Sync
+
+After verification passes, use memory sync when there are durable lessons:
+
 ```text
-/context-session END
+/context-memory
 ```
 
----
+This is conditional, evidence-based memory promotion. It should promote only observations supported by actual feature artifacts or verification results.
 
-## 7. Phase 5: Harness Maintenance (`/harness-maintain`)
+Use audit mode when the memory system itself needs inspection:
 
-When the environment itself needs assessment, repair, or triaging based on observability failure logs, run:
 ```text
-/harness-maintain [assess | create | improve | eval | doctor]
+/context-memory --audit
 ```
-*Effect*:
-- **assess**: Evaluates the repo harness against the 6 subsystems.
-- **create**: Generates harness configuration from scratch.
-- **improve**: Upgrades harness mechanisms based on observability failures. Triages `status: open` entries in `observability-log.md` using the structured YAML schema, prioritizes them, designs/applies fixes, and updates the trend summary.
-- **eval**: Runs split-evaluator auditing passes.
-- **doctor**: Runs the shipped drift and repair checks.
 
----
+Use compaction when memory files are too large:
 
-## 8. Phase 6: Specialist Documentation & Diagram Tools
-
-Use these specialist commands to document or visualize codebases outside the main delivery flow.
-
-### Step 1: Technical Diagram Generation (`/visualize`)
-Generate high-fidelity architecture, sequence, or flowchart diagrams:
 ```text
-/visualize --format [svg | mermaid]
+/context-compact --file memories/repo/project-knowledge-base.md
 ```
-*Effect*: Generates clean diagrams using style-driven templates and runs validator scripts on output SVGs.
 
-### Step 2: Codebase Onboarding (`/codebase-documenter`)
-Generate complete, user-friendly onboarding guides for a new repository:
+`/context-compact` reduces memory size while preserving active constraints. It should not delete live rules just to make a file shorter.
+
+### Phase 9: Status And Dashboard
+
+Run:
+
+```text
+/context-status
+```
+
+Use this when you need cross-feature visibility, blocker awareness, or next-command guidance. It is optional for a single small feature, but valuable when multiple feature slugs or multiple agents are active.
+
+The status surface reads feature artifacts and can refresh `docs/generated/dashboard.html`.
+
+### Phase 10: Docs And Diagrams
+
+Use these helpers when the work needs durable explanation:
+
+```text
+/technical-docs --mode api
+/technical-docs --mode flow
+/technical-docs --mode both
+```
+
+Use `/technical-docs` for API contracts, event flows, workflow traces, or a combined technical narrative.
+
 ```text
 /codebase-documenter
 ```
-*Effect*: Creates structure maps, contributing rules, and developer setup documentation.
 
-### Step 3: Technical Documentation (`/technical-docs`)
-Explain how multiple components interact, and compile API endpoint contracts or system flows based on the mode flag:
-- `--mode api`: Generates endpoint specifications and sequence diagrams.
-- `--mode flow`: Traces system orchestration flows and alternative failure paths.
-- `--mode both`: Generates both API contracts and system flows into a single unified document.
+Use `/codebase-documenter` for broader onboarding, architecture, setup, and repository documentation.
 
-Example run:
 ```text
-/technical-docs --mode both
+/visualize
 ```
-*Effect*: Traces execution flows, maps container boundaries, compiles methods, path parameters, request payloads, status codes, and writes technical narratives.
+
+Use `/visualize` when a diagram clarifies architecture, data flow, sequence, state, ER, or agent/memory structure. Supported outputs are SVG and Mermaid. Mermaid-to-SVG rendering is optional and only available when `mmdc` is installed. Do not claim PlantUML, draw.io, PNG export, or interactive HTML output unless those capabilities are later added.
+
+### Phase 11: Harness Maintenance (`/harness-maintain`)
+
+You don't need to run `/harness-maintain` while building normal features. Think of it like a "system tune-up" tool. 
+
+#### What exactly is the "Harness"?
+The "Harness" refers to the entire invisible scaffolding that keeps your AI agent disciplined. It includes:
+- **Memory files** (where the AI stores its learned rules)
+- **Status dashboards** (like `dashboard.html` that tracks progress)
+- **Review templates** (what the AI uses to grade its own work)
+- **Directory structures** (like `artifacts/` or `memories/repo/`)
+
+Over time, as an AI agent builds more code, this background harness can get messy, outdated, or corrupted. `/harness-maintain` is an administrative skill to help you clean it up and keep the agent working smoothly. This is also called **Harness Engineering**.
+
+#### How to use the 5 maintenance modes:
+
+Run `/harness-maintain [mode]` whenever you notice the AI getting confused or the system feeling stale:
+
+- **`doctor` (Fix broken things)**: Use this when your workspace feels "broken". For example: if a markdown link goes nowhere, your generated dashboard stops updating, or you're missing important folders. The agent will scan everything and automatically repair the drift.
+- **`improve` (Teach the AI a permanent lesson)**: Use this when the AI keeps making the exact same coding mistake over and over again. The agent will read its recent failure logs and write new *permanent rules* into its memory files so it never makes that mistake again.
+- **`assess` (Get a health report)**: Use this to generate a "report card" on the health of your AI workspace. It tells you if you are missing any crucial memory files or if your system context is getting too chaotic.
+- **`create` (Rebuild from scratch)**: Use this if `assess` tells you that you are missing core AI memory structures and need the agent to regenerate the scaffolding.
+- **`eval` (Test the dev kit itself)**: You will almost never use this unless you are modifying the CoreZero dev kit rules themselves and need to rigorously test if your modifications broke the harness.
+
+**Summary:** If you're just building a normal app feature, skip this phase! But if your AI is ignoring rules, your dashboard is broken, or your project feels disorganized, stop what you are doing and run `/harness-maintain doctor` or `/harness-maintain improve` to get things back on track.
 
 ---
 
-## 9. Quick Command Taxonomy Summary
+## 5. Which Skill Do I Use?
 
-| Command | Category | Purpose | Input / Target Artifact |
-|---|---|---|---|
-| `/starter-init` | Project Starter | Initial setup, router configuration, and archaeology sweep (Phase A) on brownfield repos | [`AGENTS.md`](../kit/AGENTS.md), [`HARNESS_CARD.md`](../kit/HARNESS_CARD.md), `memories/repo/brownfield/` |
-| `/context-session` | Context | Manage active session boundaries and checkpoints | `artifacts/features/<slug>/` |
-| `/context-memory` | Context | Maintain durable memory files | [`memories/repo/constitution.md`](../kit/memories/repo/constitution.md), [`INDEX.md`](../kit/memories/repo/INDEX.md) |
-| `/context-status` | Context | Multi-feature orchestration overview | Scans `artifacts/features/` |
-| `/spec-research` | SDD | Investigate ambiguous/brownfield systems | `analysis.md` |
-| `/spec-requirements`| SDD | Define and lock feature requirements | `spec.md`, `proposal.md` |
-| `/spec-plan` | SDD | Create design and task lists | `plan.md`, `tasks.md`, `design.md` |
-| `/spec-implement` | SDD | Surgical task execution and local proof | Touch source files, updates `tasks.md` |
-| `/spec-adr` | SDD | Record architecture decision records | `adr-*.md`, [`memories/repo/adr-log.md`](../kit/memories/repo/adr-log.md) |
-| `/harness-verify` | Harness | Perform verification and alignment audit | `review.md` |
-| `/harness-maintain` | Harness | Assess and improve the agent harness | Harness configs, eval reports |
-| `/code-review` | Specialist | Google-standard code review audit | Review output in `review.md` |
-| `/visualize` | Specialist | Generate SVG/Mermaid diagrams | `.svg`, `.mermaid` files |
-| `/codebase-documenter`| Specialist | Repository onboarding guides | READMEs, developer setups |
-| `/technical-docs` | Specialist | Compiles endpoint contracts and end-to-end event workflows | `api-docs.md`, `flows.md`, `technical-docs.md` |
+| Situation | Use |
+|---|---|
+| First setup after install | `/starter-init` |
+| Existing behavior is unclear | `/spec-research` |
+| You can define desired behavior now | `/spec-requirements` |
+| Requirements are approved | `/spec-plan` |
+| A technical decision needs a durable record | `/spec-adr` |
+| Tasks are approved and ready | `/spec-implement` |
+| Work appears complete | `/harness-verify` |
+| You are resuming an existing feature | `/context-session START` |
+| You are pausing mid-feature | `/context-session CHECKPOINT` |
+| You are ending a long session | `/context-session END` |
+| There are durable lessons to promote | `/context-memory` |
+| Memory health needs inspection | `/context-memory --audit` |
+| Memory files are oversized | `/context-compact` |
+| You need active feature status | `/context-status` |
+| You need an implementation review | `/code-review` |
+| You need API or flow docs | `/technical-docs --mode api`, `--mode flow`, or `--mode both` |
+| You need repo onboarding docs | `/codebase-documenter` |
+| You need a diagram | `/visualize` |
+| The harness itself needs repair or evaluation | `/harness-maintain` |
+
+---
+
+## 6. Practical End-To-End Example
+
+For a typical feature in a known codebase:
+
+```text
+/starter-init                         # once per repo
+/spec-requirements                    # define ACs
+/spec-plan                            # design and tasks
+/spec-implement                       # execute tasks
+/harness-verify                       # prove done
+/context-memory                       # only if durable lessons exist
+/context-session END                  # if the session was long or needs handoff
+```
+
+For a brownfield feature with unknown behavior:
+
+```text
+/starter-init                         # once per repo
+/spec-research                        # required because behavior/risk is unknown
+/spec-requirements                    # lock ACs
+/spec-adr                             # required for locked technical choices
+/visualize                            # required when system structure changes
+/spec-plan                            # full design, plan, tasks
+/context-session CHECKPOINT           # recommended during long work
+/spec-implement                       # smaller verified slices
+/harness-verify                       # deeper verification
+/harness-maintain eval                # required if the harness itself changed
+/context-memory                       # promote evidence-backed lessons
+/context-session END                  # handoff and extracted candidates
+```
+
+For documentation-only support work:
+
+```text
+/technical-docs --mode flow
+/codebase-documenter
+/visualize
+```
+
+These documentation helpers are shipped by default, but they do not replace the core delivery path for behavior-changing feature work.
+
+---
+
+## 7. Ground Truth References
+
+- Shipped skill index: [`kit/skills/README.md`](../kit/skills/README.md)
+- Kit map: [`documents/kit-map.md`](kit-map.md)
+- Status phases: [`kit/skills/_shared/status-phases.md`](../kit/skills/_shared/status-phases.md)
+- Install manifest: [`kit/manifest.json`](../kit/manifest.json)
+- Context loader script: [`kit/scripts/context-loader.py`](../kit/scripts/context-loader.py)
+
+When this tutorial disagrees with a `SKILL.md` contract, the `SKILL.md` contract is the source of truth.

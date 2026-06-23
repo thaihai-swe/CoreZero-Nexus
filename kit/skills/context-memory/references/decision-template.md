@@ -20,7 +20,7 @@
 
 ## Classification
 
-- Decision: promote to `project-knowledge-base.md` | promote to `constitution.md` | keep in feature artifacts
+- Decision: promote to `project-knowledge-base.md` | promote to `core-policies.md` | keep in feature artifacts
 - Knowledge type: descriptive pattern | repo-wide rule | still local
 - Durability signal:
 

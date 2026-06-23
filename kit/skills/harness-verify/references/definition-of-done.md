@@ -3,6 +3,7 @@
 Use this checklist before closing or shipping a change.
 
 - All acceptance criteria are satisfied.
+- For features with a `## User Story Decomposition` section, every task in the claimed story phase is `Done` (or explicitly `Deferred` with reason). Independent proof for that story passes with later story phases absent.
 - Code changes match the agreed spec and plan.
 - Automated tests were added or updated where appropriate.
 - Manual verification was completed where appropriate.

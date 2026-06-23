@@ -1,6 +1,6 @@
 # Status Phases
 
-The canonical feature lifecycle state machine for CoreZero Nexus. Every skill that
+The canonical feature lifecycle state machine for CoreZero. Every skill that
 reads or writes `artifacts/features/<slug>/status.md` must use exactly these phase
 strings and follow the transition rules below.
 
@@ -10,6 +10,17 @@ Phase strings are scattered across individual SKILL.md files and historically
 differ slightly between them. This file is the single source of truth. Any skill
 that transitions phase reads from this table, not from memory.
 
+## Complexity Tiers (Canonical Vocabulary)
+
+The canonical complexity scale is `Simple | Moderate | Complex`. All skills use
+these three terms. Legacy aliases (`Tiny`, `Standard`) map as follows:
+
+| Canonical | Legacy alias | Depth |
+|-----------|--------------|-------|
+| Simple    | Tiny         | Lightweight |
+| Moderate  | Standard     | Standard |
+| Complex   | Complex      | Comprehensive |
+
 ## Phase Reference
 
 | Phase | Set by | Meaning | Unlocks next skill |
@@ -17,7 +28,7 @@ that transitions phase reads from this table, not from memory.
 | `Researching` | `spec-research` | Investigation is active | — |
 | `Research Complete` | `spec-research` | `analysis.md` is ready; root cause or brownfield map is written | `spec-requirements` |
 | `Spec'ing` | `spec-requirements` | Spec authoring is active | — |
-| `Spec Approved` | `spec-requirements` | `spec.md` is locked; `requirements-review.md` verdict is `ready` | `spec-plan` |
+| `Spec Approved` | `spec-requirements` | `spec.md` is locked | `spec-plan` |
 | `Planning` | `spec-plan` | Plan authoring is active | — |
 | `Plan Approved` | `spec-plan` | `plan.md` and `tasks.md` are ready; first unblocked task is executable | `spec-implement` |
 | `Implementing` | `spec-implement` | Code work is active | — |
@@ -67,8 +78,6 @@ A minimal `status.md` must always contain:
 ## Phase
 [current phase from the table above]
 
-## 🧭 Delivery Profile
-[Tiny | Standard | Complex]
 
 ## Feature Slug
 [slug]
@@ -82,6 +91,5 @@ A minimal `status.md` must always contain:
 
 ## Cross-References
 
-- Template: `skills/spec-requirements/references/status-template.md`
-- Rigor profiles: `skills/_shared/rigor-profiles.md`
+- Template: `_shared/status-template.md`
 - Skill preconditions: each core skill's `## Preconditions` section

@@ -4,6 +4,7 @@
 # Editors
 .idea/
 .vscode/
+ temp/
 
 # Logs
 *.log

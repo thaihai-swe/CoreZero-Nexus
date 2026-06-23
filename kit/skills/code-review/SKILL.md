@@ -15,9 +15,9 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 ## Read First
 
 - PR description and diff
-- `memories/repo/constitution.md` (code standards, naming, principles)
-- Style guides under `rules/`
-- `memories/repo/security-policy.md` (security boundaries and sensitive paths)
+- `memories/repo/core-policies.md` (code standards, naming, principles, security boundaries, and sensitive paths)
+- `docs/rules/ponytail.md` (simplicity, anti-abstraction, and verifiable increments)
+- Style guides under `docs/rules/`
 
 ## When to Use
 
@@ -61,7 +61,7 @@ Code review completes in the same session it is invoked. Do not defer reviews or
    - Check functionality and edge cases.
 4. **Test Adequacy**: Verify tests are meaningful (assert behavior, not just line coverage). Check for races, missing edge cases, and assertion correctness.
 5. **Naming, Style, Comments**: Apply `rules/` style guides or local consistency. Verify comments explain *why*, not *what*.
-6. **Security Lens**: Check every changed file against `memories/repo/security-policy.md`. Flag any modification to security-sensitive paths. See Stop Conditions for escalation.
+6. **Security Lens**: Check every changed file against `memories/repo/core-policies.md` `## Security Policy`. Flag any modification to security-sensitive paths. See Stop Conditions for escalation.
 7. **Verdict**: Write structured outcome: overall verdict, mandatory changes (must-fix), optional suggestions (`Nit:`/`Optional:`), and positive callouts for notable improvements.
 
 ## Review Checklist
@@ -85,7 +85,7 @@ For each review dimension, tick off before writing the verdict:
 ## Stop Conditions
 
 - PR description is missing or too vague.
-- Modifies security-sensitive paths without explicit security evidence → **Security Escalation**: stop the review, write `SECURITY_HALT: <description>` to `review.md`, surface the finding to the user, and route to `/context-memory` to update `security-policy.md` if a new boundary has been identified.
+- Modifies security-sensitive paths without explicit security evidence → **Security Escalation**: stop the review, write `SECURITY_HALT: <description>` to `review.md`, surface the finding to the user, and route to `/context-memory` to update `core-policies.md` if a new boundary has been identified.
 - CL is pure documentation/comment changes (run lightweight pass).
 
 ## Core Rules
@@ -93,25 +93,13 @@ For each review dimension, tick off before writing the verdict:
 - **Technical Facts Over Opinions**: Prefer the author's approach if multiple valid options exist.
 - **Understand Every Line**: Read and comprehend every modified line.
 
-## Rationalization vs. Reality
 
-| Rationalization | Reality |
-|---|---|
-| "They'll clean it up in a follow-up." | Deferred cleanup rarely happens. Require fixes to new complexity now. |
-| "This is too long to read." | Reading every line is mandatory. Split oversized CLs. |
-| "Tests pass, so design is fine." | Passing tests do not validate design quality. |
-
-## Red Flags
-
-- Lack of explanation of *why* the change exists.
-- New complexity introduced without tests.
-- Modifying security-sensitive paths without explicit safety proof.
 
 ## Verification
 
 - [ ] Every file in the diff was read.
 - [ ] Mandatory comments are explicitly distinguished from optional ones.
-- [ ] Security-policy sensitive paths checked.
+- [ ] Security policy sensitive paths checked.
 - [ ] Explicit review outcome (LGTM / Request Changes / Reject) provided.
 
 ## Output Rules

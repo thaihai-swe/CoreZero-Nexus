@@ -16,7 +16,7 @@ sequenceDiagram
     A->>A: Execute task steps and run proof/test commands
     A->>F: Write/update feature artifacts (spec.md, plan.md, tasks.md, progress.md)
     opt Post-Ship Sync (on verify Pass)
-        A->>M: Sync and update memories (learned-heuristics.md, PKB, constitution.md)
+        A->>M: Sync and update memories (learned-heuristics.md, PKB, core-policies.md)
     end
     A->>F: Update status.md and write handoff.md / claim.md (on session end)
     A-->>U: Return status, completion checklist, and verification outcomes

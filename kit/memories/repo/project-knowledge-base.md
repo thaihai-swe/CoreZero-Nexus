@@ -1,4 +1,17 @@
-# CoreZero Nexus Project Knowledge Base
+# CoreZero Project Knowledge Base
+
+## Index
+
+- **System Reference Documents** — links to architecture.md and core-policies.md
+- **Repository Overview** — kit structure (skills/, references/, docs/, scripts/)
+- **Key Architectural Boundaries** — template postures, memory governance, review modes, command ownership
+- **Common Installation & Bootstrap Watchouts** — baseline testing, router drift, generated placeholders
+- **Feature Lifecycle Handoff Patterns** — first-feature routing, state mismatch repair
+
+## System Reference Documents
+
+- **Architecture Boundary Map:** Refer to `docs/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
+- **Rules & Mandates:** Refer to `memories/repo/core-policies.md` for normative CC-* mandates.
 
 ## Repository Overview
 
@@ -12,34 +25,35 @@
 
 ## Key Architectural Boundaries
 
+Refer to `docs/project/architecture.md` for static component paths and integration details. This section outlines AI-enforced execution boundaries.
+
+
 ### 1. Shipped Template Copy Posture
 The installer script (`scripts/install.sh`) handles files using three distinct postures specified in `manifest.json`:
-- **`overwrite`**: Core kit tools and guides (e.g. `skills/**`, `rules/**`, `docs/README.md`, `docs/ADOPTION_GUIDE.md`) that are refreshed on every upgrade to keep the automation framework up to date.
-- **`copyIfMissing`**: Starter template files and memory baselines (e.g., `AGENTS.md`, `constitution.md`, `project-knowledge-base.md`). If the adopter project has customized these, the installer respects their edits and does not overwrite them.
+- **`overwrite`**: Core kit tools and guides (e.g. `skills/**`, `rules/**`, `MASTER_INDEX.md`) that are refreshed on every upgrade to keep the automation framework up to date.
+- **`copyIfMissing`**: Starter template files and memory baselines (e.g., `AGENTS.md`, `core-policies.md`, `project-knowledge-base.md`). If the adopter project has customized these, the installer respects their edits and does not overwrite them.
 - **`preserve`**: Feature-specific state folders (`artifacts/features/`, local settings). These are completely owned by the adopter project and are never touched by the installer.
 
-### 2. Adaptive Rigor Selection Logic
-Features execute under one of three delivery profiles defined in `skills/_shared/rigor-profiles.md`:
-- **`Tiny`**: Small, low-risk, reversible edits. Can bypass separate `design.md`, `proposal.md`, or `requirements-review.md` files (inlining verification/readiness into status/spec instead).
-- **`Standard`**: The default feature delivery profile. Normal spec, plan, and task list. `design.md` is only authored if technical ambiguity remains.
-- **`Complex`**: Risk-heavy or cross-cutting work. Mandates detailed `design.md`, subagent-driven stress-testing, adversarial planning, and phased rollouts.
-*Watchout:* Any work touching authentication (`auth`), databases (`data_model`), security-policy files, public API contracts, or the harness configuration itself forces a promotion to `Complex`.
+### 2. The Memory Governance Loop
+Tier definitions (Instruction / Auto / Extracted) and the promotion loop live in `skills/context/context-memory/SKILL.md` `## Memory Tiers`. Intent-based routing of these tiers lives in `MASTER_INDEX.md`.
 
-### 3. The Memory Governance Loop
-Repository memory is tiered to prevent context bloat:
-- **Instruction Tier** (Static rules & facts): Constitution, PKB, and Security Policy. Loaded regularly based on active intent triggers in `memories/repo/INDEX.md`.
-- **Auto Tier** (Execution telemetry): `observability-log.md`. Tracks harness, model, or spec failures. Triaged by `/context-memory` to promote key lessons to the instruction tier.
-- **Extracted Tier** (Local lessons): `session-extracts.md`. Generated at session END. Candidates are kept local to features until triage merges them upstream.
+### 3. Gated Integration vs. Standalone Review Distinction
+The dual-purpose behavior of `code-review` (standalone PR mode vs. `/harness-verify`-gated blocking mode) is defined in `skills/utilities/code-review/SKILL.md`.
 
-### 4. Gated Integration vs. Standalone Review Distinction
-The `code-review` skill is dual-purpose:
-- **Standalone PR Mode**: Executed for human reviewers. Uses standard LGTM-with-comments, 1-day SLAs, and collaborative discussion.
-- **Gated Integration Mode**: Executed programmatically by `/harness-verify`. It is a single-turn, automated blocking pass. The reviewer agent must immediately write its findings to `review.md` and fail loud if any acceptance criteria are unsatisfied.
+### 4. Shipped Command Ownership
+The shipped helpers own the following durable surfaces:
+- **`/context-status`** owns status reporting across `artifacts/features/` and regenerates `docs/generated/dashboard.html`.
+- **`/harness-maintain`** owns codemap/reference-index regeneration and observability-driven harness assessment and improvement.
+- **`/spec-adr`** owns ADR creation and append-only log updates in `memories/repo/adr-log.md`.
+- **`/technical-docs`** owns feature-scoped API and flow documentation outputs.
+- **`/codebase-documenter`** owns broader repo onboarding and architecture doc sets.
+- **`/visualize`** owns optional SVG and Mermaid diagram outputs when a dedicated visual artifact is required.
 
 ## Common Installation & Bootstrap Watchouts
 
 - **Baseline Testing**: `/starter-init` checks whether the target repository is greenfield or brownfield. It requires running the canonical baseline test or compile check. If none exists, the adopter must document the best available proof surface before autonomous feature work can proceed.
-- **Drift in Routers**: `AGENTS.md` must stay under 50 lines for its router portion to prevent context window saturation. Standard operating guidelines should remain in `constitution.md` and only be linked from `AGENTS.md`.
+- **Drift in Routers**: `AGENTS.md` is the runtime instruction router and standards reference; it is intentionally detailed (~150 lines) to serve as a single entrypoint for agent behavior. Standard operating guidelines live in `core-policies.md` and are linked from `AGENTS.md`. If you trim `AGENTS.md`, ensure core operating guidelines remain accessible in `core-policies.md`.
+- **Generated Placeholder Ownership**: `docs/project/code-map.md` is a shipped placeholder refreshed by `/harness-maintain`. `docs/generated/dashboard.html` is refreshed by `/context-status`.
 
 ## Feature Lifecycle Handoff Patterns
 

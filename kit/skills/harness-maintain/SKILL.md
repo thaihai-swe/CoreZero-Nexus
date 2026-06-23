@@ -1,128 +1,64 @@
 ---
 name: harness-maintain
-description: Evaluate, construct, or repair an agent harness across six core subsystems (Instructions, State, Verification, Scope, Lifecycle, Security), including evaluation architecture and failure-driven improvement from observability findings.
-compatibility: Designed for Claude, Codex, and other Agent Skills-compatible tools working in any codebase.
+description: Maintain harness configuration, assess health, and self-improve from telemetry.
 
 ---
 
 # Harness Maintain
 
-
-
 ## Overview
+Administrative tools to assess harness health, repair missing state, and evolve rules based on telemetry logs. The harness is evaluated across seven core subsystems: Instructions, State, Verification, Scope, Lifecycle, Security, and Context Engineering. See `references/assessment-rubric.md` for the full scoring model.
 
-Meta-skill for harness engineering. It evaluates or repairs the harness environment itself. Five modes:
-1. **Assess Mode**: Score the repository against the 6 harness subsystems.
-2. **Create Mode**: Generate a harness from scratch for a new project.
-3. **Improve Mode**: Apply fixes to a harness based on failure evidence or logs.
-4. **Eval Mode**: Run split evaluator passes over a feature execution flow.
-5. **Doctor Mode**: Run structural repair checks and surface drift diagnostics.
+## I/O Hand-off Protocol
+- **Reads**: Entire codebase, `memories/repo/`, `manifest.json`, `harness-telemetry.md`.
+- **Writes**: `docs/generated/harness-assessment.md`, `memories/repo/learned-heuristics.md`, `docs/project/code-map.md`, `docs/generated/dashboard.html`.
 
-## Read First
+## Modes
 
-- `AGENTS.md` and `memories/repo/harness-config.md`
-- `memories/repo/constitution.md` and `memories/repo/security-policy.md`
-- `memories/repo/project-knowledge-base.md` and `memories/repo/observability-log.md`
-- `docs/generated/codemap.md` and `docs/generated/references-index.md`
-- References in `skills/harness-maintain/references/`.
+When invoking this skill, you must specify one of the following modes:
 
-## When to Use
-
-- Evolve the harness environment or evaluate failures.
-- Bootstrap agent infrastructure for a new repository.
-- Repair a failing subsystem triggered by observability logs or verification failures.
+| Mode | Trigger | Focus |
+|---|---|---|
+| **assess** | `assess` | Generates a health report checking memory sizes, stale references, and orphaned artifacts. |
+| **create** | `create` | Scaffolds missing harness directories or files. |
+| **improve** | `improve` | Self-healing: reads telemetry logs and drafts new heuristics/rules from failures. |
+| **eval** | `eval` | Validates internal consistency of CC-* rules, manifest, and harness scripts. |
+| **doctor** | `doctor` | The "fix it" mode. Runs assess + regenerates stale codemaps and dashboard. |
 
 ## Workflow
 
-### Step 0: Mode Selection
+### 1. Assess Mode (`assess`)
+1. Read all files in `memories/repo/`. Count line lengths. Flag any file > 600 lines as a warning, > 800 lines as a critical compaction risk.
+2. Check for orphaned feature artifacts (e.g., a directory in `artifacts/features/` with no `status.md`).
+3. Check for missing required sections in `memories/repo/core-policies.md`.
+4. Output a structured health report to `docs/generated/harness-assessment.md`.
 
-Determine mode from the invocation context before starting:
+### 2. Create Mode (`create`)
+1. Read the health report or system baseline.
+2. Scaffold any missing standard directories (e.g., `memories/domain/`, `docs/generated/`).
+3. Create missing placeholder files if they were accidentally deleted.
 
-| Trigger | Mode |
-|---|---|
-| No harness exists yet (`AGENTS.md` missing) | **Create** |
-| User requests a health score or audit | **Assess** |
-| Open entries exist in `observability-log.md` | **Improve** |
-| User explicitly requests an evaluation pass | **Eval** |
-| `scripts/doctor.sh` has been reported failing | **Doctor** |
+### 3. Improve Mode (`improve`)
+1. Read `memories/repo/harness-telemetry.md` `## Entries`.
+2. Find all `open` entries (OBS-*) where `promotion_candidate: true`.
+3. For each candidate, draft a new rule or heuristic that would prevent the failure.
+4. Append the draft to `memories/repo/learned-heuristics.md` clearly marked as `[DRAFT]`.
+5. Update the `## Trend Summary` table in `harness-telemetry.md`.
+6. Set the entry status to `promoted`.
+7. **Rule**: Never finalize a `[DRAFT]` rule without explicit user review.
 
-When ambiguous, default to **Assess** and surface findings before taking action.
+### 4. Eval Mode (`eval`)
+1. Verify all `CC-*` identifiers defined in `memories/repo/core-policies.md` are present and sequential.
+2. Run `scripts/harness/gate-runner.sh` (or `gate-runner.local.sh` if it exists) and capture output to verify stack detection.
+3. Compare `manifest.json` against the actual file tree to catch drift.
 
-### Assess Mode
-1. Read project structures, memory files, and feature artifacts.
-2. Score (1-5) against the 6 subsystems (Instructions, State, Verification, Scope, Lifecycle, Security) using `references/assessment-rubric.md`.
-3. Check `session-extracts.md` for active features. If pending candidates exceed 5, flag in the State score.
-4. Generate `artifacts/features/<slug>/harness-assessment.md`.
-
-### Create Mode
-1. Run `starter-init` bootstrap.
-2. Build `constitution.md`, `security-policy.md`, `project-knowledge-base.md`, and `learned-heuristics.md`.
-3. Create `codemap.md` and `references-index.md` for non-trivial repositories.
-
-### Improve Mode
-1. Read `observability-log.md`. Identify all entries with `status: open`.
-2. For each open entry, confirm its `classification` (harness / model / spec) matches the described failure — correct if mis-classified.
-3. Generate prioritized remediation tasks ordered by `severity` then `recurrence_risk`.
-4. For harness issues: design and apply a fix to the owning subsystem file (skill, template, gate, or rule). Record `fix_applied` in the entry and set `status: promoted` or `status: open` depending on whether the fix is complete.
-5. If `promotion_candidate: true`: route to `/context-memory` Post-Ship Sync for instruction-tier promotion.
-6. Update `## Trend Summary` in `observability-log.md`: recount entries by classification and status for the last 10 entries. Update the promotion queue list.
-
-### Eval Mode
-1. Run evaluations per `references/eval-modes.md` (Mechanical, Alignment, Adversarial/Security, Continuity).
-2. Write findings to `artifacts/features/<slug>/eval-report.md`. Route findings by type:
-
-   | Finding type | Route to |
-   |---|---|
-   | Skill workflow gap or missing step | `/harness-maintain Improve Mode` (update the SKILL.md) |
-   | INDEX.md integrity issue or missing group | `/context-memory` |
-   | Unresolved placeholder in a template file | The skill that owns the template |
-   | Spec drift (code diverged from spec.md) | `/spec-requirements` (re-spec needed) |
-   | Verification gate failure | `/harness-verify` (re-verify) |
-
-### Doctor Mode
-1. Run `scripts/doctor.sh` to validate the installed surface, router size, workflow sync, and path truth.
-   **Re-run limit**: Run `scripts/doctor.sh` up to 3 times. If failures persist after 3 passes, stop. Write unresolved items to `artifacts/features/harness/doctor-failure-report.md` and surface to user for manual resolution. Do not loop indefinitely.
-2. Classify failures as missing shipped files, path drift, or workflow drift.
-3. Route fixes to the owning surface (`manifest.json`, `docs/`, `skills/`, or workflows) and re-run the doctor pass before closing.
-
-## Stop Conditions
-
-- Attempting to use this skill to write feature code. (This skill only writes infrastructure/docs).
-- The failure is a feature defect with no harness lesson. Route to implementation instead.
+### 5. Doctor Mode (`doctor`)
+1. Run Assess steps to check for structural health.
+2. Check for broken markdown file links inside `skills/**/*.md`.
+3. Regenerate `docs/project/code-map.md` with the updated repository hierarchy.
+4. Run `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard.
+5. Report what was fixed and what still requires manual intervention.
 
 ## Core Rules
-
-- **Subsystems First**: Limit analysis to the 6 subsystems.
-- **Durable Fixes**: Address structural environment issues, not prompt wording.
-- **Failure-Driven**: Investigate environment gaps before blaming model capabilities.
-- **Security is Design**: FS, network, and secret boundaries are core harness requirements.
-
-## Rationalization vs. Reality
-
-| Rationalization | Reality |
-|---|---|
-| "I'll tell the agent to be careful in prompt." | Prompt instructions erode. Build mechanical gates or state logs instead. |
-| "I'll write more feature tests." | This skill designs the harness (test gates), not the feature code. |
-| "Assess the whole codebase." | Focus on harness infrastructure (docs, scripts, CI), not source logic. |
-
-## Red Flags
-
-- Fixes are text rules in `AGENTS.md` without mechanical enforcement.
-- Security-sensitive flows lack documented permission structures.
-- Observability logs are written but never triaged.
-- Installed docs or generated references point at files that do not exist.
-- Observability log entries use free-form prose instead of the required YAML schema.
-- `## Trend Summary` has never been updated (all zeros after real failures have been logged).
-
-## Verification
-
-- [ ] Assess covers all 6 subsystems with 1-5 scores.
-- [ ] Subsystem fixes address a documented failure category.
-- [ ] Evaluation findings are explicit.
-- [ ] Doctor mode ends with a clean `scripts/doctor.sh` pass.
-
-## Output Rules
-
-- Can create/update: `artifacts/features/<slug>/harness-assessment.md`, `artifacts/features/<slug>/eval-report.md`, `AGENTS.md`, `HARNESS_CARD.md`, `memories/repo/harness-config.md`, `memories/repo/observability-log.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`.
-- Read-Only: `memories/repo/constitution.md`, `memories/repo/security-policy.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/learned-heuristics.md` (route updates to `/context-memory`).
-- Cannot create: `spec.md`, `plan.md`, `tasks.md`, feature code.
+- **No Silent Promotion**: Improve mode drafts rules but the user must approve them.
+- **Audit Before Ship**: Every package release requires running Eval mode to ensure manifest consistency.

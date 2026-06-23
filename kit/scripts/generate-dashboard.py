@@ -3,6 +3,7 @@ import argparse
 import json
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 def parse_args():
@@ -16,7 +17,7 @@ def parse_args():
     )
     parser.add_argument(
         "--output",
-        default="docs/generated/dashboard.html",
+        default=None,
         help="Path to save the generated HTML dashboard"
     )
     parser.add_argument(
@@ -35,36 +36,72 @@ def parse_feature_status(status_file: Path):
     if not status_file.exists():
         return {}
     content = status_file.read_text(encoding="utf-8")
-    
+
     # Simple regex to extract metadata fields
     title_match = re.search(r"^#\s+(.*)", content, re.MULTILINE)
-    phase_match = re.search(r"-\s+(Phase|State):\s*(.*)", content, re.IGNORECASE)
-    claim_match = re.search(r"-\s+Claimed\s*by:\s*(.*)", content, re.IGNORECASE)
-    lease_match = re.search(r"-\s+Lease\s*expires:\s*(.*)", content, re.IGNORECASE)
-    rigor_match = re.search(r"-\s+(Rigor|Profile):\s*(.*)", content, re.IGNORECASE)
+    phase_match = re.search(r"## .*Current Phase:\s*(.*)", content, re.IGNORECASE)
+    if not phase_match:
+        phase_match = re.search(r"-\s+(Phase|State):\s*(.*)", content, re.IGNORECASE)
     
+    complexity_match = re.search(r"## .*Complexity:\s*(.*)", content, re.IGNORECASE)
+    active_task_match = re.search(r"## .*Active Task\n+([^\n]+)", content, re.IGNORECASE)
+
+    blocker_match = re.search(r"## .*Blockers\n+([^\n]+)", content, re.IGNORECASE)
+    if not blocker_match:
+        blocker_match = re.search(r"-\s+Blockers?:\s*(.*)", content, re.IGNORECASE)
+
+    next_step_match = re.search(r"## .*Next Step\n+([^\n]+)", content, re.IGNORECASE)
     return {
+        "next_step_explicit": next_step_match.group(1).strip() if next_step_match else None,
         "title": title_match.group(1).strip() if title_match else status_file.parent.name,
-        "phase": phase_match.group(2).strip() if phase_match else "Unknown",
-        "claimed_by": claim_match.group(1).strip() if claim_match else "None",
-        "lease": lease_match.group(1).strip() if lease_match else "N/A",
-        "rigor": rigor_match.group(2).strip() if rigor_match else "Standard"
+        "phase": phase_match.group(1).strip() if phase_match else "Unknown",
+        "complexity": complexity_match.group(1).strip() if complexity_match else "Unknown",
+        "active_task": active_task_match.group(1).strip() if active_task_match else "None",
+        "blockers": blocker_match.group(1).strip() if blocker_match else "None",
+        "last_updated": datetime.fromtimestamp(
+            status_file.stat().st_mtime,
+            tz=timezone.utc,
+        ).strftime("%Y-%m-%d")
     }
 
-def parse_feature_progress(progress_file: Path):
-    if not progress_file.exists():
+def parse_feature_progress(tasks_file: Path):
+    if not tasks_file.exists():
         return {"total": 0, "completed": 0, "percent": 0}
-    content = progress_file.read_text(encoding="utf-8")
-    
+    content = tasks_file.read_text(encoding="utf-8")
+
     # Match checkbox tasks like - [x] or - [ ]
     tasks = re.findall(r"-\s+\[([ xX])\]\s+(.*)", content)
     if not tasks:
         return {"total": 0, "completed": 0, "percent": 0}
-    
+
     completed = sum(1 for status, _ in tasks if status.strip().lower() == "x")
     total = len(tasks)
     percent = int((completed / total) * 100) if total > 0 else 0
     return {"total": total, "completed": completed, "percent": percent}
+
+def infer_next_step(phase: str, progress: dict):
+    phase_key = (phase or "").strip().lower()
+    if "done" in phase_key or "complete" in phase_key:
+        return "Complete"
+    if "verify" in phase_key:
+        return "/harness-verify"
+    if "implement" in phase_key:
+        if progress.get("total", 0) and progress.get("completed") == progress.get("total"):
+            return "/harness-verify"
+        return "/spec-implement"
+    if "plan" in phase_key:
+        return "/spec-plan or /spec-implement"
+    if "spec" in phase_key or "requirement" in phase_key:
+        return "/spec-requirements or /spec-plan"
+    if "research" in phase_key:
+        return "/spec-research or /spec-requirements"
+    if "init" in phase_key or "start" in phase_key:
+        return "/starter-init or /spec-requirements"
+    return "/context-session START"
+
+def has_blocker(blockers: str):
+    normalized = (blockers or "").strip().lower()
+    return normalized not in {"", "none", "n/a", "na", "no", "no blockers"}
 
 def scan_workspace(root_path: Path):
     features = []
@@ -74,20 +111,23 @@ def scan_workspace(root_path: Path):
             if item.is_dir():
                 slug = item.name
                 status = parse_feature_status(item / "status.md")
-                progress = parse_feature_progress(item / "progress.md")
-                
+                progress = parse_feature_progress(item / "tasks.md")
+
                 features.append({
                     "slug": slug,
                     "title": status.get("title", slug),
                     "phase": status.get("phase", "Unknown"),
-                    "claimed_by": status.get("claimed_by", "None"),
-                    "lease": status.get("lease", "N/A"),
-                    "rigor": status.get("rigor", "Standard"),
+                    "complexity": status.get("complexity", "Unknown"),
+                    "active_task": status.get("active_task", "None"),
+                    "blockers": status.get("blockers", "None"),
+                    "last_updated": status.get("last_updated", "N/A"),
+                    "next_step": status.get("next_step_explicit") or infer_next_step(status.get("phase", "Unknown"), progress),
+                    "has_blocker": has_blocker(status.get("blockers", "None")),
                     "progress": progress
                 })
     return features
 
-def get_html_template(features_json, failures_json):
+def get_html_template(features_json):
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,6 +222,34 @@ def get_html_template(features_json, failures_json):
             .dashboard-grid {{
                 grid-template-columns: 2fr 1fr;
             }}
+        }}
+
+        .summary-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }}
+
+        .stat-card {{
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            padding: 1rem;
+        }}
+
+        .stat-label {{
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }}
+
+        .stat-value {{
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
         }}
 
         .section-title {{
@@ -361,6 +429,30 @@ def get_html_template(features_json, failures_json):
             border-top: 1px dashed rgba(255, 255, 255, 0.05);
             color: var(--text-secondary);
         }}
+
+        .next-list {{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }}
+
+        .next-item {{
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 1rem;
+        }}
+
+        .next-command {{
+            color: var(--accent-green);
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }}
+
+        .blocker {{
+            color: var(--accent-yellow);
+            font-size: 0.875rem;
+            margin-top: 0.35rem;
+        }}
     </style>
 </head>
 <body>
@@ -372,6 +464,8 @@ def get_html_template(features_json, failures_json):
         <div class="subtitle">Real-time developer visual dashboard</div>
     </header>
 
+    <div id="summary-grid" class="summary-grid"></div>
+
     <div class="dashboard-grid">
         <!-- Active Feature Branch Visual Pipeline -->
         <div>
@@ -379,24 +473,70 @@ def get_html_template(features_json, failures_json):
             <div class="controls">
                 <input type="text" id="search-bar" class="search-input" placeholder="Search features by name or slug..." oninput="filterCards()">
             </div>
-            
+
             <div id="features-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <!-- Dynamically generated features go here -->
             </div>
         </div>
 
-        <!-- Failure Observability Audit Feed -->
-        <div>
-            <div class="section-title">Open Observability Remediations</div>
-            <div id="obs-container" class="obs-list">
-                <!-- Dynamically generated observability tasks go here -->
+        <aside>
+            <div class="section-title">Next Steps</div>
+            <div class="card">
+                <div id="next-steps-container" class="next-list"></div>
             </div>
-        </div>
+        </aside>
     </div>
 
     <script>
         const features = {features_json};
-        const failures = {failures_json};
+
+        function escapeHtml(value) {{
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({{
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }}[char]));
+        }}
+
+        function renderSummary() {{
+            const summary = document.getElementById('summary-grid');
+            const active = features.filter((feat) => !['done', 'complete'].some((word) => feat.phase.toLowerCase().includes(word))).length;
+            const blocked = features.filter((feat) => feat.has_blocker).length;
+            const readyForVerify = features.filter((feat) => feat.next_step === '/harness-verify').length;
+
+            const stats = [
+                ['Total Features', features.length],
+                ['Active', active],
+                ['Blocked', blocked],
+                ['Ready To Verify', readyForVerify]
+            ];
+
+            summary.innerHTML = stats.map(([label, value]) => `
+                <div class="stat-card">
+                    <div class="stat-label">${{escapeHtml(label)}}</div>
+                    <div class="stat-value">${{escapeHtml(value)}}</div>
+                </div>
+            `).join('');
+        }}
+
+        function renderNextSteps() {{
+            const container = document.getElementById('next-steps-container');
+            if (features.length === 0) {{
+                container.innerHTML = '<div style="color: var(--text-secondary);">Run /starter-init, then start the first feature with /spec-requirements or /spec-research.</div>';
+                return;
+            }}
+
+            container.innerHTML = features.map((feat) => `
+                <div class="next-item">
+                    <div style="font-weight: 600;">${{escapeHtml(feat.slug)}}</div>
+                    <div class="next-command">${{escapeHtml(feat.next_step)}}</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">${{escapeHtml(feat.phase)}} · updated ${{escapeHtml(feat.last_updated)}}</div>
+                    ${{feat.has_blocker ? `<div class="blocker">Blocker: ${{escapeHtml(feat.blockers)}}</div>` : ''}}
+                </div>
+            `).join('');
+        }}
 
         function renderFeatures() {{
             const container = document.getElementById('features-container');
@@ -404,32 +544,34 @@ def get_html_template(features_json, failures_json):
                 container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-secondary);">No active features found.</div>';
                 return;
             }}
-            
+
             container.innerHTML = features.map((feat, index) => {{
                 const phaseClass = 'badge-' + feat.phase.toLowerCase().replace(/[' ]/g, '');
                 return `
-                    <div class="card feature-card" id="feature-card-${{index}}" data-title="${{feat.title}}" data-slug="${{feat.slug}}">
+                    <div class="card feature-card" id="feature-card-${{index}}" data-title="${{escapeHtml(feat.title)}}" data-slug="${{escapeHtml(feat.slug)}}">
                         <div class="card-header">
                             <div>
-                                <div class="card-title">${{feat.title}}</div>
-                                <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">${{feat.slug}}</div>
+                                <div class="card-title">${{escapeHtml(feat.title)}}</div>
+                                
+                                <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">${{escapeHtml(feat.slug)}}</div>
                             </div>
-                            <span class="badge ${{phaseClass}}">${{feat.phase}}</span>
+                            <span class="badge ${{phaseClass}}">${{escapeHtml(feat.phase)}}</span>
                         </div>
                         <div class="meta-list">
                             <div class="meta-item">
-                                <div class="meta-label">Claimed By</div>
-                                <div class="meta-value" id="claim-val-${{index}}">${{feat.claimed_by}}</div>
+                                <div class="meta-label">Complexity</div>
+                                <div class="meta-value">${{escapeHtml(feat.complexity)}}</div>
                             </div>
                             <div class="meta-item">
-                                <div class="meta-label">Lease Expires</div>
-                                <div class="meta-value">${{feat.lease}}</div>
+                                <div class="meta-label">Active Task</div>
+                                <div class="meta-value">${{escapeHtml(feat.active_task)}}</div>
                             </div>
                             <div class="meta-item">
-                                <div class="meta-label">Rigor Profile</div>
-                                <div class="meta-value">${{feat.rigor}}</div>
+                                <div class="meta-label">Next Step</div>
+                                <div class="meta-value">${{escapeHtml(feat.next_step)}}</div>
                             </div>
                         </div>
+                        ${{feat.has_blocker ? `<div class="blocker">Blocker: ${{escapeHtml(feat.blockers)}}</div>` : ''}}
                         <div class="progress-container">
                             <div class="progress-info">
                                 <span>Task Completion</span>
@@ -442,29 +584,6 @@ def get_html_template(features_json, failures_json):
                     </div>
                 `;
             }}).join('');
-        }}
-
-        function renderFailures() {{
-            const container = document.getElementById('obs-container');
-            const openFailures = failures.filter(f => f.status === 'open');
-            
-            if (openFailures.length === 0) {{
-                container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-secondary); border-color: var(--border-glass);">No open observability items.</div>';
-                return;
-            }}
-            
-            container.innerHTML = openFailures.map((fail, index) => `
-                <div class="obs-item" id="obs-item-${{index}}">
-                    <div class="obs-header">
-                        <span class="obs-id">${{fail.id}}</span>
-                        <span class="obs-class">${{fail.class}}</span>
-                    </div>
-                    <div style="font-weight: 500; font-size: 0.95rem; margin-bottom: 0.25rem;">${{fail.summary}}</div>
-                    <div class="obs-fix">
-                        <strong>Proposed Fix:</strong> ${{fail.proposed_durable_fix}}
-                    </div>
-                </div>
-            `).join('');
         }}
 
         function filterCards() {{
@@ -482,8 +601,9 @@ def get_html_template(features_json, failures_json):
         }}
 
         // Initial render
+        renderSummary();
         renderFeatures();
-        renderFailures();
+        renderNextSteps();
     </script>
 </body>
 </html>
@@ -492,43 +612,43 @@ def get_html_template(features_json, failures_json):
 def main():
     args = parse_args()
     root = Path(args.root).resolve()
-    
-    # Check execution constraints
-    if args.check_only:
-        print("Generator structure check passed.")
-        return 0
-        
+
+    if args.output is None:
+        output_path = root / "docs/generated/dashboard.html"
+    else:
+        output_path = Path(args.output).resolve()
+
     # Scan for features
-    features = scan_workspace(root)
-    
-    # Try importing parse-observability logic to get failures
-    sys.path.append(str(root / "kit" / "scripts"))
-    sys.path.append(str(root / "scripts"))
     try:
-        from parse_observability import parse_log
-        obs_path = root / "memories" / "repo" / "observability-log.md"
-        if obs_path.exists():
-            failures = parse_log(obs_path.read_text(encoding="utf-8"))
-        else:
-            failures = []
-    except ImportError:
-        failures = []
-        
+        features = scan_workspace(root)
+    except Exception as exc:
+        print(f"Error scanning workspace: {exc}", file=sys.stderr)
+        return 1
+
+    # Render dashboard
+    try:
+        html_content = get_html_template(
+            json.dumps(features)
+        )
+    except Exception as exc:
+        print(f"Error rendering dashboard: {exc}", file=sys.stderr)
+        return 1
+
+    if args.check_only:
+        print(f"Generator structure check passed. Scanned {len(features)} feature(s) successfully.")
+        return 0
+
     if args.dry_run:
         print(f"Features scanned: {len(features)}")
-        print(f"Open failures found: {len([f for f in failures if f.get('status') == 'open'])}")
         return 0
-        
-    # Render dashboard
-    html_content = get_html_template(
-        json.dumps(features),
-        json.dumps(failures)
-    )
-    
-    output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html_content, encoding="utf-8")
-    
+
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(html_content, encoding="utf-8")
+    except Exception as exc:
+        print(f"Error writing output dashboard: {exc}", file=sys.stderr)
+        return 1
+
     print(f"Successfully generated visual dashboard at: {output_path}")
     return 0
 

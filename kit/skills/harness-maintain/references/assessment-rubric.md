@@ -1,6 +1,6 @@
 # Harness Assessment Rubric
 
-Score the repository from 1 (Minimal) to 5 (Production) across the six subsystems.
+Score the repository from 1 (Minimal) to 5 (Production) across the seven core subsystems: Instructions, State, Verification, Scope, Lifecycle, Security, and Context Engineering.
 
 ## 1. Instructions
 *   **1:** No instructions. Agent guesses.

@@ -5,123 +5,75 @@
 - Feature name:
 - Related spec:
 - Related requirements review:
-- Related design:
 - Owner:
 - Status: Draft | In Review | Approved | In Progress | Done
 - Last updated:
 
-## Plan Summary
+---
 
-Describe the execution approach in a few sentences. Include the primary technical approach, major risks, validation posture, and rollout/rollback stance.
+## Part 1: Technical Design
 
-## Execution Context
+> **Design depth guide:** Use the **Lightweight Design** format for simple, self-contained changes. Use the **Comprehensive Design** format for features introducing new architecture, data flows, external integrations, or cross-cutting changes. Delete the section you do not use.
 
+### [Option A] Lightweight Design
+- **Approach:** Describe in 3–5 sentences what changes, where it lives, and the patterns it follows.
+- **Key Decision:** What is the primary technical choice and why? (one line)
+
+### [Option B] Comprehensive Design
+- **Design Summary:** Describe the technical shape of the solution in a few sentences.
+- **Current State:** Baseline, repository patterns, and brownfield constraints.
+- **Proposed Architecture:** Major components, responsibilities, and interaction models.
+- **Data Flow & Interfaces:** Inputs, data transformations, and storage changes.
+- **Key Decisions & Tradeoffs:** List major decisions, why they were chosen, and what tradeoffs were made.
+- **Non-Functional Considerations:** Performance, reliability, security.
+- **Protected Behavior:** What existing behavior must be preserved during this change?
+
+---
+
+## Part 2: Delivery Strategy
+
+### Execution Context
 - Delivery profile:
 - Locked spec decisions:
-- Design reference:
-- Relevant repository patterns for execution:
-- Brownfield execution constraints or greenfield assumptions:
-- Unchanged behavior that must be preserved during delivery:
 
-## First Delivery Slice
-
+### First Delivery Slice
 - Smallest useful slice:
 - Why this slice goes first:
 - What proof should exist when this slice is done:
 
-## Technical Approach
-
-- Chosen approach:
-- Architectural or integration shape:
-- Key interfaces or contracts:
-- Operational considerations:
-
-## Requirements And Constraints
-
-- REQ-001:
-  - Implementation note:
-  - Planned validation:
-  - Linked scenario or outcome:
-
-*(Add REQ-002, REQ-003, ... as needed.)*
-
-- NFR-001 Performance:
-- CON-001 Constraint / Impact on plan:
-
-## Impacted Areas
-
-- Services or modules:
-- APIs or interfaces:
-- Data model or storage:
-- UI or UX:
-- Infrastructure or deployment:
-- Documentation:
-
-## Protected Behavior
-
-- Behavior that must not regress:
-  - Protection approach:
-
-## Affected Files
-
-- FILE-001 Path:
-  - Reason for change:
-
-*(Add FILE-002, FILE-003, ... as needed.)*
-
-## Dependencies
-
-- DEP-001 Internal dependency:
-  - Why it matters:
-
-*(Add DEP-002, ... as needed.)*
-
-## Implementation Prerequisites
-
-- PREREQ-001:
-
-## Execution Phases
-
-### Phase 1
-
+### Execution Phases
+#### Phase 1
 - Goal:
 - Enabled user scenario(s) or outcome(s):
 - Entry proof:
 - Exit proof:
 - Completion criteria:
-
 *(Add Phase 2, Phase 3, ... as needed.)*
 
-## Validation Strategy
-
+### Validation Strategy
 - Unit tests:
 - Integration tests:
 - End-to-end tests:
 - Manual verification:
 - Observability checks:
 
-## Traceability Matrix
-
+### Traceability Matrix
 - Scenario or outcome -> Plan phase(s):
 - REQ-001 -> Plan phase / task IDs:
 - AC-001 -> Validation step(s):
 
-## Rollout Plan
-
+### Rollout Plan
 - Release approach:
 - Feature flags:
 - Migration needs:
 - Backward compatibility notes:
 
-## Rollback Plan
-
+### Rollback Plan
 Describe how to revert or disable the change safely.
 
-## Risks And Mitigations
-
+### Risks And Mitigations
 - RISK-001 Risk / Mitigation:
 
-## Open Questions
-
+### Open Questions
 - Q-001 Question:
   - Next step:

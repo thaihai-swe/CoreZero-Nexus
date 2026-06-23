@@ -1,67 +1,64 @@
 ---
 name: context-session
-description: Manage the session lifecycle (start, checkpoint, end) to maintain context continuity, assemble context deliberately, budget context windows, and generate durable handoffs.
-compatibility: Designed for Claude, Codex, and other Agent Skills-compatible tools working in spec-driven repositories that use memories/repo/ and artifacts/features/<slug>/.
+description: Manage session start, checkpoint, and end handoffs for an existing feature.
 
 ---
 
-# Kit Session
-
-
+# Context Session
 
 ## Overview
+Used to resume, checkpoint, or close work for an existing feature slug. This skill is for session boundaries after `artifacts/features/<slug>/status.md` exists; new feature intake starts with `/spec-requirements` or `/spec-research`.
 
-Governs active feature session continuity after a feature slug already exists. It ensures clean resume, progress logging, context pruning, and clear delegation/handoff to the next session window.
+## Modes
 
-## Read First
+| Mode | Use When | Primary Outputs |
+|---|---|---|
+| `START` | Starting a new day, switching branches, or opening a new chat window. | Readiness summary with loaded context, current phase, next task, blockers. |
+| `CHECKPOINT` | Pausing before a break or after meaningful progress. | Updated `progress.md` with session notes. |
+| `END` | Handoff to another developer/agent or closing a long session. | `handoff.md`, `progress.md` notes, and candidate `session-extracts.md` entries. |
 
-- `memories/repo/INDEX.md` (memory router)
-- `memories/repo/constitution.md` and `memories/repo/harness-config.md`
-- `artifacts/features/<slug>/status.md`
-- Resuming files: `handoff.md` and `progress.md` (if they exist)
-- References: `references/context-assembly.md`, `references/session-start-flow.md`, `references/session-handoff-template.md`, and `references/context-condensation.md`.
+`END` is required for long sessions because chat history is volatile. It is not the only mode.
 
-## When to Use
+## I/O Hand-off Protocol
+- **Reads**: `AGENTS.md`, `MASTER_INDEX.md`, feature `status.md`, `tasks.md`, `progress.md`, optional `handoff.md`, and routed memory files.
+- **Writes**: feature `progress.md`, `handoff.md`, optional `session-extracts.md`, and telemetry pruning updates when required.
 
-- **Start**: Begin a new conversation window and resume feature work.
-- **Checkpoint**: Save progress mid-session and prune context.
-- **End**: Conclude the session, document state, and write handoff notes.
-- Use it only after `/spec-requirements` or `/spec-research` has created the feature slug and `status.md`.
+> **Note on Artifact Responsibilities**:
+> - `tasks.md` is strictly for machine-readable task checklists and validation evidence (parsed by the dashboard).
+> - `progress.md` is for free-form human-readable session logs, daily blockers, and developer notes.
 
 ## Workflow
 
 ### Session Start
 1. **Slug Check**: If multiple features exist, run `/context-status` first to select the active slug.
    **First-run path**: If `progress.md` does not yet exist for the slug (first session after `/spec-requirements` created the slug), create it from `references/progress-template.md` before loading context. Skip the Resumption step (Step 4) and go directly to Step 5 (Report & Log).
-2. **Claim Check**: Before loading context, check `artifacts/features/<slug>/claim.md`. If an active (non-expired) claim exists from another agent, stop and report `BLOCKED`. If no claim exists or the claim is stale, create/update `claim.md` to establish ownership. See [references/multi-agent-protocol.md](references/multi-agent-protocol.md).
-   A claim is **stale** if: its `expires_at` timestamp has passed, or its status field is `Released`. For the full protocol, see `references/multi-agent-protocol.md`.
-3. **Context Load**: Load minimum required context per `references/context-assembly.md` and `references/session-start-flow.md`. When reading `INDEX.md`, strictly obey the **Confidence-Scored Loading** rule: if ≤2 keywords match a group, perform a **partial-load** (load only the index/header file for that group). Only load the full group for high-confidence matches (3+ keywords).
-4. **Resumption**: Identify current phase, next task/artifact, and blockers.
-5. **Report & Log**: Update `progress.md` with resumption details and name the exact next core command.
+2. **Context Load**: Load minimum required context per `references/context-assembly.md` and `references/session-start-flow.md`. When reading `MASTER_INDEX.md`, strictly obey the **Confidence-Scored Loading** rule: if ≤2 keywords match a group, perform a **partial-load** (load only the index/header file for that group). Only load the full group for high-confidence matches (3+ keywords).
+3. **Resumption**: Identify current phase, next task/artifact, and blockers.
+4. **Report & Log**: Update `progress.md` with resumption details and name the exact next core command.
 
 ### Session Checkpoint
-1. Review completed tasks. Append a snapshot to `progress.md`.
+1. Review completed tasks. Append a snapshot or session notes to `progress.md`.
 2. Check context budget. If crowded, run condensation/eviction per `references/context-condensation.md`. Prune raw logs and broad searches.
 
 ### Session End
 1. Summarize completion state, proof status, and blockers.
 2. **Delegation**: Document Conversation ID, role, and branch URIs for active subagents.
 3. **Log & Extract**: Append end entry to `progress.md`. Extract lessons to `artifacts/features/<slug>/session-extracts.md`:
-   - `Complex` profile: **Required**. Document at least 3 candidate lessons.
-   - `Standard` profile: **Required** when reusable lessons exist. Document "no extractable lessons" explicitly if none.
-   - `Tiny` profile: Optional. Candidates can be brief or omitted.
+   - `Complex` complexity: **Required**. Document at least 3 candidate lessons.
+   - `Moderate` complexity: **Required** when reusable lessons exist. Document "no extractable lessons" explicitly if none.
+   - `Simple` complexity: Optional. Candidates can be brief or omitted.
 4. **Handoff**: Write `handoff.md` using `references/session-handoff-template.md`, ending with the next core command.
-5. **Release Claim**: Update `claim.md` status to `Released` with release notes. This is mandatory — do not skip.
+
 
 ## Stop Conditions
 
-- `starter-init` has not been run (no `AGENTS.md` or `harness-config.md` present).
+- `starter-init` has not been run (no `AGENTS.md` or `core-policies.md ## Harness Config` present).
 - No feature slug is selected or `artifacts/features/<slug>/status.md` does not exist yet. In plain terms: status.md does not exist yet for this feature. Route to `/spec-requirements` when requirements can be defined directly, or `/spec-research` when brownfield behavior or root cause is unknown.
-- At session start, if running the test command from `harness-config.md` exits non-zero: surface the broken baseline to the user and stop. Do not load feature context over a broken build. Session Honesty requires surfacing this, not hiding it.
+- At session start, if running the test command from `core-policies.md ## Harness Config` exits non-zero: surface the broken baseline to the user and stop. Do not load feature context over a broken build. Session Honesty requires surfacing this, not hiding it.
 
 ## Preconditions
 
-- **Required files**: `AGENTS.md`, `memories/repo/harness-config.md`, `memories/repo/constitution.md`.
+- **Required files**: `AGENTS.md`, `memories/repo/core-policies.md`.
 - **Required feature state**: Existing `artifacts/features/<slug>/status.md` created by `/spec-requirements` or `/spec-research`.
 - **Phase sets**: Manages lifecycle across existing feature phases.
 
@@ -69,40 +66,5 @@ Governs active feature session continuity after a feature slug already exists. I
 
 - **No Amnesia**: The progress log is the system of record. Update it mid-session and on end.
 - **Session Honesty**: Never hide a broken build or failing test in handoffs.
-- **Tiered Assembly**: Read `INDEX.md` first, load only by-intent groups relevant to the active task.
+- **Tiered Assembly**: Read `MASTER_INDEX.md` first, load only by-intent groups relevant to the active task.
 - **Evict Stale Context**: Prune old logs/files once analyzed. Keep context window lean.
-
-## Rationalization vs. Reality
-
-| Rationalization | Reality |
-|---|---|
-| "I'll read chat history to resume." | Chat history gets truncated. `progress.md` is the system of record. |
-| "I don't need checkpoints." | Long sessions lose coherence. Checkpoint frequently. |
-| "Load design.md and plan.md in full." | Load only sections relevant to the immediate task. |
-| "Handoff means feature is done." | Handoff means session is resumable. Verification owns done verdict. |
-
-## Red Flags
-
-- Starting session without reading `constitution.md`, `harness-config.md`, or `handoff.md`.
-- Context condensation is ignored, carrying raw logs into implementation.
-- Handoff implies completion without referencing tests or gate evidence.
-
-## Verification
-
-- [ ] Current phase, next task, and next core command explicitly named.
-- [ ] Loaded context tiers match the active task.
-- [ ] Progress log and handoff logs generated.
-
-## Output Rules
-
-- Can create/update: `progress.md`, `status.md`, `handoff.md`, `claim.md`, and `session-extracts.md` (only if reusable lessons exist).
-- Cannot modify instruction memory files directly (candidates go to `session-extracts.md`).
-
-## References
-
-- [references/context-assembly.md](references/context-assembly.md)
-- [references/session-start-flow.md](references/session-start-flow.md)
-- [references/session-handoff-template.md](references/session-handoff-template.md)
-- [references/progress-template.md](references/progress-template.md)
-- [references/context-condensation.md](references/context-condensation.md)
-- [references/multi-agent-protocol.md](references/multi-agent-protocol.md)

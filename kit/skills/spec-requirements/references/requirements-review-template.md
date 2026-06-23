@@ -24,6 +24,7 @@
 - Requirements covered clearly: Yes | No
 - Acceptance criteria testable: Yes | No
 - Validation method named per acceptance criterion: Yes | No
+- Gherkin scenario (Given/When/Then) present per AC: Yes | No | N/A *(required for Complex; optional for Moderate; N/A for Simple)*
 - Plan-readiness traceability present: Yes | No
 - Scope boundaries explicit: Yes | No
 - Non-goals explicit: Yes | No

@@ -2,14 +2,14 @@ flowchart TD
     %% Smart Context Routing via INDEX.md
 
     START([Session Start]) --> IDX[Read INDEX.md<br/>memory router]
-    IDX --> ALWAYS[Load Always group<br/>constitution.md + security-policy.md + harness-config.md]
+    IDX --> ALWAYS[Load Always group<br/>core-policies.md]
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
 
     MATCH -->|architecture, pattern,<br/>stack, domain, adr| KNOW["Load Knowledge group<br/>(3+ keywords: Full PKB + Specs + ADRs + Architecture<br/>1-2 keywords: project-knowledge-base.md only)"]:::group
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN["Load Learned group<br/>(learned-heuristics.md)"]:::group
     MATCH -->|domain glossary triggers| DOMAIN["Load Domain Pack<br/>(3+ keywords: Full pack [4 files]<br/>1-2 keywords: glossary.md only)"]:::group
-    MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG["Load Debug group<br/>(observability-log.md + session-extracts.md)"]:::group
+    MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG["Load Debug group<br/>(harness-telemetry.md + session-extracts.md)"]:::group
     MATCH -->|no trigger matches| SKIP["Skip intent groups<br/>(Load Always group only)"]:::group
 
     KNOW --> FEAT["Load Feature artifacts<br/>(status.md, spec.md, plan.md, tasks.md, progress.md, handoff.md, claim.md, testing-scenarios.md)"]:::group

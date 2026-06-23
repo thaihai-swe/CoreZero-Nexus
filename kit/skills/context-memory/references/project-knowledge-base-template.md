@@ -1,154 +1,26 @@
-# Project Knowledge Base
+# [Project Name] — Project Knowledge Base
 
-## Purpose
+## System Reference Documents
 
-Describe what stable repository knowledge this file stores and how agents should use it alongside `memories/repo/constitution.md`.
+- **Architecture Boundary Map:** Refer to `docs/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
+- **Rules & Mandates:** Refer to `memories/repo/core-policies.md` for normative CC-* mandates.
 
-This file is not general documentation. It is durable agent memory.
+## Repository Overview
 
-When durable system structure becomes too large for this file, summarize it here and point to `docs/architecture.md`.
+- **Purpose:** [One-line description of the repository]
+- **Core workflow:** [How the AI workflow is structured — e.g., skills, spec-driven flow]
+- **Structure:** [Top-level directory layout]
 
-Use it to store:
+## Key Architectural Boundaries
 
-- stable repository facts
-- reusable implementation patterns
-- decision heuristics that apply across many features
-- durable brownfield watchouts
-- durable project-level continuity notes that matter across multiple features
+[Document the AI-enforced execution boundaries, shipped template postures, memory governance, and command ownership. Refer to the kit's `project-knowledge-base.md` for the canonical structure.]
 
-Do not use it for:
+## Common Installation & Bootstrap Watchouts
 
-- feature-specific analysis
-- temporary implementation notes
-- one-off debugging sessions
-- speculative future design with no repository basis
+- [Watchout 1]
+- [Watchout 2]
 
-## How Agents Use This File
+## Feature Lifecycle Handoff Patterns
 
-- Read before writing `spec.md`, `plan.md`, or `tasks.md`.
-- Apply only when relevant to the current task.
-- If a fact here conflicts with `memories/repo/constitution.md`, the constitution wins.
-
-## Source Of Truth Map
-
-- Domain or concern:
-  Source of truth:
-  Why it matters:
-
-## Stable Invariants
-
-Facts/constraints expected to hold across many features.
-
-- Invariant:
-  Why it matters:
-  Confidence: High | Medium | Low
-  Provenance: Observed in repo | Team convention
-
-## AI Coding Contract
-
-Descriptive side of the coding contract. Normative mandates → `constitution.md`.
-
-### Tech Stack Snapshot
-
-- Language/runtime + version:
-- Primary frameworks/libraries:
-- Storage/infrastructure:
-- Validation/tooling:
-
-### Naming And File Conventions
-
-- Files and directories:
-- Variables/functions:
-- Types/classes/interfaces:
-- Constants/config keys:
-
-### Implementation Patterns
-
-- Architectural pattern (use when):
-- Error-handling pattern (use when):
-- Validation/testing pattern (use when):
-- Async/concurrency pattern (use when):
-
-### AI-Followable Rules
-
-- Rule:
-  Why it exists:
-  Applies to:
-  Example or reference:
-
-## Decision Heuristics
-
-Repeatable rules for picking among implementation options.
-
-- Heuristic:
-  Use when:
-  Avoid when:
-  Why it helps:
-
-## Known Good Patterns
-
-Reference implementations worth copying.
-
-- Pattern:
-  Use when:
-  Reference:
-  Notes:
-
-## Anti-Patterns And Forbidden Moves
-
-- Anti-pattern:
-  Why harmful:
-  Safer alternative:
-
-## Boundaries And Ownership
-
-Concise — full structural maps belong in `docs/architecture.md`.
-
-- Boundary:
-  Owned by:
-  Why it matters:
-  Integration note:
-  Related architecture section:
-
-## Shared Dependencies And Infrastructure
-
-- Dependency or platform:
-  Why it matters:
-  Watchout:
-
-## Project Continuity
-
-Cross-feature context durable enough to matter beyond one artifact set, not normative enough for the constitution.
-
-- Active priority:
-  Why it matters across features:
-  Confidence:
-  Provenance:
-
-- Repo-wide watchout:
-  Why it matters across features:
-  Confidence:
-  Provenance:
-
-## Project Dictionary / Shared Language
-
-Capture the project-specific vocabulary to ensure the agent uses the same language as the domain experts and code. This prevents naming collisions and reduces token usage by establishing a common ground.
-
-- **Term:** [The exact term used in code/docs]
-  - **Definition:** [What it means in this project]
-  - **Context/Usage:** [Where it appears, e.g., "Used in auth middleware", "Refers to the DynamoDB partition key"]
-  - **Aliases:** [Other names this might be called by users or in old code]
-
-## Maintenance Metadata
-
-- Last major refresh:
-- Triggers a refresh:
-- Doesn't belong here:
-
-## Promotion Rules
-
-- Belongs here:
-- Stays in feature artifacts (`artifacts/features/<slug>/`):
-- Goes to `constitution.md` instead:
-- When durable enough to promote:
-- How to record confidence/provenance with partial evidence:
+- [Handoff pattern 1]
+- [Handoff pattern 2]

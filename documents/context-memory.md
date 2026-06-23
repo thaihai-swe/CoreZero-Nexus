@@ -1,6 +1,6 @@
 # Context Assembly & Memory Tiers
 
-This guide defines how the CoreZero Nexus manages context and durable repository memory to prevent context dilution, agent amnesia, and command drift.
+This guide defines how CoreZero manages context and durable repository memory to prevent context dilution, agent amnesia, and command drift.
 
 ---
 
@@ -43,7 +43,6 @@ Layer 3: References (references/)    Variable    Loaded JIT within the skill wor
   - Each reference serves one purpose (template, rubric, checklist, example).
   - Named clearly so the skill can request them by name.
   - Never loaded speculatively — only when the workflow step requires them.
-  - Can be skipped entirely for Tiny-profile work.
 
 ---
 
@@ -57,9 +56,9 @@ Context is the agent's working memory. The kit assembles context across 6 tiers,
 flowchart TB
     %% 6-Tier Context Assembly — highest signal to lowest
 
-    T1["Tier 1 — Router<br/>AGENTS.md + INDEX.md"]:::t1
+    T1["Tier 1 — Router<br/>AGENTS.md + MASTER_INDEX.md"]:::t1
     T2["Tier 2 — Repo Memory (Always)<br/>constitution + security + harness-config"]:::t2
-    T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Architecture / Debug groups"]:::t3
+    T3["Tier 3 — Repo Memory (By Intent)<br/>Knowledge / Learned / Domain Packs / Debug groups"]:::t3
     T4["Tier 4 — Feature Artifacts<br/>status / spec / plan / tasks / handoff"]:::t4
     T5["Tier 5 — Raw Code<br/>only files for the immediate task (JIT)"]:::t5
     T6["Tier 6 — Transient Logs<br/>command output, traces (summarize + evict)"]:::t6
@@ -88,37 +87,37 @@ flowchart TB
 
 | Tier | Content | Load Strategy |
 |------|---------|---------------|
-| 1 | `AGENTS.md` + `INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `constitution.md`, `harness-config.md`, `security-policy.md` | Always — every session |
+| 1 | `AGENTS.md` + `MASTER_INDEX.md` (router) | Always — first thing loaded every session |
+| 2 | Always group: `core-policies.md` | Always — every session |
 | 3 | By-Intent groups: Knowledge / Learned / Debug | Only when trigger keywords match the task |
 | 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
-**Intent groups (Tier 3) — defined in `memories/repo/INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, domain-specs, `adr-log.md`, `docs/architecture.md`, `docs/generated/codemap.md`, `docs/generated/references-index.md`).
+**Intent groups (Tier 3) — defined in `MASTER_INDEX.md`:**
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/code-map.md`).
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`).
-- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `observability-log.md` and per-feature `session-extracts.md`).
+- **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`).
 
-### Smart Routing via INDEX.md
+### Smart Routing via MASTER_INDEX.md
 
-Tier 3 (memory by intent) is loaded dynamically. `memories/repo/INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
+Tier 3 (memory by intent) is loaded dynamically. `MASTER_INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
 
 **Confidence-Scored Loading (Partial Loads):**
 When loading by-intent groups, the harness evaluates a confidence score based on keyword matches:
-- **Low Confidence (≤2 keywords):** Performs a **partial-load**. The session loads only the index or header file for that group, heavily conserving context budget while retaining situational awareness.
+- **Low Confidence (≤2 keywords):** Performs a **partial-load**. Use `python3 scripts/context-loader.py <file> --mode summary` to extract only the `## Index` section or first 50 lines, conserving context budget while retaining situational awareness.
 - **High Confidence (3+ keywords):** Performs a full load of all files in the group.
 
 ```mermaid
 flowchart TD
     %% Smart Context Routing via INDEX.md
 
-    START([Session Start]) --> IDX[Read INDEX.md<br/>memory router]
+    START([Session Start]) --> IDX[Read MASTER_INDEX.md<br/>memory router]
     IDX --> ALWAYS[Load Always group<br/>constitution + security-policy + harness-config]
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
 
-    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + domain-specs + architecture]
+    MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + architecture]
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
     MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
     MATCH -->|no trigger matches| SKIP[Load Always tier only<br/>record 'no groups matched']
@@ -131,7 +130,7 @@ flowchart TD
     FEAT --> REPORT[Report Context Loaded<br/>+ Context Skipped with reasons]
     REPORT --> WORK([Begin work])
 
-    STALE[INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
+    STALE[MASTER_INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]
     IDX -.->|if missing| STALE
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
@@ -166,44 +165,56 @@ To maintain focus and prevent memory saturation, the context must be compacted d
 
 ---
 
-## 3. The Memory Layer
+## 3. The Three-Track Memory Model & Memory Layer
 
-The memory layer stores durable cross-feature knowledge that agents need repeatedly. It stays compact, reusable, and clearly separate from feature-specific artifacts.
+To prevent memory drift, context dilution, and agent amnesia, the kit structures repository memory across the **Three-Track Memory Model**:
 
-### 3-Tier Memory Architecture
+### A. The Three-Track Memory Model
+
+1. **Native Stack (Ephemeral Runtime Track):**
+   - **Definition**: The active token window loaded into the LLM during the execution step.
+   - **Scope**: Ephemeral logs, raw tool outputs, and JIT code files (Tiers 1, 5, 6).
+   - **Governance**: Strict MVC rules and context eviction are applied to prevent this stack from bloating.
+
+2. **Cross-Session Tools (Durable Local Repository Track):**
+   - **Definition**: Git-tracked local markdown files containing feature statuses, implementation plans, checklists, and repository-wide configuration memories (Tiers 2, 3, 4).
+   - **Scope**: Feature artifacts (`status.md`, `plan.md`, `tasks.md`, `handoff.md`), instruction-tier configuration (`core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`), and telemetry log (`harness-telemetry.md`).
+
+3. **Team Sharing (Domain & Exporter Surface Track):**
+   - **Definition**: Standardized domain-specific schemas and glossaries shared across developers and downstream adopter systems.
+   - **Scope**: Domain packs in `memories/domain/` (such as `glossary.md`, `patterns.md`, `anti-patterns.md`, and `boundaries.md`).
+
+---
+
+### B. Memory Tiers
 
 ```mermaid
 flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
-    subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[constitution.md<br/>Repo-wide rules]
-        SEC[security-policy.md<br/>Trust boundaries]
-        HARN[harness-config.md<br/>Canonical commands]
+    subgraph INSTR["Instruction Tier — Human-Curated, Durable (Cross-Session / Team)"]
+        CONST[core-policies.md<br/>Repo-wide rules, boundaries & harness config]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
-        DOM[domain-specs.md<br/>Domain language]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
-        ARCH[docs/architecture.md<br/>System structure]
+        ARCH[docs/project/architecture.md<br/>System structure]
     end
 
-    subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
-        OBS[observability-log.md<br/>Harness/Model/Spec failures]
+    subgraph AUTO["Auto Tier — Failure-Driven, Append-Only (Cross-Session)"]
+        OBS[harness-telemetry.md<br/>Harness/Model/Spec failures]
     end
 
-    subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
+    subgraph EXTR["Extracted Tier — Per-Feature Candidates (Cross-Session)"]
         EXT[artifacts/features/&lt;slug&gt;/<br/>session-extracts.md]
     end
 
-    subgraph ROUTER["Memory Router"]
+    subgraph ROUTER["Memory Router (Native Stack)"]
         IDX[INDEX.md<br/>Always-loaded routing index]
     end
 
     %% Routing
     IDX -->|Always group| CONST
     IDX -->|Always group| SEC
-    IDX -->|Always group| HARN
     IDX -->|By-Intent: Knowledge| PKB
-    IDX -->|By-Intent: Knowledge| DOM
     IDX -->|By-Intent: Knowledge| ARCH
     IDX -->|By-Intent: Learned| HEUR
     IDX -->|By-Debug| OBS
@@ -227,7 +238,7 @@ flowchart TD
     classDef router fill:#3b82f6,stroke:#1d4ed8,color:#fff
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
 
-    class CONST,SEC,HARN,PKB,DOM,HEUR,ARCH instr
+    class CONST,SEC,PKB,HEUR,ARCH instr
     class OBS auto
     class EXT extr
     class IDX router
@@ -240,16 +251,13 @@ flowchart TD
 * **`INDEX.md`**: Declares Always / By-Intent / By-Debug groups. Sessions read this first.
 
 #### Instruction Tier — Human-Curated, Durable
-* **`constitution.md`**: Normative repository rules tagged with `CC-*` identifiers. Update frequency is rare.
-* **`security-policy.md`**: Permission model, sandbox guidelines, trust boundaries.
-* **`harness-config.md`**: Commands, paths, trackers, and promotion thresholds.
+* **`core-policies.md`**: Normative repository rules tagged with `CC-*` identifiers, as well as commands, paths, trackers, security boundaries, and promotion thresholds. Update frequency is rare.
 * **`project-knowledge-base.md`**: Durable facts, conventions, and patterns.
-* **`domain-specs.md`**: Domain vocabulary, rules, and subsystem maps.
 * **`learned-heuristics.md`**: Evidence-backed execution patterns.
-* **`docs/architecture.md`**: Component boundaries, seams, and layouts.
+* **`docs/project/architecture.md`**: Component boundaries, seams, and layouts.
 
 #### Auto Tier — Failure-Driven, Append-Only
-* **`observability-log.md`**: Tracks Harness/Model/Spec failure classifications. Written by `/harness-maintain` Improve Mode.
+* **`harness-telemetry.md`**: Tracks Harness/Model/Spec failure classifications. Written by `/harness-maintain` Improve Mode.
 
 #### Extracted Tier — Per-Feature Candidates
 * **`artifacts/features/<slug>/session-extracts.md`**: Candidate findings and observations compiled during session boundaries.
@@ -262,7 +270,7 @@ Knowledge flows from local feature execution upward into instruction-tier memory
 
 ### Manual Promotion & Triage
 
-When a finding is identified in a feature folder (`session-extracts.md` or `observability-log.md`), run `/context-memory` to initiate Extraction Triage:
+When a finding is identified in a feature folder (`session-extracts.md` or `harness-telemetry.md`), run `/context-memory` to initiate Extraction Triage:
 
 | Decision | Condition | Action |
 |----------|-----------|--------|
@@ -270,11 +278,11 @@ When a finding is identified in a feature folder (`session-extracts.md` or `obse
 | **Defer** | Promising but needs further confirmations | Retain in candidate log |
 | **Discard** | Feature-specific, obsolete, or incorrect | Discard with documented reason |
 
-*Normative rules* (must/should) route to `constitution.md` or `security-policy.md`.
+*Normative rules* (must/should) route to `core-policies.md`.
 *Descriptive facts* (uses/prefers) route to `project-knowledge-base.md` or `learned-heuristics.md`.
 
 ### Promotion Watchlist Thresholds
-To prevent file bloat, memory segments are audited against these boundaries (from `harness-config.md`):
+To prevent file bloat, memory segments are audited against these boundaries (from `core-policies.md`):
 - Memory file length $\ge$ 800 lines (warning) / 1200 lines (hard limit).
 - $\ge$ 3 distinct H2 subtopics covering separate concerns.
 - $\ge$ 5 features referencing the same slice.
@@ -294,23 +302,21 @@ flowchart LR
     SYNC -->|sweep every file in INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
 
     FILES -->|durable lesson| EXT[Append candidate<br/>session-extracts.md]
-    FILES -->|harness failure| OBS[Append entry<br/>observability-log.md]
+    FILES -->|harness failure| OBS[Append entry<br/>harness-telemetry.md]
     FILES -->|no change| RECORD[Record reason in<br/>Post-Ship Sync block]
 
     EXT --> TRIAGE[context-memory<br/>Extraction Triage]
     OBS --> TRIAGE
 
     TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
-    TRIAGE -->|normative rule| CONST[Promote to<br/>constitution.md]
+    TRIAGE -->|normative rule or security finding| CONST[Promote to<br/>core-policies.md]
     TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
-    TRIAGE -->|security finding| SEC[Promote to<br/>security-policy.md]
     TRIAGE -->|defer| DEF[Wait for next signal]
     TRIAGE -->|feature-local| DISC[Discard<br/>with reason]
 
     HEUR --> SMARTER[KB grows<br/>next session is smarter]
     CONST --> SMARTER
     PKB --> SMARTER
-    SEC --> SMARTER
 
     SMARTER -.->|loop back| SHIP
 
@@ -363,7 +369,6 @@ sequenceDiagram
         Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
     end
 
-    Note over V,F: Profile gating:<br/>Tiny = heuristic-only sweep<br/>Standard+ = full sweep
 ```
 
 ---

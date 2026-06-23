@@ -10,8 +10,8 @@ Each dimension is scored 1-5:
 |-------|---------|
 | 1 | Critical gaps — cannot proceed |
 | 2 | Significant gaps — needs rework |
-| 3 | Adequate — minor gaps acceptable for Tiny work |
-| 4 | Good — ready for Standard work |
+| 3 | Adequate — minor gaps acceptable for Simple work |
+| 4 | Good — ready for Moderate work |
 | 5 | Excellent — ready for Complex or high-risk work |
 
 ## Dimensions
@@ -48,9 +48,9 @@ Each dimension is scored 1-5:
 | 2 | Some criteria are testable but most lack a named proof surface |
 | 3 | Most criteria name a proof surface (unit test, integration test, manual check) |
 | 4 | All criteria have named proof surfaces; mechanical verification is possible |
-| 5 | All criteria have proof surfaces with specific commands or test names |
+| 5 | All criteria have proof surfaces with specific commands or test names; Complex specs add a Gherkin `Given / When / Then` block per AC with a named `Test path:` |
 
-**Check:** Can the verification gate be run mechanically without human judgment?
+**Check:** Can the verification gate be run mechanically without human judgment? For Complex, can a tester read the AC's scenario and the named test path together to reproduce the proof?
 
 ### 4. Feasibility (Technical approach is realistic)
 
@@ -62,7 +62,7 @@ Each dimension is scored 1-5:
 | 4 | Clearly feasible; risks are documented with mitigation strategies |
 | 5 | Feasible, low-risk, and aligned with existing architecture patterns |
 
-**Check:** Does the spec respect `docs/PROJECT_CONSTRAINTS.md` and `docs/architecture.md`?
+**Check:** Does the spec respect `docs/project/project-constraints.md` and `docs/project/architecture.md`?
 
 ### 5. Safety (Risks and controls are documented)
 
@@ -93,7 +93,7 @@ Each dimension is scored 1-5:
 | Total Score | Verdict | Action |
 |-------------|---------|--------|
 | 25-30 | Ready | Proceed to planning |
-| 19-24 | Ready with caveats | Proceed for Standard/Tiny; iterate for Complex |
+| 19-24 | Ready with caveats | Proceed for Moderate/Simple; iterate for Complex |
 | 13-18 | Not ready | Iterate on weak dimensions before planning |
 | 6-12 | Critical gaps | Major rework required |
 

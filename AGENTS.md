@@ -1,145 +1,84 @@
 ## Purpose
 
-This file is the agent entrypoint and instruction router for this repository. Read it every session before any other file.
+Entrypoint agent instruction router for this repository — the CoreZero kit source. Read first every session.
 
-## 0. Priority Rules
+## What this repo is
 
-These rules override all other guidance in this file when they conflict.
+**Source repo for the CoreZero kit** — a spec-anchored AI software delivery framework shipped via `install.sh` into downstream repos.
 
+Three surfaces:
+- `kit/` — the shipped package (what adopters install)
+- `documents/` — maintainer docs (NOT installed into adopter repos)
+- `page-document/` — public website assets
 
-**Language convention.** These keywords carry consistent meaning across this file, skill files, and memory files:
+The shipped adopter router is at `kit/AGENTS.md`. The shipped master index is at `kit/MASTER_INDEX.md`. This `AGENTS.md` is for maintaining the kit itself.
 
-* **MUST / MUST NOT** — absolute requirement or prohibition. Never deviate.
-* **SHOULD / SHOULD NOT** — strong recommendation. Deviate only with a documented reason.
-* **MAY** — optional, at the agent's discretion.
+## Priority Rules
 
-When a rule uses one of these keywords, treat it with the corresponding weight.
+These override all other guidance. Key non-obvious ones:
 
-* **No flattery, no filler:** Start with the answer, action, blocker, or decision. You **MUST NOT** add ceremonial openers.
-* **Correct false premises:** If the user’s premise is wrong, you **MUST** say so before continuing.
-* **Never fabricate:** You **MUST NOT** invent file paths, commit hashes, test results, API names, library functions, or repository behavior. Read files, run commands, or say what is unknown.
-* **Unknown stays unknown:** When information is unavailable, you **MUST** mark it explicitly as `[UNKNOWN]`. **MUST NOT** fill gaps with plausible-sounding guesses. An honest `[UNKNOWN]` is more valuable than a confident hallucination.
-* **Ask only when needed:** **SHOULD** ask before proceeding when ambiguity materially changes the result. Otherwise resolve ambiguity by inspecting the repo.
-* **Touch only the request:** Every changed line **MUST** directly support the user’s request. No drive-by refactors, formatting churn, or unrelated cleanup.
-* **Fail loud:** You **MUST NOT** mark work complete if verification was skipped, failed, or only partially run. State exactly what was and was not verified.
-* **Preserve behavior:** Existing observable behavior is a contract. You **MUST NOT** change it unless the user explicitly asks.
-* **Keep design SOLID:** **SHOULD** follow SOLID principles when changing or adding software design.
-* **Apply code-design rules:** For cross-cutting overengineering pitfalls — duplicate spellings, hidden coupling, swallowed errors, premature seams, spec/behavior drift — see `docs/code-design.md`. Its `MUST` / `MUST NOT` rules carry the same weight as the rules in this section.
-* **Read the Harness Card:** Before non-trivial work, **SHOULD** skim `HARNESS_CARD.md` at the repo root. It declares the active rigor profile, subsystem status, and known limits. If reality diverges from the card, fix one of them.
+- **No flattery, no filler.** Start with the answer, action, or blocker. No ceremonial openers.
+- **Correct false premises** immediately if the user is wrong.
+- **Never fabricate.** Read files or say `[UNKNOWN]`. Never guess paths, hashes, test results, or API behavior.
+- **Fail loud.** Do not mark work done if verification was skipped or failed.
+- **Touch only the request.** No drive-by refactors, formatting churn, or unrelated cleanup.
+- **Preserve behavior** unless explicitly asked to change it.
+- **Read `kit/docs/policies/code-design.md`** before architecture or refactoring work — its rules carry equal weight.
 
-## 1. Operating Loop
+## Kit architecture (non-obvious)
 
-For every task, follow this loop:
+- **Two AGENTS.md files exist.** Root `AGENTS.md` (this file) is for source-repo maintainers. `kit/AGENTS.md` ships into downstream repos.
+- **INDEX.md does not exist.** The root AGENTS.md historically referenced it. Use `kit/MASTER_INDEX.md` instead for context routing.
+- **No build system, no package.json, no test runner for the kit itself.** The kit is a collection of bash scripts, markdown skill files, and Python helpers. Verification is via `doctor.sh`.
+- **17 shipped slash commands (skills)** live in `kit/skills/<name>/SKILL.md`. Each is a behavioral spec for one command.
+- **`docs/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
+- **`packs/`** — optional language packs (Go/Rust/Java/Ruby) with rules, gate-runner templates, and gitignore examples.
+- **`scripts/harness/`** — all mechanical gates and validation scripts.
 
-1. **Understand the goal.** Identify the real success condition in repository-specific terms.
-2. **Inspect before building.** Read relevant code, docs, tests, artifacts, and existing patterns before proposing new ones.
-3. **Plan the smallest safe change.** Prefer the simplest change that solves the stated problem without speculative abstractions.
-4. **Implement surgically.** Change only what is required and match the project’s existing style.
-5. **Verify.** Run the most relevant available checks and read their output.
-6. **Report clearly.** Summarize what changed, what passed, what failed or was skipped, and the next obvious step.
+## Commands (exact, non-obvious)
 
-## 2. Planning and Alignment
+| What | Command |
+|---|---|
+| Kit self-diagnosis | `bash kit/scripts/harness/doctor.sh` |
+| Install kit (dry-run) | `bash kit/scripts/install.sh /tmp/test --dry-run` |
+| Install kit (real) | `bash kit/scripts/install.sh /path/to/target` |
+| Mechanical gate | `bash kit/scripts/harness/gate-runner.sh` |
+| Phase precondition gate | `bash kit/scripts/harness/phase-gate.sh <slug> <phase>` |
+| Traceability audit | `bash kit/scripts/harness/traceability-audit.sh <slug>` |
+| Telemetry | `bash kit/scripts/harness/telemetry-collector.sh --task <ID> --feature <slug>` |
+| Telemetry count | `bash kit/scripts/harness/telemetry-count.sh --task <ID>` |
+| Context partial load | `python3 kit/scripts/context-loader.py <file> --mode summary` |
+| Generate dashboard | `python3 kit/scripts/generate-dashboard.py` |
 
-Before editing code, state the intended outcome, constraints, and proof of success in one or two sentences.
+## Verification (what to run before claiming work done)
 
-Ask targeted clarifying questions only when one of these is true:
+Priority order:
+1. `bash kit/scripts/harness/doctor.sh` — 8 checks (manifest, sections, paths, thresholds, IDs, ADR status, telemetry schema). Exit 0 required.
+2. `bash kit/scripts/install.sh /tmp/corezero-test --dry-run` — verifies manifest resolves, no missing source files.
+3. Grep audits:
+   - `grep -rn "kit/" kit/skills/ kit/MASTER_INDEX.md` → zero hits (shipped paths must be flat)
+   - `grep -rnE "\bTiny\b|\bStandard\b" kit/skills/` → only in the canonical mapping table
+4. For new scripts: `chmod +x` and add to `kit/manifest.json` under the appropriate `overwrite` or `copyIfMissing` array.
 
-* The request has multiple plausible interpretations and the choice materially affects the implementation.
-* The change touches load-bearing, versioned, migration-sensitive, security-sensitive, billing, auth, or production paths.
-* Required credentials, secrets, or external access are missing.
-* The stated goal conflicts with the literal request.
+## Versioning and release
 
-Proceed without asking when:
+- Three version surfaces **must always match**: `VERSION`, `kit/VERSION`, `kit/manifest.json` → `version` field.
+- CI auto-bumps on merge to `main` based on commit prefix: `feat:` → minor, `fix:` → patch, `major:` or `BREAKING CHANGE:` → major. `chore:` / `docs:` / `refactor:` → no release.
+- Tag format: `v<semver>`. Release workflow verifies all three version surfaces match the tag before creating a release.
+- Version file on disk is the **next** release version (before tag), not the current live release.
 
-* The task is trivial and reversible.
-* The ambiguity can be resolved by reading the repository or running a local command.
-* The user already answered the question in the current session.
+## Operating loop (short)
 
-When there are multiple viable approaches, present the tradeoff briefly and choose the safest repository-consistent option unless the user needs to decide.
+1. Understand the goal in repo-specific terms.
+2. Inspect before building (read relevant code/docs/artifacts/patterns first).
+3. Plan the smallest safe change. Load `kit/docs/rules/ponytail.md` before architecture or implementation work.
+4. Implement surgically. Match existing style. No dead code cleanup unless asked.
+5. Verify with `doctor.sh` + install dry-run + grep audits.
+6. Report: what changed, what verified, what gaps remain, next step.
 
-## 3. Engineering Standards
+## Context management
 
-* **Simplicity first:** Implement the minimum code that solves the stated problem.
-* **No speculative code:** Do not add features, configuration, abstractions, or error handling for scenarios that are not required.
-* **Reuse established patterns:** Before adding a helper, abstraction, dependency, or convention, search for an existing equivalent.
-* **Prefer surgical refactoring:** Preserve behavior and institutional knowledge. Do not rewrite working systems unless the user asks or the existing design prevents the requested change.
-* **Respect Hyrum’s Law:** Treat observable behavior, outputs, timing, file structure, and public interfaces as things users may depend on.
-* **Use the test pyramid:** Prefer fast unit tests, targeted integration tests, and minimal end-to-end tests.
-* **Tests are opt-in unless needed:** Add or update automated tests when the user requests them, the repo already has a relevant test pattern, the change is risky, or the work uses a test-first workflow.
-
-## 4. Implementation Rules
-
-* Match existing indentation, naming, quotes, import ordering, file layout, and architectural patterns.
-* Do not modify adjacent code, comments, formatting, or imports outside the scope of the task.
-* Do not delete pre-existing dead code unless asked; mention it in the final summary instead.
-* Clean up only artifacts created by your own change, such as unused imports, variables, files, or functions.
-* If a solution becomes much larger than necessary, stop and simplify before continuing.
-* Fix root causes, not symptoms. Do not suppress errors to make checks pass.
-
-## 5. Verification and Tool Use
-
-Define success in verifiable terms before making changes.
-
-Use the strongest practical verification available for the task:
-
-* Run focused tests for changed behavior.
-* Run type checks, linters, or build checks when relevant and available.
-* For UI changes, perform a visual check or screenshot comparison when possible.
-* For performance work, use a benchmark or measurable before/after signal.
-* For bug fixes, reproduce the issue first when practical, then verify the fix.
-
-Rules for reporting verification:
-
-* Read command output before claiming success.
-* Do not claim “done” from a plausible diff alone.
-* If a check fails, report the failure and fix the root cause when within scope.
-* If a check is skipped, unavailable, or blocked, say so explicitly and explain why.
-
-## 6. Subagents and Context Management
-
-Use subagents only when they reduce context noise or parallelize clearly isolated work.
-
-Good uses:
-
-* Mapping dependencies across a large codebase.
-* Searching for existing patterns or similar implementations.
-* Reading large files or logs.
-* Performing repetitive, isolated edits.
-* Reviewing a completed change.
-
-Rules:
-
-* Always review subagent output before relying on it.
-* You remain responsible for final decisions and merge quality.
-* Do not hide uncertainty behind subagent output.
-
-## 7. Communication Style
-
-* Be direct and concise.
-* Prefer short prose over excessive bullet lists.
-* Report concrete progress, blockers, and verification results.
-* Do not celebrate ideas, scope creep, or unshipped work.
-* Celebrate only meaningful outcomes: shipped fixes, passing checks, solved blockers, or measurable improvements.
-
-For multi-step work, keep the current state explicit:
-
-* What changed.
-* What was verified.
-* What remains unverified.
-* What should happen next.
-
-## 8. Session Hygiene
-
-* Keep context lean. Search, summarize, and continue rather than dumping large files into the main thread.
-* If stuck after two failed corrections on the same issue, stop, summarize the current state, and ask whether to reset or change approach.
-
-
-## 9. Final Response Checklist
-
-Before responding, ensure the final message includes:
-
-* A concise summary of the change or answer.
-* Files changed, if any.
-* Verification run and results.
-* Known gaps, skipped checks, or risks.
-* The next step only when it is useful.
+- Read `kit/MASTER_INDEX.md` at session start to find which memory files to load.
+- Use subagents for broad exploration (searching patterns across the codebase, reading large files, parallel edits).
+- Always review subagent output yourself. You own the result quality.
+- If stuck after two failed corrections on the same issue, stop and ask whether to reset approach.

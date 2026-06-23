@@ -1,87 +1,43 @@
 ---
 name: spec-implement
 description: Execute implementation work task-by-task. Uses the approved spec, plan, and task list to drive code changes with strict status tracking and validation.
-compatibility: Designed for Claude, Codex, and other Agent Skills-compatible tools working in spec-driven repositories that use memories/repo/ and artifacts/features/<slug>/.
 
 ---
 
 # Kit Implement
 
-
 ## Overview
 
-Use this skill to perform the coding work. Follow `tasks.md`, execute one approved task at a time, and keep task state and proof honest. Answers: can I complete the selected task and prove it without inventing new scope?
+Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tasks.md` , execute one approved task at a time, and keep task state and proof honest. Answers: can I complete the selected task and prove it without inventing new scope?
 
-## Read First
 
-- `status.md`, `tasks.md`, `plan.md`, `spec.md` in `artifacts/features/<slug>/`.
-- `artifacts/features/<slug>/progress.md` (if it exists — validate last checkpoint aligns with `status.md` before beginning)
-- `memories/repo/constitution.md` (code standards) and `security-policy.md` (security design).
-- `memories/repo/harness-config.md` (canonical build/test/lint commands).
-- Touched files and interfaces.
-- References: `references/design-standards.md`, `references/implementation-standards.md`, and `../_shared/rigor-profiles.md`.
+## I/O Hand-off Protocol
+- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `docs/rules/ponytail.md`.
+- **Writes**: Source code, `artifacts/features/<slug>/tasks.md` (to mark tasks done), `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`, `artifacts/features/<slug>/progress.md`, `artifacts/features/<slug>/session-extracts.md` (candidate-only; promoted by `/context-memory` post-ship-sync).
+- **Next Skill**: `/harness-verify`
 
-## When to Use
-
-- Execute tasks from `tasks.md` in order.
-- Track task states (`Pending`, `In Progress`, `Done`).
-- Implement features/fixes satisfying the spec/plan.
+> **Note on Artifact Responsibilities**:
+> - `tasks.md` is strictly for machine-readable task checklists and validation evidence (parsed by the dashboard).
+> - `progress.md` is for free-form human-readable session logs, daily blockers, and developer notes.
 
 ## Workflow
 
-1. **Initialization**: Update `status.md` phase to `Implementing`.
-1a. **Resumption Check** (if resuming mid-task): Read the last entry in `progress.md` to identify the interrupted task. Re-run the task's proving command from pre-flight — do not skip this even if the task was `In Progress`. If the proving command now fails, treat the task as not started: reset its status to `Pending` and restart from Step 3.
-2. **Select Task**: Choose the first unblocked task ID (e.g., `T-01`) from `tasks.md`. Declare the target task before coding.
-3. **Pre-Flight Baseline**: Read the task requirements. **Run the task's validation/proving command once in the terminal before editing** to establish a baseline. If files don't exist, create skeleton files first.
+1. **Initialization**: Run `bash scripts/harness/phase-gate.sh <slug> "Implementing"` to verify preconditions. If it fails, fix the root cause before proceeding. Update `artifacts/features/<slug>/status.md` phase to `Implementing`.
+2. **Resumption Check**: (If resuming mid-task) Read the last entry in `progress.md` to identify the interrupted task. Re-run the task's proving command from pre-flight. If the proving command now fails, treat the task as not started: reset its status to `Pending` and restart from Step 3.
+3. **Select Task**: Choose the first unblocked task ID (e.g., `TASK-001`) from `artifacts/features/<slug>/tasks.md`. Declare the target task before coding.
 4. **Status Update**: Mark the task `In Progress` in `tasks.md`.
-5. **Coding**: Implement code and tests within the task boundary. Follow `rules/` and templates.
-5a. **Decision Provenance**: If implementation requires a design decision not covered in `spec.md` or `plan.md` (e.g., swapping a library, choosing an alternative algorithm), stop coding. Route to `/spec-adr` if the decision is architectural. For minor implementation choices: append a `## Decision Record` block to `progress.md` (choice, reason, spec alignment) before writing code. Do not implement undocumented mid-flight decisions silently.
-6. **Proof Policy**: Satisfy planned proof surfaces. If the plan mandates tests, implement them.
-7. **Validation**: Re-run the validation command to verify passes.
-8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done`. Update `progress.md` with session notes.
-9. **Next Step**: If tasks remain, continue `/spec-implement`. If complete, hand off to `/harness-verify`. If issues arise (scope break, planning gaps), stop and route to `/spec-plan`.
-
-## Stop Conditions
-
-- `spec.md`, `plan.md`, or `tasks.md` is missing.
-- Unresolved dependencies or design contradictions.
-- `status.md` phase is not `Plan Approved` → stop. Route to `/spec-plan` to complete planning before implementing.
-
-## Preconditions
-
-- **Required Phase**: `Plan Approved` in `status.md`.
-- **Phase sets**: `Implementing` (ongoing). Completion is set by `/harness-verify`.
+5. **Pre-Flight Baseline**: Read the task requirements. **Run the task's validation/proving command once in the terminal before editing** to establish a baseline. If files don't exist, create skeleton files first.
+6. **Coding & Provenance**: Implement code and tests within the task boundary. Follow `rules/` (including `ponytail.md` for simplicity) and guidelines in `references/implementation-standards.md`.
+    - **Decision Provenance**: If implementation requires a design decision not covered in `spec.md` or `plan.md` (e.g., swapping a library), stop coding. Route to `/spec-adr` if architectural. For minor choices: append a `## Decision Record` block to `progress.md` (choice, reason) before writing code. Do not implement undocumented mid-flight decisions silently.
+    - **Proof Policy**: Satisfy planned proof surfaces. If the plan mandates tests, implement them.
+7. **Mechanical Validation**: Re-run the local task proof to verify passes. Then, run `bash scripts/harness/gate-runner.sh` for all mechanical validation. If the gate fails, pipe the output into `bash scripts/harness/telemetry-collector.sh --task <TASK-NNN> --feature <slug>` to log the failure, then resolve the root cause.
+8. **Logging & Close**: Add validation evidence (e.g. test outputs) to `tasks.md`. Mark task `Done` and explicitly toggle the `- [ ]` markdown checkbox to `- [x]` in the task list. Update `progress.md` with session notes.
+9. **Lesson Capture**: Check if any non-trivial design/approach decisions were made during this task that weren't in `plan.md`. If so, append a `[CANDIDATE]` entry to `artifacts/features/<slug>/session-extracts.md` documenting the decision and rationale for later memory promotion.
+10. **Next Step**: If tasks remain, continue `/spec-implement`. If complete, hand off to `/harness-verify`. If issues arise (scope break, planning gaps), stop and route to `/spec-plan`.
 
 ## Core Rules
-
 - **No "Vibe Coding"**: Stick strictly to task scopes.
-- **Exact Task ID**: Work and log using explicit task IDs (e.g. `T-01`).
-- **Baseline Proving**: Always execute the proving command *before* editing files.
-- **Decision Provenance**: If you make a non-trivial execution decision mid-flight (e.g., swapping a library, deviating from `plan.md`), you MUST append a `## Decision Record` block to `progress.md` detailing the choice, reason, and spec alignment *before* writing the code.
-- **No Swallowing Errors**: Follow backend/frontend coding policies.
-- **Stop at Scope Breaks**: If a requirement is missing or contradictory, return to `/spec-plan` rather than work-around coding.
-
-## Rationalization vs. Reality
-
-| Rationalization | Reality |
-|---|---|
-| "The task is vague, I'll fill it in." | Silent scope-filling creates drift. Return to planning. |
-| "I'll update tasks on completion." | State must reflect reality mid-session. |
-| "Skip tests now, let verify handle it." | Implementation owns writing the tests if required by the plan. |
-
-## Red Flags
-
-- No baseline proving command executed before file edits.
-- Task marked `Done` while verification is still failing.
-- Changing locked decisions from `spec.md` without re-spec'ing.
-
-## Verification
-
-- [ ] Code edits strictly bounded by the selected task.
-- [ ] Proving commands run and outputs recorded in `tasks.md`.
-- [ ] Coding contract constraints and decisions followed.
-
-## Output Rules
-
-- Modify only target source code, tests, `tasks.md`, `progress.md`, and `status.md`.
-- Do not bypass verification checks.
+- **Stop at Scope Breaks**: If a requirement is missing or contradictory, return to `/spec-plan` instead of doing work-around coding.
+- **Ponytail Rule**: Maintain the lazy senior dev mindset. Never over-engineer. Use the standard library and native features before adding dependencies or custom code.
+- **Minimum Viable Context (MVC)**: JIT-load only the specific files required for the current task. Do not load the entire codebase into context.
+- **Context Eviction**: After running `gate-runner.sh`, you MUST summarize the raw terminal logs and evict the raw output from your context window to conserve token budget.

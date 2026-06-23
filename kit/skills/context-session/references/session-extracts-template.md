@@ -16,9 +16,9 @@ When appending, classify the candidate so triage is fast:
 
 - **Heuristic** — a repeatable execution pattern that worked. Likely promotion: `learned-heuristics.md`.
 - **Pattern** — a durable code or architecture observation. Likely promotion: `project-knowledge-base.md`.
-- **Rule** — a normative constraint the team should follow. Likely promotion: `constitution.md`.
-- **Security** — a permission, trust, or sandbox observation. Likely promotion: `security-policy.md`.
-- **Harness gap** — the environment allowed a mistake. Likely promotion: `observability-log.md` (auto tier) for further analysis.
+- **Rule** — a normative constraint the team should follow. Likely promotion: `core-policies.md`.
+- **Security** — a permission, trust, or sandbox observation. Likely promotion: `core-policies.md` `## Security Policy`.
+- **Harness gap** — the environment allowed a mistake. Likely promotion: `harness-telemetry.md` (auto tier) for further analysis.
 - **Spec gap** — the requirement was ambiguous. Likely action: route back to `spec-requirements`.
 
 ## Pending Candidates

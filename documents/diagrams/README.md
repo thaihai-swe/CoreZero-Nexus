@@ -1,6 +1,6 @@
 # Kit Diagrams
 
-Mermaid diagrams (`.mmd`) visualizing the CoreZero Nexus architecture, memory model, and workflows. Validate any diagram with:
+Mermaid diagrams (`.mmd`) visualizing the CoreZero architecture, memory model, and workflows. Validate any diagram with:
 
 ```bash
 python3 skills/visualize/scripts/validate_mermaid.py documents/diagrams/<file>.mmd
@@ -32,7 +32,7 @@ Legacy `corezero-*` filenames may remain on some diagram files until a later ren
 | `corezero-full-flow.mmd` | Guided pack flow with advanced specialist branches |
 | `corezero-dataflow.mmd` | Artifact flow: analysis → spec → plan → code → review → memory |
 | `corezero-onboarding.mmd` | Greenfield vs Brownfield onboarding through `starter-init` (Phase A: archaeology, Phase B: bootstrap) |
-| `corezero-rigor-profiles.mmd` | Adaptive rigor: Tiny / Standard / Complex |
+
 | `corezero-harness-maintenance.mmd` | Flowchart of /harness-maintain Assess vs Improve modes |
 | `skills-end-to-end-execution.mmd` | Sequence diagram of a harness run |
 | `corezero-spec-lifecycle.mmd` | Spec flow: triage → grilling waves → readiness → locked |

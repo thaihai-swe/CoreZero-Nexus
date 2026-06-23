@@ -1,16 +1,16 @@
 # Harness Packs
 
-This guide documents the four core packs that organize CoreZero Nexus commands and files for adopter repositories.
+This guide documents the four core packs that organize CoreZero commands and files for adopter repositories.
 
 ---
 
 ## The 4 Core Packs
 
-CoreZero Nexus organizes its capabilities into **4 Core Packs** containing **15 public commands** (with the core 12 shown in the taxonomy map below):
+CoreZero organizes its capabilities into **4 Core Packs** containing **16 shipped skills** (with the core 12 shown in the taxonomy map below):
 
 ```mermaid
 mindmap
-  root((CoreZero Nexus))
+  root((CoreZero))
     Project Starter
       /starter-init
     Context Engineering
@@ -61,7 +61,7 @@ Guarantees delivery quality and continuously improves the harness.
 The `Project Starter` pack bootstraps a repository for AI-assisted development by setting up the entrypoint router, baseline memory configuration, system architecture guides, and project templates.
 
 ### When To Use It
-- Installing CoreZero Nexus in a project for the first time.
+- Installing CoreZero in a project for the first time.
 - Re-initializing operating configurations after a major workflow change.
 - Aligning template files with the actual project structure and code evidence.
 
@@ -70,15 +70,14 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 
 ### Key Files Touched
 - `AGENTS.md` (router entrypoint)
-- `HARNESS_CARD.md` (harness summary card)
 - `memories/repo/*` (memory router and seed instruction files)
-- `memories/repo/brownfield/*` (brownfield map, dependency graph; created by `/starter-init` Phase A)
-- `docs/architecture.md` (durable architecture baseline)
-- `docs/*.md` project-policy docs seeded for the adopter to refine
+- `memories/repo/project-knowledge-base.md` (high-risk area notes from archaeology sweep recorded here under `## Repository Overview`)
+- `docs/project/architecture.md` (durable architecture baseline)
+- `docs/project/*.md` adopter-owned docs seeded for refinement
 - `docs/generated/*` (index & codemap artifacts)
 
 Starter-init archaeology (Phase A) is now the documented first step for established repositories. Its
-artifacts live in the memory layer, but they are not yet auto-routed by `INDEX.md`; later
+artifacts live in the memory layer, but they are not yet auto-routed by `MASTER_INDEX.md`; later
 sessions need to load them deliberately when a feature touches brownfield risk areas.
 
 ---
@@ -99,19 +98,17 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 * `/context-status` — Provides project-wide views of active features.
 
 ### Key Files Touched
-- `memories/repo/INDEX.md`
-- `memories/repo/constitution.md`
-- `memories/repo/security-policy.md`
+- `memories/repo/MASTER_INDEX.md`
+- `memories/repo/core-policies.md`
 - `memories/repo/learned-heuristics.md`
 - `memories/repo/project-knowledge-base.md`
-- `memories/repo/observability-log.md` (failure ledger with structured YAML trend summary)
-- `memories/domains/*` (domain-specific glossary trigger, patterns, and boundaries)
+- `memories/repo/harness-telemetry.md` (failure ledger with structured YAML trend summary)
+- `memories/domain/*` (domain-specific glossary trigger, patterns, boundaries, and spec)
 - `artifacts/features/<slug>/progress.md`
 - `artifacts/features/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
-- `docs/architecture.md`
-- `docs/generated/codemap.md`
-- `docs/generated/references-index.md`
+- `docs/project/architecture.md`
+- `docs/generated/code-map.md`
 
 
 ---
@@ -138,16 +135,15 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/analysis.md`
 - `artifacts/features/<slug>/proposal.md`
 - `artifacts/features/<slug>/spec.md`
-- `artifacts/features/<slug>/requirements-review.md`
-- `artifacts/features/<slug>/design.md`
+- `artifacts/features/<slug>/requirements-review.md` (optional)
 - `artifacts/features/<slug>/plan.md`
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`
 - `memories/repo/adr-log.md`
-- [`docs/PRODUCT_SENSE.md`](../kit/docs/PRODUCT_SENSE.md)
-- [`docs/GLOSSARY.md`](../kit/docs/GLOSSARY.md)
-- [`docs/TECH_STACK_REFERENCE.md`](../kit/docs/TECH_STACK_REFERENCE.md)
-- [`docs/PROJECT_CONSTRAINTS.md`](../kit/docs/PROJECT_CONSTRAINTS.md)
+- [`docs/project/product-sense.md`](../kit/docs/project/product-sense.md)
+- [`docs/project/glossary.md`](../kit/docs/project/glossary.md)
+- [`docs/project/tech-stack.md`](../kit/docs/project/tech-stack.md)
+- [`docs/project/project-constraints.md`](../kit/docs/project/project-constraints.md)
 
 ---
 
@@ -166,11 +162,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 * `/harness-maintain` — Assesses, configures, or evaluates the harness systems.
 
 ### Key Files Touched
-- `docs/code-design.md`
-- [`docs/GOVERNANCE.md`](../kit/docs/GOVERNANCE.md)
-- [`docs/QUALITY_POLICY.md`](../kit/docs/QUALITY_POLICY.md)
-- [`docs/RELIABILITY_POLICY.md`](../kit/docs/RELIABILITY_POLICY.md)
-- [`docs/TECH_DEBT_REGISTER.md`](../kit/docs/TECH_DEBT_REGISTER.md)
+- `docs/policies/code-design.md`
 - `artifacts/features/<slug>/review.md`
 - `artifacts/features/<slug>/testing-scenarios.md`
 - `artifacts/features/<slug>/harness-assessment.md`

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Gate Flow</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root[data-theme="dark"] {
+      --bg: #020617; --grid: #1e293b;
+      --text-primary: #f1f5f9; --text-secondary: #94a3b8;
+      --border: #334155; --toolbar-bg: rgba(15,23,42,0.9);
+      --fe-fill: rgba(8,51,68,0.4); --fe-stroke: #22d3ee;
+      --be-fill: rgba(6,78,59,0.4); --be-stroke: #34d399;
+      --db-fill: rgba(76,29,149,0.4); --db-stroke: #a78bfa;
+      --cloud-fill: rgba(120,53,15,0.3); --cloud-stroke: #fbbf24;
+      --sec-fill: rgba(136,19,55,0.4); --sec-stroke: #fb7185;
+      --bus-fill: rgba(251,146,60,0.3); --bus-stroke: #fb923c;
+      --ext-fill: rgba(30,41,59,0.5); --ext-stroke: #94a3b8;
+      --fe-region-fill: rgba(8,51,68,0.05);
+      --be-region-fill: rgba(6,78,59,0.04);
+      --db-region-fill: rgba(76,29,149,0.05);
+      --cloud-region-fill: rgba(120,53,15,0.07);
+      --ext-region-fill: rgba(30,41,59,0.06);
+      --arrow-color: #64748b; --arrow-rose: #fb7185;
+    }
+    :root[data-theme="light"] {
+      --bg: #f8fafc; --grid: #cbd5e1;
+      --text-primary: #0f172a; --text-secondary: #64748b;
+      --border: #e2e8f0; --toolbar-bg: rgba(241,245,249,0.95);
+      --fe-fill: rgba(207,250,254,0.6); --fe-stroke: #0891b2;
+      --be-fill: rgba(209,250,229,0.6); --be-stroke: #059669;
+      --db-fill: rgba(237,233,254,0.6); --db-stroke: #7c3aed;
+      --cloud-fill: rgba(254,243,199,0.6); --cloud-stroke: #d97706;
+      --sec-fill: rgba(255,228,230,0.6); --sec-stroke: #e11d48;
+      --bus-fill: rgba(255,237,213,0.6); --bus-stroke: #ea580c;
+      --ext-fill: rgba(241,245,249,0.6); --ext-stroke: #64748b;
+      --fe-region-fill: rgba(207,250,254,0.1);
+      --be-region-fill: rgba(209,250,229,0.1);
+      --db-region-fill: rgba(237,233,254,0.1);
+      --cloud-region-fill: rgba(254,243,199,0.1);
+      --ext-region-fill: rgba(241,245,249,0.1);
+      --arrow-color: #475569; --arrow-rose: #e11d48;
+    }
+
+    /* Blueprint Preset Overrides */
+    :root[data-style="blueprint"] {
+      --bg: #0b2545; --grid: #134074;
+      --text-primary: #ffffff; --text-secondary: #8da9c4;
+      --border: #134074; --toolbar-bg: rgba(11,37,69,0.9);
+      --fe-fill: rgba(255,255,255,0.05); --fe-stroke: #ffffff;
+      --be-fill: rgba(255,255,255,0.05); --be-stroke: #ffffff;
+      --db-fill: rgba(255,255,255,0.05); --db-stroke: #ffffff;
+      --cloud-fill: rgba(255,255,255,0.05); --cloud-stroke: #ffffff;
+      --sec-fill: rgba(255,255,255,0.05); --sec-stroke: #ffffff;
+      --bus-fill: rgba(255,255,255,0.05); --bus-stroke: #ffffff;
+      --ext-fill: rgba(255,255,255,0.05); --ext-stroke: #ffffff;
+      --fe-region-fill: transparent; --be-region-fill: transparent;
+      --db-region-fill: transparent; --cloud-region-fill: transparent;
+      --ext-region-fill: transparent;
+      --arrow-color: #ffffff; --arrow-rose: #ffffff;
+    }
+
+    /* Notion Minimal Preset Overrides */
+    :root[data-style="notion"][data-theme="light"] {
+      --bg: #ffffff; --grid: #f1f1f1;
+      --text-primary: #37352f; --text-secondary: #787774;
+      --border: #dfdfde; --toolbar-bg: rgba(255,255,255,0.95);
+      --fe-fill: #f2f1ee; --fe-stroke: #37352f;
+      --be-fill: #f2f1ee; --be-stroke: #37352f;
+      --db-fill: #f2f1ee; --db-stroke: #37352f;
+      --cloud-fill: #f2f1ee; --cloud-stroke: #37352f;
+      --sec-fill: #f2f1ee; --sec-stroke: #37352f;
+      --bus-fill: #f2f1ee; --bus-stroke: #37352f;
+      --ext-fill: #f2f1ee; --ext-stroke: #37352f;
+      --fe-region-fill: transparent; --be-region-fill: transparent;
+      --db-region-fill: transparent; --cloud-region-fill: transparent;
+      --ext-region-fill: transparent;
+      --arrow-color: #37352f; --arrow-rose: #37352f;
+    }
+    :root[data-style="notion"][data-theme="dark"] {
+      --bg: #191919; --grid: #2c2c2c;
+      --text-primary: #ffffff; --text-secondary: #9b9b9b;
+      --border: #2c2c2c; --toolbar-bg: rgba(25,25,25,0.9);
+      --fe-fill: #252525; --fe-stroke: #ffffff;
+      --be-fill: #252525; --be-stroke: #ffffff;
+      --db-fill: #252525; --db-stroke: #ffffff;
+      --cloud-fill: #252525; --cloud-stroke: #ffffff;
+      --sec-fill: #252525; --sec-stroke: #ffffff;
+      --bus-fill: #252525; --bus-stroke: #ffffff;
+      --ext-fill: #252525; --ext-stroke: #ffffff;
+      --fe-region-fill: transparent; --be-region-fill: transparent;
+      --db-region-fill: transparent; --cloud-region-fill: transparent;
+      --ext-region-fill: transparent;
+      --arrow-color: #ffffff; --arrow-rose: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .toolbar {
+      position: fixed; top: 16px; right: 16px;
+      display: flex; gap: 8px; z-index: 100;
+      background: var(--toolbar-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px;
+      backdrop-filter: blur(8px);
+    }
+    .toolbar button {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-primary); border-radius: 4px;
+      padding: 4px 10px; font-size: 11px; font-family: inherit;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .toolbar button:hover { background: var(--border); }
+    .export-wrap { position: relative; }
+    .export-menu {
+      display: none; position: absolute; top: 100%; right: 0; margin-top: 4px;
+      background: var(--toolbar-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px; min-width: 180px;
+      backdrop-filter: blur(8px); z-index: 200;
+    }
+    .export-menu.open { display: flex; flex-direction: column; gap: 4px; }
+    .export-menu button { width: 100%; text-align: left; }
+    .diagram-wrapper { padding: 32px 24px; width: 100%; max-width: 1400px; }
+    h1.diagram-title { font-size: 20px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    p.diagram-subtitle { font-size: 12px; color: var(--text-secondary); margin-bottom: 24px; }
+    svg { width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button id="btn-theme" title="Toggle theme (T)">🌙 Dark</button>
+    <button id="btn-style" title="Cycle style presets (S)">🎨 Style: Default</button>
+    <div class="export-wrap">
+      <button id="btn-export" title="Export (E)">⬇ Export</button>
+      <div class="export-menu" id="export-menu">
+        <button id="exp-copy">📋 Copy PNG</button>
+        <button id="exp-png">⬇ PNG (4×)</button>
+        <button id="exp-jpeg">⬇ JPEG (4×)</button>
+        <button id="exp-webp">⬇ WebP (4×)</button>
+        <button id="exp-svg">⬇ SVG (dual-theme)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-wrapper">
+    <h1 class="diagram-title">Verification Gate Flow</h1>
+    <p class="diagram-subtitle">11-stage sequential implementation verification audit lifecycle</p>
+
+    <svg id="diagram" viewBox="0 0 1340 850" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--grid)" stroke-width="0.5"/>
+        </pattern>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--arrow-color)"/>
+        </marker>
+        <marker id="arrowhead-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="var(--arrow-rose)"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="100%" height="100%" fill="var(--bg)"/>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           STEP 1: Connections drawn first (painter's order)
+           ═══════════════════════════════════════════════════════════ -->
+      <!-- Start to Phase 1 -->
+      <line x1="120" y1="140" x2="160" y2="140" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Phase 1 to Phase 2 -->
+      <line x1="330" y1="140" x2="370" y2="140" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Phase 2 to GPASS -->
+      <line x1="540" y1="140" x2="570" y2="140" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- GPASS No -> Verdict Fail -->
+      <line x1="610" y1="170" x2="610" y2="230" stroke="var(--arrow-rose)" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowhead-rose)"/>
+      <text x="620" y="200" fill="var(--arrow-rose)" font-size="9" font-family="'JetBrains Mono', monospace">No</text>
+
+      <!-- Verdict Fail -> Return implement -->
+      <line x1="610" y1="290" x2="610" y2="350" stroke="var(--arrow-rose)" stroke-width="1.5" marker-end="url(#arrowhead-rose)"/>
+
+      <!-- GPASS Yes -> Phase 3 -->
+      <line x1="650" y1="140" x2="690" y2="140" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="670" y="130" fill="var(--text-secondary)" font-size="9" font-family="'JetBrains Mono', monospace">Yes</text>
+
+      <!-- Phase 3 to Phase 4 -->
+      <line x1="860" y1="140" x2="900" y2="140" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Phase 4 to Phase 5 -->
+      <line x1="1070" y1="140" x2="1110" y2="140" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Phase 6 to FALLOW -->
+      <line x1="1110" y1="260" x2="860" y2="260" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- FALLOW Yes -> Phase 7 -->
+      <line x1="780" y1="290" x2="780" y2="350" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="790" y="320" fill="var(--text-secondary)" font-size="9" font-family="'JetBrains Mono', monospace">Yes</text>
+
+      <!-- FALLOW No -> Phase 8 -->
+      <path d="M 740 260 L 460 260 L 460 350" fill="none" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="710" y="250" fill="var(--text-secondary)" font-size="9" font-family="'JetBrains Mono', monospace">No</text>
+
+      <!-- Phase 7 to Phase 8 -->
+      <line x1="690" y1="380" x2="550" y2="380" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Phase 8 to Phase 9 (down) -->
+      <line x1="460" y1="410" x2="460" y2="470" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- Phase 9 to VERDICT -->
+      <line x1="550" y1="500" x2="590" y2="500" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+      <!-- VERDICT Fail -> Verdict Fail Box -->
+      <line x1="630" y1="470" x2="630" y2="300" stroke="var(--arrow-rose)" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowhead-rose)"/>
+      <text x="640" y="440" fill="var(--arrow-rose)" font-size="9" font-family="'JetBrains Mono', monospace">Fail</text>
+
+      <!-- VERDICT Pass -> Phase 11 -->
+      <line x1="670" y1="500" x2="710" y2="500" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="685" y="490" fill="var(--text-secondary)" font-size="9" font-family="'JetBrains Mono', monospace">Pass</text>
+
+      <!-- Phase 11 to DONE -->
+      <line x1="880" y1="500" x2="920" y2="500" stroke="var(--arrow-color)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+
+      <!-- ═══════════════════════════════════════════════════════════
+           STEP 2: Component Nodes
+           ═══════════════════════════════════════════════════════════ -->
+      <!-- START Circle -->
+      <g>
+        <rect x="20" y="115" width="100" height="50" rx="25" fill="var(--bg)"/>
+        <rect x="20" y="115" width="100" height="50" rx="25" fill="var(--ext-fill)" stroke="var(--ext-stroke)" stroke-width="1.5"/>
+        <text x="70" y="144" fill="var(--text-primary)" font-size="10" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">Start Flow</text>
+      </g>
+
+      <!-- Phase 1 -->
+      <g>
+        <rect x="160" y="110" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="160" y="110" width="170" height="60" rx="6" fill="var(--fe-fill)" stroke="var(--fe-stroke)" stroke-width="1.5"/>
+        <text x="245" y="136" fill="var(--fe-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">1-Initialization</text>
+        <text x="245" y="152" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">status.md = Verifying</text>
+      </g>
+
+      <!-- Phase 2 -->
+      <g>
+        <rect x="370" y="110" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="370" y="110" width="170" height="60" rx="6" fill="var(--fe-fill)" stroke="var(--fe-stroke)" stroke-width="1.5"/>
+        <text x="455" y="136" fill="var(--fe-stroke)" font-size="10.5" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">2-Mechanical Gate</text>
+        <text x="455" y="152" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Run gate commands</text>
+      </g>
+
+      <!-- Decision GPASS -->
+      <g>
+        <polygon points="610,110 650,140 610,170 570,140" fill="var(--bg)"/>
+        <polygon points="610,110 650,140 610,170 570,140" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)" stroke-width="1.5"/>
+        <text x="610" y="144" fill="var(--cloud-stroke)" font-size="9" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">passes?</text>
+      </g>
+
+      <!-- Verdict Fail Box -->
+      <g>
+        <rect x="525" y="230" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="525" y="230" width="170" height="60" rx="6" fill="var(--sec-fill)" stroke="var(--sec-stroke)" stroke-width="1.5"/>
+        <text x="610" y="256" fill="var(--sec-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">Verdict Fail</text>
+        <text x="610" y="272" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Reopen tasks and review</text>
+      </g>
+
+      <!-- Return Implement -->
+      <g>
+        <rect x="525" y="350" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="525" y="350" width="170" height="60" rx="6" fill="var(--sec-fill)" stroke="var(--sec-stroke)" stroke-width="1.5"/>
+        <text x="610" y="386" fill="var(--sec-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">Return Implement</text>
+      </g>
+
+      <!-- Phase 3 -->
+      <g>
+        <rect x="690" y="110" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="690" y="110" width="170" height="60" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)" stroke-width="1.5"/>
+        <text x="775" y="136" fill="var(--be-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">3-Clean-State</text>
+        <text x="775" y="152" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">No uncommitted code</text>
+      </g>
+
+      <!-- Phase 4 -->
+      <g>
+        <rect x="900" y="110" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="900" y="110" width="170" height="60" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)" stroke-width="1.5"/>
+        <text x="985" y="136" fill="var(--be-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">4-Alignment Audit</text>
+        <text x="985" y="152" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">REQ/AC mapped to task</text>
+      </g>
+
+      <!-- Phase 5 -->
+      <g>
+        <rect x="1110" y="110" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="1110" y="110" width="170" height="60" rx="6" fill="var(--sec-fill)" stroke="var(--sec-stroke)" stroke-width="1.5"/>
+        <text x="1195" y="136" fill="var(--sec-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">5-Security Lens</text>
+        <text x="1195" y="152" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Audit vs policy</text>
+      </g>
+
+      <!-- Phase 6 -->
+      <g>
+        <rect x="1110" y="230" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="1110" y="230" width="170" height="60" rx="6" fill="var(--bus-fill)" stroke="var(--bus-stroke)" stroke-width="1.5"/>
+        <text x="1195" y="256" fill="var(--bus-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">6-Helper Skills</text>
+        <text x="1195" y="272" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Code Review / Telemetry</text>
+      </g>
+
+      <!-- Decision FALLOW -->
+      <g>
+        <polygon points="800,230 840,260 800,290 760,260" fill="var(--bg)"/>
+        <polygon points="800,230 840,260 800,290 760,260" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)" stroke-width="1.5"/>
+        <text x="800" y="264" fill="var(--cloud-stroke)" font-size="9" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">fallow?</text>
+      </g>
+
+      <!-- Phase 7 -->
+      <g>
+        <rect x="715" y="350" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="715" y="350" width="170" height="60" rx="6" fill="var(--bus-fill)" stroke="var(--bus-stroke)" stroke-width="1.5"/>
+        <text x="800" y="376" fill="var(--bus-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">7-Fallow Cleanup</text>
+        <text x="800" y="392" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Re-run proofs</text>
+      </g>
+
+      <!-- Phase 8 -->
+      <g>
+        <rect x="375" y="350" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="375" y="350" width="170" height="60" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)" stroke-width="1.5"/>
+        <text x="460" y="376" fill="var(--be-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">8-Write Review</text>
+        <text x="460" y="392" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Write to review.md</text>
+      </g>
+
+      <!-- Phase 9 -->
+      <g>
+        <rect x="375" y="470" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="375" y="470" width="170" height="60" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)" stroke-width="1.5"/>
+        <text x="460" y="496" fill="var(--be-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">9-Scenarios</text>
+        <text x="460" y="512" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">testing-scenarios.md</text>
+      </g>
+
+      <!-- Decision VERDICT -->
+      <g>
+        <polygon points="630,470 670,500 630,530 590,500" fill="var(--bg)"/>
+        <polygon points="630,470 670,500 630,530 590,500" fill="var(--cloud-fill)" stroke="var(--cloud-stroke)" stroke-width="1.5"/>
+        <text x="630" y="504" fill="var(--cloud-stroke)" font-size="9" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">verdict</text>
+      </g>
+
+      <!-- Phase 11 -->
+      <g>
+        <rect x="710" y="470" width="170" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="710" y="470" width="170" height="60" rx="6" fill="var(--be-fill)" stroke="var(--be-stroke)" stroke-width="1.5"/>
+        <text x="795" y="496" fill="var(--be-stroke)" font-size="11" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', monospace">11-Post-Ship Sync</text>
+        <text x="795" y="512" fill="var(--text-secondary)" font-size="8.5" text-anchor="middle" font-family="'JetBrains Mono', monospace">Memory sweep</text>
+      </g>
+
+      <!-- Done Box -->
+      <g>
+        <rect x="920" y="470" width="140" height="60" rx="6" fill="var(--bg)"/>
+        <rect x="920" y="470" width="140" height="60" rx="6" fill="var(--fe-fill)" stroke="var(--fe-stroke)" stroke-width="1.5"/>
+        <!-- Inner double border -->
+        <rect x="923" y="473" width="134" height="54" rx="4" fill="none" stroke="var(--fe-stroke)" stroke-width="0.75" stroke-dasharray="3,2"/>
+        <text x="990" y="506" fill="var(--fe-stroke)" font-size="12" font-weight="700" text-anchor="middle" font-family="'JetBrains Mono', monospace">Done</text>
+      </g>
+
+    </svg>
+  </div>
+
+  <script>
+  (() => {
+    const root = document.documentElement;
+    const btnTheme = document.getElementById('btn-theme');
+    const btnStyle = document.getElementById('btn-style');
+    
+    // Theme logic
+    const savedTheme = localStorage.getItem('arch-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let theme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+    function applyTheme(t) {
+      theme = t;
+      root.setAttribute('data-theme', t);
+      btnTheme.textContent = t === 'dark' ? '☀ Light' : '🌙 Dark';
+      localStorage.setItem('arch-theme', t);
+    }
+    applyTheme(theme);
+    btnTheme.addEventListener('click', () => applyTheme(theme === 'dark' ? 'light' : 'dark'));
+
+    // Style logic
+    const savedStyle = localStorage.getItem('arch-style') || 'default';
+    let currentStyle = savedStyle;
+
+    function applyStyle(s) {
+      currentStyle = s;
+      if (s === 'default') {
+        root.removeAttribute('data-style');
+      } else {
+        root.setAttribute('data-style', s);
+      }
+      btnStyle.textContent = `🎨 Style: ${s.charAt(0).toUpperCase() + s.slice(1)}`;
+      localStorage.setItem('arch-style', s);
+    }
+    applyStyle(currentStyle);
+    
+    const stylesList = ['default', 'blueprint', 'notion'];
+    btnStyle.addEventListener('click', () => {
+      const idx = stylesList.indexOf(currentStyle);
+      const nextStyle = stylesList[(idx + 1) % stylesList.length];
+      applyStyle(nextStyle);
+    });
+
+    const btnExport = document.getElementById('btn-export');
+    const exportMenu = document.getElementById('export-menu');
+    btnExport.addEventListener('click', e => { e.stopPropagation(); exportMenu.classList.toggle('open'); });
+    document.addEventListener('click', () => exportMenu.classList.remove('open'));
+
+    const svgEl = document.getElementById('diagram');
+    const SCALE = 4;
+    const TITLE = (document.querySelector('h1.diagram-title')?.textContent || 'diagram').trim().replace(/\s+/g, '-');
+
+    function svgToPng(scale, format) {
+      return new Promise(resolve => {
+        const clone = svgEl.cloneNode(true);
+        const [,, w, h] = svgEl.getAttribute('viewBox').split(' ').map(Number);
+        clone.setAttribute('width', w * scale);
+        clone.setAttribute('height', h * scale);
+        const cs = getComputedStyle(root);
+        const vars = ['--bg','--grid','--text-primary','--text-secondary','--border'];
+        const styleEl = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+        styleEl.textContent = `:root{${vars.map(v => `${v}:${cs.getPropertyValue(v).trim()}`).join(';')}}`;
+        clone.prepend(styleEl);
+        const blob = new Blob([new XMLSerializer().serializeToString(clone)], {type: 'image/svg+xml'});
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = w * scale; canvas.height = h * scale;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
+          const mime = {jpeg:'image/jpeg', webp:'image/webp'}[format] || 'image/png';
+          canvas.toBlob(resolve, mime, 0.95);
+        };
+        img.src = url;
+      });
+    }
+
+    function dl(blob, name) {
+      const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: name});
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }
+
+    document.getElementById('exp-copy').addEventListener('click', async () => {
+      const blob = await svgToPng(2, 'png');
+      await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    });
+    document.getElementById('exp-png').addEventListener('click',  async () => dl(await svgToPng(SCALE,'png'),  `${TITLE}.png`));
+    document.getElementById('exp-jpeg').addEventListener('click', async () => dl(await svgToPng(SCALE,'jpeg'), `${TITLE}.jpg`));
+    document.getElementById('exp-webp').addEventListener('click', async () => dl(await svgToPng(SCALE,'webp'), `${TITLE}.webp`));
+    document.getElementById('exp-svg').addEventListener('click', () => {
+      const clone = svgEl.cloneNode(true);
+      const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      const cssDark = [
+        '--bg:#020617;--grid:#1e293b;--text-primary:#f1f5f9;--text-secondary:#94a3b8;--border:#334155;',
+        '--fe-fill:rgba(8,51,68,0.4);--fe-stroke:#22d3ee;',
+        '--be-fill:rgba(6,78,59,0.4);--be-stroke:#34d399;',
+        '--db-fill:rgba(76,29,149,0.4);--db-stroke:#a78bfa;',
+        '--cloud-fill:rgba(120,53,15,0.3);--cloud-stroke:#fbbf24;',
+        '--sec-fill:rgba(136,19,55,0.4);--sec-stroke:#fb7185;',
+        '--bus-fill:rgba(251,146,60,0.3);--bus-stroke:#fb923c;',
+        '--ext-fill:rgba(30,41,59,0.5);--ext-stroke:#94a3b8;',
+        '--fe-region-fill:rgba(8,51,68,0.05);--be-region-fill:rgba(6,78,59,0.04);',
+        '--db-region-fill:rgba(76,29,149,0.05);--cloud-region-fill:rgba(120,53,15,0.07);',
+        '--ext-region-fill:rgba(30,41,59,0.06);',
+        '--arrow-color:#64748b;--arrow-rose:#fb7185;'
+      ].join('');
+      const cssLight = [
+        '--bg:#f8fafc;--grid:#cbd5e1;--text-primary:#0f172a;--text-secondary:#64748b;--border:#e2e8f0;',
+        '--fe-fill:rgba(207,250,254,0.6);--fe-stroke:#0891b2;',
+        '--be-fill:rgba(209,250,229,0.6);--be-stroke:#059669;',
+        '--db-fill:rgba(237,233,254,0.6);--db-stroke:#7c3aed;',
+        '--cloud-fill:rgba(254,243,199,0.6);--cloud-stroke:#d97706;',
+        '--sec-fill:rgba(255,228,230,0.6);--sec-stroke:#e11d48;',
+        '--bus-fill:rgba(255,237,213,0.6);--bus-stroke:#ea580c;',
+        '--ext-fill:rgba(241,245,249,0.6);--ext-stroke:#64748b;',
+        '--fe-region-fill:rgba(207,250,254,0.1);--be-region-fill:rgba(209,250,229,0.1);',
+        '--db-region-fill:rgba(237,233,254,0.1);--cloud-region-fill:rgba(254,243,199,0.1);',
+        '--ext-region-fill:rgba(241,245,249,0.1);',
+        '--arrow-color:#475569;--arrow-rose:#e11d48;'
+      ].join('');
+      style.textContent = [
+        `:root{${cssDark}}`,
+        `@media(prefers-color-scheme:light){:root{${cssLight}}}`
+      ].join('');
+      clone.prepend(style);
+      dl(new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'}), `${TITLE}.svg`);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+      if (e.key === 't' || e.key === 'T') applyTheme(theme === 'dark' ? 'light' : 'dark');
+      if (e.key === 's' || e.key === 'S') {
+        const idx = stylesList.indexOf(currentStyle);
+        const nextStyle = stylesList[(idx + 1) % stylesList.length];
+        applyStyle(nextStyle);
+      }
+      if (e.key === 'e' || e.key === 'E') exportMenu.classList.toggle('open');
+    });
+  })();
+  </script>
+</body>
+</html>
