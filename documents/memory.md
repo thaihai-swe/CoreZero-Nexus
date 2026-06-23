@@ -254,3 +254,42 @@ sequenceDiagram
         Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
     end
 ```
+
+## Skill Write Access
+
+Under the `kit/memories` directory, files are primarily updated by three major categories of skills: Initialization, Ongoing Context Maintenance, and Execution Telemetry.
+
+### 1. Initialization (`/starter-init`)
+
+This skill is responsible for creating the initial scaffolding and performing the first-pass customization of all core memory files:
+
+- `memories/repo/core-policies.md`
+- `memories/repo/security-policy.md`
+- `memories/repo/project-knowledge-base.md`
+- `memories/repo/learned-heuristics.md`
+- `memories/repo/harness-config.md`
+- `memories/repo/domain-specs.md`
+- `memories/repo/brownfield/brownfield-map.md` (Created only if analyzing a legacy codebase)
+- `memories/domain/<name>/glossary.md`
+
+### 2. Ongoing Knowledge Promotion (`/context-memory`)
+
+After `starter-init` finishes the bootstrap, `/context-memory` takes over permanent ownership of the knowledge base. At the end of every feature, it reads `session-extracts.md` and surgically updates:
+
+- `memories/repo/project-knowledge-base.md` (Promotes newly discovered domain jargon and project boundaries)
+- `memories/repo/learned-heuristics.md` (Promotes newly learned "rules of thumb" or recurring traps to avoid)
+- `memories/repo/security-policy.md` (Updates trust boundaries if they changed)
+- `memories/repo/core-policies.md`
+- `memories/repo/domain-specs.md`
+
+### 3. Harness Telemetry & Diagnostics
+
+The `memories/repo/harness-telemetry.md` file tracks failure states and dashboard metrics. It is actively updated by three active execution skills:
+
+- `/harness-verify`: Increments failure counters if a mechanical gate fails.
+- `/spec-implement`: Logs failures when the test suite or mechanical gates break during implementation.
+- `/context-status`: Overwrites the `# Current State` section of the telemetry file so the dashboard stays up to date.
+
+### 4. Harness Upgrades (`/harness-maintain`)
+
+- `/harness-maintain`: Periodically updates `memories/repo/learned-heuristics.md` when running structural audits of the kit itself.

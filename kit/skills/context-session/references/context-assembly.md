@@ -18,7 +18,7 @@ Load context from highest-signal to lowest-signal:
 
    - **Knowledge group** (`project-knowledge-base.md`) — loaded when the task touches patterns, conventions, stack, or domain language.
    - **Learned group** (`learned-heuristics.md`) — loaded when the task echoes a heuristic trigger (recurring instinct, "we always/never", "last time").
-   - **Architecture group** (`docs/project/architecture.md`, `docs/project/code-map.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
+   - **Architecture group** (`docs/project/architecture.md`, `docs/project/adr/index.md`, `docs/project/code-map.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
    - **Debug group** (`memories/repo/harness-telemetry.md`, prior `session-extracts.md`) — loaded only on debug, retro, failure, or post-mortem work.
    - Purpose: durable knowledge, but loaded by relevance, not by default. Skip groups whose triggers do not match.
 4. **Feature Artifacts**

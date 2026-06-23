@@ -39,3 +39,8 @@ Living architecture doc for the installed CoreZero surface.
 
 - High-risk areas: `scripts/install.sh`, `docs/generated/*`, shipped path claims in `docs/project/*`, and `docs/policies/code-design.md`
 - Required proof: installer dry-run and install smoke test
+
+## Architectural Decision Records (ADRs)
+
+All architectural decisions for this project are documented individually to maintain context over time. 
+See the [ADR Master Index](adr/index.md) for a complete log of decisions.

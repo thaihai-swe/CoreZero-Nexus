@@ -4,13 +4,13 @@
 
 ## Purpose
 
-Track all architecture decisions in one place for discoverability. Each ADR lives in `docs/project/adr/[number]-[slug].md` but is indexed here for cross-feature visibility.
+Track all architecture decisions in one place for discoverability. Each ADR lives in `[number]-[slug].md` within this directory and is indexed here for cross-feature visibility.
 
 ## Format
 
 | ID | Title | Status | Date | Feature | Impact |
 |----|-------|--------|------|---------|--------|
-| ADR-001 | | [Proposed \| Accepted \| Deprecated \| Superseded] | YYYY-MM-DD | | [Low \| Medium \| High] |
+| [ADR-001](0001-example.md) | | [Proposed \| Accepted \| Deprecated \| Superseded] | YYYY-MM-DD | | [Low \| Medium \| High] |
 
 ## Status Definitions
 
