@@ -1,9 +1,12 @@
 ---
+id: skill-context-memory
 name: context-memory
-description: Update repository memories and learned heuristics.
+description: "Update repository memories and learned heuristics."
+tags: ['context', 'memory', 'heuristics']
+triggers: ['memory', 'heuristic', 'learned', 'update memory']
+next_skill: 'context-compact'
 
 ---
-
 # Context Memory
 
 ## Overview

@@ -1,9 +1,12 @@
 ---
+id: skill-context-compact
 name: context-compact
-description: Detect and safely compact oversized memory files to prevent context window saturation. Summarizes, deduplicates, and prunes while retaining 100% of normative intent.
+description: "Detect and safely compact oversized memory files to prevent context window saturation. Summarizes, deduplicates, and prunes while retaining 100% of normative intent."
+tags: ['context', 'compression', 'memory']
+triggers: ['compact', 'compress', 'memory full', 'token budget']
+next_skill: 'context-status'
 
 ---
-
 # Context Compact
 
 ## Overview

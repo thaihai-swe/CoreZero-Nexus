@@ -1,10 +1,12 @@
 ---
+id: skill-code-review
 name: code-review
-description: Perform code review following Google's Engineering Practices. Evaluates code health, design, functionality, complexity, testing, naming, and style.
-compatibility: Designed for agents reviewing code changes or PRs.
+description: "Perform code review following Google's Engineering Practices. Evaluates code health, design, functionality, complexity, testing, naming, and style."
+tags: ['review', 'quality', 'standards']
+triggers: ['review', 'merge', 'pull request', 'code quality']
+next_skill: ''
 
 ---
-
 # Code Review Skill
 
 
@@ -23,6 +25,21 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 
 - Assigned to review a new PR or CL.
 - Evaluating quality, maintainability, and correctness of proposed changes before merge.
+
+## I/O Hand-off Protocol
+
+### Inputs
+- PR description, diff, and linked issues
+- `memories/repo/core-policies.md` (code standards, security policy)
+- `docs/rules/` style guides
+
+### Outputs
+- Structured review verdict: overall decision, mandatory findings, optional suggestions
+- `review.md` written in gated integration mode
+- Security halt with `SECURITY_HALT:` marker if security-sensitive paths are modified
+
+### Next Skill
+None (terminal — review output is consumed by human developers or `harness-verify`)
 
 ## Execution Modes: Standalone vs. Gated Integration
 

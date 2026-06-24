@@ -1,10 +1,12 @@
 ---
+id: skill-codebase-documenter
 name: codebase-documenter
-description: Generate comprehensive codebase documentation covering architecture, components, data flow, setup, deployment, and contributing — produces a multi-file doc set.
-compatibility: Designed for Claude, Codex, and other Agent Skills-compatible tools.
+description: "Generate comprehensive codebase documentation covering architecture, components, data flow, setup, deployment, and contributing — produces a multi-file doc set."
+tags: ['docs', 'architecture', 'onboarding']
+triggers: ['documentation', 'codebase', 'architecture', 'readme']
+next_skill: ''
 
 ---
-
 # Codebase Documenter
 
 
@@ -24,6 +26,19 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 - `memories/repo/core-policies.md` and `memories/repo/project-knowledge-base.md`
 - Root config and package/build files (`package.json`, `pom.xml`, etc.).
 - References: `references/templates.md`, `references/best-practices.md`, `references/diagram-patterns.md`, `../_shared/doc-conventions.md`, and `../_shared/diagram-catalog.md`.
+
+## I/O Hand-off Protocol
+
+### Inputs
+- Repository root path and project structure
+- `memories/repo/core-policies.md` and `memories/repo/project-knowledge-base.md`
+
+### Outputs
+- Multi-file documentation set: README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md
+- Output directory determined by user or default to `docs/`
+
+### Next Skill
+None (terminal — documentation is consumed by developers directly)
 
 ## Workflow
 

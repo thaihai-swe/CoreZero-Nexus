@@ -1,9 +1,12 @@
 ---
+id: skill-technical-docs
 name: technical-docs
-description: Generate API docs or developer guides for specific features. Use this skill when a feature introduces new public APIs, CLI commands, database schemas, or complex component interactions that require structured, durable technical documentation for team reference and code maintenance.
+description: "Generate API docs or developer guides for specific features. Use this skill when a feature introduces new public APIs, CLI commands, database schemas, or complex component interactions that require structured, durable technical documentation for team reference and code maintenance."
+tags: ['docs', 'technical', 'api']
+triggers: ['technical docs', 'api docs', 'reference']
+next_skill: ''
 
 ---
-
 # Technical Docs
 
 ## Overview

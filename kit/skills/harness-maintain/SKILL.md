@@ -1,9 +1,12 @@
 ---
+id: skill-harness-maintain
 name: harness-maintain
-description: Maintain harness configuration, assess health, and self-improve from telemetry.
+description: "Maintain harness configuration, assess health, and self-improve from telemetry."
+tags: ['harness', 'maintenance', 'health']
+triggers: ['maintain', 'health', 'assess', 'improve']
+next_skill: 'spec-adr'
 
 ---
-
 # Harness Maintain
 
 ## Overview

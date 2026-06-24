@@ -1,9 +1,12 @@
 ---
+id: skill-spec-implement
 name: spec-implement
-description: Execute implementation work task-by-task. Uses the approved spec, plan, and task list to drive code changes with strict status tracking and validation.
+description: "Execute implementation work task-by-task. Uses the approved spec, plan, and task list to drive code changes with strict status tracking and validation."
+tags: ['spec', 'implementation', 'delivery']
+triggers: ['implement', 'code', 'build', 'deliver']
+next_skill: 'harness-verify'
 
 ---
-
 # Kit Implement
 
 ## Overview

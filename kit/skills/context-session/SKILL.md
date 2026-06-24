@@ -1,9 +1,12 @@
 ---
+id: skill-context-session
 name: context-session
-description: Manage session start, checkpoint, and end handoffs for an existing feature.
+description: "Manage session start, checkpoint, and end handoffs for an existing feature."
+tags: ['context', 'session', 'startup']
+triggers: ['session', 'start', 'checkpoint', 'context']
+next_skill: 'context-memory'
 
 ---
-
 # Context Session
 
 ## Overview

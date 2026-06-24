@@ -1,9 +1,12 @@
 ---
+id: skill-harness-verify
 name: harness-verify
-description: Verify implemented work against the spec and plan. Handles split verification modes, mechanical gates, implementation reviews (via the code-review skill), optional fallow-pass cleanup, manual testing guides, and final closeout authority.
+description: "Verify implemented work against the spec and plan. Handles split verification modes, mechanical gates, implementation reviews (via the code-review skill), optional fallow-pass cleanup, manual testing guides, and final closeout authority."
+tags: ['harness', 'verification', 'gates']
+triggers: ['verify', 'gate', 'test', 'validation']
+next_skill: 'context-status'
 
 ---
-
 # Harness Verify
 
 ## Overview

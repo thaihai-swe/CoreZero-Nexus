@@ -1,9 +1,12 @@
 ---
+id: skill-spec-adr
 name: spec-adr
-description: Create or evaluate an architecture decision record (ADR). Use when choosing between technologies, documenting design trade-offs, or reviewing system proposals. This skill ensures decisions are recorded with context, trade-offs, and long-term consequences.
+description: "Create or evaluate an architecture decision record (ADR). Use when choosing between technologies, documenting design trade-offs, or reviewing system proposals. This skill ensures decisions are recorded with context, trade-offs, and long-term consequences."
+tags: ['spec', 'decision', 'architecture']
+triggers: ['adr', 'decision', 'architecture decision']
+next_skill: ''
 
 ---
-
 # Kit ADR
 
 ## Overview
@@ -30,3 +33,7 @@ Record significant architectural decisions.
 - **Traceability:** Link ADRs to `spec.md` when writing during the spec phase. Link to `plan.md` only when the planning phase has completed and the plan exists.
 - **Immutability:** Once "Accepted," ADRs should be superseded or deprecated, not deleted or significantly altered.
 - **Surgical Scope:** Focus on the architectural decision, not the implementation details.
+
+## Read First
+
+Read this skill thoroughly before invoking it.

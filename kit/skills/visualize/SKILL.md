@@ -1,15 +1,12 @@
 ---
+id: skill-visualize
 name: visualize
-description: >-
-  Use when the user wants to create a technical diagram — architecture, data
-  flow, flowchart, sequence, agent/memory, UML, or concept map — and export it
-  as SVG and/or Mermaid. Trigger on: "generate diagram" "draw diagram"
-  "create chart" "visualize" "architecture diagram" "flowchart"
-  "sequence diagram" "data flow" "mermaid diagram" or any system/flow
-  description that should be visualized.
-compatibility: Designed for all Agent Skills-compatible tools.
----
+description: ">-"
+tags: ['visualization', 'diagrams', 'mermaid']
+triggers: ['visualize', 'diagram', 'mermaid', 'chart']
+next_skill: ''
 
+---
 # CoreZero Visualize
 
 ## Overview
@@ -17,6 +14,19 @@ compatibility: Designed for all Agent Skills-compatible tools.
 Generate production-quality technical diagrams from natural language.
 This is a specialist helper skill for plans, specs, and docs when a visual artifact genuinely improves clarity; it is not part of the default delivery loop.
 Supported outputs in this repo: **SVG** (polished, deterministic) and **Mermaid** (editable text diagrams).
+
+## I/O Hand-off Protocol
+
+### Inputs
+- Natural language diagram description from the user
+- References: diagram style guides under `references/`
+
+### Outputs
+- SVG file, Mermaid code block, or both
+- Validated against `scripts/validate-svg.sh` or `scripts/validate_mermaid.py`
+
+### Next Skill
+None (terminal — diagram output is embedded into documents by the caller)
 
 This skill is not prompt-only. It ships with:
 - `scripts/generate-from-template.py` for style-driven SVG generation
@@ -217,5 +227,3 @@ python3 ./skills/visualize/scripts/validate_mermaid.py path/to/diagram.mmd
 
 - Ask for clarification when the description is too vague to resolve into nodes and edges.
 - Do not generate a one-box diagram with no relationships.
-
-

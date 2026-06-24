@@ -1,8 +1,12 @@
 ---
+id: skill-spec-plan
 name: spec-plan
-description: Design the technical solution and sequence execution. Handles architectural design, implementation planning, task breakdown, and automated traceability from requirements to tasks.
----
+description: "Design the technical solution and sequence execution. Handles architectural design, implementation planning, task breakdown, and automated traceability from requirements to tasks."
+tags: ['spec', 'planning', 'tasks']
+triggers: ['plan', 'task', 'breakdown', 'estimate']
+next_skill: 'spec-implement'
 
+---
 # Kit Plan
 
 ## Overview
@@ -38,3 +42,11 @@ Converts an approved spec into a concrete execution strategy. Produces `plan.md`
   3. Re-run Steps 2–4 (Design, Task Breakdown, Traceability) before any implementation task resumes.
   Implementation MUST NOT continue against a stale plan.
 - **Context Eviction**: After drafting the plan, you MUST summarize any raw architectural logs and evict them from your context window before handing off to `/spec-implement`.
+
+## Read First
+
+Read this skill thoroughly before invoking it.
+
+## When to Use
+
+Use this skill for its designated purpose within the delivery flow.

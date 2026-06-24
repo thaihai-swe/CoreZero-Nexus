@@ -1,8 +1,12 @@
 ---
+id: skill-spec-research
 name: spec-research
-description: Investigate a problem, feature area, bug, or brownfield subsystem and produce one bounded analysis artifact grounded in repository evidence. Use when root cause is unknown or current behavior must be mapped first.
----
+description: "Investigate a problem, feature area, bug, or brownfield subsystem and produce one bounded analysis artifact grounded in repository evidence. Use when root cause is unknown or current behavior must be mapped first."
+tags: ['spec', 'research', 'exploration']
+triggers: ['research', 'explore', 'brownfield', 'unknown']
+next_skill: 'spec-requirements'
 
+---
 # Kit Research
 
 ## Overview
@@ -29,7 +33,7 @@ Investigate system behaviors and produce `artifacts/features/<slug>/analysis.md`
    5. **Propose Fix**: Document the verified root cause and propose the regression test seam and fix in `analysis.md` (to be handed off to implementation).
    6. **Cleanup**: Ensure all debug instrumentation is removed.
    - **Subagent-First Exploration (SFE):** For large unknown subsystems, delegate bounded explorations to subagents and return summaries.
-4. **Brownfield Mapping**: Map target files, trace dependencies, identify preserved behaviors, boundary contracts, reuse patterns, risks, and migration constraints. 
+4. **Brownfield Mapping**: Map target files, trace dependencies, identify preserved behaviors, boundary contracts, reuse patterns, risks, and migration constraints.
 5. **Document**: Write all findings, risks, and next steps in `artifacts/features/<slug>/analysis.md` using the Brownfield Readiness Artifact structure from `references/analysis-template.md` (or `references/brownfield-mapping-template.md`).
 6. **Handoff**: Update `status.md` to `Research Complete`. Route based on findings:
    - Scope and requirements clear → `/spec-requirements`

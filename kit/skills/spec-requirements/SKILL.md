@@ -1,9 +1,12 @@
 ---
+id: skill-spec-requirements
 name: spec-requirements
+description: "Define the "What & Why" of a feature. Handles specification authoring, Socratic refinement to resolve ambiguity, and a built-in readiness review to ensure requirements are testable and complete before planning."
+tags: ['spec', 'requirements', 'analysis']
+triggers: ['requirement', 'spec', 'feature']
+next_skill: 'spec-plan'
 
-description: Define the "What & Why" of a feature. Handles specification authoring, Socratic refinement to resolve ambiguity, and a built-in readiness review to ensure requirements are testable and complete before planning.
 ---
-
 # Kit Spec
 ## Routing Guide
 
@@ -27,7 +30,7 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found
 1. **Initialization**: Create `status.md` if missing (from `_shared/status-template.md`). Set phase to `Spec'ing`.
 2. **Intake & Routing**: Classify input type (`new_spec`, `spec_slice`, `change_request`, `new_initiative`, `maintenance`, `harness_improvement`) and risk flags in `status.md` per `references/intake.md`.
     - **System Spec Mode**: If the request is cross-cutting or system-wide, switch to System Spec Mode. Output target becomes `docs/system-specs/<name>.md`.
-3. **Context Alignment**: 
+3. **Context Alignment**:
     - **Domain Pack Scan**: If any keyword from the feature description matches a domain pack trigger in `memories/domain/<name>/glossary.md` frontmatter, you MUST load that pack before writing the spec and note it in `status.md`.
     - **Analysis Check**: Read `artifacts/features/<slug>/analysis.md` (if exists) and record open research questions.
     - **Domain Spec Check**: If `memories/repo/domain-specs.md` exists, read relevant domain specs.

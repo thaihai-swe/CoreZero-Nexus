@@ -1,9 +1,12 @@
 ---
+id: skill-context-status
 name: context-status
-description: Orchestrate and report on the status of all active features. This meta-skill acts as a project manager, providing a high-level view of progress, blockers, and next steps across the repository.
+description: "Orchestrate and report on the status of all active features. This meta-skill acts as a project manager, providing a high-level view of progress, blockers, and next steps across the repository."
+tags: ['context', 'status', 'report']
+triggers: ['status', 'report', 'overview', 'progress']
+next_skill: 'harness-maintain'
 
 ---
-
 # Context Status
 
 ## Overview
@@ -33,3 +36,11 @@ Aggregates status across all active feature branches, updates the repo-wide stat
 ## Core Rules
 - **No Stale Statuses**: Always run context-status to sync telemetry state when a feature transitions to a new phase or completes a task.
 - **Accurate Aggregation**: Do not guess feature statuses. If `status.md` is missing for a feature directory, mark its phase as `[UNKNOWN]`.
+
+## Read First
+
+Read this skill thoroughly before invoking it.
+
+## When to Use
+
+Use this skill for its designated purpose within the delivery flow.

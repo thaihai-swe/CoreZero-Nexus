@@ -1,9 +1,12 @@
 ---
+id: skill-starter-init
 name: starter-init
-description: Initialize the kit structure in a new repository.  Initialize a project for harnessed agentic development.
+description: "Initialize the kit structure in a new repository.  Initialize a project for harnessed agentic development."
+tags: ['setup', 'init', 'onboarding']
+triggers: ['init', 'start', 'setup', 'install']
+next_skill: 'spec-research'
 
 ---
-
 # Starter Init
 
 ## Overview
