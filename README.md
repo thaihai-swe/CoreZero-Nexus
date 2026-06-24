@@ -20,7 +20,7 @@ CoreZero has two explicit products:
 ## Install The Kit
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/kit/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero/main/kit/scripts/install.sh \
   | bash -s -- /path/to/your/project
 ```
 

@@ -5,7 +5,7 @@ This runbook covers the supported install and upgrade path for the shipped packa
 ## Public Install Command
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero/main/scripts/install.sh \
   | bash -s -- /path/to/your/project
 ```
 
@@ -29,8 +29,8 @@ bash scripts/install.sh /path/to/your/project --dry-run
 
 After install:
 
-1. Read `docs/README.md`
-2. Read `documents/onboarding.md`
+1. Read `kit-map.md` to understand the command layers
+2. Read `skills-guide.md` for the shipped command roster
 3. Run `/starter-init`
 4. Continue with `/spec-research` or `/spec-requirements`
 5. Use `/context-status`, `/harness-maintain`, and `/spec-adr` when governance or multi-feature coordination work needs them

@@ -56,7 +56,7 @@ The kit enforces environment control and architectural boundaries using the form
 
 ### G. Governance (Policies & FinOps)
 - **Definition**: Cost containment, security boundaries, and authorization levels that define agent permissions.
-- **Implementation**: **FinOps guardrails** enforce **Cost-per-Accepted-Outcome (CAPO)** metrics (e.g. limiting command retries and total session budget), while `core-policies.md` (under `## Security Policy & Trust Boundaries`) establishes trusted boundaries.
+- **Implementation**: **FinOps guardrails** enforce **Cost-per-Accepted-Outcome (CAPO)** metrics (e.g. limiting command retries and total session budget), while `core-policies.md` (under `## Security Policy` and `## Trust Boundaries`) establishes trusted boundaries.
 
 ---
 

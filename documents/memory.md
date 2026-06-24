@@ -133,7 +133,7 @@ Security candidates always escalate immediately regardless of repetition count.
 
 ### Promotion Thresholds (from `core-policies.md`)
 
-A memory file approaching these thresholds is added to `INDEX.md ## Promotion Watchlist`:
+A memory file approaching these thresholds is added to `MASTER_INDEX.md ## Promotion Watchlist`:
 - File length ≥ 800 lines (warn) / 1200 lines (hard)
 - 3+ distinct H2 subtopics covering separable concerns
 - 5+ feature artifacts citing the same slice
@@ -184,7 +184,7 @@ flowchart LR
 
     SHIP([Feature Ships<br/>harness-verify Pass]) --> SYNC[Post-Ship Sync<br/>context-memory sweep]
 
-    SYNC -->|sweep every file in INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
+    SYNC -->|sweep every file in MASTER_INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
 
     FILES -->|durable lesson| EXT[Append candidate<br/>session-extracts.md]
     FILES -->|harness failure| OBS[Append entry<br/>harness-telemetry.md]
@@ -220,14 +220,14 @@ flowchart LR
 
 ### Post-Ship Sync Sequence
 
-The sweep is mandatory after a passing verdict. Verify cannot finalize until every file in `INDEX.md` is accounted for — generic "no updates needed" fails the gate.
+The sweep is mandatory after a passing verdict. Verify cannot finalize until every file in `MASTER_INDEX.md` is accounted for — generic "no updates needed" fails the gate.
 
 ```mermaid
 sequenceDiagram
     autonumber
     participant V as harness-verify
     participant M as context-memory<br/>Post-Ship Sync
-    participant I as INDEX.md
+    participant I as MASTER_INDEX.md
     participant F as Memory Files
     participant E as session-extracts.md
     participant S as status.md
@@ -236,7 +236,7 @@ sequenceDiagram
     V->>M: Hand off to Post-Ship Sync
     M->>I: Read every file listed
     I-->>M: Always + By-Intent + By-Debug groups
-    loop For each file in INDEX.md
+    loop For each file in MASTER_INDEX.md
         M->>F: Read file
         alt Durable change found
             M->>E: Append candidate to ## Post-Ship Sync block
@@ -245,7 +245,7 @@ sequenceDiagram
             M->>E: Record file name + 1-line reason untouched
         end
     end
-    M->>E: Verify every INDEX file accounted for
+    M->>E: Verify every MASTER_INDEX file accounted for
     alt Sweep complete
         M-->>V: OK — sync record present
         V->>S: Set phase = Done
@@ -257,39 +257,60 @@ sequenceDiagram
 
 ## Skill Write Access
 
-Under the `kit/memories` directory, files are primarily updated by three major categories of skills: Initialization, Ongoing Context Maintenance, and Execution Telemetry.
+Files under `memories/`, `docs/project/`, and `docs/policies/` are updated by different skills depending on their tier. Below is the mapping against the actual shipped manifest.
 
-### 1. Initialization (`/starter-init`)
+### Memory Files (`memories/repo/` — all `copyIfMissing`)
 
-This skill is responsible for creating the initial scaffolding and performing the first-pass customization of all core memory files:
+| File | Created By | Updated By | Content |
+|------|-----------|------------|---------|
+| `core-policies.md` | `/starter-init` | `/context-memory` | Normative repo rules (CC-*), security boundaries, promotion thresholds |
+| `project-knowledge-base.md` | `/starter-init` | `/context-memory` | Durable facts, conventions, patterns |
+| `learned-heuristics.md` | `/starter-init` | `/context-memory`, `/harness-maintain` | Evidence-backed execution patterns |
+| `harness-telemetry.md` | `/starter-init` | `/harness-verify`, `/spec-implement`, `telemetry-collector.sh` | Failure log (auto tier) |
+| `adr-log.md` | `/spec-adr` (lazy) | `/spec-adr` | ADR registry |
 
-- `memories/repo/core-policies.md`
-- `memories/repo/security-policy.md`
-- `memories/repo/project-knowledge-base.md`
-- `memories/repo/learned-heuristics.md`
-- `memories/repo/harness-config.md`
-- `memories/repo/domain-specs.md`
-- `memories/repo/brownfield/brownfield-map.md` (Created only if analyzing a legacy codebase)
-- `memories/domain/<name>/glossary.md`
+### Domain Packs (`memories/domain/`)
 
-### 2. Ongoing Knowledge Promotion (`/context-memory`)
+| File | Created By | Updated By |
+|------|-----------|------------|
+| `glossary.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
+| `patterns.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
+| `anti-patterns.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
+| `boundaries.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
 
-After `starter-init` finishes the bootstrap, `/context-memory` takes over permanent ownership of the knowledge base. At the end of every feature, it reads `session-extracts.md` and surgically updates:
+### Shipped Docs (`docs/project/` — all `copyIfMissing`)
 
-- `memories/repo/project-knowledge-base.md` (Promotes newly discovered domain jargon and project boundaries)
-- `memories/repo/learned-heuristics.md` (Promotes newly learned "rules of thumb" or recurring traps to avoid)
-- `memories/repo/security-policy.md` (Updates trust boundaries if they changed)
-- `memories/repo/core-policies.md`
-- `memories/repo/domain-specs.md`
+| File | Created By | Updated By |
+|------|-----------|------------|
+| `architecture.md` | `/starter-init` | `/context-memory`, adopter |
+| `code-map.md` | `/starter-init` | `/harness-maintain` |
+| `agent-capabilities.md` | `/starter-init` | Adopter |
+| `glossary.md` | `/starter-init` | `/context-memory` |
+| `product-sense.md` | `/starter-init` | Adopter |
+| `project-constraints.md` | `/starter-init` | Adopter |
+| `tech-stack.md` | `/starter-init` | Adopter |
 
-### 3. Harness Telemetry & Diagnostics
+### Shipped Config (`docs/project/` — `overwrite`)
 
-The `memories/repo/harness-telemetry.md` file tracks failure states and dashboard metrics. It is actively updated by three active execution skills:
+| File | Maintained By |
+|------|--------------|
+| `harness-config.yaml` | Kit-managed (overwrite on install) |
+| `spec-schema.json` | Kit-managed (overwrite on install) |
 
-- `/harness-verify`: Increments failure counters if a mechanical gate fails.
-- `/spec-implement`: Logs failures when the test suite or mechanical gates break during implementation.
-- `/context-status`: Overwrites the `# Current State` section of the telemetry file so the dashboard stays up to date.
+### Kit-Managed Policy (`docs/policies/`)
 
-### 4. Harness Upgrades (`/harness-maintain`)
+| File | Maintained By |
+|------|--------------|
+| `code-design.md` | Kit-managed (overwrite on install), consumed by `/spec-plan`, `/spec-implement`, `/harness-verify` |
 
-- `/harness-maintain`: Periodically updates `memories/repo/learned-heuristics.md` when running structural audits of the kit itself.
+### Summary by Skill
+
+| Skill | Writes To |
+|-------|-----------|
+| `/starter-init` | All `copyIfMissing` seeds (first-run only) |
+| `/context-memory` | `core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`, domain packs |
+| `/spec-adr` | `adr-*.md`, `adr-log.md` |
+| `/harness-verify` | `harness-telemetry.md` (on gate failure) |
+| `/spec-implement` | `harness-telemetry.md` (on gate failure) |
+| `/harness-maintain` | `learned-heuristics.md`, `code-map.md`, `harness-telemetry.md` |
+| `telemetry-collector.sh` | `harness-telemetry.md` (append failure record) |

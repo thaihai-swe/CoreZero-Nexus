@@ -1,7 +1,7 @@
 flowchart TD
-    %% Smart Context Routing via INDEX.md
+    %% Smart Context Routing via MASTER_INDEX.md
 
-    START([Session Start]) --> IDX[Read INDEX.md<br/>memory router]
+    START([Session Start]) --> IDX[Read MASTER_INDEX.md<br/>memory router]
     IDX --> ALWAYS[Load Always group<br/>core-policies.md]
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
@@ -21,7 +21,7 @@ flowchart TD
     FEAT --> REPORT[Report Context Loaded<br/>+ Context Skipped with reasons]:::group
     REPORT --> WORK([Begin work])
 
-    STALE[INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]:::fallback
+    STALE[MASTER_INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]:::fallback
     IDX -.->|if missing| STALE
 
     classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff

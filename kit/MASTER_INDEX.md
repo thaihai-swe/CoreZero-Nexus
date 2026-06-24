@@ -78,7 +78,7 @@ Installed packs:
 
 Trigger keywords: `debug`, `failure`, `regression`, `incident`, `retro`, `flaky`, `why did`, `root cause`.
 
-- `memories/repo/harness-telemetry.md` — auto-tier failure log written by `/harness-verify` and triaged by `/harness-maintain`.
+- `memories/repo/harness-telemetry.jsonl` + `.md` — JSONL records written by `telemetry-collector.sh`, human view rendered by `telemetry-render.sh`. Triaged by `/harness-maintain`.
 - `artifacts/features/<slug>/session-extracts.md` — per-feature distillation, candidate-only until triaged.
 
 ## 3. Phase × Guidance Matrix

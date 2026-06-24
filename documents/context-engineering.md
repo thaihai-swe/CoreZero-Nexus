@@ -6,6 +6,37 @@ Defines how the kit assembles, budgets, compacts, and evicts context during long
 
 ---
 
+## Progressive Disclosure
+
+Progressive disclosure layers information so agents load only what they need, when they need it. Instead of dumping all context upfront, the harness reveals deeper detail as the agent moves through the workflow.
+
+```
+Layer 1: Router (AGENTS.md)          ~50 lines    Always loaded
+    │
+    ▼
+Layer 2: Skill Contract (SKILL.md)   ~100-250 lines    Loaded when skill is invoked
+    │
+    ▼
+Layer 3: References (references/)    Variable    Loaded JIT within the skill workflow
+```
+
+### Layer 1: Router
+- **What**: `AGENTS.md` — priority rules, skill routing, and pointers to memory.
+- **When loaded**: Every session start. Always in context.
+- **Design rules**: Under 50 lines; no full skill bodies; points to deeper docs; sets behavioral constraints.
+
+### Layer 2: Skill Contract
+- **What**: `skills/<name>/SKILL.md` — full workflow, rules, stop conditions, and verification gates.
+- **When loaded**: Only when the command is invoked.
+- **Design rules**: Self-contained; references deeper docs but doesn't inline them; includes "Read First" and "Output Rules" sections.
+
+### Layer 3: References
+- **What**: Templates, rubrics, checklists, and examples in `skills/<name>/references/`.
+- **When loaded**: During specific workflow steps that need them.
+- **Design rules**: Each reference serves one purpose; named clearly; never loaded speculatively.
+
+---
+
 ## The Minimum Viable Context (MVC) Principle (Rule CC-011)
 
 To prevent cognitive drift, context window saturation, and high execution costs, the kit enforces the **Minimum Viable Context (MVC)** principle (**Rule CC-011**).
@@ -105,11 +136,37 @@ flowchart TB
 | 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
-**Intent groups (Tier 3) — defined in `memories/repo/MASTER_INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/generated/code-map.md`)
+**Intent groups (Tier 3) — defined in `MASTER_INDEX.md`:**
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/project/code-map.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
 - **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
+
+### Memory Files by Tier
+
+#### Instruction Tier — Human-Curated, Durable
+| File | Content | Update Frequency |
+|------|---------|-----------------|
+| `core-policies.md` | Normative repo-wide rules (CC-*), security boundaries, promotion thresholds | Rare — when tooling/policies change |
+| `project-knowledge-base.md` | Durable facts, conventions, patterns | As project evolves |
+| `learned-heuristics.md` | Evidence-backed execution patterns | After repeated observations |
+| `docs/project/architecture.md` | System boundaries, components, integration seams | When architecture changes |
+| `adr-log.md` | ADR index | Lazy-created on first ADR |
+
+#### Auto Tier — Failure-Driven, Append-Only
+| File | Content | Written By |
+|------|---------|-----------|
+| `harness-telemetry.md` | Harness/Model/Spec failure entries | `/harness-maintain` Improve Mode, `/harness-verify`, `telemetry-collector.sh` |
+
+#### Extracted Tier — Per-Feature Candidates
+| File | Content | Written By |
+|------|---------|-----------|
+| `artifacts/features/<slug>/session-extracts.md` | Session distillation — hypotheses not rules | `/context-session END`, `/harness-verify` post-ship sync |
+
+#### Router
+| File | Purpose |
+|------|---------|
+| `MASTER_INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug / By-Domain groups. Sessions read this first. |
 
 ## Assembly Rules
 
@@ -124,7 +181,7 @@ flowchart TB
 
 ## Smart Routing via MASTER_INDEX.md
 
-Tier 3 (memory by intent) is no longer "load everything." `memories/repo/MASTER_INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
+Tier 3 (memory by intent) is no longer "load everything." `MASTER_INDEX.md` declares Always-loaded files plus by-intent groups whose trigger keywords decide what loads. Sessions report what they loaded and what they skipped — silent skipping is not allowed.
 
 **Confidence-Scored Loading (Partial Loads):**
 When loading by-intent groups, the harness evaluates a confidence score based on keyword matches:
@@ -143,7 +200,7 @@ flowchart TD
     MATCH -->|architecture, pattern,<br/>stack, domain| KNOW[Load Knowledge group<br/>PKB + architecture]
     MATCH -->|heuristic, recurring,<br/>we always/never| LEARN[Load Learned group<br/>learned-heuristics]
     MATCH -->|domain glossary triggers| DOMAIN[Load Domain Pack<br/>glossary only or full pack]
-    MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>observability-log + session-extracts]
+    MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG[Load Debug group<br/>harness-telemetry + session-extracts]
     MATCH -->|no trigger matches| SKIP[Load Always tier only<br/>record 'no groups matched']
 
     KNOW --> FEAT[Load Feature artifacts<br/>spec / plan / tasks / handoff]
@@ -260,11 +317,11 @@ flowchart TD
     DECIDE -- Yes --> SPAWN[Spawn subagents]
 
     SPAWN --> SA1[Subagent A<br/>isolated context]
-    SPAWNOW[Subagent B<br/>isolated context]
+    SA2[Subagent B<br/>isolated context]
     SA3[Subagent C<br/>isolated context]
 
     SA1 -->|raw exploration<br/>stays isolated| R1[Summary Report A]
-    SPAWNOW -->|raw exploration<br/>stays isolated| R2[Summary Report B]
+    SA2 -->|raw exploration<br/>stays isolated| R2[Summary Report B]
     SA3 -->|raw exploration<br/>stays isolated| R3[Summary Report C]
 
     R1 --> MERGE[Merge ONLY summaries<br/>into main context]
@@ -285,9 +342,119 @@ flowchart TD
     classDef note fill:#f7f7f5,stroke:#e0e0e0,color:#111
 
     class MAIN,MERGE,STATUS main
-    class SA1,SPAWNOW,SA3 sub
+    class SA1,SA2,SA3 sub
     class R1,R2,R3 report
     class DECIDE decision
+```
+
+---
+
+## Promotion & Triage
+
+Knowledge flows from local feature execution upward into instruction-tier memory via manual triage and automatic sweeps.
+
+### Manual Promotion & Triage
+
+When a finding is identified in a feature folder (`session-extracts.md` or `harness-telemetry.md`), run `/context-memory` to initiate Extraction Triage:
+
+| Decision | Condition | Action |
+|----------|-----------|--------|
+| **Promote** | Repeated across 2+ features, evidence-backed, reusable | Write to Instruction Tier |
+| **Defer** | Promising but needs further confirmations | Retain in candidate log |
+| **Discard** | Feature-specific, obsolete, or incorrect | Discard with documented reason |
+
+*Normative rules* (must/should) route to `core-policies.md`.
+*Descriptive facts* (uses/prefers) route to `project-knowledge-base.md` or `learned-heuristics.md`.
+
+### Promotion Watchlist Thresholds
+
+To prevent file bloat, memory segments are audited against these boundaries (from `core-policies.md`):
+- Memory file length $\ge$ 800 lines (warning) / 1200 lines (hard limit).
+- $\ge$ 3 distinct H2 subtopics covering separate concerns.
+- $\ge$ 5 features referencing the same slice.
+
+---
+
+## Self-Improving Knowledge Loop
+
+Each feature release triggers a feedback loop: verification yields failures that upgrade the harness; successful verify sweeps compile findings for promotion.
+
+```mermaid
+flowchart LR
+    %% Self-Improving KB Loop — ship to extract to triage to promote
+
+    SHIP([Feature Ships<br/>harness-verify Pass]) --> SYNC[Post-Ship Sync<br/>context-memory sweep]
+
+    SYNC -->|sweep every file in MASTER_INDEX.md| FILES{Each memory file:<br/>update or justify untouched}
+
+    FILES -->|durable lesson| EXT[Append candidate<br/>session-extracts.md]
+    FILES -->|harness failure| OBS[Append entry<br/>harness-telemetry.md]
+    FILES -->|no change| RECORD[Record reason in<br/>Post-Ship Sync block]
+
+    EXT --> TRIAGE[context-memory<br/>Extraction Triage]
+    OBS --> TRIAGE
+
+    TRIAGE -->|repeated 2+ features| HEUR[Promote to<br/>learned-heuristics.md]
+    TRIAGE -->|normative rule or security finding| CONST[Promote to<br/>core-policies.md]
+    TRIAGE -->|durable pattern| PKB[Promote to<br/>project-knowledge-base.md]
+    TRIAGE -->|defer| DEF[Wait for next signal]
+    TRIAGE -->|feature-local| DISC[Discard<br/>with reason]
+
+    HEUR --> SMARTER[KB grows<br/>next session is smarter]
+    CONST --> SMARTER
+    PKB --> SMARTER
+
+    SMARTER -.->|loop back| SHIP
+
+    classDef terminal fill:#0d0d0d,stroke:#0d0d0d,color:#fff
+    classDef sync fill:#10b981,stroke:#047857,color:#fff
+    classDef triage fill:#f59e0b,stroke:#b45309,color:#fff
+    classDef promote fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    classDef discard fill:#fcf3f3,stroke:#f2c4c4,color:#c62828
+
+    class SHIP,SMARTER terminal
+    class SYNC,FILES,RECORD sync
+    class TRIAGE,EXT,OBS triage
+    class HEUR,CONST,PKB promote
+    class DEF,DISC discard
+```
+
+### Post-Ship Sync Sequence
+
+The `Post-Ship Sync` is a mandatory sequence after a passing verification. Generic skips (e.g., "No updates needed") are rejected.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant V as harness-verify
+    participant M as context-memory<br/>Post-Ship Sync
+    participant I as MASTER_INDEX.md
+    participant F as Memory Files
+    participant E as session-extracts.md
+    participant S as status.md
+
+    V->>V: Mechanical gate + Alignment + Security PASS
+    V->>M: Hand off to Post-Ship Sync
+    M->>I: Read every file listed
+    I-->>M: Always + By-Intent + By-Debug groups
+    loop For each file in MASTER_INDEX.md
+        M->>F: Read file
+        alt Durable change found
+            M->>E: Append candidate to ## Post-Ship Sync block
+            M->>F: Apply diff
+        else No change needed
+            M->>E: Record file name + 1-line reason untouched
+        end
+    end
+    M->>E: Verify every MASTER_INDEX file accounted for
+    alt Sweep complete
+        M-->>V: OK — sync record present
+        V->>S: Set phase = Done
+    else Generic skip detected
+        M-->>V: REJECT — re-run sweep
+        Note over V,M: "No updates needed" without<br/>per-file reason fails the gate
+    end
+
 ```
 
 ---
@@ -324,7 +491,7 @@ triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
 
 1. Create `memories/domain/` with the required files.
 2. Declare triggers in `glossary.md` frontmatter.
-3. Register the pack in `memories/repo/MASTER_INDEX.md` under `## By Domain Packs`.
+3. Register the pack in `MASTER_INDEX.md` under `## By Domain Packs`.
 4. See `memories/domain/README.md` for the full schema.
 
 ### Lifecycle
@@ -334,4 +501,116 @@ Domain packs are **adopter-owned** memory — the kit seeds the schema but not t
 Brownfield artifacts under `memories/repo/project-knowledge-base.md ## Repository Overview` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `MASTER_INDEX.md`; sessions need to load them intentionally when relevant.
 
 > **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract only the `## Index` section or first 50 lines of a memory file, preserving context budget without agent interpretation.
+
+---
+
+## Context Engine Implementation: Three-Layer Architecture
+
+The MVC principle is backed by three layers that work together to load only what's needed:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  1. MASTER_INDEX.md     — The Map (declarative table)      │
+│     Phase × Guidance Matrix tells you what to load         │
+│     per phase: Must / Should / Skip                        │
+├─────────────────────────────────────────────────────────────┤
+│  2. context_engine.py   — The Brain (Python engine)        │
+│     Reads the matrix, scores for relevance, tracks         │
+│     token budget, evicts low-value files, compresses.      │
+├─────────────────────────────────────────────────────────────┤
+│  3. context-loader.py   — The CLI (thin entrypoint)        │
+│     41 lines: parses args, instantiates ContextEngine,     │
+│     calls process_file() or run_route().                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Layer 1: MASTER_INDEX.md (the declarative map)
+
+The `## 3. Phase × Guidance Matrix` section is a 5-column table. The first column is the source file (with glob support via `*`). Columns 2–5 are the four delivery-loop phases (Spec / Plan / Implement / Verify). Each cell is one of `Must`, `Should`, or `Skip`.
+
+| Source | Spec | Plan | Implement | Verify |
+|---|---|---|---|---|
+| `core-policies.md` | Must | Must | Must | Must |
+| `docs/project/architecture.md` | Should | Should | Skip | Should |
+| `docs/rules/*.md` | Skip | Should | Must | Should |
+
+Short names (e.g. `core-policies.md`) are resolved to paths under `memories/repo/` by `_path_for_source()` in `context_engine.py`. Expressions with `*` are expanded as globs against the repo root. Entries with parenthetical suffixes like `(on language/domain match)` are parsed and the condition is dropped — the condition must be enforced by the caller.
+
+### Layer 2: context_engine.py (the engine)
+
+Located at `kit/scripts/core/context_engine.py`. Exposes class `ContextEngine`. Key internals:
+
+**Route resolution** — `resolve_route(root, phase)` (line 194):
+1. Opens `MASTER_INDEX.md` at the given root.
+2. Scans for `## 3. Phase × Guidance Matrix` section header.
+3. Parses every `| \`...\` | ... |` table row in that section.
+4. Filters to the column matching the requested phase (`spec`/`plan`/`implement`/`verify`).
+5. Drops `Skip` rows, keeps `Must` and `Should`.
+6. Resolves short names via `_path_for_source()` (line 142): maps `core-policies.md` → `memories/repo/core-policies.md`, `domain/glossary.md` → `memories/domain/glossary.md`, `docs/rules/*.md` → expanded glob. Returns `None` for entries like `session-extracts.md` (not auto-loaded).
+7. Returns list of `(resolved_path, tier)` tuples.
+
+**Tier protection** — `TIER_BOOST` (line 137):
+```python
+TIER_BOOST = {"Must": 40, "Should": 20, "Skip": 0}
+```
+When scoring files for eviction, `Must` files start at 40 points (out of 100), `Should` at 20. This means Must files are almost never evicted — they need very few keyword matches to stay above the eviction threshold.
+
+**Scoring** — `Scorer.score(filepath, base_score=0)` (line 47):
+1. Reads the file contents.
+2. For each single-word intent keyword: counts occurrences using word-boundary regex `\bword\b`, adds `min(count × 10, 30)`.
+3. For each multi-word phrase: counts substring occurrences, adds `min(count × 15, 40)`.
+4. Adds `base_score` (from tier boost).
+5. Caps at 100.
+6. If no intent keywords provided and base_score is 0, returns default 50 (neutral).
+
+**Budget tracking** — `BudgetTracker` (line 66):
+- Soft warn at 160K tokens, hard cap at 200K (both configurable).
+- When a file would exceed hard cap, it's rejected outright.
+- `evict_to_budget()`: sorts loaded files by score ascending, pops the lowest until under hard cap. Prints eviction notices.
+
+**Compression** — `Compressor.compress(filepath)` (line 98):
+- Deduplicates lines containing task IDs (pattern `[A-Z]{2,6}-\d+`). If a task ID was already seen, the line is dropped.
+- Truncates lines longer than 200 characters.
+- Aborts if savings < 10% (returns original text) — avoids pointless re-processing.
+
+**`run_route()`** — the full pipeline (line 290):
+1. Calls `resolve_route()` to get `[(path, tier), ...]`.
+2. Deduplicates by path (last tier wins).
+3. For each file: calls `set_tier(path, tier)` to record its tier for base-score protection, then calls `process_file()`.
+4. `process_file()` computes score, estimates tokens, checks budget, then outputs in the requested mode (`full`/`summary`/`partial`/`scored`/`compress`).
+5. After all files, calls `evict_to_budget()` if a budget cap was set.
+
+### Layer 3: context-loader.py (the CLI)
+
+Thin wrapper at `kit/scripts/context-loader.py` (41 lines). Three usage patterns:
+
+```bash
+# Route-based: load what the matrix says for phase "plan"
+python3 kit/scripts/context-loader.py --route plan --mode summary
+
+# Direct file: load one file with compression
+python3 kit/scripts/context-loader.py docs/rules/ponytail.md --mode compress
+
+# Bulk: load multiple files scored against intent, capped at 5000 tokens
+python3 kit/scripts/context-loader.py --intent "api auth" --budget 5000 file1.md file2.md
+```
+
+### Full session flow
+
+1. Agent reads `MASTER_INDEX.md` at session start — learns the matrix exists.
+2. Current phase is **Implement**. Agent runs:
+   ```
+   python3 kit/scripts/context-loader.py --route implement --mode partial
+   ```
+3. `context-loader.py` instantiates `ContextEngine` and calls `run_route("implement")`.
+4. `run_route()` calls `resolve_route(root, "implement")`:
+   - Opens `MASTER_INDEX.md`, finds `## 3. Phase × Guidance Matrix`.
+   - Reads column "Implement": `core-policies.md` (Must), `project-knowledge-base.md` (Should), `tech-stack.md` (Should), `code-map.md` (Should), `code-design.md` (Should), `docs/rules/*.md` (Must) — expanded to all matching rule files, etc.
+   - Returns ~12 resolved paths with tiers.
+5. For each file, `run_route()`:
+   - Sets tier → file gets base score 40 (Must) or 20 (Should).
+   - Calls `process_file()` → scores content against `--intent` keywords (if any), estimates tokens, checks against budget.
+   - Outputs in `partial` mode (headings + first paragraph under each).
+6. After all files loaded, `evict_to_budget()` runs. If total tokens exceed cap, lowest-scored files are evicted. Must files (score ≥40) are rarely touched.
+7. **Result**: agent has ~8–12 phase-relevant, partially loaded files under token budget — no manual selection needed.
 

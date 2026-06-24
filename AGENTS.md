@@ -44,7 +44,6 @@ These override all other guidance. Key non-obvious ones:
 | Install kit (real) | `bash kit/scripts/install.sh /path/to/target` |
 | Mechanical gate | `bash kit/scripts/harness/gate-runner.sh` |
 | Phase precondition gate | `bash kit/scripts/harness/phase-gate.sh <slug> <phase>` |
-| Traceability audit | `bash kit/scripts/harness/traceability-audit.sh <slug>` |
 | Telemetry | `bash kit/scripts/harness/telemetry-collector.sh --task <ID> --feature <slug>` |
 | Telemetry count | `bash kit/scripts/harness/telemetry-count.sh --task <ID>` |
 | Context partial load | `python3 kit/scripts/context-loader.py <file> --mode summary` |
@@ -62,10 +61,10 @@ Priority order:
 
 ## Versioning and release
 
-- Three version surfaces **must always match**: `VERSION`, `kit/VERSION`, `kit/manifest.json` → `version` field.
+- Single version source: `kit/manifest.json` → `version` field. No separate `VERSION` files.
 - CI auto-bumps on merge to `main` based on commit prefix: `feat:` → minor, `fix:` → patch, `major:` or `BREAKING CHANGE:` → major. `chore:` / `docs:` / `refactor:` → no release.
-- Tag format: `v<semver>`. Release workflow verifies all three version surfaces match the tag before creating a release.
-- Version file on disk is the **next** release version (before tag), not the current live release.
+- Tag format: `v<semver>`. Release workflow verifies the tag matches manifest.json before creating a release.
+- Version in manifest.json on disk is the **next** release version (before tag), not the current live release.
 
 ## Operating loop (short)
 

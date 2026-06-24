@@ -2,7 +2,7 @@ sequenceDiagram
     autonumber
     participant V as harness-verify
     participant M as context-memory<br/>Post-Ship Sync
-    participant I as INDEX.md
+    participant I as MASTER_INDEX.md
     participant A as Feature Artifacts
     participant F as Memory Files
     participant E as session-extracts.md
@@ -10,11 +10,11 @@ sequenceDiagram
 
     V->>V: Mechanical gate + Alignment + Security PASS
     V->>M: Hand off to Post-Ship Sync
-    M->>I: Read listed memory files (create INDEX.md if missing)
+    M->>I: Read listed memory files (create MASTER_INDEX.md if missing)
     I-->>M: Always + By-Intent + By-Debug groups
     M->>A: Read feature artifacts (spec, plan, review, ADRs)
     A-->>M: Durable changes and logs
-    loop For each file in INDEX.md
+    loop For each file in MASTER_INDEX.md
         M->>F: Read memory file
         alt Durable change found
             M->>F: Apply diff (Update)
@@ -28,7 +28,7 @@ sequenceDiagram
         end
     end
     M->>E: Write compiled sweep record to ## Post-Ship Sync block
-    M->>M: Verify every INDEX.md file appears once in record
+    M->>M: Verify every MASTER_INDEX.md file appears once in record
     alt Sweep verification passes
         M-->>V: OK — sync record complete
         V->>S: Set phase = Done

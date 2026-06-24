@@ -30,7 +30,7 @@ When merging, set the squash commit subject to:
 release: v0.1.0 — initial public release
 ```
 
-The `release:` prefix prevents `auto-bump.yml` from firing. You want to control v0.1.0 manually because the auto-bump workflow would compute the next version from the existing VERSION (already `0.1.0`) and produce `0.2.0` instead.
+The `release:` prefix prevents `auto-bump.yml` from firing. You want to control v0.1.0 manually because the auto-bump workflow would compute the next version from the existing manifest.json version (already `0.1.0`) and produce `0.2.0` instead.
 
 ### 5. Tag and create the release branch
 
@@ -49,13 +49,13 @@ The tag push fires `release.yml` → consistency check → GitHub release page.
 ### 6. Watch and verify
 
 - GitHub → Actions → Release should turn green
-- Release page lives at `https://github.com/thaihai-swe/CoreZero-Nexus/releases/tag/v0.1.0`
+- Release page lives at `https://github.com/thaihai-swe/CoreZero/releases/tag/v0.1.0`
 - Branch `release/0.1.x` exists on origin
 
 ### 7. Public install smoke test
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
+curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero/main/scripts/install.sh \
   | bash -s -- /tmp/post-release-test
 cat /tmp/post-release-test/.corezero-version    # should print: 0.1.0
 ```
@@ -169,7 +169,7 @@ Two override switches:
 - `[skip release]` anywhere in the commit message — auto-bump exits cleanly, no tag, no release
 - `release:` prefix — used by the auto-bump bot itself; ignored to prevent loops
 
-When auto-bump fires it: bumps `VERSION`, runs the consistency check, commits `release: v<next>`, creates and pushes the tag. The tag push then triggers `release.yml`.
+When auto-bump fires it: bumps the version in `kit/manifest.json`, commits `release: v<next>`, creates and pushes the tag. The tag push then triggers `release.yml`.
 
 ## Automatic flow (most releases)
 
@@ -183,14 +183,13 @@ You merge a PR with a Conventional-Commit prefix, and the rest is automatic.
    ```
 2. GitHub fires `auto-bump.yml`:
    - Reads commit prefix → `minor`
-   - Reads `VERSION` (e.g. `0.1.0`)
+   - Reads version from `kit/manifest.json` (e.g. `0.1.0`)
    - Computes next: `0.2.0`
-   - Bumps `VERSION` to `0.2.0`
+   - Bumps `manifest.json` version to `0.2.0`
    - Commits `release: v0.2.0 [skip ci]`
    - Tags `v0.2.0` and pushes both
 3. Tag push fires `release.yml`:
-   - Verifies tag matches `VERSION`
-   - Runs consistency check again
+   - Verifies tag matches `manifest.json` version
    - Creates the GitHub release page
 4. Release is live at `releases/tag/v0.2.0`.
 
@@ -209,7 +208,7 @@ minor: add corezero-predict skill [skip release]
 ```bash
 minor: add new skill X
 ```
-2. Push the commit. `auto-bump.yml` will detect the `minor:` prefix, bump `VERSION` from `0.2.0` to `0.3.0`, commit `release: v0.3.0 [skip ci]`, tag `v0.3.0` and push both.
+2. Push the commit. `auto-bump.yml` will detect the `minor:` prefix, bump `manifest.json` version from `0.2.0` to `0.3.0`, commit `release: v0.3.0 [skip ci]`, tag `v0.3.0` and push both.
 3. The tag push triggers `release.yml`, publishing the GitHub release at `releases/tag/v0.3.0`.
 
 ### Release 0.2.1 (patch bump)
@@ -217,7 +216,7 @@ minor: add new skill X
 ```bash
 patch: fix installer script
 ```
-2. Push the commit. `auto-bump.yml` will bump `VERSION` to `0.2.1`, create tag `v0.2.1` and fast‑forward the existing `release/0.2.x` branch.
+2. Push the commit. `auto-bump.yml` will bump `manifest.json` version to `0.2.1`, create tag `v0.2.1` and fast‑forward the existing `release/0.2.x` branch.
 3. The tag push again triggers `release.yml`.
 
 **Tip:** The harness‑check workflow now warns and skips the review step if no `artifacts/features` are present, so you can release even from a clean repo.
@@ -259,14 +258,14 @@ Use this when you want to:
    git pull
    ```
 
-2. **Bump `VERSION` to the next semver value.** Pick by hand using the table above.
+2. **Bump version in `kit/manifest.json` to the next semver value.** Pick by hand using the table above.
    ```bash
-   echo "1.0.0" > VERSION
+   # Edit kit/manifest.json — set "version": "1.0.0"
    ```
 
 4. **Commit the bump with `release:` prefix** so auto-bump doesn't fire:
    ```bash
-   git add VERSION
+   git add kit/manifest.json
    git commit -m "release: v1.0.0"
    git push
    ```
@@ -297,7 +296,7 @@ Use this when you want to:
 
 7. **Verify the public install works** (optional, from a clean target):
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero-Nexus/main/scripts/install.sh \
+   curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero/main/scripts/install.sh \
      | bash -s -- /tmp/post-release-test
    cat /tmp/post-release-test/.corezero-version
    ```
@@ -319,20 +318,20 @@ The manual path always wins. If you tag `v0.5.0` directly while `auto-bump` is m
 ### Workflow failed before publishing
 
 No release page was created. Fix on `main`, push a new commit, the next release-worthy commit picks up the fix.
+For tag/version mismatches on the manual path:
 
-For tag/VERSION mismatches on the manual path:
-```bash
-git push --delete origin v0.2.0
-git tag -d v0.2.0
-# fix VERSION, recommit, retag, repush
-```
+   ```bash
+   git push --delete origin v0.2.0
+   git tag -d v0.2.0
+   # fix manifest.json version, recommit, retag, repush
+   ```
 
 ### The release shipped a bug
 
 Cut a patch release. **Never rewrite a published tag** — adopters may have pinned to it.
 
 Auto path: push a `patch: ...` commit, get a patch bump automatically.
-Manual path: bump VERSION to the next patch, follow steps 4-6 above.
+Manual path: bump version in `kit/manifest.json` to the next patch, follow steps 4-6 above.
 
 If the bug is severe (broken installer, corrupted manifest), call it out in the patch release notes so adopters know to upgrade.
 
@@ -350,12 +349,12 @@ git pull
 # 2. Cherry-pick the fix from main (or write it directly here)
 git cherry-pick <commit-sha-on-main>
 
-# 3. Bump VERSION on the branch
-echo "0.5.1" > VERSION
+# 3. Bump version in kit/manifest.json on the branch
+# Edit kit/manifest.json — set "version": "0.5.1"
 
 # 4. Commit with release: prefix so auto-bump doesn't fire
 #    (auto-bump only watches main anyway, but the prefix is a safety habit)
-git add VERSION
+git add kit/manifest.json
 git commit -m "release: v0.5.1 — hotfix <issue>"
 
 # 5. Tag and push the branch + tag
@@ -371,7 +370,7 @@ The same fix should also land on `main` for v0.7.0 and beyond. Either cherry-pic
 ## What the workflows do NOT do
 
 - **No npm / homebrew / package registry publish.** Kit ships from GitHub raw URLs only.
-- **No automatic VERSION bump on `chore:` / `docs:` / `refactor:`** — those don't get releases.
+- **No automatic version bump on `chore:` / `docs:` / `refactor:`** — those don't get releases.
 - **No installer end-to-end test.** Workflows run consistency check, not a full install. Smoke-test manually if the change touches `install.sh` or `manifest.json`.
 - **No release on PR open.** Only the merge commit on `main` matters.
 
@@ -380,7 +379,8 @@ The same fix should also land on `main` for v0.7.0 and beyond. Either cherry-pic
 Before tagging:
 
 - [ ] All target changes merged to `main`
-- [ ] `VERSION` bumped using the semver decision rule
+- [ ] Version in `kit/manifest.json` bumped using the semver decision rule
+- [ ] Tag matches `kit/manifest.json` version
 - [ ] Skills, memory schema, or templates that changed are reflected in `manifest.json` if needed
 - [ ] If skills changed materially, `documents/architecture.md` subsystem table is up to date
 - [ ] If `manifest.json` changed, smoke-tested fresh install in `/tmp/`

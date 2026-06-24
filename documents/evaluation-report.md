@@ -28,7 +28,7 @@ CoreZero is structured around a **Five-Layer Model** designed to enforce separat
 ┌────────────────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)                       │  Thin router → JIT skill loading
 ├────────────────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)                    │  16 skills across 4 groups
+│  2. Skill Layer (skills/*/SKILL.md)                    │  17 skills across 4 groups
 ├────────────────────────────────────────────────────────┤
 │  3. Harness Layer (ETCLOVG Taxonomy & Scripts)         │  Environment constraints & gate-runner.sh validation
 ├────────────────────────────────────────────────────────┤
@@ -53,7 +53,7 @@ sequenceDiagram
     participant Cmd as Verification Gates (gate-runner.sh)
 
     User->>Agent: Request Feature/Bug Fix
-    Agent->>Mem: Read INDEX.md & Always-loaded memory (T1 & T2)
+    Agent->>Mem: Read MASTER_INDEX.md & Always-loaded memory (T1 & T2)
     Note over Agent,Mem: Check keywords for intent groups (T3)
     alt Brownfield / Complex Area
         Agent->>Agent: Route to /spec-research
@@ -95,7 +95,7 @@ sequenceDiagram
     Agent->>Agent: Run code review audit against best practices
 
     Agent->>Mem: Post-Ship Memory Sweep (context-memory)
-    Note over Agent,Mem: Read memory files in INDEX.md, append lessons to session-extracts.md
+    Note over Agent,Mem: Read memory files in MASTER_INDEX.md, append lessons to session-extracts.md
     Agent->>Art: Set status.md (Phase = Done)
     Agent->>Agent: Route to /context-session END
     Agent-->>User: Report execution success & handoff location
@@ -132,7 +132,7 @@ The kit enforces control over the agent's operating environment through the seve
 - **Evaluation**: Absolute. The **Anti-Rationalization** rule prevents agents from claiming success based on code readability alone; they must run mechanical validation commands and capture real terminal outputs.
 
 ### G. Governance (Policies & FinOps)
-- **Mechanics**: [core-policies.md](kit/memories/repo/core-policies.md) (under `## Security Policy & Trust Boundaries`) enforces sandbox parameters, while **FinOps guardrails** enforce **Cost-per-Accepted-Outcome (CAPO)** metrics.
+- **Mechanics**: [core-policies.md](kit/memories/repo/core-policies.md) (under `## Security Policy` and `## Trust Boundaries`) enforces sandbox parameters, while **FinOps guardrails** enforce **Cost-per-Accepted-Outcome (CAPO)** metrics.
 - **Evaluation**: Prescriptive and cost-controlled. Establishes clear trust boundaries.
 
 ---
@@ -143,7 +143,7 @@ Context is managed as a scarce resource to ensure high attention density:
 
 | Tier | Content | Load Rule |
 |---|---|---|
-| **Tier 1 — Router** | `AGENTS.md` + `INDEX.md` | Always loaded first |
+| **Tier 1 — Router** | `AGENTS.md` + `MASTER_INDEX.md` | Always loaded first |
 | **Tier 2 — Always Repo Memory** | `core-policies.md` | Always loaded |
 | **Tier 3 — By Intent Repo Memory** | Knowledge, Learned, Domain Packs, Debug | Load JIT based on keyword triggers |
 | **Tier 4 — Feature Artifacts** | `status.md`, `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Loaded before editing or verifying |
@@ -151,7 +151,7 @@ Context is managed as a scarce resource to ensure high attention density:
 | **Tier 6 — Transient Logs** | Ephemeral tool output | Summarize and evict immediately |
 
 ### Intent-Based Memory Routing & Confidence-Scoring
-Memory files listed in [INDEX.md](kit/memories/repo/INDEX.md) are classified into groups. When matching a task, the harness computes a confidence score:
+Memory files listed in [MASTER_INDEX.md](../kit/MASTER_INDEX.md) are classified into groups. When matching a task, the harness computes a confidence score:
 * **High Confidence (3+ matching keywords)**: Loads the full memory group.
 * **Low Confidence (≤ 2 matching keywords)**: Performs a **partial-load**, reading only the header or index file of the memory group. This keeps situational awareness high while keeping context windows lean.
 
@@ -214,7 +214,7 @@ To build a template compatible with both greenfield and brownfield initiatives t
 │   └── generated/                 # Generated files (code-map.md, references-index.md)
 ├── memories/
 │   ├── repo/                      # Durable Repo-wide Memory Track
-│   │   ├── INDEX.md               # Memory intent router
+│   │   ├── MASTER_INDEX.md         # Memory intent router
 │   │   ├── core-policies.md       # Normative rules & harness config
 │   │   ├── project-knowledge-base.md # Continuity patterns
 │   │   ├── learned-heuristics.md  # Discovered code instincts

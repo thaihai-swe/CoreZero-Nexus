@@ -8,7 +8,7 @@ flowchart TD
     VERDICT -->|Pass| SYNC["Post-Ship Sync<br/>(context-memory sweep)"]:::sync
     VERDICT -->|Fail| HARNESS
 
-    SYNC -->|sweep each file in INDEX.md| FILES{Update or<br/>untouched?}:::decision
+    SYNC -->|sweep each file in MASTER_INDEX.md| FILES{Update or<br/>untouched?}:::decision
     FILES -->|Update| MEM_UPD["Directly update memory files<br/>(PKB, constitution, architecture, etc.)"]:::sync
     FILES -->|Untouched| SWEEP_REC["Append sweep record to<br/>session-extracts.md"]:::sync
 

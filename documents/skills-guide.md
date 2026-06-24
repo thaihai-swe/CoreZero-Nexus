@@ -11,7 +11,7 @@ This guide describes the current shipped commands, the expected workflow, how to
 Use this guide after installing the kit into an adopter repository.
 
 1. Read `kit-map.md` to understand the command layers and ownership model.
-2. Read `AGENTS.md` and `INDEX.md` at the repo root.
+2. Read `AGENTS.md` and `MASTER_INDEX.md` at the repo root.
 3. Fill in the adopter-owned project docs under `docs/project/` with known facts. Use `[UNKNOWN]` where the answer is not known yet.
 4. Run `/starter-init` to bootstrap the repo-specific harness state.
 5. Start the first feature with `/spec-requirements` when the goal is clear, or `/spec-research` when existing behavior needs investigation first.
@@ -165,7 +165,7 @@ Run `/context-memory --audit` to produce a structured report of memory system he
 - Domain pack trigger keyword relevance against the current codebase
 - Stale references in memory files (paths or identifiers that no longer exist)
 - Unused domain packs (no recent load events in telemetry or session extracts)
-- Drift between findings and `memories/repo/INDEX.md` `## Promotion Watchlist`
+- Drift between findings and `MASTER_INDEX.md` `## Promotion Watchlist`
 
 Output is written to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `docs/generated/memory-audit.md` (global). The audit produces a report only — promotions and rewrites stay manual or route through a regular `/context-memory` or `/context-compact` invocation.
 

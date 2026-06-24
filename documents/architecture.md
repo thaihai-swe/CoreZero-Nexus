@@ -95,7 +95,7 @@ sequenceDiagram
     participant Cmd as Verification Commands
 
     User->>Agent: Request Feature/Bug Fix
-    Agent->>Mem: Read INDEX.md & Always-loaded memory (T1 & T2)
+    Agent->>Mem: Read MASTER_INDEX.md & Always-loaded memory (T1 & T2)
     Note over Agent,Mem: Check keywords for intent groups (T3)
     alt Brownfield / Complex Area
         Agent->>Agent: Route to /spec-research
@@ -131,7 +131,7 @@ sequenceDiagram
     Agent->>Agent: Run code review audit against google-eng guidelines
 
     Agent->>Mem: Post-Ship Memory Sweep (context-memory)
-    Note over Agent,Mem: Read memory files in INDEX.md, append lessons to session-extracts.md
+    Note over Agent,Mem: Read memory files in MASTER_INDEX.md, append lessons to session-extracts.md
     Agent->>Art: Set status.md (Phase = Done)
     Agent->>Agent: Route to /context-session END
     Agent-->>User: Report execution success & handoff location
@@ -144,8 +144,8 @@ When something goes wrong, the kit classifies the failure:
 
 | Classification | Meaning | Fix Location |
 |---------------|---------|--------------|
-| **Harness Problem** | Environment allowed or encouraged the mistake | Improve the harness (gates, templates, rules), record in observability-log.md |
-| **Model Problem** | Environment was adequate but execution was poor | Add explicit guidance to skill Core Rules, record in observability-log.md |
+| **Harness Problem** | Environment allowed or encouraged the mistake | Improve the harness (gates, templates, rules), record in harness-telemetry.md |
+| **Model Problem** | Environment was adequate but execution was poor | Add explicit guidance to skill Core Rules, record in harness-telemetry.md |
 | **Spec Problem** | Artifact contract was underspecified or contradictory | Return to `/spec-requirements` |
 
 Failures are classified by `harness-maintain` Improve Mode and recorded in `memories/repo/harness-telemetry.md` (auto tier). Extraction Triage later promotes durable lessons to the instruction tier.
@@ -156,12 +156,12 @@ Failures are classified by `harness-maintain` Improve Mode and recorded in `memo
 This is the structure of the CoreZero Nexus repository during development. All adopter-facing assets are grouped under `kit/` to isolate them from project-specific maintainer documents and scripts.
 
 ```
-CoreZero-Nexus/
+CoreZero/
 ├── README.md                    # Maintainer/Adopter orientation page
 ├── CHANGELOG.md                 # Project version history
 ├── kit/                         # Isolated surface shipped to adopter projects
 │   ├── manifest.json            # Inventory mapping file copy/overwrite rules
-│   ├── VERSION                  # Current kit semver
+│   │                           # (version in manifest.json)
 │   ├── AGENTS.md                # Template entrypoint (seeded to root)
 │   ├── MASTER_INDEX.md          # Master routing index for the repository
 │   ├── docs/                    # Adopter-facing documentation surface
@@ -178,7 +178,7 @@ CoreZero-Nexus/
 │   ├── memories/                # Scaffolding memory layer
 │   │   ├── repo/                # Templates for the 3 memory tiers
 │   │   └── domain/              # Seeded domain-pack schema + example pack
-│   └── scripts/                 # Shipped install, repair, eval, and truth-check helpers
+│   └── scripts/                 # Installer, context loader, template renderers, Python engine (core/), harness (gate runner, telemetry, phase gates)
 ├── documents/                   # Maintainer-only project documents (not shipped)
 │   ├── architecture.md          # Maintainer architecture map (this file)
 │   ├── diagrams/                # Mermaid source diagrams
@@ -197,28 +197,60 @@ This is the layout created in a downstream project after running the installer s
 ├── .corezero-version            # Installed semver stamp
 ├── docs/                        # Installed documentation surface
 │   ├── index.html               # Documentation portal
-│   ├── policies/                # Adopter-owned design policies
-│   ├── project/                 # Adopter-owned project docs
-│   ├── rules/                   # Shipped rules and standards (kit-managed)
-│   └── generated/               # Project codemap and index (regenerated)
-├── skills/                      # Shipped skills (kit-managed)
+│   ├── generated/
+│   │   └── dashboard.html       # Visual interactive dashboard
+│   ├── policies/
+│   │   └── code-design.md       # Cross-cutting design policies
+│   ├── project/                 # Adopter-owned project docs + shipped config
+│   │   ├── adr/                 # ADR registry
+│   │   ├── agent-capabilities.md
+│   │   ├── architecture.md
+│   │   ├── code-map.md
+│   │   ├── glossary.md
+│   │   ├── harness-config.yaml
+│   │   ├── product-sense.md
+│   │   ├── project-constraints.md
+│   │   ├── spec-schema.json
+│   │   └── tech-stack.md
+│   └── rules/                   # Shipped rules and standards (kit-managed)
+│       ├── README.md
+│       ├── ponytail.md
+│       ├── python.md
+│       └── security.md
+├── skills/                      # 17 shipped skills (kit-managed)
 ├── scripts/
-│   ├── install.sh               # Shipped installer script for easy upgrades
-│   ├── doctor.sh                # Shipped repair and drift-check entrypoint
-│   ├── check-surface-truth.py   # Shipped structural truth validator
-│   └── evals/                   # Shipped structural eval suite
+│   ├── context-loader.py        # MVC context loader
+│   ├── generate-dashboard.py    # Dashboard generator
+│   ├── render_template.py       # Template rendering CLI
+│   ├── template_convert.py      # Template converter CLI
+│   ├── core/                    # Python engine layer
+│   │   ├── context_engine.py
+│   │   ├── harness.py
+│   │   ├── template_engine.py
+│   │   └── _lib/
+│   ├── harness/
+│   │   ├── doctor.sh            # Kit self-diagnosis
+│   │   ├── gate-runner.sh       # Mechanical gate runner
+│   │   ├── phase-gate.sh        # Phase precondition validation
+│   │   ├── telemetry-collector.sh
+│   │   ├── telemetry-count.sh
+│   │   ├── telemetry-update.sh
+│   │   ├── telemetry-render.sh
+│   │   └── harness-lifecycle.sh
+│   └── install.sh               # Shipped installer script
 ├── memories/repo/               # Durable repository memory (3 tiers)
 │   ├── adr-log.md               # ADR index
 │   ├── core-policies.md         # Core repository operating rules and security
 │   ├── harness-telemetry.md     # Failure logs and telemetry
 │   ├── learned-heuristics.md    # Discovered project insights
 │   └── project-knowledge-base.md # Project continuity knowledge
-├── memories/domain/             # Adopter-owned domain context packs
-
-│   ├── glossary.md              # Ubiquitous language definition
-│   ├── boundaries.md            # Domain boundary rules
-│   ├── patterns.md              # Domain patterns
-│   └── anti-patterns.md         # Domain anti-patterns
+├── memories/domain/             # Domain context packs
+│   ├── README.md
+│   └── example/                 # Example pack (adopter-owned)
+│       ├── glossary.md
+│       ├── patterns.md
+│       ├── anti-patterns.md
+│       └── boundaries.md
 └── artifacts/features/          # Per-feature specs, plans, tasks, and reviews
 ```
 

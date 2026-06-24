@@ -6,7 +6,7 @@ This guide documents the four core packs that organize CoreZero commands and fil
 
 ## The 4 Core Packs
 
-CoreZero organizes its capabilities into **4 Core Packs** containing **16 shipped skills** (with the core 12 shown in the taxonomy map below):
+CoreZero organizes its capabilities into **4 Core Packs** containing **17 shipped skills** (with the core 12 shown in the taxonomy map below):
 
 ```mermaid
 mindmap
@@ -74,7 +74,7 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 - `memories/repo/project-knowledge-base.md` (high-risk area notes from archaeology sweep recorded here under `## Repository Overview`)
 - `docs/project/architecture.md` (durable architecture baseline)
 - `docs/project/*.md` adopter-owned docs seeded for refinement
-- `docs/generated/*` (index & codemap artifacts)
+- `docs/generated/*` (dashboard artifacts)
 
 Starter-init archaeology (Phase A) is now the documented first step for established repositories. Its
 artifacts live in the memory layer, but they are not yet auto-routed by `MASTER_INDEX.md`; later
@@ -98,7 +98,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 * `/context-status` — Provides project-wide views of active features.
 
 ### Key Files Touched
-- `memories/repo/MASTER_INDEX.md`
+- `MASTER_INDEX.md`
 - `memories/repo/core-policies.md`
 - `memories/repo/learned-heuristics.md`
 - `memories/repo/project-knowledge-base.md`
@@ -108,7 +108,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
 - `docs/project/architecture.md`
-- `docs/generated/code-map.md`
+- `docs/project/code-map.md`
 
 
 ---

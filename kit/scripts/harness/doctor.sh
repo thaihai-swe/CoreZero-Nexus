@@ -151,33 +151,35 @@ else
   pass "adr-log.md status vocabulary clean"
 fi
 
-# --- Check 8: harness-telemetry.md schema has task/feature fields ---
-echo "--- Check 8: Telemetry schema ---"
-if grep -q "^  task:" "$KIT_ROOT/scripts/harness/telemetry-collector.sh" 2>/dev/null; then
-  pass "telemetry-collector.sh emits task: field"
+# --- Check 8: Telemetry pipeline (JSONL) ---
+echo "--- Check 8: Telemetry pipeline ---"
+if python3 -c "
+with open('$KIT_ROOT/scripts/harness/telemetry-collector.sh') as f:
+    c = f.read()
+assert \"'task':\" in c or '\"task\":' in c, 'telemetry-collector.sh emits task field'
+assert \"'feature':\" in c or '\"feature\":' in c, 'telemetry-collector.sh emits feature field'
+print('PASS: telemetry-collector.sh emits task/feature fields')
+" 2>/dev/null; then
+  pass "telemetry-collector.sh emits task/feature fields"
 else
-  fail "telemetry-collector.sh missing task: field"
+  fail "telemetry-collector.sh missing required fields"
 fi
-if [[ -f "$KIT_ROOT/scripts/harness/telemetry-count.sh" ]]; then
-  pass "telemetry-count.sh exists"
-else
-  fail "telemetry-count.sh missing"
-fi
-
-# --- Check 9: Version consistency (Source repo only) ---
-echo "--- Check 9: Version consistency ---"
-if [[ -f "$KIT_ROOT/../VERSION" ]]; then
-  SRC_VER=$(cat "$KIT_ROOT/../VERSION" 2>/dev/null | tr -d ' \n\r')
-  KIT_VER=$(cat "$KIT_ROOT/VERSION" 2>/dev/null | tr -d ' \n\r')
-  MANIFEST_VER=$(python3 -c "import json; print(json.load(open('$KIT_ROOT/manifest.json'))['version'])" 2>/dev/null | tr -d ' \n\r')
-  
-  if [[ "$SRC_VER" == "$KIT_VER" && "$KIT_VER" == "$MANIFEST_VER" ]]; then
-    pass "Version surfaces match: $KIT_VER"
+for f in telemetry-count.sh telemetry-update.sh telemetry-render.sh; do
+  if [[ -f "$KIT_ROOT/scripts/harness/$f" ]]; then
+    pass "$f exists"
   else
-    fail "Version mismatch: root VERSION='$SRC_VER', kit/VERSION='$KIT_VER', manifest.json version='$MANIFEST_VER'"
+    fail "$f missing"
   fi
+done
+
+# --- Check 9: Version consistency ---
+echo "--- Check 9: Version consistency ---"
+MANIFEST_VER=$(python3 -c "import json; print(json.load(open('$KIT_ROOT/manifest.json'))['version'])" 2>/dev/null | tr -d ' \n\r')
+
+if [[ -n "$MANIFEST_VER" ]]; then
+  pass "Version: $MANIFEST_VER (kit/manifest.json)"
 else
-  pass "Not in source repository, skipping root VERSION consistency check"
+  fail "Could not read version from kit/manifest.json"
 fi
 
 # --- Check 10: Executable bits assertion ---

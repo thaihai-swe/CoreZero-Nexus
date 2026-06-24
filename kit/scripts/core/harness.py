@@ -103,7 +103,10 @@ class Lifecycle:
     def get_phase_names(self):
         return [p.name for p in self.phases]
 
-    def transition(self, current_phase_name, target_phase_name, feature_dir, dry_run=False):
+    def _state_path(self, root, feature_slug):
+        return Path(root) / "docs/generated/harness-state.json"
+
+    def transition(self, current_phase_name, target_phase_name, feature_dir, dry_run=False, root=None):
         current_idx = -1
         target_idx = -1
         for i, p in enumerate(self.phases):
@@ -123,18 +126,62 @@ class Lifecycle:
                 f"Cannot skip from '{current_phase_name}' to '{target_phase_name}' — "
                 f"intermediate phases required"
             )
+
+        feature_slug = Path(feature_dir).name
+        if root:
+            state_path = self._state_path(root, feature_slug)
+        else:
+            state_path = Path(feature_dir).parent.parent / "docs/generated/harness-state.json"
+        state = self._load_state(state_path) if not dry_run else {}
+
+        if target_phase_name == "Verifying" and state.get(feature_slug, {}).get("consecutive_gate_failures", 0) >= 2:
+            raise HarnessError(
+                f"CIRCUIT_BREAKER: 2 consecutive gate failures for '{feature_slug}'. "
+                f"Return to /spec-plan and re-approve before retrying."
+            )
+
+        if target_phase_name == "Plan Approved" and state.get(feature_slug, {}):
+            if not dry_run:
+                state[feature_slug]["consecutive_gate_failures"] = 0
+                state[feature_slug]["last_failure_at"] = None
+
         fails = self.phases[target_idx].check_preconditions(feature_dir, dry_run)
         if fails:
             raise HarnessError(f"Phase '{target_phase_name}' precondition failures:\n" +
                                "\n".join(fails))
         if not dry_run:
             Path(feature_dir).mkdir(parents=True, exist_ok=True)
-            state_path = Path(feature_dir).parent.parent / "docs/generated/harness-state.json"
             state_path.parent.mkdir(parents=True, exist_ok=True)
-            state = self._load_state(state_path)
-            state[Path(feature_dir).name] = {"phase": target_phase_name}
+            entry = state.get(feature_slug, {"consecutive_gate_failures": 0, "last_failure_at": None})
+            entry["phase"] = target_phase_name
+            state[feature_slug] = entry
             state_path.write_text(json.dumps(state, indent=2))
         return f"Transitioned to '{target_phase_name}'"
+
+    def record_gate_failure(self, root, feature_slug, gate_name=""):
+        state_path = self._state_path(root, feature_slug)
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state = self._load_state(state_path)
+        import datetime
+        entry = state.get(feature_slug, {"phase": "", "consecutive_gate_failures": 0, "last_failure_at": None})
+        entry["consecutive_gate_failures"] = entry.get("consecutive_gate_failures", 0) + 1
+        entry["last_failure_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        entry["last_failed_gate"] = gate_name
+        state[feature_slug] = entry
+        state_path.write_text(json.dumps(state, indent=2))
+        return entry["consecutive_gate_failures"]
+
+    def record_gate_success(self, root, feature_slug):
+        state_path = self._state_path(root, feature_slug)
+        if not state_path.exists():
+            return 0
+        state = self._load_state(state_path)
+        entry = state.get(feature_slug, {})
+        if "consecutive_gate_failures" in entry:
+            entry["consecutive_gate_failures"] = 0
+        state[feature_slug] = entry
+        state_path.write_text(json.dumps(state, indent=2))
+        return 0
 
     def _load_state(self, path):
         if path.exists():
@@ -144,10 +191,13 @@ class Lifecycle:
                 pass
         return {}
 
-    def get_state(self, feature_slug):
-        state_path = Path(feature_slug).parent.parent / "docs/generated/harness-state.json"
+    def get_state(self, feature_slug, root=None):
+        if root:
+            state_path = Path(root) / "docs/generated/harness-state.json"
+        else:
+            state_path = Path(feature_slug).parent.parent / "docs/generated/harness-state.json"
         state = self._load_state(state_path)
-        return state.get(Path(feature_slug).name, {})
+        return state.get(feature_slug, {})
 
 
 class HarnessConfig:
@@ -179,13 +229,22 @@ class HarnessConfig:
         return []
 
     def detect_stack(self, root_dir):
+        explicit = self.data.get("stack", "auto")
+        if explicit != "auto":
+            return explicit
         root = Path(root_dir)
         detection = self.data.get("stack_detection", {})
+        found = []
         for name, cfg in detection.items():
             for f in cfg.get("files", []):
                 if (root / f).exists():
-                    return name
-        return None
+                    found.append(name)
+                    break
+        if len(found) > 1:
+            print(f"WARN: multiple stack markers detected ({', '.join(found)}); "
+                  f"using '{found[0]}'. Set 'stack:' in harness-config.yaml to override.",
+                  file=sys.stderr)
+        return found[0] if found else None
 
     def get_preflight_checks(self, stack_name):
         preflight = self.data.get("preflight_tools", {})
@@ -232,6 +291,16 @@ def cmd_phase_gate(args):
     config = HarnessConfig(args.config or root / "docs/project/harness-config.yaml")
     lifecycle = Lifecycle(config.data)
     try:
+        if args.phase == "Verifying":
+            state_path = root / "docs/generated/harness-state.json"
+            state = json.loads(state_path.read_text()) if state_path.exists() else {}
+            entry = state.get(args.feature, {})
+            failures = entry.get("consecutive_gate_failures", 0)
+            if failures >= 2:
+                print(f"FAIL: CIRCUIT_BREAKER — {failures} consecutive gate failures for "
+                      f"'{args.feature}'. Return to /spec-plan and re-approve before retrying.",
+                      file=sys.stderr)
+                sys.exit(1)
         fails = []
         for p in lifecycle.phases:
             if p.name == args.phase:
@@ -261,7 +330,7 @@ def cmd_lifecycle(args):
         if args.action == "transition":
             feature_dir = root / f"artifacts/features/{args.feature}"
             msg = lifecycle.transition(
-                args.current_phase or "", args.phase, feature_dir, args.dry_run
+                args.current_phase or "", args.phase, feature_dir, args.dry_run, root=root
             )
             print(msg)
         elif args.action == "state":
@@ -270,6 +339,18 @@ def cmd_lifecycle(args):
                 print(state_path.read_text())
             else:
                 print("{}")
+        elif args.action == "record-failure":
+            if not args.feature:
+                print("ERROR: --feature required for record-failure", file=sys.stderr)
+                sys.exit(1)
+            count = lifecycle.record_gate_failure(root, args.feature, args.gate)
+            print(f"Gate failure recorded ({count} consecutive)")
+        elif args.action == "record-success":
+            if not args.feature:
+                print("ERROR: --feature required for record-success", file=sys.stderr)
+                sys.exit(1)
+            lifecycle.record_gate_success(root, args.feature)
+            print("Gate success recorded (failures reset)")
         else:
             print(f"Unknown lifecycle action: {args.action}", file=sys.stderr)
             sys.exit(1)
@@ -303,10 +384,11 @@ def main():
     pg_p.set_defaults(func=cmd_phase_gate)
 
     lc_p = sub.add_parser("lifecycle", help="Lifecycle state machine")
-    lc_p.add_argument("--action", required=True, choices=["transition", "state"])
+    lc_p.add_argument("--action", required=True, choices=["transition", "state", "record-failure", "record-success"])
     lc_p.add_argument("--phase", default="", help="Target phase name")
     lc_p.add_argument("--feature", default="", help="Feature slug")
     lc_p.add_argument("--current-phase", default="", help="Current phase name")
+    lc_p.add_argument("--gate", default="", help="Gate name (for record-failure)")
     lc_p.set_defaults(func=cmd_lifecycle)
 
     cv_p = sub.add_parser("config-validate", help="Validate harness config")

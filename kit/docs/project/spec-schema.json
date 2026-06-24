@@ -14,7 +14,7 @@
     },
     "profile": {
       "type": "string",
-      "enum": ["Simple", "Moderate", "Complex", "Standard"],
+      "enum": ["Tiny", "Standard", "Complex"],
       "description": "Delivery profile"
     },
     "status": {

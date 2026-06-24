@@ -58,11 +58,11 @@ Use this layer when the repo needs durable explanation:
 | Folder | Owner | Purpose |
 |---|---|---|
 | `skills/` | Kit-managed | Slash-command contracts and references. |
-| `scripts/` | Kit-managed | Installer, gate runner, telemetry, dashboard generator. |
+| `scripts/` | Kit-managed | Installer, context loader, template renderer, engine layer (`core/`: context engine, harness engine, spec validator, template engine), verification harness (`harness/`: gate runner, telemetry, phase gates, readiness, traceability). |
 | `docs/rules/` | Kit-managed | Language and security rules. |
 | `docs/policies/` | Kit-managed | Cross-cutting code design and architectural policies. |
 | `docs/project/` | Adopter-owned seed | Project facts the adopter fills in and maintains. |
-| `docs/generated/` | Adopter-owned seed | Generated codemap, references, and dashboard outputs. |
+| `docs/generated/` | Adopter-owned seed | Generated dashboard output (`dashboard.html`). |
 | `memories/repo/` | Adopter-owned seed | Durable memory, policies, heuristics, and telemetry. |
 | `memories/domain/` | Adopter-owned seed | Domain pack templates to replace with project-specific knowledge. |
 | `artifacts/features/` | Adopter-owned state | Per-feature specs, plans, tasks, status, reviews, handoffs. |

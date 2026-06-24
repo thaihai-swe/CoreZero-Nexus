@@ -24,7 +24,7 @@ AI agents left unchecked produce four recurring failure modes:
 | Context amnesia | Long sessions forget earlier decisions | Three-track memory + `MASTER_INDEX.md` routing + durable handoff artifacts |
 | AI slop / code bloat | Agents over-engineer and add speculative code | The Ponytail Rule (lazy senior dev ladder) enforced before and after writing |
 | Spec drift | Implementation silently diverges from intent | `spec.md` is the source of truth; `harness-verify` audits every Acceptance Criterion back to code |
-| Silent regressions | "It looks fixed" ships broken code | Mechanical gates (`gate-runner.sh`, `traceability-audit.sh`, `doctor.sh`) — no claim passes without a passing command |
+| Silent regressions | "It looks fixed" ships broken code | Mechanical gates (`gate-runner.sh`, `doctor.sh`) — no claim passes without a passing command |
 
 ---
 
@@ -202,8 +202,6 @@ CoreZero refuses to accept "looks done". These gates must pass with a green exit
 |---|---|---|
 | **Workspace gate** | `bash scripts/harness/gate-runner.sh` | The project's lint / build / test suite. Overridable by `gate-runner.local.sh`. |
 | **Phase precondition** | `bash scripts/harness/phase-gate.sh <slug> <phase>` | Preconditions for entering a phase (e.g. no implementation without an approved spec). |
-| **Traceability audit** | `bash scripts/harness/traceability-audit.sh <slug>` | Every `AC-*` in `spec.md` is mapped to a task proof. No orphan ACs. |
-| **Readiness score** | `bash scripts/harness/readiness-score.sh` | Quantified readiness before closeout. |
 | **Self-diagnosis** | `bash scripts/harness/doctor.sh` | 10 checks: manifest files, referenced sections, path prefixes, threshold consistency, task ID grammar, ADR status, telemetry schema, version match, executable bits. |
 | **Telemetry** | `bash scripts/harness/telemetry-collector.sh` / `telemetry-count.sh` | Auto-records gate failures into `harness-telemetry.md` for retro and harness repair. |
 | **Harness lifecycle** | `bash scripts/harness/harness-lifecycle.sh` | Manages the harness lifecycle stages. |
@@ -220,7 +218,6 @@ The kit ships a Python engine under `scripts/core/` for the parts that benefit f
 |---|---|
 | `harness.py` | Core harness orchestration. |
 | `context_engine.py` | Context assembly and routing logic backing the 6-tier model. |
-| `spec_validator.py` | Spec structure and Acceptance Criteria validation. |
 | `template_engine.py` | Template rendering for spec, plan, ADR, and status artifacts. |
 | `_lib/yaml_reader.py` | Frontmatter and YAML parsing for skill and domain pack metadata. |
 | `_lib/token_counter.py` | Token-budget accounting for context-loading decisions. |
@@ -327,9 +324,9 @@ The kit ships ~158 files: 17 skill directories with `SKILL.md` and on-demand `re
 
 ## 13. Versioning & Release
 
-- Three version surfaces must always match: `VERSION`, `kit/VERSION`, `kit/manifest.json → version`.
+- Single version source: `kit/manifest.json` → `version` field. No separate `VERSION` files.
 - CI auto-bumps on merge to `main` based on commit prefix: `feat:` → minor, `fix:` → patch, `major:` or `BREAKING CHANGE:` → major. `chore:` / `docs:` / `refactor:` → no release.
-- Tag format: `v<semver>`. The release workflow verifies all three version surfaces match the tag before creating a release.
+- Tag format: `v<semver>`. The release workflow verifies the tag matches manifest.json before creating a release.
 
 ---
 

@@ -19,8 +19,8 @@ Legacy `corezero-*` filenames may remain on some diagram files until a later ren
 | Diagram | Shows |
 |---|---|
 | `corezero-context.mmd` | C4 system context — user, kit, LLM, git repo |
-| `corezero-memory.mmd` | 3-tier memory (Instruction / Auto / Extracted) + `INDEX.md` router for `context-*` flows |
-| `corezero-context-routing.mmd` | Smart context routing — INDEX.md intent-based group loading |
+| `corezero-memory.mmd` | 3-tier memory (Instruction / Auto / Extracted) + `MASTER_INDEX.md` router for `context-*` flows |
+| `corezero-context-routing.mmd` | Smart context routing — MASTER_INDEX.md intent-based group loading |
 | `corezero-context-assembly.mmd` | 6-tier context assembly, highest to lowest signal |
 | `corezero-mindmap.mmd` | Full kit structure mapped to Starter, Context, Spec, and Harness packs |
 | `skills-repository-architecture.mmd` | Public pack grouping with advanced specialist tools |

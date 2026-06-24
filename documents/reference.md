@@ -21,6 +21,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 | `/harness-maintain` | Harness | Evaluates and improves harness rules based on logged errors | `harness-telemetry.md` |
 | `/code-review` | Specialist | Audits code health against Google's Engineering Practices | Integrated reviews in `review.md` |
 | `/ponytail` | Specialist | Enforces the laziest effective solution — checks for over-engineering, trims bloat, maximises platform-native features. Supports lite / full (default) / ultra intensity levels | (no artifacts — advisory mode) |
+| `/context-compact` | Context | Compact oversized memory files (>600 lines). Preserves all normative identifiers with pre/post safety protocol | Compacted target file under `memories/` or `artifacts/` |
 | `/visualize` | Specialist | Generates visual SVG/Mermaid flowcharts and class diagrams | `.svg`, `.mermaid` |
 | `/codebase-documenter`| Specialist | Compiles complete technical onboarding guides for new teams | `README.md`, `CONTRIBUTING.md` |
 | `/technical-docs` | Specialist | Compiles API contracts (`--mode api`) and/or system flows (`--mode flow`/`both`) | `api-docs.md`, `flows.md`, `technical-docs.md` |
@@ -52,13 +53,13 @@ This reference catalog details the public commands, feature artifact schemas, re
 ## 3. Memory Files (`memories/repo/`)
 
 The memory layer is structured in a **3-Tier Memory Architecture**:
-- **Instruction tier** (human-curated): constitution, learned-heuristics, project-knowledge-base, harness-config, and `docs/project/architecture.md`.
-- **Auto tier** (agent-written): observability-log.
+- **Instruction tier** (human-curated): constitution, learned-heuristics, project-knowledge-base, and `docs/project/architecture.md`.
+- **Auto tier** (agent-written): harness-telemetry.
 - **Extracted tier** (per-feature candidates): session-extracts.
 
 | File | Public Owner | Type | Tier | Lifecycle |
 |------|-------------|------|------|-----------|
-| [`MASTER_INDEX.md`](../kit/memories/repo/MASTER_INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
+| [`MASTER_INDEX.md`](../kit/MASTER_INDEX.md) | `/starter-init` / `/context-memory` | Router | N/A | Created at init, declares Always/By-Intent/By-Debug groups |
 | [`core-policies.md`](../kit/memories/repo/core-policies.md) | `/starter-init` / `/context-memory` | Normative | Instruction | Created at init |
 | [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) | `/context-memory` | Descriptive | Instruction | Created at init |
 | [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md) | `/context-memory` | Descriptive | Instruction | Created at init |
@@ -67,16 +68,28 @@ The memory layer is structured in a **3-Tier Memory Architecture**:
 
 ---
 
-## 4. Shipped Adopter-Owned Docs (`docs/project/*.md`)
+## 4. Shipped Adopter-Owned Docs (`docs/project/`)
 
-These docs are copied to adopter repositories for customization:
+These docs are copied to adopter repositories for customization (`copyIfMissing`):
 
 | File | Purpose | Primary Public Consumers |
 |------|---------|--------------------------|
+| [`project/architecture.md`](../kit/docs/project/architecture.md) | System structure, component boundaries | `/spec-research`, `/spec-plan` |
+| [`project/code-map.md`](../kit/docs/project/code-map.md) | Codebase map, module index | `/spec-research`, `/spec-implement` |
+| [`project/agent-capabilities.md`](../kit/docs/project/agent-capabilities.md) | Agent capability inventory | `/harness-maintain`, `/starter-init` |
 | [`project/product-sense.md`](../kit/docs/project/product-sense.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
 | [`project/project-constraints.md`](../kit/docs/project/project-constraints.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
 | [`project/glossary.md`](../kit/docs/project/glossary.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |
 | [`project/tech-stack.md`](../kit/docs/project/tech-stack.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
+
+### Shipped Config (`overwrite`)
+
+| File | Purpose | Consumers |
+|------|---------|-----------|
+| [`project/harness-config.yaml`](../kit/docs/project/harness-config.yaml) | Phase precondition configuration | `harness.py`, `phase-gate.sh` |
+| [`project/spec-schema.json`](../kit/docs/project/spec-schema.json) | Spec validation JSON schema | — |
+| [`project/adr/index.md`](../kit/docs/project/adr/index.md) | ADR log registry | `/spec-adr` |
+| [`project/adr/0001-example.md`](../kit/docs/project/adr/0001-example.md) | Example ADR template | `/spec-adr` |
 
 ---
 

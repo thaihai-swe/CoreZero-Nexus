@@ -2,8 +2,8 @@ name: Auto Bump
 
 # Automatic release flow.
 # Inspects the merge commit on `main`, derives the bump level from the
-# commit prefix, updates VERSION, pushes a tag, and maintains a
-# `release/<major>.<minor>.x` branch.
+# commit prefix, updates kit/manifest.json version, pushes a tag, and
+# maintains a `release/<major>.<minor>.x` branch.
 #
 # Tag → marks the exact commit that shipped (immutable).
 # Branch → long-lived parking line for that minor series; cherry-pick hotfixes here.
@@ -67,11 +67,11 @@ jobs:
           echo "Commit prefix does not warrant a release. Exiting cleanly."
           exit 0
 
-      - name: Read current VERSION
+      - name: Read current version from manifest.json
         if: steps.bump.outputs.level != 'skip'
         id: current
         run: |
-          version=$(tr -d '[:space:]' < VERSION)
+          version=$(python3 -c "import json; print(json.load(open('kit/manifest.json'))['version'])" | tr -d '[:space:]')
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Current version: $version"
 
@@ -96,7 +96,7 @@ jobs:
             exit 1
           fi
 
-      - name: Bump version surfaces, commit, tag, branch, push
+      - name: Bump version in manifest.json, commit, tag, branch, push
         if: steps.bump.outputs.level != 'skip'
         run: |
           next="${{ steps.next.outputs.version }}"
@@ -110,8 +110,6 @@ jobs:
           from pathlib import Path
 
           version = sys.argv[1]
-          Path("VERSION").write_text(version + "\n", encoding="utf-8")
-          Path("kit/VERSION").write_text(version + "\n", encoding="utf-8")
 
           manifest_path = Path("kit/manifest.json")
           manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -122,7 +120,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add VERSION kit/VERSION kit/manifest.json
+          git add kit/manifest.json
           git commit -m "release: v$next [skip ci]"
           git tag "v$next"
 

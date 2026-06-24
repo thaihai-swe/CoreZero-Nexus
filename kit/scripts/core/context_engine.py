@@ -31,23 +31,35 @@ def resolve_root(root_flag):
 
 class Scorer:
     def __init__(self, intent_keywords):
-        keywords = []
-        for kw in intent_keywords:
-            keywords.extend(kw.lower().replace(",", " ").split())
-        self.keywords = [k for k in keywords if k]
+        self.words = []
+        self.phrases = []
+        if intent_keywords:
+            raw = ",".join(intent_keywords)
+            for part in raw.split(","):
+                token = part.strip().lower()
+                if not token:
+                    continue
+                if " " in token:
+                    self.phrases.append(token)
+                else:
+                    self.words.append(re.escape(token))
 
-    def score(self, filepath):
-        if not self.keywords:
-            return 50
+    def score(self, filepath, base_score=0):
+        if not self.words and not self.phrases:
+            return 50 if base_score == 0 else base_score
         try:
             text = Path(filepath).read_text(encoding="utf-8").lower()
         except Exception:
-            return 0
-        score = 0
-        for kw in self.keywords:
-            count = text.count(kw)
+            return base_score
+        score = base_score
+        for w in self.words:
+            count = len(re.findall(r"\b" + w + r"\b", text))
             if count > 0:
                 score += min(count * 10, 30)
+        for phrase in self.phrases:
+            count = text.count(phrase)
+            if count > 0:
+                score += min(count * 15, 40)
         return min(score, 100)
 
 
@@ -122,22 +134,126 @@ class Compressor:
         return compressed, compressed_tokens
 
 
+TIER_BOOST = {"Must": 40, "Should": 20, "Skip": 0}
+
+PHASE_COLUMNS = {"spec": 1, "plan": 2, "implement": 3, "verify": 4}
+
+
+def _path_for_source(source):
+    source = source.strip().rstrip(")")
+    if "(" in source:
+        source = source[: source.index("(")].strip()
+    if source.startswith("`") and source.endswith("`"):
+        source = source[1:-1]
+    source = source.strip()
+    if source.startswith("docs/") or source.startswith("skills/") or source.startswith("scripts/"):
+        return source
+    if source.startswith("domain/"):
+        return f"memories/{source}"
+    if source in ("harness-telemetry.md",):
+        return f"memories/repo/{source}"
+    if source in ("session-extracts.md", "Prior `session-extracts.md`"):
+        return None
+    return f"memories/repo/{source}"
+
+
+def parse_phase_matrix(text):
+    """Return list of (source_pattern, spec_tier, plan_tier, implement_tier, verify_tier)."""
+    rows = []
+    # Find the Phase × Guidance Matrix section
+    marker = "## 3. Phase × Guidance Matrix"
+    idx = text.find(marker)
+    if idx == -1:
+        # Fallback: scan for "Phase × Guidance Matrix" anywhere
+        idx = text.find("Phase × Guidance Matrix")
+    if idx == -1:
+        return rows
+    # Scan forward from section header
+    in_table = False
+    for line in text[idx:].split("\n"):
+        s = line.strip()
+        if not in_table:
+            if s.startswith("| `"):
+                in_table = True
+            else:
+                continue
+        if s and not s.startswith("|"):
+            break
+        if not s.startswith("|"):
+            continue
+        parts = [p.strip() for p in line.split("|")]
+        if len(parts) < 6:
+            continue
+        source = parts[1]
+        if source in ("Source", "---"):
+            continue
+        rows.append((source, parts[2], parts[3], parts[4], parts[5]))
+    return rows
+
+
+def resolve_route(root, phase):
+    """Resolve Phase×Guidance Matrix for a given phase.
+    Returns list of (resolved_path, tier).
+    """
+    root = Path(root)
+    master = root / "MASTER_INDEX.md"
+    if not master.exists():
+        return []
+    text = master.read_text(encoding="utf-8")
+    rows = parse_phase_matrix(text)
+    col = PHASE_COLUMNS.get(phase.lower())
+    if col is None:
+        return []
+    results = []
+    for source, *tiers in rows:
+        tier = tiers[col - 1]
+        if tier not in ("Must", "Should"):
+            continue
+        rel = _path_for_source(source)
+        if rel is None:
+            continue
+        if "*" in rel:
+            matches = sorted(root.glob(rel))
+            for m in matches:
+                results.append((str(m), tier))
+        else:
+            fp = root / rel
+            if fp.exists():
+                results.append((str(fp), tier))
+    return results
+
+
 class ContextEngine:
     def __init__(self, root, intent="", budget=0, mode="full"):
-        self.root = Path(root) if root else Path.cwd()
+        self.root = resolve_root(root)
         self.intent = intent
         self.budget = budget
         self.mode = mode
-        self.scorer = Scorer(intent.split(",") if intent else [])
+        self.scorer = Scorer([intent] if intent else [])
         self.budget_tracker = BudgetTracker()
         self.compressor = Compressor()
+        self.tier_map = {}
+
+    def set_tier(self, filepath, tier):
+        self.tier_map[str(Path(filepath).resolve())] = tier
+
+    def load_tier_map(self, mapping):
+        """Accept a dict of path->tier."""
+        for path, tier in mapping.items():
+            self.set_tier(path, tier)
+
+    def _get_base_score(self, filepath):
+        rel = str(Path(filepath).resolve())
+        tier = self.tier_map.get(rel)
+        return TIER_BOOST.get(tier, 0)
 
     def process_file(self, filepath):
         fp = Path(filepath)
         if not fp.exists():
             print(f"ERROR: File not found: {fp}", file=sys.stderr)
             return
-        score = self.scorer.score(str(fp))
+        base = self._get_base_score(str(fp))
+        score = self.scorer.score(str(fp), base_score=base)
         tokens = estimate_tokens(fp.read_text(encoding="utf-8"))
         ok, msg = self.budget_tracker.check(str(fp), tokens)
         if not ok:
@@ -145,7 +261,8 @@ class ContextEngine:
             return
         self.budget_tracker.add(str(fp), tokens, score)
         if self.mode == "scored":
-            print(f"[score={score}] {fp}")
+            tier_tag = f" [{self.tier_map.get(str(Path(filepath).resolve()), '?')}]" if self.tier_map else ""
+            print(f"[score={score}]{tier_tag} {fp}")
             return
         if self.mode == "summary":
             text = fp.read_text(encoding="utf-8")
@@ -170,6 +287,27 @@ class ContextEngine:
             if evicted:
                 print(f"Evicted {len(evicted)} files to meet budget", file=sys.stderr)
 
+    def run_route(self, phase, mode="full"):
+        """Load files dictated by Phase×Guidance Matrix for the given phase."""
+        if not self.root:
+            return
+        entries = resolve_route(self.root, phase)
+        if not entries:
+            print(f"No route entries for phase '{phase}'", file=sys.stderr)
+            return
+        # Collect unique paths (last tier wins for duplicates)
+        unique = {}
+        for fp, tier in entries:
+            unique[fp] = tier
+        for fp, tier in unique.items():
+            self.set_tier(fp, tier)
+            self.process_file(fp)
+        if self.budget > 0:
+            self.budget_tracker.hard = self.budget
+            evicted = self.budget_tracker.evict_to_budget()
+            if evicted:
+                print(f"Evicted {len(evicted)} files to meet budget", file=sys.stderr)
+
 
 def main():
     parser = argparse.ArgumentParser(description="CoreZero Context Engine")
@@ -178,11 +316,16 @@ def main():
     parser.add_argument("--budget", type=int, default=0, help="Hard token budget")
     parser.add_argument("--mode", choices=["full", "summary", "partial", "scored", "compress"],
                         default="full", help="Load mode")
-    parser.add_argument("files", nargs="+", help="Files to process")
+    parser.add_argument("--route", default="",
+                        help="Phase name to load files from Phase×Guidance Matrix (spec/plan/implement/verify)")
+    parser.add_argument("files", nargs="*", help="Files to process")
     args = parser.parse_args()
 
     engine = ContextEngine(args.root, args.intent, args.budget, args.mode)
-    engine.run(args.files)
+    if args.route:
+        engine.run_route(args.route, args.mode)
+    if args.files:
+        engine.run(args.files)
 
 
 if __name__ == "__main__":

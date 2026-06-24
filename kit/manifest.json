@@ -2,7 +2,7 @@
   "name": "harness-kit",
   "version": "1.0.0",
   "description": "Spec-anchored AI software delivery framework with durable memory tiers, mechanical verification gates, and a Python harness engine.",
-  "homepage": "https://github.com/thaihai-swe/CoreZero-Nexus",
+  "homepage": "https://github.com/thaihai-swe/CoreZero",
   "files": {
     "overwrite": [
       "skills/README.md",
@@ -71,17 +71,17 @@
     ]
   },
   "templateMap": {},
-    "directories": [
-      "skills",
-      "memories/repo",
-      "memories/domain",
-      "artifacts/features",
-      "docs",
-      "docs/project",
-      "docs/project/adr",
-      "docs/policies",
-      "docs/generated",
-      "docs/rules",
-      "scripts"
-    ]
+  "directories": [
+    "skills",
+    "memories/repo",
+    "memories/domain",
+    "artifacts/features",
+    "docs",
+    "docs/project",
+    "docs/project/adr",
+    "docs/policies",
+    "docs/generated",
+    "docs/rules",
+    "scripts"
+  ]
 }

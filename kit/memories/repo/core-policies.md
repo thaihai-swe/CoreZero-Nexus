@@ -79,7 +79,7 @@ Any change to an approved `spec.md` MUST be recorded in the spec's `## Spec Amen
 ## Work Tracking
 
 - Issue tracker mode: GitHub
-- Issue/project location: https://github.com/thaihai-swe/CoreZero-Nexus/issues
+- Issue/project location: https://github.com/thaihai-swe/CoreZero/issues
 - Default work item format: GitHub Issues
 - Required labels or states: `breaking-change` for skill name or artifact schema changes
 - Escalation / blocker handling: Stop and ask user

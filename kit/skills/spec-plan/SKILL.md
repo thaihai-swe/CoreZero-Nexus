@@ -26,8 +26,20 @@ Converts an approved spec into a concrete execution strategy. Produces `plan.md`
    If the design reveals a contested decision with ≥2 viable approaches and material tradeoffs (e.g., build vs. buy, sync vs. async, new dependency vs. in-house), STOP. Invoke `/spec-adr` to record the decision before proceeding. Do not silently pick an approach.
    The delivery strategy (Part 2 of the plan) must pass the **Architectural Gates** (see Core Rules) and conform to `ponytail.md` guidelines.
 3. **Task Breakdown**: Create `artifacts/features/<slug>/tasks.md` using `references/tasks-template.md` by breaking down the technical approach from the `plan.md`. Each task MUST be traceable to a design decision or component defined in the Technical Design. Use unique task IDs (`TASK-001`), clear targets, and specific proof validations. Mark independent, non-blocking tasks with `[P]` to indicate safe parallel execution zones.
+    - **Traceability Protocol**: For each task, include a `Covers:` field referencing the REQ or AC IDs from `spec.md`.
+    - **Task Granularity**: Each task should be completable in a single session (2–4 hours). If a task would take longer, split it. If a task is trivial (single file, one function), merge it with an adjacent task.
 4. **Traceability**: Verify every requirement in `artifacts/features/<slug>/spec.md` maps to a task in `artifacts/features/<slug>/tasks.md`.
 5. **Readiness & Handoff**: Run a completeness check using `references/definition-of-ready.md` to ensure the plan and tasks meet all preconditions. Run `bash scripts/harness/phase-gate.sh <slug> "Plan Approved"` to verify preconditions. If it fails, fix the root cause before proceeding. Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
+
+## Anti-Patterns
+
+- **Design After Tasks**: Writing task breakdown before technical design. Tasks must derive from design, not vice versa.
+- **Undocumented Tradeoffs**: Choosing between two viable approaches without recording an ADR. If there's a real choice, `/spec-adr` must fire.
+- **Overly Granular Tasks**: 30 tasks for a 2-day feature creates overhead. Target 2–4 hour increments.
+- **Missing Traceability**: No `Covers:` or `ACs:` fields in tasks.
+- **Premature Optimization**: Designing for scale that the spec doesn't require. Ponytail rule: build only what the spec demands.
+- **Silent Spec Amendments**: Changing the plan without re-running the phase gate. If the spec changed, the plan is stale — follow the Spec Amendment Protocol.
+- **Context Hoarding**: Keeping the full spec, plan, and research docs in context after planning is done. Evict raw logs and summarise before handoff.
 
 ## Core Rules
 - **Hierarchical Detail Management**: Keep `plan.md` high-level and readable. Do NOT dump raw code or algorithms into the plan; extract those to separate implementation detail files if necessary.

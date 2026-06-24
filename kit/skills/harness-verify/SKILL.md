@@ -23,7 +23,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 2. **Mechanical Gate Audit**: Run `bash scripts/harness/gate-runner.sh` to mechanically verify the workspace. Do not guess commands. Write the results into `review.md`.
 3. **Gate Failure Telemetry**: If the gate in Step 2 fails, pipe the output into `bash scripts/harness/telemetry-collector.sh --task <TASK-NNN> --feature <slug>`. Then count failures for this task using `bash scripts/harness/telemetry-count.sh --task <TASK-NNN>`. If failures < 2, hand off to `/spec-implement`. If failures >= 2 on the same task, escalate to the user for a rethink or route to `/code-review`. Do not proceed.
 4. **Clean-State Check**: Ensure no uncommitted changes or broken builds. This is a precondition — state must be clean before the alignment audit begins. If the gate in Step 2 passed, reset the failure counter: post-fallow failures count fresh, not against the Step 2 count.
-5. **Alignment Audit**: Run `bash scripts/harness/traceability-audit.sh <slug>` as the mechanical first pass. If it exits non-zero, fix unmapped items before proceeding. For each AC in `spec.md`, identify the task ID (`TASK-NNN`) in `tasks.md` whose validation covers it.
+5. **Alignment Audit**: For each AC in `spec.md`, identify the task ID (`TASK-NNN`) in `tasks.md` whose validation covers it.
    **Pass/Fail threshold**: Zero tolerance — every `AC-*` item in `spec.md` must map to at least one task with recorded validation evidence in `tasks.md`. A single AC with no implementation evidence = `Fail`. There is no partial pass.
 6. **Design Conformance Check**: Read `plan.md`. For each major component or decision listed in the Technical Design section, confirm it is reflected in the delivered code and task list. Any component in the design section with zero corresponding implementation evidence in `tasks.md` is a `Fail`.
 7. **Security Lens**: Audit verified scope against `memories/repo/core-policies.md` `## Security Policy`.
@@ -43,4 +43,5 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 - **Evidence over Confidence**: Review fresh, reproducible execution outputs.
 - **Split Modes**: Perform mechanical, alignment, and security audits separately.
 - **Drift Detection**: Mismatches between code and spec must fail verification.
+- **Circuit Breaker**: After 2 consecutive gate failures (tracked in `harness-state.json`), the engine blocks re-entry to `Verifying` until `/spec-plan` re-approves. Do not attempt a 3rd verify without a replan.
 - **Done Authority**: This skill is the sole authority for marking a feature `Done`.

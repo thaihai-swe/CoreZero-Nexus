@@ -1,6 +1,6 @@
 # End-to-End Tutorial
 
-This tutorial explains the full CoreZero skill flow from install to closeout. It covers all 16 shipped skills, their modes, and whether each skill is required, conditional, optional, or maintenance-only.
+This tutorial explains the full CoreZero skill flow from install to closeout. It covers all 17 shipped skills, their modes, and whether each skill is required, conditional, optional, or maintenance-only.
 
 CoreZero has one required feature-delivery spine. The other skills are supporting branches for session continuity, memory health, governance, documentation, diagrams, and harness repair.
 
@@ -102,7 +102,7 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | [`/context-memory`](../kit/skills/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
 | [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/`, `artifacts/`, or `docs/generated/` |
 | [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `docs/generated/dashboard.html` |
-| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/generated/code-map.md`, eval reports |
+| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/project/code-map.md`, eval reports |
 | [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `docs/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
 | [`/code-review`](../kit/skills/code-review/SKILL.md) | Optional helper | Review | Manual review is requested or verification calls for deeper review | Review findings, usually feature-scoped |
 | [`/ponytail`](../kit/skills/ponytail/SKILL.md) | Optional helper | `lite`, `full` (default), `ultra` | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features | Advisory — no artifacts |
@@ -134,7 +134,6 @@ After install, the adopter-facing entrypoints are:
 
 - `AGENTS.md`
 - `MASTER_INDEX.md`
-- `docs/README.md`
 
 ### Phase 1: Bootstrap With `/starter-init`
 

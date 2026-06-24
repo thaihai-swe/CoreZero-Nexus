@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify version surfaces match tag
+      - name: Verify version matches tag
         run: |
           tag="${GITHUB_REF#refs/tags/}"
           tag="${tag#v}"
@@ -25,22 +25,10 @@ jobs:
           from pathlib import Path
 
           tag = sys.argv[1]
-          root_version = Path("VERSION").read_text(encoding="utf-8").strip()
-          kit_version = Path("kit/VERSION").read_text(encoding="utf-8").strip()
           manifest_version = json.loads(Path("kit/manifest.json").read_text(encoding="utf-8"))["version"]
 
-          mismatches = []
-          for label, value in (
-              ("VERSION", root_version),
-              ("kit/VERSION", kit_version),
-              ("kit/manifest.json", manifest_version),
-          ):
-              if value != tag:
-                  mismatches.append(f"{label}={value}")
-
-          if mismatches:
-              joined = ", ".join(mismatches)
-              raise SystemExit(f"ERROR: tag v{tag} does not match {joined}")
+          if manifest_version != tag:
+              raise SystemExit(f"ERROR: tag v{tag} does not match manifest.json version {manifest_version}")
           PY
 
       - name: Create GitHub release

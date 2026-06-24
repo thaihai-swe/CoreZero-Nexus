@@ -70,7 +70,7 @@ CoreZero operates across five distinct layers that separate concerns and maintai
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin task router -> points to skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  16 skills across 4 groups (Lifecycle, Context & Memory, Quality & Docs, Visualization)
+│  2. Skill Layer (skills/*/SKILL.md)         │  17 skills across 4 groups (Lifecycle, Context & Memory, Quality & Docs, Visualization)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (ETCLOVG Taxonomy)        │  Rules, validation commands, and session control
 ├─────────────────────────────────────────────┤
@@ -99,8 +99,8 @@ To conserve context window budget and prevent AI hallucination, the kit structur
       [Tier 2: Repo Memory (Always)] (constitution + security-policy + harness-config)
              │ (loaded every session)
              ▼
-      [Tier 3: Repo Memory (By Intent)] (Knowledge / Learned / Debug groups via memories/repo/MASTER_INDEX.md)
-             │ (loaded based on task trigger keywords)
+ [Tier 3: Repo Memory (By Intent)] (Knowledge / Learned / Debug groups via MASTER_INDEX.md)
+              │ (loaded based on task trigger keywords)
              ▼
       [Tier 4: Feature Artifacts] (status.md, spec.md, plan.md, tasks.md, handoff.md)
              │ (loaded before editing or verifying)
@@ -112,7 +112,7 @@ To conserve context window budget and prevent AI hallucination, the kit structur
                (summarized and evicted immediately to avoid bloating)
 ```
 
-- **INDEX-Driven Trigger Loading (Tier 3):** Under [`MASTER_INDEX.md`](../kit/memories/repo/MASTER_INDEX.md), files in Tier 3 are loaded selectively based on query triggers defined in [`memories/repo/MASTER_INDEX.md`](../kit/memories/repo/MASTER_INDEX.md):
+- **Trigger Loading (Tier 3):** Under [`MASTER_INDEX.md`](../kit/MASTER_INDEX.md), files in Tier 3 are loaded selectively based on query triggers defined in [`MASTER_INDEX.md`](../kit/MASTER_INDEX.md):
     - **Knowledge:** Loads [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md), architecture, and indexes when keywords like `architecture`, `pattern`, `stack`, or `domain` are matched.
     - **Learned:** Loads [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) when keywords like `heuristic`, `recurring`, or `lesson` are matched.
     - **Debug:** Loads [`harness-telemetry.md`](../kit/memories/repo/harness-telemetry.md) when keywords like `debug`, `failure`, or `root cause` are matched.

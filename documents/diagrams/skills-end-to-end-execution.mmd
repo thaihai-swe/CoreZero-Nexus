@@ -9,7 +9,7 @@ sequenceDiagram
     U->>A: Invocation command / request
     A->>S: Read active SKILL.md (workflow, boundaries, stop conditions)
     S-->>A: Skill guidelines and rules
-    A->>M: Read INDEX.md and load memories (always + by-intent)
+    A->>M: Read MASTER_INDEX.md and load memories (always + by-intent)
     M-->>A: Repo guidelines, constraints, heuristics, specs
     A->>F: Read active feature state (status, spec, plan, tasks, handoff)
     F-->>A: Current phase state and checklist
