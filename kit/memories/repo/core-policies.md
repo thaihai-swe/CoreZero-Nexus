@@ -91,7 +91,7 @@ Any change to an approved `spec.md` MUST be recorded in the spec's `## Spec Amen
 - Architecture doc path: `docs/project/architecture.md`
 - Security policy path: `memories/repo/core-policies.md` `## Security Policy & Trust Boundaries`
 - Learned heuristics path: `memories/repo/learned-heuristics.md`
-- ADR location: `artifacts/features/<slug>/adr-*.md`
+- ADR location: `docs/project/adr/[number]-[slug].md`
 - Generated documentation location: `docs/generated/`
 - Codemap path: `docs/project/code-map.md`
 

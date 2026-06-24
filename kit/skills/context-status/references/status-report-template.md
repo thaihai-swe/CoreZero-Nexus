@@ -15,9 +15,9 @@ Total Features: [N]
 
 | Feature Slug | Phase | Profile | Last Updated | Blockers | Next Step |
 |---|---|---|---|---|---|
-| `<slug-1>` | Spec Approved | Standard | [DATE] | None | `/spec-plan` |
+| `<slug-1>` | Spec Approved | Moderate | [DATE] | None | `/spec-plan` |
 | `<slug-2>` | Implementing | Complex | [DATE] | Waiting on auth team | `/spec-implement` Task 5 |
-| `<slug-3>` | Done | Tiny | [DATE] | None | (Complete) |
+| `<slug-3>` | Done | Simple | [DATE] | None | (Complete) |
 
 ## Phase Definitions
 
@@ -31,8 +31,8 @@ Total Features: [N]
 
 ## Profile Definitions
 
-- **Tiny** — Small, reversible, low-risk (1–2 hours)
-- **Standard** — Clear feature or bug-fix (4–8 hours)
+- **Simple** — Small, reversible, low-risk (1–2 hours)
+- **Moderate** — Clear feature or bug-fix (4–8 hours)
 - **Complex** — Ambiguity, cross-boundary, risky (1–2 days)
 
 ## Blocker Format
@@ -76,9 +76,9 @@ Total Features: 3
 
 | Feature Slug | Phase | Profile | Last Updated | Blockers | Next Step |
 |---|---|---|---|---|---|
-| `user-auth` | Done | Standard | 2026-05-28 | None | (Complete) |
+| `user-auth` | Done | Moderate | 2026-05-28 | None | (Complete) |
 | `oauth-integration` | Implementing | Complex | 2026-05-29 | None | `/spec-implement` Task 6 |
-| `password-reset` | Spec'ing | Tiny | 2026-05-27 | Waiting on product | `/spec-requirements` (grilling waves) |
+| `password-reset` | Spec'ing | Simple | 2026-05-27 | Waiting on product | `/spec-requirements` (grilling waves) |
 
 ## Blockers
 

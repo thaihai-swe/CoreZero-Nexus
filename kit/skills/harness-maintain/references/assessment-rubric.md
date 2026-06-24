@@ -40,5 +40,5 @@ Score the repository from 1 (Minimal) to 5 (Production) across the seven core su
 ## Overall Maturity
 *   **7-14:** Minimal. High risk of failure on complex tasks.
 *   **15-21:** Basic. Suitable for simple scripts.
-*   **22-28:** Standard. Can handle moderate feature work.
+*   **22-28:** Moderate. Can handle moderate feature work.
 *   **29-35:** Production. Highly reliable for autonomous, long-running engineering.

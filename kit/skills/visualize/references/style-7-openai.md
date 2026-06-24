@@ -35,7 +35,7 @@ No custom fonts. System font stack only for maximum compatibility.
 Clean, minimal boxes with subtle borders:
 
 ```xml
-<!-- Standard node -->
+<!-- Default node -->
 <rect x="100" y="100" width="180" height="80" rx="8" ry="8"
       fill="#ffffff" stroke="#e5e5e5" stroke-width="1.5"/>
 

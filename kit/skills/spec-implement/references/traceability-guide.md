@@ -101,14 +101,14 @@ During `/harness-verify` Alignment Audit, the agent will check:
 3. Every `TASK-*` has a proof command and a recorded evidence entry.
 4. (Optional for Complex profile) Source code or test files contain `AC-*` comments or test names matching the verified criteria.
 
-If step 4 is performed, the agent uses `grep` to search for `AC-NNN` patterns across `src/`, `tests/`, or equivalent directories. Missing markers do not automatically fail the audit for Standard profile but are noted as a gap.
+If step 4 is performed, the agent uses `grep` to search for `AC-NNN` patterns across `src/`, `tests/`, or equivalent directories. Missing markers do not automatically fail the audit for Moderate profile but are noted as a gap.
 
 ## Profile Guidance
 
 | Profile | Traceability Requirement |
 |---------|--------------------------|
-| Tiny | `tasks.md` proof commands only — no inline markers required |
-| Standard | `tasks.md` proof evidence required; inline markers recommended |
+| Simple | `tasks.md` proof commands only — no inline markers required |
+| Moderate | `tasks.md` proof evidence required; inline markers recommended |
 | Complex | Inline markers in source + test names + PR table all required; alignment audit checks all three |
 
 ## Anti-Patterns

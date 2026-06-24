@@ -9,7 +9,7 @@
 
 ## Rules
 
-- Keep tasks proportional to delivery profile; Tiny stays compact.
+- Keep tasks proportional to delivery profile; Simple stays compact.
 - Each task small, testable, and traceable to REQ/AC/plan.
 - Mark `[P]` only when truly independent (no write/contract conflicts); state ownership boundary.
 - Prefer explicit file/module targets when known.
@@ -20,7 +20,7 @@
 
 ## User Story Decomposition
 
-Required for Standard and Complex when the feature has more than one user story. Skipped for Tiny and single-story features (record `US-001 (P1) — covers all tasks` and proceed).
+Required for Moderate and Complex when the feature has more than one user story. Skipped for Simple and single-story features (record `US-001 (P1) — covers all tasks` and proceed).
 
 Group tasks into independently shippable slices. Each story slice must be:
 
@@ -47,7 +47,7 @@ Required when User Story Decomposition is filled. Pick one strategy and record t
 
 | Strategy | When to use | Effect |
 |---|---|---|
-| MVP-first | Standard/Complex with multiple stories where the team wants to ship as soon as P1 is verified | Complete and verify P1 (including its tests) before any P2 work begins; each story is a separate ship gate |
+| MVP-first | Moderate/Complex with multiple stories where the team wants to ship as soon as P1 is verified | Complete and verify P1 (including its tests) before any P2 work begins; each story is a separate ship gate |
 | Incremental | Stories tightly coupled or built sequentially against the same module | Run all P1 tasks, then all P2, then all P3; one final verification covers the feature |
 | Parallel-team | Subagent or multi-developer slices with clean ownership boundaries | After Foundational completes, stories run concurrently; each slice owns its boundary and verifies itself |
 

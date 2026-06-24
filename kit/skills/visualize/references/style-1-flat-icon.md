@@ -39,7 +39,7 @@ font-weight: 400 normal, 600 semi-bold for titles
 ## Box Shapes
 
 ```xml
-<!-- Standard node box -->
+<!-- Default node box -->
 <rect rx="8" ry="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
 
 <!-- Icon accent box (colored background) -->

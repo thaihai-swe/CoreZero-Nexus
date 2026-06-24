@@ -50,7 +50,7 @@ letter-spacing: 0.02em for labels
 ## Box Styles
 
 ```xml
-<!-- Standard panel -->
+<!-- Default panel -->
 <rect rx="6" ry="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
 
 <!-- Active/highlighted panel -->

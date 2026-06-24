@@ -29,12 +29,11 @@
       "scripts/generate-dashboard.py",
       "scripts/context-loader.py",
       "scripts/harness/gate-runner.local.example.sh",
-      "docs/rules/security.md",
-      "docs/rules/ponytail.md",
       "docs/index.html",
       "docs/policies/code-design.md",
-      "docs/rules/README.md",
-      "docs/rules/*.md"
+      "docs/rules/*.md",
+      "docs/project/adr/index.md",
+      "docs/project/adr/0001-example.md"
     ],
     "copyIfMissing": [
       "AGENTS.md",
@@ -74,6 +73,7 @@
       "artifacts/features",
       "docs",
       "docs/project",
+      "docs/project/adr",
       "docs/policies",
       "docs/generated",
       "docs/rules",

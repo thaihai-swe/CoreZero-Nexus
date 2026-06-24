@@ -5,6 +5,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/_lib/root.sh"
+
 ROOT_DIR=""
 TASK_ID=""
 FEATURE_SLUG=""
@@ -29,41 +32,47 @@ done
 
 [[ -z "$TASK_ID" ]] && usage
 
-if [[ -z "$ROOT_DIR" ]]; then
-  CURRENT_DIR="$PWD"
-  while [[ "$CURRENT_DIR" != "/" && -n "$CURRENT_DIR" ]]; do
-    if [[ -f "$CURRENT_DIR/AGENTS.md" && -d "$CURRENT_DIR/memories/repo" ]]; then
-      ROOT_DIR="$CURRENT_DIR"
-      break
-    fi
-    CURRENT_DIR="$(dirname "$CURRENT_DIR")"
-  done
-fi
+ROOT_DIR=$(resolve_repo_root "${ROOT_DIR:-}") || {
+  echo "ERROR: Could not resolve repository root." >&2
+  exit 1
+}
 
 TELEMETRY_FILE="$ROOT_DIR/memories/repo/harness-telemetry.md"
 [[ -f "$TELEMETRY_FILE" ]] || { echo "0"; exit 0; }
 
 COUNT=0
-MATCHING=""
+CURRENT_TASK=""
+CURRENT_FEATURE=""
+CURRENT_STATUS=""
 
-# Parse YAML blocks looking for task: <TASK_ID>
 while IFS= read -r line; do
-  if [[ "$line" =~ ^"  task: \"${TASK_ID}\""$ ]]; then
-    MATCHING="yes"
-  fi
-  if [[ "$line" =~ ^"  status: open"$ && -n "$MATCHING" ]]; then
-    if [[ -n "$FEATURE_SLUG" ]]; then
-      # Also check feature field — read backwards a few lines
-      # Simplification: count all open entries for this task
-      :
+  # Trim trailing CR if any (Windows compat)
+  line="${line%$'\r'}"
+  
+  if [[ "$line" =~ ^[[:space:]]*-?[[:space:]]*id: ]]; then
+    # We hit a new entry, evaluate the previous one
+    if [[ "$CURRENT_TASK" == "$TASK_ID" && "$CURRENT_STATUS" == "open" ]]; then
+      if [[ -z "$FEATURE_SLUG" || "$CURRENT_FEATURE" == "$FEATURE_SLUG" ]]; then
+        COUNT=$((COUNT + 1))
+      fi
     fi
+    CURRENT_TASK=""
+    CURRENT_FEATURE=""
+    CURRENT_STATUS=""
+  elif [[ "$line" =~ ^[[:space:]]*task:[[:space:]]*\"?([^\"]*)\"?$ ]]; then
+    CURRENT_TASK="${BASH_REMATCH[1]}"
+  elif [[ "$line" =~ ^[[:space:]]*feature:[[:space:]]*\"?([^\"]*)\"?$ ]]; then
+    CURRENT_FEATURE="${BASH_REMATCH[1]}"
+  elif [[ "$line" =~ ^[[:space:]]*status:[[:space:]]*\"?([^\"]*)\"?$ ]]; then
+    CURRENT_STATUS="${BASH_REMATCH[1]}"
+  fi
+done < "$TELEMETRY_FILE"
+
+# Evaluate the last entry at EOF
+if [[ "$CURRENT_TASK" == "$TASK_ID" && "$CURRENT_STATUS" == "open" ]]; then
+  if [[ -z "$FEATURE_SLUG" || "$CURRENT_FEATURE" == "$FEATURE_SLUG" ]]; then
     COUNT=$((COUNT + 1))
-    MATCHING=""
   fi
-  # Reset if we hit the next YAML block or entry
-  if [[ "$line" =~ ^"- id:" ]]; then
-    MATCHING=""
-  fi
-done < <(grep -A 10 "task: \"$TASK_ID\"" "$TELEMETRY_FILE" 2>/dev/null || true)
+fi
 
 echo "$COUNT"

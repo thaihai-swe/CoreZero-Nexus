@@ -6,15 +6,13 @@
 
 set -euo pipefail
 
-KIT_ROOT=""
-if [[ -f "$PWD/AGENTS.md" && -d "$PWD/memories/repo" ]]; then
-  KIT_ROOT="$PWD"
-elif [[ -d "$PWD/kit" && -f "$PWD/kit/AGENTS.md" ]]; then
-  KIT_ROOT="$PWD/kit"
-else
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/_lib/root.sh"
+
+KIT_ROOT=$(resolve_repo_root) || {
   echo "FAIL: Could not resolve kit root (no AGENTS.md + memories/repo/)"
   exit 1
-fi
+}
 
 errors=0
 warn()  { echo "  WARN: $*"; }
@@ -26,12 +24,16 @@ echo ""
 
 # --- Check 1: manifest.json files exist ---
 echo "--- Check 1: Manifest files exist ---"
+if ! command -v python3 >/dev/null 2>&1; then
+  fail "python3 is not installed or not in PATH"
+  exit 1
+fi
 MANIFEST="$KIT_ROOT/manifest.json"
 [[ -f "$MANIFEST" ]] || { fail "manifest.json not found"; exit 1; }
 
 check_manifest_entries() {
   local field="$1"
-  python3 - "$MANIFEST" "$field" <<'PY' 2>/dev/null || true
+  python3 - "$MANIFEST" "$field" <<'PY'
 import json, sys, os, glob
 m = json.load(open(sys.argv[1]))
 cur = m
@@ -113,9 +115,7 @@ for f in \
   "scripts/harness/telemetry-collector.sh"; do
   [[ -f "$KIT_ROOT/$f" ]] || fail "MASTER_INDEX.md route missing: $f"
 done
-if [[ $errors -eq 0 || $(echo "$errors") -eq 0 ]]; then
-  : # placeholder
-fi
+
 
 # --- Check 5: Threshold consistency (600/800/1200) ---
 echo "--- Check 5: Threshold consistency ---"
@@ -127,7 +127,7 @@ check_threshold() {
   return 1
 }
 # Just check core-policies.md has the canonical thresholds
-if grep -q "Memory Promotion Thresholds" "$KIT_ROOT/memories/repo/core-policies.md" && grep -q "800–1199" "$KIT_ROOT/memories/repo/core-policies.md"; then
+if grep -q "Memory Promotion Thresholds" "$KIT_ROOT/memories/repo/core-policies.md" && grep -qE "800.1199" "$KIT_ROOT/memories/repo/core-policies.md"; then
   pass "core-policies.md has canonical thresholds table"
 else
   fail "core-policies.md missing canonical thresholds"
@@ -135,7 +135,7 @@ fi
 
 # --- Check 6: Task ID grammar is TASK-NNN ---
 echo "--- Check 6: Task ID grammar (no T-01/T-NN in SKILL.md) ---"
-T01_HITS=$(grep -rn "\bT-[0-9]\+\b\|\bT-NN\b" "$KIT_ROOT/skills/" --include="SKILL.md" 2>/dev/null || true)
+T01_HITS=$(grep -rnE "\bT-[0-9]+\b|\bT-NN\b" "$KIT_ROOT/skills/" --include="SKILL.md" 2>/dev/null || true)
 if [[ -z "$T01_HITS" ]]; then
   pass "No T-01/T-NN in SKILL.md files"
 else
@@ -163,6 +163,34 @@ if [[ -f "$KIT_ROOT/scripts/harness/telemetry-count.sh" ]]; then
 else
   fail "telemetry-count.sh missing"
 fi
+
+# --- Check 9: Version consistency (Source repo only) ---
+echo "--- Check 9: Version consistency ---"
+if [[ -f "$KIT_ROOT/../VERSION" ]]; then
+  SRC_VER=$(cat "$KIT_ROOT/../VERSION" 2>/dev/null | tr -d ' \n\r')
+  KIT_VER=$(cat "$KIT_ROOT/VERSION" 2>/dev/null | tr -d ' \n\r')
+  MANIFEST_VER=$(python3 -c "import json; print(json.load(open('$KIT_ROOT/manifest.json'))['version'])" 2>/dev/null | tr -d ' \n\r')
+  
+  if [[ "$SRC_VER" == "$KIT_VER" && "$KIT_VER" == "$MANIFEST_VER" ]]; then
+    pass "Version surfaces match: $KIT_VER"
+  else
+    fail "Version mismatch: root VERSION='$SRC_VER', kit/VERSION='$KIT_VER', manifest.json version='$MANIFEST_VER'"
+  fi
+else
+  pass "Not in source repository, skipping root VERSION consistency check"
+fi
+
+# --- Check 10: Executable bits assertion ---
+echo "--- Check 10: Executable bits for harness scripts ---"
+for f in "$KIT_ROOT"/scripts/harness/*.sh; do
+  if [[ -f "$f" ]]; then
+    if [[ -x "$f" ]]; then
+      pass "$(basename "$f") is executable"
+    else
+      fail "$(basename "$f") is NOT executable"
+    fi
+  fi
+done
 
 # --- Summary ---
 echo ""

@@ -11,7 +11,7 @@
 - **Icons**: [Library or custom SVG strategy]
 
 ## ⌨️ Accessibility (A11y)
-- **Standard**: [WCAG 2.1 AA]
+- **Guidelines**: [WCAG 2.1 AA]
 - **Key Rules**: [e.g., "All images must have alt text", "Button focus states must be visible"]
 
 ## 📱 Responsiveness
@@ -19,7 +19,7 @@
 - **Mobile-First?**: [Yes/No]
 
 ## ✨ Interaction & Motion
-- **Transitions**: [Standard durations and easings]
+- **Transitions**: [Default durations and easings]
 - **Feedback**: [How to handle loading, success, and error states]
 
 ## 📏 Design Standards (Anti-Slop)

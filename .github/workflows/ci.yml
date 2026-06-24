@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run Kit Self-Diagnosis (doctor.sh)
+        run: |
+          bash kit/scripts/harness/doctor.sh
+
+      - name: Run Dry-Run Installation
+        run: |
+          bash kit/scripts/install.sh /tmp/corezero-test --dry-run
+
+      - name: Grep Audits (No kit/ prefixes)
+        run: |
+          if grep -rn "kit/" kit/skills/ kit/MASTER_INDEX.md; then
+            echo "FAIL: Found kit/ prefix in shipped skills or MASTER_INDEX.md"
+            exit 1
+          fi
+
+      - name: Grep Audits (No legacy Tiny/Standard terms in skills)
+        run: |
+          TINY_STANDARD_HITS=$(grep -rnE "\bTiny\b|\bStandard\b" kit/skills/ --exclude="status-phases.md" || true)
+          if [[ -n "$TINY_STANDARD_HITS" ]]; then
+            echo "FAIL: Found legacy terms Tiny/Standard in shipped skills:"
+            echo "$TINY_STANDARD_HITS"
+            exit 1
+          fi

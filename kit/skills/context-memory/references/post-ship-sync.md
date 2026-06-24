@@ -5,9 +5,9 @@ Invoked automatically by `harness-verify` when a feature's verdict is `Pass`. Th
 The scope of the sweep is determined by the size and complexity of the change:
 
 - **Extremely Narrow (documentation-only, comment changes, typo fixes):** Sweep only `learned-heuristics.md` if any heuristic was learned. Otherwise, record "no heuristic learned" and stop.
-- **Standard Feature / Core Changes:** Perform a full sweep across every memory file listed in `MASTER_INDEX.md`.
+- **Moderate Feature / Core Changes:** Perform a full sweep across every memory file listed in `MASTER_INDEX.md`.
 
-Procedure (Standard and above):
+Procedure (Moderate and above):
 
 1. **Read `MASTER_INDEX.md`** to enumerate the current memory file set. If `MASTER_INDEX.md` is missing, recreate it from the kit source by re-running `scripts/install.sh <target> --dry-run` to inspect the default, or manually create a minimal `MASTER_INDEX.md` with `## 1. Context Indexes` and the always-load group (`memories/repo/core-policies.md`).
 2. **Read the feature artifacts**: `spec.md`, `plan.md`, `review.md`, `session-extracts.md`, and any `adr-*.md` files under `artifacts/features/<slug>/`.

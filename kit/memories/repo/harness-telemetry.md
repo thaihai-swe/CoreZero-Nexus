@@ -15,7 +15,7 @@ Owned by `/context-status`. Updated when feature status changes.
 
 - **Phase**: None
 - **Active Task**: None
-- **Profile**: Standard
+- **Profile**: Moderate
 
 
 # Observability Log

@@ -39,7 +39,7 @@ When called from `/harness-verify`:
 - **Scope**: Restrict review strictly to touched files and specific task boundaries.
 - **Outcome**: Produce a structured response (verdict, mandatory findings, options, compliments) and return to `/harness-verify` to write to `review.md`.
 
-## The Standard of Code Review
+## Code Review Standards
 
 Favor approving any CL that improves overall code health, even if imperfect.
 - **No Perfectionism**: Do not block progress for minor polish.

@@ -41,7 +41,7 @@ font-weight: 400 normal, 500 medium for node labels
 ## Box Styles
 
 ```xml
-<!-- Standard node -->
+<!-- Default node -->
 <rect rx="4" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
 <text fill="#111827" font-size="14" font-weight="500"/>
 

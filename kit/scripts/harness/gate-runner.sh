@@ -3,10 +3,38 @@
 # Orchestrates mechanical validation (linters, typecheckers, syntax) and behavioral tests.
 # Returns 0 only if all gates pass. Automatically pipes failures to telemetry-collector.sh if present.
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TELEMETRY_SCRIPT="$SCRIPT_DIR/telemetry-collector.sh"
+
+TASK_ID=""
+FEATURE_SLUG=""
+ROOT_DIR=""
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --task)
+      TASK_ID="$2"; shift 2 ;;
+    --feature)
+      FEATURE_SLUG="$2"; shift 2 ;;
+    --root)
+      ROOT_DIR="$2"; shift 2 ;;
+    *)
+      # Ignore other options or shift
+      shift ;;
+  esac
+done
+
+source "$SCRIPT_DIR/_lib/root.sh"
+RESOLVED_ROOT=$(resolve_repo_root "${ROOT_DIR:-}") || {
+  echo "ERROR: Could not resolve repository root." >&2
+  exit 1
+}
+
+# Shift execution Cwd to RESOLVED_ROOT so all build/lint/test commands run in the target project root
+cd "$RESOLVED_ROOT"
 
 run_gate() {
     local cmd="$1"
@@ -17,7 +45,10 @@ run_gate() {
         echo "$OUTPUT"
         echo "=> Gate failed: $cmd"
         if [ -x "$TELEMETRY_SCRIPT" ]; then
-            echo "$OUTPUT" | "$TELEMETRY_SCRIPT"
+            local args=()
+            [[ -n "$TASK_ID" ]] && args+=(--task "$TASK_ID")
+            [[ -n "$FEATURE_SLUG" ]] && args+=(--feature "$FEATURE_SLUG")
+            echo "$OUTPUT" | "$TELEMETRY_SCRIPT" "${args[@]}"
         fi
         exit 1
     fi

@@ -35,10 +35,10 @@ The installer script (`scripts/install.sh`) handles files using three distinct p
 - **`preserve`**: Feature-specific state folders (`artifacts/features/`, local settings). These are completely owned by the adopter project and are never touched by the installer.
 
 ### 2. The Memory Governance Loop
-Tier definitions (Instruction / Auto / Extracted) and the promotion loop live in `skills/context/context-memory/SKILL.md` `## Memory Tiers`. Intent-based routing of these tiers lives in `MASTER_INDEX.md`.
+Tier definitions (Instruction / Auto / Extracted) and the promotion loop live in `skills/context-memory/SKILL.md` `## Memory Tiers`. Intent-based routing of these tiers lives in `MASTER_INDEX.md`.
 
 ### 3. Gated Integration vs. Standalone Review Distinction
-The dual-purpose behavior of `code-review` (standalone PR mode vs. `/harness-verify`-gated blocking mode) is defined in `skills/utilities/code-review/SKILL.md`.
+The dual-purpose behavior of `code-review` (standalone PR mode vs. `/harness-verify`-gated blocking mode) is defined in `skills/code-review/SKILL.md`.
 
 ### 4. Shipped Command Ownership
 The shipped helpers own the following durable surfaces:

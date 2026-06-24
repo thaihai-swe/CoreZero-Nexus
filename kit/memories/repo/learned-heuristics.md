@@ -6,6 +6,7 @@
 - **LH-002** — Bootstrap and docs verified together
 - **LH-003** — Generated references worth seeding early (code-map.md)
 - **LH-004** — Agent overscaffolds new files (PROMOTED to code-design.md)
+- **LH-005** — Vague task validation leads to skipped verification
 - **LH-006** — Token budget underestimation triggers mid-task compaction
 - **LH-007** — Memory thresholds trigger post-oversize; track proactively
 - **LH-008** — Domain packs ignored when building features (PROMOTED to spec-requirements)
@@ -59,6 +60,17 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Confidence: High
 - Last reviewed: 2026-06-20
 - Promote to stronger rule? **[PROMOTED]** Added to `docs/policies/code-design.md`
+
+### LH-005: Task validation evidence must be specific and machine-verifiable
+- Trigger:
+  - creating tasks in `tasks.md`
+- Working heuristic:
+  - every task must specify a concrete command or test file that runs and exits 0 as its validation proof, rather than vague human descriptions.
+- Evidence:
+  - tasks with vague proof criteria (e.g. "manual verify") lead to incomplete or skipped validation during alignment audits
+- Confidence: High
+- Last reviewed: 2026-06-23
+- Promote to stronger rule? No
 
 ### LH-006: Token budget underestimation causes context compaction mid-complex task
 - Trigger:

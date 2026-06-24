@@ -89,14 +89,14 @@ expand_glob() {
   pushd "$SOURCE_DIR" >/dev/null
   if [[ "$pattern" == *"**"* ]]; then
     local base="${pattern%%/\*\**}"
-    [[ -d "$base" ]] && find "$base" -type f ! -name ".DS_Store" ! -path "*/test-output/*"
+    [[ -d "$base" ]] && find "$base" -type f ! -name ".DS_Store" ! -path "*/test-output/*" ! -path "*/__pycache__/*"
   elif [[ "$pattern" == *"*"* ]]; then
     shopt -s nullglob
     local matches=( $pattern )
     shopt -u nullglob
     local m
     for m in "${matches[@]}"; do
-      [[ -f "$m" && "$(basename "$m")" != ".DS_Store" && "$m" != *"/test-output/"* ]] && echo "$m"
+      [[ -f "$m" && "$(basename "$m")" != ".DS_Store" && "$m" != *"/test-output/"* && "$m" != *"/__pycache__/"* ]] && echo "$m"
     done
   else
     [[ -f "$pattern" ]] && echo "$pattern"
@@ -142,6 +142,7 @@ backup_file() {
   local backup_path="$BACKUP_DIR/$rel"
   mkdir -p "$(dirname "$backup_path")"
   cp "$dst" "$backup_path"
+  backup_count=$((backup_count + 1))
 }
 
 resolve_source_dir() {
@@ -168,20 +169,6 @@ resolve_source_dir() {
   else
     err "manifest.json not found in cloned repository at $SOURCE_TEMP"
   fi
-  if [[ -d "$REPO_URL" ]]; then
-    log "Local repository detected. Syncing working tree changes..."
-    find "$REPO_URL" -not -path '*/.*' -type f | while read -r src_file; do
-      local rel_path="${src_file#$REPO_URL/}"
-      mkdir -p "$(dirname "$SOURCE_TEMP/$rel_path")"
-      cp "$src_file" "$SOURCE_TEMP/$rel_path"
-    done
-    # Refresh SOURCE_DIR based on synced files
-    if [[ -f "$SOURCE_TEMP/manifest.json" ]]; then
-      SOURCE_DIR="$SOURCE_TEMP"
-    elif [[ -f "$SOURCE_TEMP/kit/manifest.json" ]]; then
-      SOURCE_DIR="$SOURCE_TEMP/kit"
-    fi
-  fi
 }
 
 cleanup_source_temp() {
@@ -192,14 +179,22 @@ cleanup_source_temp() {
 
 TARGET_DIR=""
 DRY_RUN="false"
+TARGET_VERSION=""
+SHOW_VERSION="false"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run)
       DRY_RUN="true"; shift
       ;;
+    --version)
+      SHOW_VERSION="true"; shift
+      ;;
+    --target-version)
+      TARGET_VERSION="$2"; shift 2
+      ;;
     -h|--help)
-      log "Usage: install.sh <target_dir> [--dry-run]"
+      log "Usage: install.sh <target_dir> [--dry-run] [--target-version <ver>] [--version]"
       exit 0
       ;;
     *)
@@ -209,7 +204,18 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-[[ -n "$TARGET_DIR" ]] || err "Usage: install.sh <target_dir> [--dry-run]"
+if [[ "$SHOW_VERSION" == "true" ]]; then
+  resolve_source_dir
+  if [[ -f "$SOURCE_DIR/manifest.json" ]]; then
+    VER=$(python3 -c "import json; print(json.load(open('$SOURCE_DIR/manifest.json'))['version'])" 2>/dev/null || echo "[UNKNOWN]")
+    echo "$VER"
+    exit 0
+  else
+    err "Could not determine version: manifest.json not found."
+  fi
+fi
+
+[[ -n "$TARGET_DIR" ]] || err "Usage: install.sh <target_dir> [--dry-run] [--target-version <ver>] [--version]"
 
 require_cmd python3
 require_cmd cp
@@ -220,6 +226,14 @@ trap cleanup_source_temp EXIT
 resolve_source_dir
 MANIFEST="$SOURCE_DIR/manifest.json"
 [[ -f "$MANIFEST" ]] || err "manifest.json not found at $MANIFEST"
+
+if [[ -n "$TARGET_VERSION" ]]; then
+  VER=$(python3 -c "import json; print(json.load(open('$MANIFEST'))['version'])" 2>/dev/null || echo "[UNKNOWN]")
+  if [[ "$VER" != "$TARGET_VERSION" ]]; then
+    err "Version mismatch: expected target-version '$TARGET_VERSION' but source kit version is '$VER'"
+  fi
+fi
+
 REPO_ROOT="$(cd "$SOURCE_DIR/.." && pwd)"
 
 mkdir -p "$TARGET_DIR"
@@ -255,7 +269,6 @@ while IFS= read -r pattern; do
     [[ -n "$rel" ]] || continue
     if [[ -f "$TARGET_DIR/$rel" ]]; then
       backup_file "$rel"
-      backup_count=$((backup_count + 1))
     fi
     copy_into_target "$rel"
     overwrite_count=$((overwrite_count + 1))
@@ -266,7 +279,6 @@ while IFS=$'\t' read -r src_rel dst_rel; do
   [[ -n "$src_rel" && -n "$dst_rel" ]] || continue
   if [[ -f "$TARGET_DIR/$dst_rel" ]]; then
     backup_file "$dst_rel"
-    backup_count=$((backup_count + 1))
   fi
   copy_cross_tree "$src_rel" "$dst_rel"
   cross_tree_count=$((cross_tree_count + 1))
@@ -416,6 +428,6 @@ log "  5. Close out with /harness-verify"
 log "  6. Governance bundle: /context-status, /harness-maintain, /spec-adr"
 log "  7. Docs bundle: /technical-docs, /codebase-documenter"
 log "  8. Specialist visualization: /visualize (Mermaid validation bundled; Mermaid render optional with mmdc)"
-log "  10. Use documents/ only in the source repository when maintaining the kit itself"
+log "  9. Use documents/ only in the source repository when maintaining the kit itself"
 log ""
 log "Upgrade later: re-run this command. Memory and artifacts are preserved."

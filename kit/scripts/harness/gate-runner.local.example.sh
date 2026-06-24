@@ -4,7 +4,22 @@
 # Copy to gate-runner.local.sh and customize with your build/lint/test commands.
 #   cp scripts/harness/gate-runner.local.example.sh scripts/harness/gate-runner.local.sh
 
-set -e
+# Helper function to run a gate command, log output, and report failures to telemetry
+run_gate() {
+  local cmd="$1"
+  local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local telemetry_script="$script_dir/telemetry-collector.sh"
+  
+  echo "=> Running: $cmd"
+  if ! OUTPUT=$(eval "$cmd" 2>&1); then
+    echo "$OUTPUT"
+    echo "=> Gate failed: $cmd"
+    if [ -x "$telemetry_script" ]; then
+      echo "$OUTPUT" | "$telemetry_script"
+    fi
+    exit 1
+  fi
+}
 
 echo "=> Running project-local gates..."
 

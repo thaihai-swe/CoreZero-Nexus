@@ -10,7 +10,7 @@ Track all architecture decisions in one place for discoverability. Each ADR live
 
 | ID | Title | Status | Date | Feature | Impact |
 |----|-------|--------|------|---------|--------|
-| [ADR-001](0001-example.md) | | [Proposed \| Accepted \| Deprecated \| Superseded] | YYYY-MM-DD | | [Low \| Medium \| High] |
+| [ADR-001](0001-example.md) | Example Decision | Accepted | 2026-06-23 | none | Low |
 
 ## Status Definitions
 

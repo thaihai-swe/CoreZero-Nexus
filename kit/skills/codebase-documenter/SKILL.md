@@ -29,10 +29,10 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 1. **Scope & Depth**:
    - `Quick`: Produce `README.md` and `ARCHITECTURE.md` only. No component-level deep dives. Use when the user needs a fast orientation.
-   - `Standard` (default): All 6 output files (README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md). Standard component depth.
+   - `Moderate` (default): All 6 output files (README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md). Moderate component depth.
    - `Deep`: All 6 files plus: inline code walkthrough for 2–3 key flows, test coverage map, and a runnable onboarding validation script. Use when new team members need hands-on depth.
 
-   If the user does not specify, default to `Standard`.
+   If the user does not specify, default to `Moderate`.
 2. **Explore**: Map folders, dependencies, and main entry points.
 3. **Trace**: Trace key execution flows through code to construct mental models.
 4. **Document**: Write separate Markdown pages using templates. Embed system architecture diagrams. Provide real code snippets with `file:line` references.

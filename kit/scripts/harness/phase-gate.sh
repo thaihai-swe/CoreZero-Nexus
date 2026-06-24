@@ -3,14 +3,32 @@
 # Mechanical precondition gate for spec-phase handoffs.
 # Exits 0 if all checks pass; exits 1 with specific failure otherwise.
 
-set -e
+set -euo pipefail
+
+ROOT_DIR=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --root)
+      ROOT_DIR="$2"; shift 2 ;;
+    *)
+      break ;;
+  esac
+done
 
 FEATURE_SLUG="$1"
 TARGET_PHASE="$2"
-FEATURE_DIR="artifacts/features/$FEATURE_SLUG"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/_lib/root.sh"
+RESOLVED_ROOT=$(resolve_repo_root "${ROOT_DIR:-}") || {
+  echo "ERROR: Could not resolve repository root." >&2
+  exit 1
+}
+
+FEATURE_DIR="$RESOLVED_ROOT/artifacts/features/$FEATURE_SLUG"
 
 if [ -z "$FEATURE_SLUG" ] || [ -z "$TARGET_PHASE" ]; then
-  echo "usage: phase-gate.sh <feature-slug> <target-phase>"
+  echo "usage: phase-gate.sh [--root <path>] <feature-slug> <target-phase>"
   exit 1
 fi
 
@@ -60,7 +78,7 @@ case "$TARGET_PHASE" in
     # Every AC in spec.md must appear in tasks.md
     if [ -f "$FEATURE_DIR/spec.md" ]; then
       while IFS= read -r ac_id; do
-        if ! grep -q "$ac_id" "$FEATURE_DIR/tasks.md" 2>/dev/null; then
+        if ! grep -qwE "\b${ac_id}\b" "$FEATURE_DIR/tasks.md" 2>/dev/null; then
           echo "FAIL: $ac_id in spec.md has no corresponding entry in tasks.md"
           exit 1
         fi
@@ -74,7 +92,16 @@ case "$TARGET_PHASE" in
     fi
     # Every task must have validation evidence
     while IFS= read -r task_id; do
-      evidence_block=$(sed -n "/\*\*$task_id\*\*/,/\*\*TASK-/p" "$FEATURE_DIR/tasks.md" 2>/dev/null)
+      evidence_block=$(awk -v task="**$task_id**" '
+        $0 ~ task { printing = 1; print; next }
+        printing {
+          if ($0 ~ /\*\*TASK-/ || $0 ~ /^---$/ || $0 ~ /^#/) {
+            printing = 0
+          } else {
+            print
+          }
+        }
+      ' "$FEATURE_DIR/tasks.md" 2>/dev/null)
       if ! echo "$evidence_block" | grep -qE 'Proof:|Evidence:|Status:.*Done'; then
         echo "FAIL: $task_id in tasks.md has no validation evidence"
         exit 1
