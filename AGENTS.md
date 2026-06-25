@@ -32,7 +32,6 @@ These override all other guidance. Key non-obvious ones:
 - **No build system, no package.json, no test runner for the kit itself.** The kit is a collection of bash scripts, markdown skill files, and Python helpers. Verification is via `doctor.sh`.
 - **17 shipped slash commands (skills)** live in `kit/skills/<name>/SKILL.md`. Each is a behavioral spec for one command.
 - **`docs/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
-- **`packs/`** — optional language packs (Go/Rust/Java/Ruby) with rules, gate-runner templates, and gitignore examples.
 - **`scripts/harness/`** — all mechanical gates and validation scripts.
 
 ## Commands (exact, non-obvious)

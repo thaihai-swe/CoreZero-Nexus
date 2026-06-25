@@ -29,7 +29,7 @@ When installed into an empty project directory, the shipped folder structure loo
 │   │   ├── architecture.md       # Adopter-owned seed
 │   │   ├── code-map.md           # Adopter-owned seed
 │   │   ├── glossary.md           # Adopter-owned seed
-│   │   ├── harness-config.yaml   # Phase precondition config (overwrite)
+│   │   ├── harness-config.yaml   # Phase precondition config (overwrite; not memories/repo/harness-config.md)
 │   │   ├── product-sense.md      # Adopter-owned seed
 │   │   ├── project-constraints.md # Adopter-owned seed
 │   │   ├── spec-schema.json      # JSON schema (overwrite)
@@ -49,8 +49,11 @@ When installed into an empty project directory, the shipped folder structure loo
 │   │       ├── glossary.md
 │   │       └── patterns.md
 │   └── repo/                     # Durable repository memory
+│       ├── archive/              # Cold storage
+│       │   └── deprecated-heuristics.md
 │       ├── adr-log.md
 │       ├── core-policies.md
+│       ├── harness-config.md
 │       ├── harness-telemetry.md
 │       ├── learned-heuristics.md
 │       └── project-knowledge-base.md

@@ -177,7 +177,7 @@ CoreZero tiers memory to prevent drift, preserve institutional knowledge, and ro
 
 ### Domain Context Packs
 
-A domain pack captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for a specific business or technical subdomain. The kit ships a schema demo pack (`memories/domain/example/`); adopters replace it with real packs. Trigger keywords in `glossary.md` frontmatter activate a pack — a single match engages the pack, and the Phase × Guidance Matrix decides which files to load at each phase.
+A domain pack captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for a specific business or technical subdomain. The kit ships a schema demo pack (`memories/domain/`); adopters replace it with real packs. Trigger keywords in `glossary.md` frontmatter activate a pack — a single match engages the pack, and the Phase × Guidance Matrix decides which files to load at each phase.
 
 ### Memory Promotion Thresholds
 

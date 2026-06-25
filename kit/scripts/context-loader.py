@@ -21,6 +21,8 @@ def main():
     parser.add_argument("--budget", type=int, default=0, help="Token budget")
     parser.add_argument("--route", default="",
                         help="Phase name to load via Phase×Guidance Matrix (spec/plan/implement/verify)")
+    parser.add_argument("--section", default="",
+                        help="Load only the named ## H2 section (case-insensitive)")
     args = parser.parse_args()
 
     if args.route:
@@ -31,7 +33,8 @@ def main():
             print(f"Error: File '{args.filepath}' does not exist.", file=sys.stderr)
             sys.exit(1)
         engine = ContextEngine(root="", intent=args.intent, budget=args.budget, mode=args.mode)
-        engine.process_file(args.filepath)
+        sections = [args.section] if args.section else None
+        engine.process_file(args.filepath, sections=sections)
     else:
         parser.print_help()
         sys.exit(1)

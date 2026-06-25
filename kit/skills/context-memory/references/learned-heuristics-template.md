@@ -17,6 +17,7 @@ Only add a heuristic when:
 ## Heuristics
 
 ### LH-001: [Short Name]
+- Status: Active  <!-- Active | Fading | Archived -->
 - Trigger:
 - Working heuristic:
 - Evidence:
@@ -27,6 +28,7 @@ Only add a heuristic when:
 - Promote to stronger rule? Yes | No (propose CC-* rule when count >= 3)
 
 ### LH-002: [Short Name]
+- Status: Active  <!-- Active | Fading | Archived -->
 - Trigger:
 - Working heuristic:
 - Evidence:

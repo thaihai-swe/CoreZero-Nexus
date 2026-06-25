@@ -125,7 +125,7 @@
 
     <main id="main" class="container">
         <div class="hero">
-            <span class="eyebrow-mono accent">v1.0.0 · Spec-Anchored Delivery</span>
+            <span class="eyebrow-mono accent">v0.0.1 · Spec-Anchored Delivery</span>
             <h1>CoreZero</h1>
             <p class="subtitle">An engineering harness for AI coding agents. Locks specs before code, plans every task,
                 verifies every claim, and keeps memory durable across sessions &mdash; turning chat-driven drift into
@@ -881,7 +881,8 @@ artifacts/features/</code></pre>
                 <h3>Three Memory Tiers</h3>
                 <p class="node-desc">Memory is organized into three tiers behind a routing index. The
                     <code>MASTER_INDEX.md</code>
-                    router decides which files a session loads by matching task intent against trigger keywords.</p>
+                    router decides which files a session loads by matching task intent against trigger keywords.
+                </p>
 
                 <figure class="kit-diagram">
                     <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-memory.mmd" role="img"
@@ -1026,7 +1027,8 @@ artifacts/features/</code></pre>
                     <div class="metric-card">
                         <strong>By Intent: Rules</strong>
                         <p><code>docs/rules/*.md</code>, <code>docs/policies/code-design.md</code> &mdash; on
-                            <em>security, auth, simplicity, ponytail, refactor</em>.</p>
+                            <em>security, auth, simplicity, ponytail, refactor</em>.
+                        </p>
                     </div>
                     <div class="metric-card">
                         <strong>By Intent: Learned</strong>
@@ -1036,7 +1038,8 @@ artifacts/features/</code></pre>
                     <div class="metric-card">
                         <strong>By Debug</strong>
                         <p><code>harness-telemetry.md</code>, prior <code>session-extracts.md</code> &mdash; on
-                            <em>debug, regression, retro, root cause</em>.</p>
+                            <em>debug, regression, retro, root cause</em>.
+                        </p>
                     </div>
                     <div class="metric-card">
                         <strong>By Domain Packs</strong>
@@ -1511,7 +1514,8 @@ artifacts/features/</code></pre>
                                 <td><strong>Memory</strong></td>
                                 <td>Load rules, maintain memory, synthesize coding contract</td>
                                 <td><code>core-policies.md</code>, <code>learned-heuristics.md</code>,
-                                    <code>pkb.md</code></td>
+                                    <code>pkb.md</code>
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>Research</strong></td>
@@ -1573,7 +1577,8 @@ artifacts/features/</code></pre>
                 <h3>Feature Status State Machine</h3>
                 <p class="node-desc">Features progress through states driven by skill transitions.
                     <code>/harness-verify</code> is
-                    the sole authority for marking a feature Done.</p>
+                    the sole authority for marking a feature Done.
+                </p>
                 <figure class="kit-diagram">
                     <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-status-machine.mmd"
                         role="img"
@@ -1619,7 +1624,8 @@ artifacts/features/</code></pre>
                 <h3>Post-Ship Sync Sequence</h3>
                 <p class="node-desc">After every passing verify verdict, a memory sweep updates every
                     <code>MASTER_INDEX.md</code>
-                    file or records an explicit reason it was untouched.</p>
+                    file or records an explicit reason it was untouched.
+                </p>
                 <figure class="kit-diagram">
                     <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-post-ship-sync.mmd"
                         role="img"

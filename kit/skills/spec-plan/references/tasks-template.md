@@ -56,6 +56,11 @@ Selected strategy: <MVP-first | Incremental | Parallel-team>
 Reason: <one line>
 ```
 
+## Heuristic Citations
+
+*Optional. Cite any LH-* IDs applied in the design or execution of these tasks.*
+- LH-NNN: <brief description>
+
 ## Task Block Format
 
 Every task uses this canonical block. Repeat per task; assign sequential `TASK-NNN` IDs grouped under phases.

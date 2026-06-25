@@ -25,7 +25,7 @@
 ## Session Log
 
 *   **Decisions Made:**
-    *   [Any key technical or product decisions made during this session]
+    *   [Any key technical or product decisions made during this session. Cite applied LH-* IDs inline.]
 *   **Files Modified:**
     *   `path/to/file1`
     *   `path/to/file2`

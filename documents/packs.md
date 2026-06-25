@@ -36,7 +36,7 @@ Prepares the codebase for AI-agent delivery.
 ### 📦 Pack 2: Context Engineering (Session Management)
 Keeps the agent oriented and context windows lean.
 - **`/context-session`**: Starts, checkpoints, and cleanly exits feature boundaries (START/CHECKPOINT/END).
-- **`/context-status`**: Orchestrates multiple concurrent features and gives a high-level progress report.
+- **`/context-status`**: Orchestrates multiple concurrent features, gives a high-level progress report, and performs feature-completion garbage collection (GC) of ephemeral session logs.
 - **`/context-memory`**: Triages and promotes candidate heuristics into durable instruction-tier memory.
 
 ### 📦 Pack 3: Spec-Driven Development (The Delivery Engine)
@@ -104,8 +104,8 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `memories/repo/project-knowledge-base.md`
 - `memories/repo/harness-telemetry.md` (failure ledger with structured YAML trend summary)
 - `memories/domain/*` (domain-specific glossary trigger, patterns, boundaries, and spec)
-- `artifacts/features/<slug>/progress.md`
-- `artifacts/features/<slug>/handoff.md`
+- `.corezero/sessions/<slug>/progress.md`
+- `.corezero/sessions/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
 - `docs/project/architecture.md`
 - `docs/project/code-map.md`
@@ -133,7 +133,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 
 ### Key Files Touched
 - `artifacts/features/<slug>/analysis.md`
-- `artifacts/features/<slug>/proposal.md`
+- `artifacts/features/<slug>/proposal.md` (optional)
 - `artifacts/features/<slug>/spec.md`
 - `artifacts/features/<slug>/requirements-review.md` (optional)
 - `artifacts/features/<slug>/plan.md`

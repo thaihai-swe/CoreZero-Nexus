@@ -75,7 +75,7 @@ flowchart TD
 
 | File | Type | Content | Update Frequency |
 |------|------|---------|-----------------|
-| `core-policies.md` | Normative & Operational | Repo-wide rules, security boundaries, commands, paths, and defaults | Rare — during init or when tooling/policies change |
+| `core-policies.md` | Normative | Repo-wide constitutional rules (CC-*), security policy, memory promotion thresholds | Rare — when policy changes |
 | `project-knowledge-base.md` | Descriptive | Durable facts, patterns, conventions | As project evolves |
 | `learned-heuristics.md` | Descriptive | Evidence-backed execution patterns | After repeated observations |
 | `docs/project/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
@@ -133,8 +133,8 @@ Security candidates always escalate immediately regardless of repetition count.
 
 ### Promotion Thresholds (from `core-policies.md`)
 
-A memory file approaching these thresholds is added to `MASTER_INDEX.md ## Promotion Watchlist`:
-- File length ≥ 800 lines (warn) / 1200 lines (hard)
+A memory file approaching the thresholds in `core-policies.md` `## Memory Promotion Thresholds` is added to `MASTER_INDEX.md ## Promotion Watchlist`:
+- File length thresholds (600-line Early Warning, 800-line Threshold Breach, 1200-line Hard Cap)
 - 3+ distinct H2 subtopics covering separable concerns
 - 5+ feature artifacts citing the same slice
 
@@ -173,6 +173,7 @@ Heuristics are promoted only when:
 - Version the constitution with semantic versioning
 - Route descriptive knowledge to PKB, not constitution
 - Evict stale context from sessions — raw logs are transient, not durable
+- **Memory Decay**: Unused LH-* heuristics are mechanically audited and archived into `deprecated-heuristics.md` to keep context windows lean.
 
 ## Self-Improving Loop
 

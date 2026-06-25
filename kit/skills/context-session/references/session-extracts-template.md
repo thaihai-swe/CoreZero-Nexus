@@ -1,4 +1,5 @@
 # Session Extracts: [Feature Name]
+<!-- triaged: false -->
 
 Extracted-tier memory. Per-feature distillation of session lessons that *might* be worth promoting into durable repo memory. Generated at `context-session END` as candidates only — nothing here is durable until `context-memory` triages it.
 

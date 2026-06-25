@@ -12,9 +12,10 @@ Load context from highest-signal to lowest-signal:
    - Purpose: locate the workflow contract, repo entry rules, and the memory map
 2. **Repo Memory — Always**
    - `memories/repo/core-policies.md`
-   - Purpose: durable rules, commands, and trust boundaries needed every session
+   - Purpose: durable normative rules, security policy, and memory promotion thresholds needed every session
 3. **Repo Memory — By Intent**
    - Resolve by matching the active task against trigger keywords listed in `MASTER_INDEX.md`.
+   - **Config group** (`memories/repo/harness-config.md`) — loaded when the task touches setup, bootstrap, install, repository identity, commands, session defaults, lifecycle, or known limits.
 
    - **Knowledge group** (`project-knowledge-base.md`) — loaded when the task touches patterns, conventions, stack, or domain language.
    - **Learned group** (`learned-heuristics.md`) — loaded when the task echoes a heuristic trigger (recurring instinct, "we always/never", "last time").

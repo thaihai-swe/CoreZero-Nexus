@@ -72,6 +72,13 @@ else
   fail "core-policies.md missing ## Security Policy"
 fi
 
+# # Harness Config in harness-config.md
+if grep -q "^# Harness Config" "$KIT_ROOT/memories/repo/harness-config.md" 2>/dev/null; then
+  pass "harness-config.md has # Harness Config"
+else
+  fail "harness-config.md missing # Harness Config"
+fi
+
 # ## Promotion Watchlist in MASTER_INDEX.md
 if grep -q "^## 5. Promotion Watchlist" "$KIT_ROOT/MASTER_INDEX.md" 2>/dev/null; then
   pass "MASTER_INDEX.md has ## Promotion Watchlist"
@@ -101,6 +108,7 @@ echo "--- Check 4: MASTER_INDEX.md routes exist ---"
 # Check specific files referenced in MASTER_INDEX.md
 for f in \
   "memories/repo/core-policies.md" \
+  "memories/repo/harness-config.md" \
   "memories/repo/project-knowledge-base.md" \
   "memories/repo/adr-log.md" \
   "memories/repo/learned-heuristics.md" \
@@ -182,8 +190,67 @@ else
   fail "Could not read version from kit/manifest.json"
 fi
 
-# --- Check 10: Executable bits assertion ---
-echo "--- Check 10: Executable bits for harness scripts ---"
+# --- Check 10: Phase×Guidance Matrix section annotations exist ---
+echo "--- Check 10: Phase×Guidance Matrix section annotations ---"
+TMPFILE=$(mktemp /tmp/doctor-section-check.XXXXXX 2>/dev/null || mktemp -t doctor-section-check)
+cat > "$TMPFILE" << 'CHKPY'
+import os, re, sys
+
+root = sys.argv[1]
+text = open(os.path.join(root, 'MASTER_INDEX.md')).read()
+idx = text.find('## 3. Phase \u00d7 Guidance Matrix')
+if idx == -1:
+    idx = text.find('Phase \u00d7 Guidance Matrix')
+if idx == -1:
+    sys.exit(0)
+
+errors = 0
+for line in text[idx:].split('\n'):
+    s = line.strip()
+    if not s.startswith('|'):
+        if s:
+            break
+        continue
+    parts = [p.strip() for p in line.split('|')]
+    if len(parts) < 6:
+        continue
+    source = parts[1]
+    if source in ('Source', '---'):
+        continue
+    src = source.strip()
+    if '(' in src:
+        src = src[:src.index('(')].strip()
+    if src.startswith('`') and src.endswith('`'):
+        src = src[1:-1]
+    src_file = os.path.join(root, src)
+    if not os.path.exists(src_file):
+        for col in parts[2:6]:
+            if '{' in col:
+                print('  FAIL: Section annotation references missing file: ' + src)
+                errors += 1
+                break
+        continue
+    content = open(src_file).read()
+    for col in parts[2:6]:
+        brace_m = re.search(r'\{([^}]+)\}', col)
+        if brace_m:
+            for sec_part in brace_m.group(1).split(','):
+                sec = sec_part.strip().lstrip('#').strip()
+                if sec and '## ' + sec not in content:
+                    print('  FAIL: Section "## ' + sec + '" not found in ' + src)
+                    errors += 1
+if errors > 0:
+    sys.exit(1)
+CHKPY
+if python3 "$TMPFILE" "$KIT_ROOT" 2>/dev/null; then
+  pass "Phase×Guidance Matrix section annotations all valid"
+else
+  fail "Phase×Guidance Matrix section annotations have errors"
+fi
+rm -f "$TMPFILE"
+
+# --- Check 11: Executable bits assertion ---
+echo "--- Check 11: Executable bits for harness scripts ---"
 for f in "$KIT_ROOT"/scripts/harness/*.sh; do
   if [[ -f "$f" ]]; then
     if [[ -x "$f" ]]; then

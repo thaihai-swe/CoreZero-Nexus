@@ -26,13 +26,14 @@ def process_text(text, budget, mode="summary"):
         for line in lines:
             summary_lines.append(line)
             count += 1
-            if line.strip().startswith("## ") and seen_index:
-                pass
             if line.strip().startswith("## Index"):
                 seen_index = True
             if seen_index and not line.strip().startswith("## ") and line.strip():
                 if count > 60:
                     break
+        if not seen_index:
+            # No ## Index found; fall back to first 30 lines
+            summary_lines = lines[:30]
         truncated = "\n".join(summary_lines)
         return truncated, estimate_tokens(truncated)
     if mode == "partial":

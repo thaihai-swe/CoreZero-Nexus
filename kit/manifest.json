@@ -1,6 +1,6 @@
 {
   "name": "harness-kit",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Spec-anchored AI software delivery framework with durable memory tiers, mechanical verification gates, and a Python harness engine.",
   "homepage": "https://github.com/thaihai-swe/CoreZero",
   "files": {
@@ -44,6 +44,7 @@
       "AGENTS.md",
       "MASTER_INDEX.md",
       "memories/repo/core-policies.md",
+      "memories/repo/harness-config.md",
       "memories/repo/learned-heuristics.md",
       "memories/repo/project-knowledge-base.md",
       "memories/repo/harness-telemetry.md",
@@ -58,11 +59,13 @@
       "docs/generated/dashboard.html",
       "artifacts/features/README.md",
       "memories/domain/README.md",
-      "memories/domain/example/glossary.md",
-      "memories/domain/example/patterns.md",
-      "memories/domain/example/anti-patterns.md",
-      "memories/domain/example/boundaries.md",
-      "skills/context-memory/references/project-knowledge-base-template.md"
+      "memories/domain/glossary.md",
+      "memories/domain/patterns.md",
+      "memories/domain/anti-patterns.md",
+      "memories/domain/boundaries.md",
+      "skills/context-memory/references/project-knowledge-base-template.md",
+      "skills/_shared/gitignore-template",
+      "memories/archive/deprecated-heuristics.md"
     ],
     "crossTreeOverwrite": [],
     "preserve": [

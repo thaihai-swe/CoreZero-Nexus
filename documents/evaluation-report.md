@@ -146,7 +146,7 @@ Context is managed as a scarce resource to ensure high attention density:
 | **Tier 1 — Router** | `AGENTS.md` + `MASTER_INDEX.md` | Always loaded first |
 | **Tier 2 — Always Repo Memory** | `core-policies.md` | Always loaded |
 | **Tier 3 — By Intent Repo Memory** | Knowledge, Learned, Domain Packs, Debug | Load JIT based on keyword triggers |
-| **Tier 4 — Feature Artifacts** | `status.md`, `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Loaded before editing or verifying |
+| **Tier 4 — Feature Artifacts** | `status.md`, `spec.md`, `plan.md`, `tasks.md`, `.corezero/.../handoff.md` | Loaded before editing or verifying |
 | **Tier 5 — Raw Code** | Bounded file targets | Loaded JIT per active task |
 | **Tier 6 — Transient Logs** | Ephemeral tool output | Summarize and evict immediately |
 
@@ -172,7 +172,7 @@ SDD enforces absolute discipline before code changes are made.
                   (Analysis)            (Spec / AC-*)         (Tasks / Proofs)       (Code / Proofs)
 ```
 
-1. **Socratic Evaluation**: Under `/spec-requirements`, the agent interviews the user to clarify assumptions, logging answers in `proposal.md` before generating the final `spec.md`.
+1. **Socratic Evaluation**: Under `/spec-requirements`, the agent interviews the user to clarify assumptions, logging answers in `proposal.md` (optional for simple features) before generating the final `spec.md`.
 2. **Acceptance Criteria (`AC-*`)**: All specifications must contain explicit, verifiable criteria identifiers (`AC-1`, `AC-2`).
 3. **Traceability Index**: In `/spec-plan`, each task in `tasks.md` must link directly to the target `AC-*` it implements, and declare a specific command to prove correctness.
 4. **Architectural Trade-offs**: Significant technical choices are documented via `/spec-adr`, outputting to feature-scoped ADR records (`adr-*.md`) and indexing them in `adr-log.md`.
@@ -215,9 +215,12 @@ To build a template compatible with both greenfield and brownfield initiatives t
 ├── memories/
 │   ├── repo/                      # Durable Repo-wide Memory Track
 │   │   ├── MASTER_INDEX.md         # Memory intent router
-│   │   ├── core-policies.md       # Normative rules & harness config
+│   │   ├── core-policies.md       # Normative rules (Constitution: CC-*, security, thresholds)
+│   │   ├── harness-config.md     # Adopter-tailored config (identity, commands, lifecycle)
 │   │   ├── project-knowledge-base.md # Continuity patterns
 │   │   ├── learned-heuristics.md  # Discovered code instincts
+│   │   ├── archive/               # Cold storage
+│   │   │   └── deprecated-heuristics.md
 │   │   └── harness-telemetry.md   # Append-only failure ledger
 │   └── domain/                    # Bounded-context glossary & boundaries (Team Sharing Track)
 │       ├── README.md              # Domain-pack schema and trigger rules
@@ -230,7 +233,7 @@ To build a template compatible with both greenfield and brownfield initiatives t
 ├── docs/rules/                    # Shipped syntax/lint coding standards
 └── scripts/                       # Harness validation & repair utilities
     ├── install.sh                 # Bootstrap and upgrade script
-    ├── context-loader.py          # MVC-enforcing partial context loader (--mode summary)
+    ├── context-loader.py          # MVC-enforcing partial context loader (--mode summary, --section)
     └── harness/                   # Mechanical verification gates
         ├── gate-runner.sh         # Run linter/build/tests
         └── telemetry-collector.sh # Log gate failures to harness-telemetry.md

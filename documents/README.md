@@ -82,7 +82,7 @@ CoreZero operates across five distinct layers that separate concerns and maintai
 
 1. **Entrypoint Layer ([`AGENTS.md`](../kit/AGENTS.md)):** A minimal, high-level router (< 50 lines) that tells the agent where to find instructions for specific tasks, avoiding loading heavy skill configurations until needed.
 2. **Skill Layer ([`skills/`](../kit/skills/)):** Compressed, token-efficient contracts (`SKILL.md`) that detail workflows, core rules, warning red flags, stop conditions, and outputs for specific tasks.
-3. **Harness Layer ([`core-policies.md`](../kit/memories/repo/core-policies.md)):** The environment configuration structured around the 7-pillar **ETCLOVG** taxonomy, declaring verification command lists, paths, and live session limits/status.
+3. **Harness Layer ([`harness-config.md`](../kit/memories/repo/harness-config.md)):** The environment configuration structured around the 7-pillar **ETCLOVG** taxonomy, declaring verification command lists, paths, and live session limits/status.
 4. **Artifact Layer (`artifacts/features/<slug>/`):** The isolated scratchpad for the active feature. It contains the feature status, locked specifications, task checkboxes, verification logs, and session progress trackers.
 5. **Memory Layer ([`memories/`](../kit/memories/)):** Separated into:
     - **`repo/`** ([Durable repository-wide memory](../kit/memories/repo/)): constitution, heuristics, knowledge base, security policies.

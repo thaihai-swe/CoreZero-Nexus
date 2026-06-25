@@ -29,7 +29,7 @@ Converts an approved spec into a concrete execution strategy. Produces `plan.md`
     - **Traceability Protocol**: For each task, include a `Covers:` field referencing the REQ or AC IDs from `spec.md`.
     - **Task Granularity**: Each task should be completable in a single session (2–4 hours). If a task would take longer, split it. If a task is trivial (single file, one function), merge it with an adjacent task.
 4. **Traceability**: Verify every requirement in `artifacts/features/<slug>/spec.md` maps to a task in `artifacts/features/<slug>/tasks.md`.
-5. **Readiness & Handoff**: Run a completeness check using `references/definition-of-ready.md` to ensure the plan and tasks meet all preconditions. Run `bash scripts/harness/phase-gate.sh <slug> "Plan Approved"` to verify preconditions. If it fails, fix the root cause before proceeding. Set `artifacts/features/<slug>/status.md` to `Plan Approved` and route to `/spec-implement`.
+5. **Readiness & Handoff**: Run a completeness check using `references/definition-of-ready.md` to ensure the plan and tasks meet all preconditions. Run `bash scripts/harness/phase-gate.sh <slug> "Plan Approved"` to verify preconditions. If it fails, fix the root cause before proceeding. Set `artifacts/features/<slug>/status.md` to `Plan Approved`, ensure the `Plan approved` checkbox under High-Level Progress is marked `[x]`, and route to `/spec-implement`.
 
 ## Anti-Patterns
 
@@ -43,6 +43,7 @@ Converts an approved spec into a concrete execution strategy. Produces `plan.md`
 
 ## Core Rules
 - **Hierarchical Detail Management**: Keep `plan.md` high-level and readable. Do NOT dump raw code or algorithms into the plan; extract those to separate implementation detail files if necessary.
+- **Heuristic Citation**: If your design applies a learned heuristic from `learned-heuristics.md`, cite its LH-* ID in `tasks.md` design rationale or `plan.md` (SHOULD).
 - **Architectural Gates**:
   - **Simplicity Gate**: No speculative future-proofing. Build only what satisfies the exact requirements.
   - **Anti-Abstraction Gate**: Use framework features directly. Avoid creating custom wrappers or premature abstractions.

@@ -24,4 +24,4 @@ Trigger keywords in `glossary.md` frontmatter are used by `/context-session` and
 
 ## Shipped example
 
-See `memories/domain/example/` for a worked schema demo. Replace it with a real domain pack.
+See `memories/domain/` for a worked schema demo. Replace it with a real domain pack.

@@ -108,5 +108,5 @@ These rules are checked during alignment audits and cannot be bypassed:
 
 During the system-wide evaluation (detailed in [evaluation-report.md](evaluation-report.md)), several gaps and corresponding recommendations were identified to optimize the harness for autonomous agents:
 
-* **Script-Driven Stack Archaeology**: Currently, `/starter-init` uses an interactive interview workflow to configure paths and commands in [core-policies.md](kit/memories/repo/core-policies.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
+* **Script-Driven Stack Archaeology**: Currently, `/starter-init` uses an interactive interview workflow to configure paths and commands in [harness-config.md](kit/memories/repo/harness-config.md). Future templates should use an auto-detection shell layer to locate build, lint, and test tools.
 * **Standardized Error Parsing**: To make failure GC loops reliable, the system needs an error parser script to structuralize compilation and test-run failures before logging them in `harness-telemetry.md`.

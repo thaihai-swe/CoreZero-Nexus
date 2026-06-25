@@ -384,6 +384,7 @@ if [[ "$DRY_RUN" != "true" ]]; then
   validate_path "memories/repo" "Memory layer"
   validate_path "memories/repo/core-policies.md" "Core policies"
   validate_path "memories/repo/core-policies.md" "Core policies"
+  validate_path "memories/repo/harness-config.md" "Harness config"
   validate_path "AGENTS.md" "Runtime entrypoint"
   validate_path "docs/rules/security.md" "Security rules"
   validate_path "docs/rules/ponytail.md" "Ponytail rules"

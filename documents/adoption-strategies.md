@@ -25,7 +25,7 @@ For existing projects with history:
 1. **Don't backfill.** Don't try to create specs for existing features.
 2. **Analysis first.** Use `/spec-research` to map existing behavior before changing it.
 3. **Preserve behavior.** The kit's brownfield protection rules prevent accidental breakage.
-4. **Grow memory gradually.** Let `core-policies.md` and `project-knowledge-base.md` accumulate naturally.
+4. **Grow memory gradually.** Let `core-policies.md` (constitutional rules), `harness-config.md` (commands, paths, lifecycle), and `project-knowledge-base.md` accumulate naturally.
 
 ## Ceremony Scaling
 

@@ -32,6 +32,12 @@ Aggregates status across all active feature branches, updates the repo-wide stat
    - Current failure logs summary.
 4. **Update Current State**: If the active feature slug or current task phase has changed, write the updated `# Current State` values to `memories/repo/harness-telemetry.md`.
 5. **Regenerate HTML Dashboard**: You MUST run `python3 scripts/generate-dashboard.py` to sync status to `docs/generated/dashboard.html`.
+6. **Feature Completion Cleanup (GC)**: If `status.md` shows `## Current Phase: Done`:
+   - Check if `artifacts/features/<slug>/session-extracts.md` has been triaged (look for `<!-- triaged: true -->`).
+   - If NOT triaged: emit a warning in your final response — "session-extracts.md for <slug> has not been triaged. Run /context-memory before cleanup." Do NOT delete files.
+   - If triaged (or missing): delete `.corezero/sessions/<slug>/progress.md` and `.corezero/sessions/<slug>/handoff.md`. If `.corezero/sessions/<slug>/` is empty, remove the directory.
+   - Do NOT delete durable artifacts (`spec.md`, `plan.md`, `status.md`, etc.).
+   - Log the cleanup: `bash scripts/harness/telemetry-collector.sh --task system --feature <slug>` with classification "maintenance" and description "Feature completion GC: removed ephemeral artifacts."
 
 ## Core Rules
 - **No Stale Statuses**: Always run context-status to sync telemetry state when a feature transitions to a new phase or completes a task.

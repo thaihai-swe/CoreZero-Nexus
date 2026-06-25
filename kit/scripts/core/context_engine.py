@@ -138,6 +138,46 @@ TIER_BOOST = {"Must": 40, "Should": 20, "Skip": 0}
 
 PHASE_COLUMNS = {"spec": 1, "plan": 2, "implement": 3, "verify": 4}
 
+# Row index offsets in extended parse_phase_matrix tuples:
+# (source, spec_tier, spec_sec, plan_tier, plan_sec, implement_tier, implement_sec, verify_tier, verify_sec)
+PHASE_TIER_IDX = {"spec": (1, 2), "plan": (3, 4), "implement": (5, 6), "verify": (7, 8)}
+
+
+def parse_tier(tier_str):
+    """Parse 'Must {## Sec1, ## Sec2}' into ('Must', ['Sec1', 'Sec2']) or ('Must', None)."""
+    tier_str = tier_str.strip()
+    if "{" in tier_str:
+        idx = tier_str.index("{")
+        keyword = tier_str[:idx].strip()
+        rest = tier_str[idx+1:].rstrip("}")
+        sections = []
+        for part in rest.split(","):
+            s = part.strip().lstrip("#").strip()
+            if s:
+                sections.append(s)
+        return keyword, sections
+    return tier_str, None
+
+
+def extract_section(text, title):
+    """Return the text of a single ## H2 section with its H3+ children, or None."""
+    lines = text.split("\n")
+    result = []
+    capturing = False
+    target = title.strip().lower()
+    for line in lines:
+        if line.startswith("## "):
+            h2_text = line[3:].strip()
+            if capturing:
+                break
+            if h2_text.lower() == target:
+                capturing = True
+                result.append(line)
+            continue
+        if capturing:
+            result.append(line)
+    return "\n".join(result) if result else None
+
 
 def _path_for_source(source):
     source = source.strip().rstrip(")")
@@ -158,17 +198,16 @@ def _path_for_source(source):
 
 
 def parse_phase_matrix(text):
-    """Return list of (source_pattern, spec_tier, plan_tier, implement_tier, verify_tier)."""
+    """Return list of (source, spec_tier, spec_sections, plan_tier, plan_sections,
+    implement_tier, implement_sections, verify_tier, verify_sections)."""
     rows = []
     # Find the Phase × Guidance Matrix section
     marker = "## 3. Phase × Guidance Matrix"
     idx = text.find(marker)
     if idx == -1:
-        # Fallback: scan for "Phase × Guidance Matrix" anywhere
         idx = text.find("Phase × Guidance Matrix")
     if idx == -1:
         return rows
-    # Scan forward from section header
     in_table = False
     for line in text[idx:].split("\n"):
         s = line.strip()
@@ -187,13 +226,18 @@ def parse_phase_matrix(text):
         source = parts[1]
         if source in ("Source", "---"):
             continue
-        rows.append((source, parts[2], parts[3], parts[4], parts[5]))
+        spec_tier, spec_sec = parse_tier(parts[2])
+        plan_tier, plan_sec = parse_tier(parts[3])
+        impl_tier, impl_sec = parse_tier(parts[4])
+        ver_tier, ver_sec = parse_tier(parts[5])
+        rows.append((source, spec_tier, spec_sec, plan_tier, plan_sec,
+                     impl_tier, impl_sec, ver_tier, ver_sec))
     return rows
 
 
 def resolve_route(root, phase):
     """Resolve Phase×Guidance Matrix for a given phase.
-    Returns list of (resolved_path, tier).
+    Returns list of (resolved_path, tier, sections_or_none).
     """
     root = Path(root)
     master = root / "MASTER_INDEX.md"
@@ -201,26 +245,33 @@ def resolve_route(root, phase):
         return []
     text = master.read_text(encoding="utf-8")
     rows = parse_phase_matrix(text)
-    col = PHASE_COLUMNS.get(phase.lower())
-    if col is None:
+    indices = PHASE_TIER_IDX.get(phase.lower())
+    if indices is None:
         return []
+    tier_idx, sec_idx = indices
     results = []
-    for source, *tiers in rows:
-        tier = tiers[col - 1]
+    for row in rows:
+        source = row[0]
+        tier = row[tier_idx]
         if tier not in ("Must", "Should"):
             continue
+        sections = row[sec_idx]
         rel = _path_for_source(source)
         if rel is None:
             continue
         if "*" in rel:
             matches = sorted(root.glob(rel))
             for m in matches:
-                results.append((str(m), tier))
+                results.append((str(m), tier, sections))
         else:
             fp = root / rel
             if fp.exists():
-                results.append((str(fp), tier))
+                results.append((str(fp), tier, sections))
     return results
+
+
+SUMMARY_BUDGET = 800   # ~3,200 chars for summary (low-confidence intent match)
+PARTIAL_BUDGET = 1200  # ~4,800 chars for partial (medium-confidence intent match)
 
 
 class ContextEngine:
@@ -247,13 +298,33 @@ class ContextEngine:
         tier = self.tier_map.get(rel)
         return TIER_BOOST.get(tier, 0)
 
-    def process_file(self, filepath):
+    def process_file(self, filepath, sections=None):
         fp = Path(filepath)
         if not fp.exists():
             print(f"ERROR: File not found: {fp}", file=sys.stderr)
             return
         base = self._get_base_score(str(fp))
         score = self.scorer.score(str(fp), base_score=base)
+
+        if sections:
+            text = fp.read_text(encoding="utf-8")
+            parts = []
+            for sec in sections:
+                part = extract_section(text, sec)
+                if part:
+                    parts.append(part)
+                else:
+                    print(f"WARNING: Section '{sec}' not found in {filepath}", file=sys.stderr)
+            output = "\n\n".join(parts)
+            tok = estimate_tokens(output)
+            ok, msg = self.budget_tracker.check(str(fp), tok)
+            if not ok:
+                print(msg, file=sys.stderr)
+                return
+            self.budget_tracker.add(str(fp), tok, score)
+            print(output)
+            return
+
         tokens = estimate_tokens(fp.read_text(encoding="utf-8"))
         ok, msg = self.budget_tracker.check(str(fp), tokens)
         if not ok:
@@ -266,11 +337,11 @@ class ContextEngine:
             return
         if self.mode == "summary":
             text = fp.read_text(encoding="utf-8")
-            result, _ = process_text(text, tokens, mode="summary")
+            result, _ = process_text(text, SUMMARY_BUDGET, mode="summary")
             print(result)
         elif self.mode == "partial":
             text = fp.read_text(encoding="utf-8")
-            result, _ = process_text(text, tokens, mode="partial")
+            result, _ = process_text(text, PARTIAL_BUDGET, mode="partial")
             print(result)
         elif self.mode == "compress":
             result, _ = self.compressor.compress(str(fp))
@@ -297,11 +368,15 @@ class ContextEngine:
             return
         # Collect unique paths (last tier wins for duplicates)
         unique = {}
-        for fp, tier in entries:
-            unique[fp] = tier
-        for fp, tier in unique.items():
+        for fp, tier, sections in entries:
+            prev = unique.get(fp)
+            if prev is None:
+                unique[fp] = (tier, sections)
+            else:
+                unique[fp] = (tier, prev[1] if prev[1] else sections)
+        for fp, (tier, sections) in unique.items():
             self.set_tier(fp, tier)
-            self.process_file(fp)
+            self.process_file(fp, sections=sections)
         if self.budget > 0:
             self.budget_tracker.hard = self.budget
             evicted = self.budget_tracker.evict_to_budget()
@@ -318,6 +393,8 @@ def main():
                         default="full", help="Load mode")
     parser.add_argument("--route", default="",
                         help="Phase name to load files from Phase×Guidance Matrix (spec/plan/implement/verify)")
+    parser.add_argument("--section", default="",
+                        help="Load only the named ## H2 section (case-insensitive); for use with --route or file arguments")
     parser.add_argument("files", nargs="*", help="Files to process")
     args = parser.parse_args()
 
@@ -325,7 +402,11 @@ def main():
     if args.route:
         engine.run_route(args.route, args.mode)
     if args.files:
-        engine.run(args.files)
+        if args.section:
+            for fp in args.files:
+                engine.process_file(fp, sections=[args.section])
+        else:
+            engine.run(args.files)
 
 
 if __name__ == "__main__":

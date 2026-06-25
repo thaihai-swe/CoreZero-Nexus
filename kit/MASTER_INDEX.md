@@ -10,7 +10,8 @@
 | `docs/project/code-map.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
 | `docs/rules/*.md` | Per-domain coding and policy rules (security, simplicity, etc.). | When the active task touches a security-sensitive domain or when loading a specific rule set. |
 | `manifest.json` | Installation manifest listing kit-managed (overwrite) and adopter-owned (copyIfMissing/preserve) files. | When auditing or modifying the kit file structure or installation behavior. |
-| memories/repo/core-policies.md | Repo-wide normative rules, canonical commands, limits, and security policy. | Read at session start and before changing core policies or security rules. |
+| memories/repo/core-policies.md | Repo-wide normative rules (CC-* identifiers), security policy, and memory promotion thresholds. | Read at session start and before changing core policies or security rules. |
+| memories/repo/harness-config.md | Adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, lifecycle. | Load when the task touches setup, bootstrap, commands, session defaults, or lifecycle configuration. |
 
 ## 2. Memory Router
 
@@ -21,11 +22,19 @@
    - **Partial Loading:** For low-confidence matches or when you only need an overview, use `scripts/context-loader.py <file> --mode summary` to extract just the file's index or summary, preserving token budget.
 3. Files in the **By Debug** group load only when debugging, retro, or post-mortem work begins.
 4. The **Phase × Guidance Matrix** below tells you what to add (and what to stop reading) at each phase of the delivery loop.
-5. If a file outgrows its slot (>800 lines, 3+ distinct subtopics, or 5+ artifacts reference one slice), open a promotion proposal under `artifacts/features/<slug>/promotions.md`.
+5. If a file outgrows its slot (per `core-policies.md` `## Memory Promotion Thresholds`), open a promotion proposal under `artifacts/features/<slug>/promotions.md`.
 
 ### Always (load every session)
 
-- `memories/repo/core-policies.md` — repo-wide normative rules (CC-* identifiers), canonical commands, limits, and security policy.
+- `memories/repo/core-policies.md` — repo-wide normative rules (CC-* identifiers), security policy, memory promotion thresholds. Loaded every session.
+
+### By Intent — Config
+
+Broad Intent Keywords: `setup`, `bootstrap`, `install`, `repository identity`, `workspace`, `environment`, `command`, `verification command`, `session default`, `convention`, `lifecycle`, `known limit`, `workaround`.
+
+*(Evaluate individually; do not block-load the group)*
+
+- `memories/repo/harness-config.md` — adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, delivery lifecycle, known limits.
 
 ### By Intent — Knowledge
 
@@ -59,6 +68,7 @@ Broad Intent Keywords: `heuristic`, `instinct`, `recurring`, `lesson`, `we alway
 *(Evaluate files individually; do not block-load the group)*
 
 - `memories/repo/learned-heuristics.md` — evidence-backed instincts that improve future execution.
+- `memories/archive/deprecated-heuristics.md` — Cold storage for decayed LH-* heuristics. Not loaded into context by default.
 
 ### By Domain Packs
 
@@ -72,7 +82,7 @@ Domain packs live in `memories/domain/`. Trigger keywords are declared in `gloss
 - **No packs installed:** Skip this section entirely.
 
 Installed packs:
-- **example** (`memories/domain/example/`) — triggers: `example`, `sample`, `demo`, `template`, `walkthrough`. Worked-example pack shipped as a schema demo; replace with a real domain pack.
+- **example** (`memories/domain/`) — triggers: `example`, `sample`, `demo`, `template`, `walkthrough`. Worked-example pack shipped as a schema demo; replace with a real domain pack.
 
 ### By Debug (load on debug, retro, or failure)
 
@@ -86,8 +96,9 @@ Trigger keywords: `debug`, `failure`, `regression`, `incident`, `retro`, `flaky`
 The Always group loads every session. This matrix says what to **add** at each phase of the delivery loop. The AI agent should use this as a baseline guide and dynamically load extra files (using intent-based routing) if the task risk warrants it. `Must` = required reading; `Should` = read unless reason to skip; `Skip` = do not read.
 
 | Source | Spec | Plan | Implement | Verify |
-|---|---|---|---|---|
-| `core-policies.md` | Must | Must | Must | Must |
+|---|---|---|---|---|---|
+| `core-policies.md` | Must {## Purpose, ## Normative Rules} | Must {## Amendment Rules, ## Release Guardrails} | Must {## Normative Rules, ## Active Session Limits & FinOps Guardrails, ## Security Policy} | Must {## Memory Promotion Thresholds, ## Security Policy} |
+| `harness-config.md` | Skip | Should {## Artifact Routing, ## Verification Commands} | Should {## Verification Commands, ## Session Defaults} | Skip |
 | `project-knowledge-base.md` | Should | Must | Should | Should |
 | `docs/project/architecture.md` | Should | Should | Skip | Should |
 | `docs/project/product-sense.md` | Should | Skip | Skip | Skip |

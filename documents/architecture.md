@@ -66,11 +66,13 @@ Per-feature state lives in `artifacts/features/<slug>/`:
 ### Layer 5: Memory
 
 Durable cross-feature guidance in `memories/repo/`:
-- `core-policies.md` — Repo-wide normative rules, security policy, and operational defaults
+- `core-policies.md` — Repo-wide normative rules (CC-*), security policy, memory promotion thresholds
+- `harness-config.md` — Adopter-tailored config: repository identity, work tracking, artifact routing, verification commands, session defaults, lifecycle, known limits
 - `learned-heuristics.md` — Evidence-backed execution patterns
 - `project-knowledge-base.md` — Durable facts and conventions
 - `harness-telemetry.md` — Auto-tier failure log and telemetry data
 - `adr-log.md` — ADR index (lazy-created on first ADR)
+- `archive/deprecated-heuristics.md` — Cold storage for decayed heuristics
 
 And bounded-context guidance in `memories/domain/`:
 - Domain packs containing: `glossary.md`, `patterns.md`, `anti-patterns.md`, `boundaries.md`
@@ -239,6 +241,8 @@ This is the layout created in a downstream project after running the installer s
 │   │   └── harness-lifecycle.sh
 │   └── install.sh               # Shipped installer script
 ├── memories/repo/               # Durable repository memory (3 tiers)
+│   ├── archive/                 # Cold storage for decayed memory
+│   │   └── deprecated-heuristics.md
 │   ├── adr-log.md               # ADR index
 │   ├── core-policies.md         # Core repository operating rules and security
 │   ├── harness-telemetry.md     # Failure logs and telemetry
@@ -251,6 +255,10 @@ This is the layout created in a downstream project after running the installer s
 │       ├── patterns.md
 │       ├── anti-patterns.md
 │       └── boundaries.md
+├── .corezero/                   # Ephemeral workspace state
+│   └── sessions/<slug>/
+│       ├── progress.md          # Session log
+│       └── handoff.md           # Continuity artifact
 └── artifacts/features/          # Per-feature specs, plans, tasks, and reviews
 ```
 
@@ -299,8 +307,10 @@ mindmap
       plan.md
       tasks.md
       review.md
-      handoff.md
       session-extracts.md
+    .corezero/sessions/slug/
+      progress.md
+      handoff.md
     docs/
       generated/
       policies/

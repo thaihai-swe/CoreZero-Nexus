@@ -500,7 +500,7 @@ Domain packs are **adopter-owned** memory — the kit seeds the schema but not t
 
 Brownfield artifacts under `memories/repo/project-knowledge-base.md ## Repository Overview` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `MASTER_INDEX.md`; sessions need to load them intentionally when relevant.
 
-> **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract only the `## Index` section or first 50 lines of a memory file, preserving context budget without agent interpretation.
+> **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract the `## Index` section plus ~60 content lines (or first 30 lines if no Index exists), preserving context budget without agent interpretation. Use `--section <H2 title>` to load a single named section.
 
 ---
 
@@ -512,7 +512,8 @@ The MVC principle is backed by three layers that work together to load only what
 ┌─────────────────────────────────────────────────────────────┐
 │  1. MASTER_INDEX.md     — The Map (declarative table)      │
 │     Phase × Guidance Matrix tells you what to load         │
-│     per phase: Must / Should / Skip                        │
+│     per phase: Must / Should / Skip, with optional         │
+│     section annotations {## Sec1, ## Sec2}                 │
 ├─────────────────────────────────────────────────────────────┤
 │  2. context_engine.py   — The Brain (Python engine)        │
 │     Reads the matrix, scores for relevance, tracks         │
@@ -526,11 +527,12 @@ The MVC principle is backed by three layers that work together to load only what
 
 ### Layer 1: MASTER_INDEX.md (the declarative map)
 
-The `## 3. Phase × Guidance Matrix` section is a 5-column table. The first column is the source file (with glob support via `*`). Columns 2–5 are the four delivery-loop phases (Spec / Plan / Implement / Verify). Each cell is one of `Must`, `Should`, or `Skip`.
+The `## 3. Phase × Guidance Matrix` section is a 5-column table. The first column is the source file (with glob support via `*`). Columns 2–5 are the four delivery-loop phases (Spec / Plan / Implement / Verify). Each cell is one of `Must`, `Should`, or `Skip`, with an optional brace annotation `{## Sec1, ## Sec2}` to load only specific H2 sections of a file.
 
 | Source | Spec | Plan | Implement | Verify |
-|---|---|---|---|---|
-| `core-policies.md` | Must | Must | Must | Must |
+|---|---|---|---|---|---|
+| `core-policies.md` | Must {## Purpose, ## Normative Rules} | Must {## Amendment Rules, ## Release Guardrails} | Must {## Normative Rules, ## Security Policy} | Must {## Memory Promotion Thresholds, ## Security Policy} |
+| `harness-config.md` | Skip | Should {## Artifact Routing, ## Verification Commands} | Should {## Verification Commands, ## Session Defaults} | Skip |
 | `docs/project/architecture.md` | Should | Should | Skip | Should |
 | `docs/rules/*.md` | Skip | Should | Must | Should |
 
@@ -547,7 +549,7 @@ Located at `kit/scripts/core/context_engine.py`. Exposes class `ContextEngine`. 
 4. Filters to the column matching the requested phase (`spec`/`plan`/`implement`/`verify`).
 5. Drops `Skip` rows, keeps `Must` and `Should`.
 6. Resolves short names via `_path_for_source()` (line 142): maps `core-policies.md` → `memories/repo/core-policies.md`, `domain/glossary.md` → `memories/domain/glossary.md`, `docs/rules/*.md` → expanded glob. Returns `None` for entries like `session-extracts.md` (not auto-loaded).
-7. Returns list of `(resolved_path, tier)` tuples.
+7. Returns list of `(resolved_path, tier, sections_or_none)` tuples — section lists from `{## Sec1, ## Sec2}` annotations are parsed via `parse_tier()`.
 
 **Tier protection** — `TIER_BOOST` (line 137):
 ```python
@@ -574,15 +576,16 @@ When scoring files for eviction, `Must` files start at 40 points (out of 100), `
 - Aborts if savings < 10% (returns original text) — avoids pointless re-processing.
 
 **`run_route()`** — the full pipeline (line 290):
-1. Calls `resolve_route()` to get `[(path, tier), ...]`.
+1. Calls `resolve_route()` to get `[(path, tier, sections), ...]`.
 2. Deduplicates by path (last tier wins).
-3. For each file: calls `set_tier(path, tier)` to record its tier for base-score protection, then calls `process_file()`.
-4. `process_file()` computes score, estimates tokens, checks budget, then outputs in the requested mode (`full`/`summary`/`partial`/`scored`/`compress`).
-5. After all files, calls `evict_to_budget()` if a budget cap was set.
+3. For each file: calls `set_tier(path, tier)` to record its tier for base-score protection, then calls `process_file(path, sections=sections)`.
+4. When `sections` is set (from matrix `{## Sec1}` annotations), `process_file()` loads only those H2 sections via `extract_section()`, ignoring the full-file mode.
+5. Without sections, `process_file()` computes score, estimates tokens, checks budget, then outputs in the requested mode (`full`/`summary`/`partial`/`scored`/`compress`). Mode `summary` caps at 800 tokens; `partial` caps at 1200 tokens.
+6. After all files, calls `evict_to_budget()` if a budget cap was set.
 
 ### Layer 3: context-loader.py (the CLI)
 
-Thin wrapper at `kit/scripts/context-loader.py` (41 lines). Three usage patterns:
+Thin wrapper at `kit/scripts/context-loader.py` (45 lines). Four usage patterns:
 
 ```bash
 # Route-based: load what the matrix says for phase "plan"
@@ -590,6 +593,9 @@ python3 kit/scripts/context-loader.py --route plan --mode summary
 
 # Direct file: load one file with compression
 python3 kit/scripts/context-loader.py docs/rules/ponytail.md --mode compress
+
+# Section extract: load a single H2 section
+python3 kit/scripts/context-loader.py --section "Security Policy" memories/repo/core-policies.md
 
 # Bulk: load multiple files scored against intent, capped at 5000 tokens
 python3 kit/scripts/context-loader.py --intent "api auth" --budget 5000 file1.md file2.md
@@ -605,12 +611,13 @@ python3 kit/scripts/context-loader.py --intent "api auth" --budget 5000 file1.md
 3. `context-loader.py` instantiates `ContextEngine` and calls `run_route("implement")`.
 4. `run_route()` calls `resolve_route(root, "implement")`:
    - Opens `MASTER_INDEX.md`, finds `## 3. Phase × Guidance Matrix`.
-   - Reads column "Implement": `core-policies.md` (Must), `project-knowledge-base.md` (Should), `tech-stack.md` (Should), `code-map.md` (Should), `code-design.md` (Should), `docs/rules/*.md` (Must) — expanded to all matching rule files, etc.
-   - Returns ~12 resolved paths with tiers.
+   - Reads column "Implement" with section annotations: `core-policies.md` `Must {## Normative Rules, ## Security Policy}` (section-loaded, ~500 tokens), `project-knowledge-base.md` (Should, full file), `tech-stack.md` (Should), `code-map.md` (Should), `code-design.md` (Should), `docs/rules/*.md` (Must) — expanded to all matching rule files, etc.
+   - Returns ~12 resolved paths with tiers and optional section lists.
 5. For each file, `run_route()`:
    - Sets tier → file gets base score 40 (Must) or 20 (Should).
-   - Calls `process_file()` → scores content against `--intent` keywords (if any), estimates tokens, checks against budget.
-   - Outputs in `partial` mode (headings + first paragraph under each).
+   - If sections are specified (e.g. core-policies.md → Normative Rules + Security Policy), calls `process_file()` with section names, which extracts just those H2 sections.
+   - Otherwise calls `process_file()` → scores content against `--intent` keywords (if any), estimates tokens, checks against budget.
+   - Outputs in `partial` mode (up to 1200 tokens per file via `PARTIAL_BUDGET`).
 6. After all files loaded, `evict_to_budget()` runs. If total tokens exceed cap, lowest-scored files are evicted. Must files (score ≥40) are rarely touched.
-7. **Result**: agent has ~8–12 phase-relevant, partially loaded files under token budget — no manual selection needed.
+7. **Result**: agent has ~8–12 phase-relevant files (some section-loaded, some partially loaded) under token budget — no manual selection needed.
 
