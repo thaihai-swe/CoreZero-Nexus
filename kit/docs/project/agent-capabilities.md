@@ -22,3 +22,4 @@ This file documents the capabilities the AI agent requires to operate this kit e
 |---|---|
 | Python 3 | `visualize`, `scripts/context-loader.py`, `scripts/generate-dashboard.py` |
 | `mmdc` (Mermaid CLI) | `visualize` — SVG diagram export |
+| gitnexus (MCP server) | All skills — provides code knowledge graph (call chains, impact analysis, dependency maps). Install: `npm install -g gitnexus`, then `gitnexus analyze && gitnexus setup` |

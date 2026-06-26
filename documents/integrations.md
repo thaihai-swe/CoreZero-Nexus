@@ -30,6 +30,43 @@ When multiple clients work on the same project:
 - Handoffs work across clients (handoff.md is client-agnostic)
 - The harness config captures commands that work for all clients
 
+## Companion: GitNexus (optional)
+
+[GitNexus](https://github.com/abhigyanpatwari/GitNexus) indexes any codebase into a knowledge graph and exposes it via MCP. When available, it gives CoreZero agents deep code-aware context — call chains, dependency maps, blast radius analysis — without manual file reading.
+
+### Setup
+
+```bash
+npm install -g gitnexus
+cd /path/to/your/repo && gitnexus analyze && gitnexus setup
+```
+
+### OpenCode MCP config
+
+Add to `~/.config/opencode/config.json`:
+
+```json
+{
+  "mcp": {
+    "gitnexus": {
+      "type": "local",
+      "command": ["gitnexus", "mcp"]
+    }
+  }
+}
+```
+
+### Skills that benefit
+
+| Skill | GitNexus tool used | Why |
+|-------|-------------------|-----|
+| `spec-plan` | `impact` | Blast radius analysis before designing changes |
+| `spec-implement` | `context` | Dependency awareness during implementation |
+| `harness-verify` | `impact` | Verify no unexpected side effects |
+| `code-review` | `context`, `detect_changes` | Call chain audit + diff-to-symbol mapping |
+
+The kit works identically without GitNexus — it is additive, not required.
+
 ## Golden Config Pattern
 
 For each client, the ideal setup:

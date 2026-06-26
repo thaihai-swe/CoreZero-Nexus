@@ -88,9 +88,9 @@ Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
    b. `grep -rEoh "LH-[0-9]+"` across those features' `tasks.md`, `progress.md`, and `plan.md`. Build a hit-count map per LH-* ID.
    c. For each LH-* in `learned-heuristics.md`, cross-reference hit count + `Last reviewed` date:
       - Citations in last 1-2 features → **Active** (no action).
-      - Zero citations in last 3 features AND `Last reviewed` > 6 months → flag **Fading** in the audit report.
-      - Zero citations in last 3 features AND `Last reviewed` < 6 months → leave alone (grace period, too early to tell).
-      - Zero citations in last 5 features AND `Last reviewed` > 6 months → flag **Archive candidate** in the audit report.
+      - Zero citations in last 3 features AND `Last reviewed` > 1 month → flag **Fading** in the audit report.
+      - Zero citations in last 3 features AND `Last reviewed` < 1 month → leave alone (grace period, too early to tell).
+      - Zero citations in last 5 features AND `Last reviewed` > 1 month → flag **Archive candidate** in the audit report.
    d. No edits — report only. Matches existing audit philosophy.
 
 ### Output

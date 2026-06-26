@@ -71,7 +71,7 @@ Apply these techniques in order. Do not delete content — only condense present
 | **Remove superseded content** | If a rule, heuristic, or note explicitly contradicts a newer entry in the same file, keep the newer one; remove the older. |
 | **Drop resolved examples** | Remove inline examples that duplicate what the rule states. Keep only examples that add genuine disambiguation. |
 | **Trim verbose preambles** | Section intros that restate the section header add no value. Remove them. |
-| **Compress history tables** | In `## Change Log` or `## Delta History` tables, collapse entries older than 6 months into a single `(N older entries archived)` row. |
+| **Compress history tables** | In `## Change Log` or `## Delta History` tables, collapse entries older than 1 month into a single `(N older entries archived)` row. |
 
 **Hard rules:**
 - Do NOT delete any CC-*, LH-*, INV-* identifier or its core constraint.
@@ -112,7 +112,7 @@ This skill may compact any of the following files. All other files are outside s
 | `memories/repo/core-policies.md` | `CC-*` | The Amendment Rules section must stay verbatim. |
 | `memories/repo/learned-heuristics.md` | `LH-*` | Merge overlapping heuristics; never drop one with `recurrence-count ≥ 3`. Tombstoned LH-* entries (marked [ARCHIVED]) are excluded from compaction merges but their IDs MUST be preserved. |
 | `memories/repo/project-knowledge-base.md` | None (prose) | Dedup aggressively. |
-| `memories/domain/*/boundaries.md` | `INV-*` | Do not remove invariants; do not compact `## Change Log` entries younger than 6 months. |
+| `memories/domain/*/boundaries.md` | `INV-*` | Do not remove invariants; do not compact `## Change Log` entries younger than 1 month. |
 | `docs/project/architecture.md` | None (prose) | Trim stale component descriptions only. |
 
 ## Core Rules

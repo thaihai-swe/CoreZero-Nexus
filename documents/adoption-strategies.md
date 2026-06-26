@@ -7,7 +7,7 @@
 | **Solo Pilot** | One developer, one feature | `starter-init`, `spec-requirements`, `spec-plan`, `spec-implement`, `harness-verify` | 1-2 weeks |
 | **Team Trial** | Small team, 2-3 features | Guided pack flow across Starter, Context, Spec, and Harness | 2-4 weeks |
 | **Full Adoption** | Entire team, all new features | Full pack workflow + harness assessment | Ongoing |
-| **Advanced** | Governance, evaluation, multi-team | Advanced Pack templates + eval mode | Mature teams |
+| **Advanced** | Governance, evaluation, multi-team | Advanced Pack templates + eval mode + optional GitNexus knowledge graph | Mature teams |
 
 ## Starting Small
 
@@ -40,6 +40,14 @@ The kit adapts to work size:
 | Repo-wide / harness change | Complex | adversarial review, phased rollout, `/harness-maintain` eval mode | Nothing |
 
 The `/spec-requirements` skill triages automatically. You don't need to declare the profile upfront.
+
+## Optional: GitNexus Companion Tool
+
+For teams that want deeper code-aware AI context, install [GitNexus](https://github.com/abhigyanpatwari/GitNexus) alongside the kit. It provides call-chain resolution, impact analysis, and dependency mapping that CoreZero skills can leverage via MCP.
+
+Setup: `npm install -g gitnexus && gitnexus analyze && gitnexus setup`
+
+The kit works identically without it — GitNexus is additive, not required.
 
 ## Common Adoption Pitfalls
 

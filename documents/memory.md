@@ -173,7 +173,7 @@ Heuristics are promoted only when:
 - Version the constitution with semantic versioning
 - Route descriptive knowledge to PKB, not constitution
 - Evict stale context from sessions — raw logs are transient, not durable
-- **Memory Decay**: Unused LH-* heuristics are mechanically audited and archived into `deprecated-heuristics.md` to keep context windows lean.
+- **Memory Decay**: `/context-memory --audit` mechanically scans `learned-heuristics.md`. If an LH-* entry hasn't been cited in 5+ features and is over 1 month old, it is tombstoned in-place and the full text moved to `memories/archive/deprecated-heuristics.md`.
 
 ## Self-Improving Loop
 
@@ -267,8 +267,10 @@ Files under `memories/`, `docs/project/`, and `docs/policies/` are updated by di
 | `core-policies.md` | `/starter-init` | `/context-memory` | Normative repo rules (CC-*), security boundaries, promotion thresholds |
 | `project-knowledge-base.md` | `/starter-init` | `/context-memory` | Durable facts, conventions, patterns |
 | `learned-heuristics.md` | `/starter-init` | `/context-memory`, `/harness-maintain` | Evidence-backed execution patterns |
+| `harness-config.md` | `/starter-init` | `/context-memory` | Adopter-tailored repo identity, artifact routing, lifecycle |
 | `harness-telemetry.md` | `/starter-init` | `/harness-verify`, `/spec-implement`, `telemetry-collector.sh` | Failure log (auto tier) |
 | `adr-log.md` | `/spec-adr` (lazy) | `/spec-adr` | ADR registry |
+| `deprecated-heuristics.md` | `/starter-init` | `/context-memory` (audit mode) | Tombstoned LH-* entries moved from `learned-heuristics.md` |
 
 ### Domain Packs (`memories/domain/`)
 
@@ -309,7 +311,7 @@ Files under `memories/`, `docs/project/`, and `docs/policies/` are updated by di
 | Skill | Writes To |
 |-------|-----------|
 | `/starter-init` | All `copyIfMissing` seeds (first-run only) |
-| `/context-memory` | `core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`, domain packs |
+| `/context-memory` | `core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`, `harness-config.md`, `deprecated-heuristics.md`, domain packs |
 | `/spec-adr` | `adr-*.md`, `adr-log.md` |
 | `/harness-verify` | `harness-telemetry.md` (on gate failure) |
 | `/spec-implement` | `harness-telemetry.md` (on gate failure) |

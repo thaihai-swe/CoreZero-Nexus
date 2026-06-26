@@ -54,7 +54,7 @@
 
 | Tool | Purpose | Config File | Key Commands |
 |------|---------|-------------|--------------|
-| | | | |
+| gitnexus | Optional code knowledge graph — indexes deps, call chains, and clusters for AI code-aware context | `.gitnexusrc` | `npx gitnexus analyze`, `npx gitnexus mcp` |
 
 ## Environment Variables
 

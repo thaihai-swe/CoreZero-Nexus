@@ -16,6 +16,8 @@ Use this guide after installing the kit into an adopter repository.
 4. Run `/starter-init` to bootstrap the repo-specific harness state.
 5. Start the first feature with `/spec-requirements` when the goal is clear, or `/spec-research` when existing behavior needs investigation first.
 
+6. *(Optional)* Install GitNexus for code-aware AI context: `npm install -g gitnexus && gitnexus analyze && gitnexus setup`. See `documents/integrations.md` for OpenCode MCP config.
+
 ---
 
 ## Shipped Commands
@@ -168,6 +170,33 @@ Run `/context-memory --audit` to produce a structured report of memory system he
 - Drift between findings and `MASTER_INDEX.md` `## Promotion Watchlist`
 
 Output is written to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `docs/generated/memory-audit.md` (global). The audit produces a report only — promotions and rewrites stay manual or route through a regular `/context-memory` or `/context-compact` invocation.
+
+---
+
+## Memory Compaction
+
+Run `/context-compact --file <path>` to safely reduce the size of an oversized memory file. Unlike `/context-memory --audit` (read-only diagnostics), compaction is an active editor:
+
+- **Semantic compression**: Rewrites and deduplicates the file to be significantly shorter while preserving 100% of normative intent, business rules, and required IDs (CC-*, LH-*, INV-*).
+- **Safety protocol**: A mandatory pre/post diff check ensures no identifiers are lost or rules altered.
+
+### How audit and compact work together
+
+1. **Diagnose**: Run `/context-memory --audit` to check memory health. The report flags files approaching the soft warning (800 lines) or hard limit (1200 lines).
+2. **Fix**: Run `/context-compact --file memories/repo/<file>.md` on the flagged file to condense it back under the threshold.
+3. **Verify**: The safety protocol confirms all normative identifiers survived the compaction.
+
+---
+
+## Memory Maintenance Cadence
+
+Run `/context-memory` at different cadences depending on scope:
+
+| Cadence | Command | Purpose |
+|---------|---------|---------|
+| **Daily (Feature End)** | `/context-memory` (default mode) | Extract immediate lessons from the finished feature. Lightweight — no flags needed. |
+| **Monthly (Milestone End)** | `/context-memory --audit` | Scheduled health check. Flags bloated files, stale references, and unused heuristics. Output goes to `memory-audit.md`. |
+| **After Audit Review** | `/context-memory --apply-decay` | After reading the audit report, if you agree with the archive suggestions, run with `--apply-decay` to tombstone old LH-* entries and move them to `deprecated-heuristics.md`. |
 
 ---
 

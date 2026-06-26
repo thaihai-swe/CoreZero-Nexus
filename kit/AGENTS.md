@@ -31,7 +31,7 @@ When a rule uses one of these keywords, treat it with the corresponding weight.
 For every task, follow this loop:
 
 1. **Understand the goal.** Identify the real success condition in repository-specific terms.
-2. **Inspect before building.** Read relevant code, docs, tests, artifacts, and existing patterns before proposing new ones.
+2. **Inspect before building.** Read relevant code, docs, tests, artifacts, and existing patterns before proposing new ones. If `gitnexus` MCP tools are available, prefer `gitnexus context` / `gitnexus impact` for codebase awareness before reading source files directly.
 3. **Plan the smallest safe change.** Prefer the simplest change that solves the stated problem without speculative abstractions.
 4. **Implement surgically.** Change only what is required and match the project’s existing style.
 5. **Verify.** Run the most relevant available checks and read their output.

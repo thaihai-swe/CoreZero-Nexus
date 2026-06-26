@@ -47,7 +47,7 @@ Broad Intent Keywords: `architecture`, `pattern`, `convention`, `stack`, `module
 - `docs/project/architecture.md` — durable system structure, boundaries, integration seams.
 - `docs/project/product-sense.md` — product vision, target users, success metrics. Load on product/scoping work.
 - `docs/project/glossary.md` — shared vocabulary and naming conventions. Load when naming or terminology matters.
-- `docs/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations.
+- `docs/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations. If gitnexus is listed under Development Tools, the project's code graph is available via MCP.
 - `docs/project/project-constraints.md` — budgets, compliance, deploy, security constraints. Load when constraints bound the change.
 - `docs/project/code-map.md` — generated map of code locations.
 
@@ -113,6 +113,7 @@ The Always group loads every session. This matrix says what to **add** at each p
 | `domain/boundaries.md` (on match) | Should | Should | Skip | Should |
 | `domain/patterns.md` (on match) | Skip | Should | Must | Skip |
 | `domain/anti-patterns.md` (on match) | Skip | Skip | Skip | Must |
+| `gitnexus` MCP (if installed) | Skip | Should | Should | Should | — Use `gitnexus impact` / `gitnexus context` before planning changes. If not installed, skip. |
 
 | `harness-telemetry.md` | Skip | Skip | Skip | Should |
 | Prior `session-extracts.md` | Skip | Should | Skip | Skip |
