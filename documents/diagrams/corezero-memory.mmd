@@ -2,18 +2,19 @@ flowchart TD
     %% 3-Tier Memory Architecture (Instruction / Auto / Extracted)
 
     subgraph INSTR["Instruction Tier — Human-Curated, Durable"]
-        CONST[core-policies.md<br/>Normative rules, boundaries & config]
-        PKB[project-knowledge-base.md<br/>Patterns, watchouts]
-        HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
-        ARCH[docs/project/architecture.md<br/>System structure]
+        CONST[core-policies.md<br/>Normative rules, security policy, thresholds]
+        CONFIG[harness-config.md<br/>Adopter identity, commands, lifecycle defaults]
+        PKB[project-knowledge-base.md<br/>Durable patterns, watchouts, continuity facts]
+        ADR[adr-log.md<br/>Architectural decision index]
+        HEUR[learned-heuristics.md<br/>Evidence-backed execution instincts]
     end
 
     subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
-        OBS[harness-telemetry.md<br/>Harness/Model/Spec failures]
+        OBS[harness-telemetry.md<br/>Harness / Model / Spec failures]
     end
 
     subgraph EXTR["Extracted Tier — Per-Feature Candidates"]
-        EXT[artifacts/features/&lt;slug&gt;/<br/>session-extracts.md]
+        EXT[session-extracts.md<br/>Candidate lessons from each feature]
     end
 
     subgraph ROUTER["Memory Router"]
@@ -21,34 +22,30 @@ flowchart TD
     end
 
     subgraph PACKS["Domain Packs — Adopter-Owned"]
-        DPACK[memories/domain/<br/>glossary + patterns + anti-patterns + boundaries + spec]
+        DPACK[memories/domain/<br/>glossary + patterns + anti-patterns + boundaries]
     end
 
-    BROWN[Brownfield artifacts<br/>memories/repo/brownfield/*<br/>manual load for now]
-
-    %% Routing
-    IDX -->|Always group| CONST
-    IDX -->|Always group| SEC
-    IDX -->|Always group| HARN
-    IDX -->|By-Intent: Knowledge| PKB
-    IDX -->|By-Intent: Knowledge| ARCH
-    IDX -->|By-Intent: Learned| HEUR
+    %% Routing from MASTER_INDEX.md trigger groups
+    IDX -->|Always| CONST
+    IDX -->|By Intent: Config| CONFIG
+    IDX -->|By Intent: Knowledge| PKB
+    IDX -->|By Intent: Knowledge| ADR
+    IDX -->|By Intent: Learned| HEUR
     IDX -->|By Domain Packs| DPACK
-    IDX -->|By-Debug| OBS
-    IDX -->|By-Debug| EXT
+    IDX -->|By Debug| OBS
+    IDX -->|By Debug| EXT
 
     %% Promotion flow (extracted -> instruction)
+    EXT -.->|context-memory<br/>Extraction Triage| CONST
+    EXT -.->|context-memory<br/>Extraction Triage| PKB
     EXT -.->|context-memory<br/>Extraction Triage| HEUR
-    EXT -.->|promote rule| CONST
-    EXT -.->|promote security| SEC
-    OBS -.->|context-memory<br/>Triage| PKB
-    OBS -.->|durable lesson| HEUR
+    OBS -.->|3+ recurrences →<br/>propose promotion| HEUR
 
     %% Writers
     AIDV[harness-verify<br/>Post-Ship Sync] -->|writes record| EXT
     AIHN[harness-maintain<br/>Improve Mode] -->|appends| OBS
     AIDS[context-session END] -->|appends candidates| EXT
-    AIBR["starter-init<br/>(brownfield phase)"] -->|creates map + graph| BROWN
+    AIADR[spec-adr] -->|writes decision| ADR
 
     classDef instr fill:#10b981,stroke:#047857,color:#fff
     classDef auto fill:#f59e0b,stroke:#b45309,color:#fff
@@ -57,9 +54,9 @@ flowchart TD
     classDef writer fill:#fff,stroke:#0d0d0d,color:#0d0d0d
     classDef packs fill:#eef2ff,stroke:#c7d2fe,color:#3730a3
 
-    class CONST,SEC,HARN,PKB,HEUR,ARCH instr
+    class CONST,CONFIG,PKB,ADR,HEUR instr
     class OBS auto
     class EXT extr
     class IDX router
-    class DPACK,BROWN packs
-    class AIDV,AIHN,AIDS,AIBR writer
+    class DPACK packs
+    class AIDV,AIHN,AIDS,AIADR writer

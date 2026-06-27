@@ -1,24 +1,31 @@
 flowchart TD
-    %% Smart Context Routing via MASTER_INDEX.md
+    %% Smart Context Routing via MASTER_INDEX.md — matches actual trigger groups
 
     START([Session Start]) --> IDX[Read MASTER_INDEX.md<br/>memory router]
     IDX --> ALWAYS[Load Always group<br/>core-policies.md]
 
     ALWAYS --> MATCH{Match task vs<br/>trigger keywords}
 
-    MATCH -->|architecture, pattern,<br/>stack, domain, adr| KNOW["Load Knowledge group<br/>(3+ keywords: Full PKB + Specs + ADRs + Architecture<br/>1-2 keywords: project-knowledge-base.md only)"]:::group
-    MATCH -->|heuristic, recurring,<br/>we always/never| LEARN["Load Learned group<br/>(learned-heuristics.md)"]:::group
-    MATCH -->|domain glossary triggers| DOMAIN["Load Domain Pack<br/>(3+ keywords: Full pack [4 files]<br/>1-2 keywords: glossary.md only)"]:::group
-    MATCH -->|debug, failure, regression,<br/>retro, root cause| DEBUG["Load Debug group<br/>(harness-telemetry.md + session-extracts.md)"]:::group
-    MATCH -->|no trigger matches| SKIP["Skip intent groups<br/>(Load Always group only)"]:::group
+    MATCH -->|setup, bootstrap,<br/>command, lifecycle| CONFIG["Load Config group<br/>(harness-config.md)"]:::group
+    MATCH -->|architecture, pattern,<br/>stack, domain, adr| KNOW["Load Knowledge group<br/>granular: PKB, ADR log,<br/>architecture, glossary,<br/>tech-stack, constraints"]:::group
+    MATCH -->|security, auth,<br/>simplicity, ponytail| RULES["Load Rules group<br/>granular: security.md,<br/>ponytail.md,<br/>code-design.md"]:::group
+    MATCH -->|heuristic, lesson,<br/>recurring, we always| LEARN["Load Learned group<br/>(learned-heuristics.md)"]:::group
+    MATCH -->|domain triggers<br/>via glossary.md frontmatter| DOMAIN["Load Domain Pack<br/>granular per file:<br/>glossary → boundaries<br/>patterns → anti-patterns"]:::group
+    MATCH -->|debug, failure,<br/>regression, retro| DEBUG["Load Debug group<br/>(harness-telemetry.md +<br/>prior session-extracts.md)"]:::group
+    MATCH -->|no trigger matches| SKIP["Skip intent groups<br/>(Always group only)"]:::group
 
-    KNOW --> FEAT["Load Feature & Session artifacts<br/>(status.md, spec.md, plan.md, tasks.md, .corezero/.../progress.md, .corezero/.../handoff.md, claim.md, testing-scenarios.md)"]:::group
+    CONFIG --> FEAT
+    KNOW --> FEAT
+    RULES --> FEAT
     LEARN --> FEAT
     DOMAIN --> FEAT
     DEBUG --> FEAT
     SKIP --> FEAT
 
-    FEAT --> REPORT[Report Context Loaded<br/>+ Context Skipped with reasons]:::group
+    FEAT["Load Feature Artifacts<br/>(status.md, spec.md, plan.md,<br/>tasks.md, handoff.md,<br/>testing-scenarios.md)"]:::group
+
+    FEAT --> PHASE[Apply Phase × Guidance Matrix<br/>trim files no longer needed<br/>for current delivery phase]
+    PHASE --> REPORT[Report Context Loaded<br/>+ reasons for skips]:::group
     REPORT --> WORK([Begin work])
 
     STALE[MASTER_INDEX.md missing<br/>or stale] -.->|fallback| ALL[Load every memory file<br/>route gap to context-memory]:::fallback
@@ -32,6 +39,6 @@ flowchart TD
 
     class START,WORK terminal
     class IDX,ALWAYS router
-    class FEAT,KNOW,LEARN,DOMAIN,DEBUG,SKIP,REPORT group
+    class CONFIG,KNOW,RULES,LEARN,DOMAIN,DEBUG,SKIP,FEAT,REPORT group
     class MATCH decision
     class STALE,ALL fallback

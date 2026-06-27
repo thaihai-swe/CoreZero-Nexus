@@ -18,7 +18,7 @@ sequenceDiagram
     opt Post-Ship Sync (on verify Pass)
         A->>M: Sync and update memories (learned-heuristics.md, PKB, core-policies.md)
     end
-    A->>F: Update status.md and write handoff.md / claim.md (on session end)
+    A->>F: Update status.md and write handoff.md (on session end)
     A-->>U: Return status, completion checklist, and verification outcomes
 
     Note over A,F: Guided feature delivery lifecycle:<br/>/starter-init -> /context-session START -> /spec-research -> /spec-requirements -> /spec-plan -> /spec-implement -> /harness-verify -> /context-session END

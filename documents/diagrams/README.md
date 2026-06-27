@@ -21,7 +21,7 @@ Legacy `corezero-*` filenames may remain on some diagram files until a later ren
 | `corezero-context.mmd` | C4 system context — user, kit, LLM, git repo |
 | `corezero-memory.mmd` | 3-tier memory (Instruction / Auto / Extracted) + `MASTER_INDEX.md` router for `context-*` flows |
 | `corezero-context-routing.mmd` | Smart context routing — MASTER_INDEX.md intent-based group loading |
-| `corezero-context-assembly.mmd` | 6-tier context assembly, highest to lowest signal |
+| `corezero-context-assembly.mmd` | 6-layer data stack — what each layer contains and when the agent loads it |
 | `corezero-mindmap.mmd` | Full kit structure mapped to Starter, Context, Spec, and Harness packs |
 | `skills-repository-architecture.mmd` | Public pack grouping with advanced specialist tools |
 
@@ -32,16 +32,13 @@ Legacy `corezero-*` filenames may remain on some diagram files until a later ren
 | `corezero-full-flow.mmd` | Guided pack flow with advanced specialist branches |
 | `corezero-dataflow.mmd` | Artifact flow: analysis → spec → plan → code → review → memory |
 | `corezero-onboarding.mmd` | Greenfield vs Brownfield onboarding through `starter-init` (Phase A: archaeology, Phase B: bootstrap) |
-
 | `corezero-harness-maintenance.mmd` | Flowchart of /harness-maintain Assess vs Improve modes |
 | `skills-end-to-end-execution.mmd` | Sequence diagram of a harness run |
-| `corezero-spec-lifecycle.mmd` | Spec flow: triage → grilling waves → readiness → locked |
 | `corezero-verify-gate.mmd` | Harness verification gate: split modes to Done |
 | `corezero-traceability.mmd` | REQ → AC → TASK → proof chain |
 | `corezero-status-machine.mmd` | Feature status state machine + transitions |
 | `corezero-greenfield-flow.mmd` | Greenfield flow: bootstrap → `starter-init` → ship first feature |
 | `corezero-brownfield-flow.mmd` | Brownfield flow: archaeology → `starter-init` → research → ship first feature |
-| `corezero-packs-taxonomy.mmd` | Mindmap catalog of all public commands mapped to the 4 Core Packs |
 | `corezero-subagent-fanout.mmd` | SDD: delegate broad work, merge summaries only |
 
 ## Self-Improving Knowledge

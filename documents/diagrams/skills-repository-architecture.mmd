@@ -1,29 +1,31 @@
 flowchart TB
-    subgraph OC["Bootstrap + Context"]
+    subgraph BC["Bootstrap &amp; Context"]
         START["starter-init"]
+        SESS["context-session"]
         STATUS["context-status"]
         MEMORY["context-memory"]
-        RESEARCH["spec-research"]
-        SPEC["spec-requirements"]
+        COMPACT["context-compact"]
     end
 
-    subgraph DP["Delivery Pipeline"]
-        VIS["visualize"]
+    subgraph SD["Spec-Driven Delivery"]
+        RESEARCH["spec-research"]
+        SPEC["spec-requirements"]
         ADR["spec-adr"]
         PLAN["spec-plan"]
         IMPL["spec-implement"]
-        VERIFY["harness-verify"]
-        HAND["context-session"]
     end
 
-    subgraph SD["Specialist Documentation"]
+    subgraph QA["Quality &amp; Maintenance"]
+        VERIFY["harness-verify"]
+        REVIEW["code-review"]
+        PONY["ponytail"]
+        MAINTAIN["harness-maintain"]
+    end
+
+    subgraph DOC["Documentation &amp; Visualization"]
+        VIS["visualize"]
         TECDOC["technical-docs"]
         CODE["codebase-documenter"]
-    end
-
-    subgraph QA["Quality & Maintenance"]
-        REVIEW["code-review"]
-        MAINTAIN["harness-maintain"]
     end
 
     START --> STATUS
@@ -36,7 +38,9 @@ flowchart TB
     PLAN --> IMPL
     IMPL --> VERIFY
     VERIFY --> REVIEW
-    REVIEW --> HAND
+    REVIEW --> PONY
+    PONY --> SESS
+    SESS --> COMPACT
 
     VERIFY -. harness failure .-> MAINTAIN
     MAINTAIN -. durable improvement .-> MEMORY
@@ -47,4 +51,4 @@ flowchart TB
     classDef primary fill:#ffffff,stroke:#10a37f,color:#0d0d0d,stroke-width:1.5px;
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     class START,MEMORY,SPEC,PLAN primary;
-    class STATUS,RESEARCH,VIS,ADR,IMPL,VERIFY,HAND,TECDOC,CODE,REVIEW,MAINTAIN neutral;
+    class SESS,STATUS,COMPACT,RESEARCH,VIS,ADR,IMPL,VERIFY,REVIEW,PONY,TECDOC,CODE,MAINTAIN neutral;

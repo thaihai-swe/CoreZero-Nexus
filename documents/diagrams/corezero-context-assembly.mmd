@@ -1,23 +1,23 @@
 flowchart TB
-    %% 6-Tier Context Assembly — highest signal to lowest
+    %% CoreZero Data Stack — 6 layers, highest signal to lowest
 
-    T1["Tier 1 — Router<br/>AGENTS.md + MASTER_INDEX.md"]:::t1
-    T2["Tier 2 — Repo Memory (Always)<br/>core-policies.md"]:::t2
-    T3["Tier 3 — Repo Memory (By Intent)<br/>project-knowledge-base.md / learned-heuristics.md / adr-log.md"]:::t3
-    T4["Tier 4 — Feature & Session Artifacts<br/>status.md / spec.md / plan.md / tasks.md<br/>.corezero/.../progress.md / handoff.md<br/>testing-scenarios.md / session-extracts.md / claim.md"]:::t4
-    T5["Tier 5 — Raw Code<br/>JIT read of immediate task-scoped source files"]:::t5
-    T6["Tier 6 — Transient Logs<br/>Command outputs, test logs, subagent summaries"]:::t6
+    T1["Layer 1 — Router &amp; Entrypoint<br/>AGENTS.md + MASTER_INDEX.md<br/><em>Always loaded</em>"]:::t1
+    T2["Layer 2 — Constitution &amp; Policy<br/>core-policies.md · docs/rules/ · adr-log.md<br/><em>Always / by-intent</em>"]:::t2
+    T3["Layer 3 — Knowledge &amp; Heuristics<br/>project-knowledge-base.md · learned-heuristics.md · memories/domain/<br/><em>Loaded on keyword match</em>"]:::t3
+    T4["Layer 4 — Feature Artifacts<br/>spec.md · plan.md · tasks.md · review.md · status.md<br/>handoff.md · testing-scenarios.md · session-extracts.md<br/><em>Loaded on active slug</em>"]:::t4
+    T5["Layer 5 — Raw Code (JIT)<br/>Source files · generated codemap<br/><em>Just-in-time</em>"]:::t5
+    T6["Layer 6 — Transient &amp; Telemetry<br/>Command output · test logs · subagent reports · harness-telemetry.md<br/><em>Session-only / by-debug</em>"]:::t6
 
     T1 -->|always loaded| T2
-    T2 -->|loaded on keyword match| T3
-    T3 -->|loaded on active slug| T4
+    T2 -->|by intent keyword| T3
+    T3 -->|on active slug| T4
     T4 -->|read JIT as needed| T5
     T5 -->|run commands/proofs| T6
 
     T6 -.->|compaction: summarize + evict| T4
     T5 -.->|evict JIT files after task| T4
 
-    LOAD["Load Rules:<br/>Tier 1-2 always · Tier 3 by intent keyword match<br/>Tier 4 on active feature slug · Tier 5 JIT · Tier 6 transient/evicted"]:::note
+    LOAD["Load Rules:<br/>Layer 1-2 always · Layer 3 by intent keyword match<br/>Layer 4 on active feature slug · Layer 5 JIT · Layer 6 transient/evicted"]:::note
 
     classDef default fill:#f7f7f5,stroke:#e0e0e0,color:#111
     classDef t1 fill:#1e3a8a,stroke:#1e40af,color:#fff

@@ -37,6 +37,100 @@
             document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
+    <style>
+        .gate-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            margin: var(--space-10) 0;
+        }
+
+        .gate-layer {
+            width: 100%;
+            max-width: 500px;
+            padding: var(--space-4) var(--space-6);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .gate-layer.constitution {
+            background: var(--danger-soft);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .gate-layer.spec {
+            background: var(--warning-soft);
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .gate-layer.plan {
+            background: var(--info-soft);
+            color: var(--info);
+            border-color: var(--info);
+        }
+
+        .gate-layer.implement {
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            border-color: var(--accent);
+        }
+
+        .gate-layer.verify {
+            background: var(--success-soft);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .gate-layer.closeout {
+            background: #ccfbf1;
+            color: #0f766e;
+            border-color: #14b8a6;
+        }
+
+        .gate-arrow {
+            width: 2px;
+            height: 24px;
+            background: var(--border-strong);
+            position: relative;
+        }
+
+        .gate-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: -4px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid var(--border-strong);
+        }
+
+        .gate-layer small {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: var(--space-1);
+        }
+
+        [data-theme="dark"] .gate-layer.closeout {
+            background: #0f3d3a;
+            color: #5eead4;
+            border-color: #14b8a6;
+        }
+
+        @media (max-width: 720px) {
+            .gate-layer {
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -499,7 +593,7 @@
                 Here is the system context in one diagram:</p>
 
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-context.mmd" role="img"
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-context.mmd" role="img"
                     aria-label="System context: developer, CoreZero harness, LLM agent, Git repository boundaries.">
                     <div class="mermaid-loading">Rendering corezero-context…</div>
                 </div>
@@ -509,47 +603,8 @@
             </figure>
 
             <div class="section-card">
-                <h3>The Five-Layer Architecture</h3>
-                <p class="node-desc">The harness is organized into five cooperating layers:</p>
-                <div class="arch-grid">
-                    <div class="arch-card">
-                        <h4>1. Entrypoint Layer</h4>
-                        <p class="node-desc">Thin router (<code>AGENTS.md</code>) that enforces the skill-first rule and
-                            priority principles. Less than 50 lines — full skill bodies live in skill files.</p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>2. Skill Layer</h4>
-                        <p class="node-desc">17 self-contained skill contracts in <code>skills/</code>. Each
-                            <code>SKILL.md</code> defines a command with overview, workflow, rules, stop conditions, and
-                            verification criteria.
-                        </p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>3. Harness Layer</h4>
-                        <p class="node-desc">Scripts in <code>scripts/harness/</code> implement gates, telemetry, phase
-                            control, and the Python context engine. Governed by the 7-pillar ETCLOVG framework.</p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>4. Artifact Layer</h4>
-                        <p class="node-desc">Per-feature durable state in <code>artifacts/features/&lt;slug&gt;/</code>.
-                            <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>, <code>review.md</code> —
-                            chat is
-                            transient, artifacts are the system of record.
-                        </p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>5. Memory Layer</h4>
-                        <p class="node-desc">Durable cross-feature guidance in <code>memories/repo/</code> and
-                            <code>memories/domain/</code>. Three tiers: Instruction (human-curated), Auto
-                            (failure-driven),
-                            Extracted (candidates). Routed by <code>MASTER_INDEX.md</code>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section-card">
                 <h3>The Core Loop</h3>
+                <p class="node-desc">The harness is organized into five cooperating layers — see <a href="#architecture">Architecture &amp; Repository Shape</a> for the full deep dive. The core delivery loop:</p>
                 <div class="flow-diagram">
                     <div class="flow-track">
                         <span class="flow-node">Request</span>
@@ -564,7 +619,7 @@
                         <span class="flow-arrow">→</span>
                         <span class="flow-node">Verification</span>
                         <span class="flow-arrow">→</span>
-                        <span class="flow-node">Memory Sync</span>
+                        <span class="flow-node">Closeout</span>
                     </div>
                 </div>
                 <p class="node-desc">The entrypoint routes work into a skill. The skill reads and writes artifacts in
@@ -575,15 +630,80 @@
             </div>
 
             <div class="section-card">
+                <h3>Key Capabilities</h3>
+                <p class="node-desc">Beyond the core loop, four mechanisms prevent the kit from degrading into conversational drift:</p>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <h4>Circuit Breaker</h4>
+                        <p class="node-desc">Every test/command failure is logged to <code>harness-telemetry.md</code> as an <code>OBS-NNN</code> observation. After <strong>2 consecutive failures</strong> on the same task, the agent is locked out of <code>Implementation</code> and forced back to <code>/spec-plan</code> to rethink the approach — no blind guessing toward a passing test.</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>100% Traceability</h4>
+                        <p class="node-desc">Every acceptance criterion in <code>spec.md</code> must map to a task in <code>tasks.md</code>, and every task must have a recorded passing terminal command. <strong>One requirement without proof → the build fails.</strong></p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Three-Track Memory</h4>
+                        <p class="node-desc">Instead of dumping the entire codebase into context, the kit loads only what's needed: <strong>Instruction tier</strong> (absolute constitutional rules), <strong>Auto tier</strong> (what approaches failed and why), <strong>Extracted tier</strong> (durable lessons promoted at session end).</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Subagent Parallelization</h4>
+                        <p class="node-desc">During planning, independent non-blocking components are flagged with <code>[P]</code>. The master agent spawns isolated subagents to build these in parallel, merging results through mechanical gates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
                 <h3>Overview of the Skills Subsystems</h3>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render"
-                        data-mmd="/CoreZero/documents/diagrams/skills-repository-architecture.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/skills-repository-architecture.mmd"
+                        role="img"
                         aria-label="Skills repository architecture grouped by role: bootstrap, delivery, documentation, quality.">
                         <div class="mermaid-loading">Rendering skills-repository-architecture…</div>
                     </div>
                     <figcaption class="kit-diagram-caption">Figure 3.0 &mdash; Skills grouped by subsystem.</figcaption>
                 </figure>
+            </div>
+
+            <div class="section-card">
+                <h3>The Gate Chain</h3>
+                <p class="node-desc">Read top-down for <em>why</em> a line of code exists. Read bottom-up for <em>how
+                        far</em> a change reaches.</p>
+                <div class="gate-stack">
+                    <div class="gate-layer constitution">
+                        Constitution
+                        <small>core-policies.md · ADR log · docs/rules/ · security</small>
+                    </div>
+                    <span class="gate-arrow"></span>
+                    <div class="gate-layer spec">
+                        Spec (What &amp; Why)
+                        <small>spec.md · requirements · acceptance criteria · invariants</small>
+                    </div>
+                    <span class="gate-arrow"></span>
+                    <div class="gate-layer plan">
+                        Plan (How)
+                        <small>design.md + tasks.md · task breakdown · AC traceability</small>
+                    </div>
+                    <span class="gate-arrow"></span>
+                    <div class="gate-layer implement">
+                        Implementation
+                        <small>src/ · tests · proof evidence · baseline before edit</small>
+                    </div>
+                    <span class="gate-arrow"></span>
+                    <div class="gate-layer verify">
+                        Verification
+                        <small>review.md · mechanical gates · alignment audit · verdict</small>
+                    </div>
+                    <span class="gate-arrow"></span>
+                    <div class="gate-layer closeout">
+                        Closeout
+                        <small>session-extracts.md · handoff · knowledge promotion · durable record</small>
+                    </div>
+                </div>
+                <div class="callout info" style="text-align:center;">
+                    <strong>Nothing reaches code until every layer above permits it.</strong><br>
+                    The spec can't contradict the constitution. The plan can't skip a spec requirement.<br>
+                    Code can't land without passing verification. Every feature closes out with a durable record.
+                </div>
             </div>
 
             <div class="callout info diagram-serving-note">
@@ -600,54 +720,81 @@
             <h2>4. Architecture &amp; Repository Shape</h2>
 
             <div class="section-card">
-                <h3>Five-Layer Model Deep Dive</h3>
-                <div class="arch-grid">
+                <h3>The CoreZero Stack</h3>
+                <p class="node-desc">The harness combines an execution engine (skills + scripts) that does the work and a data stack (6 layers) that it reads and writes. Each data layer describes what it <em>contains</em> and how the agent <em>loads</em> it into context.</p>
+
+                <h4 style="margin-top: var(--space-8); color: var(--accent);">Execution Engine</h4>
+                <div class="arch-grid" style="margin-bottom: var(--space-8);">
                     <div class="arch-card">
-                        <h4>A. The Entrypoint Layer</h4>
-                        <p class="node-desc">Root <code>AGENTS.md</code> — a thin router (&lt;50 lines) that enforces
-                            the
-                            "Skill-First" rule, priority principles, and operating loop. Never contains full skill
-                            bodies;
-                            routes to <code>skills/</code> for contract details.</p>
+                        <h4>Skill Layer</h4>
+                        <p class="node-desc"><code>skills/&lt;name&gt;/SKILL.md</code> — 17 self-contained behavioral specs. Each defines: overview, workflow steps, stop conditions, core rules, red flags, verification criteria. References under <code>references/</code> load on demand.</p>
                     </div>
                     <div class="arch-card">
-                        <h4>B. The Skill Layer</h4>
-                        <p class="node-desc"><code>skills/&lt;name&gt;/SKILL.md</code> — 17 self-contained behavioral
-                            specs.
-                            Each defines: frontmatter, overview, workflow steps, stop conditions, core rules, red flags,
-                            verification criteria, and output rules. References under <code>references/</code> load on
-                            demand.
-                        </p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>C. The Harness Layer</h4>
-                        <p class="node-desc"><code>scripts/</code> — mechanical gates (<code>gate-runner.sh</code>,
-                            <code>phase-gate.sh</code>), telemetry (<code>telemetry-collector.sh</code>), Python context
-                            engine (<code>context_engine.py</code>), and <code>doctor.sh</code>. Governs the agent
-                            runtime
-                            environment and establishes structural guardrails.
-                        </p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>D. The Artifact Layer</h4>
-                        <p class="node-desc"><code>artifacts/features/&lt;slug&gt;/</code> — the source of truth for
-                            every
-                            feature. Holds <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>,
-                            <code>review.md</code>, <code>status.md</code>, <code>handoff.md</code>,
-                            <code>progress.md</code>,
-                            and <code>session-extracts.md</code>. Preserved by installer.
-                        </p>
-                    </div>
-                    <div class="arch-card">
-                        <h4>E. The Memory Layer</h4>
-                        <p class="node-desc"><code>memories/repo/</code> and <code>memories/domain/</code> — three
-                            memory tiers
-                            behind a routing index. Instruction (human-curated durable rules), Auto (failure-driven
-                            telemetry),
-                            Extracted (per-feature candidates). The knowledge base grows over time with promotion and
-                            triage.</p>
+                        <h4>Harness Layer</h4>
+                        <p class="node-desc"><code>scripts/</code> — mechanical gates (<code>gate-runner.sh</code>, <code>phase-gate.sh</code>), telemetry (<code>telemetry-collector.sh</code>), Python context engine (<code>context_engine.py</code>), and <code>doctor.sh</code>. Governs the runtime environment.</p>
                     </div>
                 </div>
+
+                <h4 style="color: var(--accent);">Data Stack</h4>
+                <div class="tier-stack">
+                    <div class="tier-row" data-tier="1">
+                        <span class="tier-badge">LAYER 1</span>
+                        <div class="tier-content">
+                            <strong>Router &amp; Entrypoint</strong>
+                            <span><code>AGENTS.md</code>, <code>MASTER_INDEX.md</code>, skill registry, priority rules.</span>
+                        </div>
+                        <div class="tier-load">Always loaded</div>
+                    </div>
+                    <div class="tier-row" data-tier="2">
+                        <span class="tier-badge">LAYER 2</span>
+                        <div class="tier-content">
+                            <strong>Constitution &amp; Policy</strong>
+                            <span><code>core-policies.md</code>, <code>docs/rules/</code>, <code>adr-log.md</code> — normative rules, constraints, architectural decisions.</span>
+                        </div>
+                        <div class="tier-load">Always / by-intent</div>
+                    </div>
+                    <div class="tier-row" data-tier="3">
+                        <span class="tier-badge">LAYER 3</span>
+                        <div class="tier-content">
+                            <strong>Knowledge &amp; Heuristics</strong>
+                            <span><code>project-knowledge-base.md</code>, <code>learned-heuristics.md</code>, <code>memories/domain/</code> — durable facts, patterns, evidence-backed instincts.</span>
+                        </div>
+                        <div class="tier-load">Loaded on keyword match</div>
+                    </div>
+                    <div class="tier-row" data-tier="4">
+                        <span class="tier-badge">LAYER 4</span>
+                        <div class="tier-content">
+                            <strong>Feature Artifacts</strong>
+                            <span><code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>, <code>review.md</code>, <code>status.md</code>, <code>handoff.md</code>, <code>session-extracts.md</code>, <code>testing-scenarios.md</code> for the active slug.</span>
+                        </div>
+                        <div class="tier-load">Loaded on active slug</div>
+                    </div>
+                    <div class="tier-row" data-tier="5">
+                        <span class="tier-badge">LAYER 5</span>
+                        <div class="tier-content">
+                            <strong>Raw Code (JIT)</strong>
+                            <span>Source files, generated codemap — read just-in-time as the task requires.</span>
+                        </div>
+                        <div class="tier-load">Just-in-time</div>
+                    </div>
+                    <div class="tier-row" data-tier="6">
+                        <span class="tier-badge">LAYER 6</span>
+                        <div class="tier-content">
+                            <strong>Transient &amp; Telemetry</strong>
+                            <span>Command output, test results, subagent reports, <code>harness-telemetry.md</code> — evicted or rotated at session boundary.</span>
+                        </div>
+                        <div class="tier-load">Session-only / by-debug</div>
+                    </div>
+                </div>
+
+                <figure class="kit-diagram">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-context-assembly.mmd"
+                        role="img"
+                        aria-label="Six-layer data stack: router, constitution, knowledge, feature artifacts, raw code, transient and telemetry.">
+                        <div class="mermaid-loading">Rendering corezero-context-assembly…</div>
+                    </div>
+                    <figcaption class="kit-diagram-caption">Figure 4.0 &mdash; The CoreZero data stack. Bottom layers load every session; upper layers load by intent, on slug match, or just-in-time.</figcaption>
+                </figure>
             </div>
 
             <div class="section-card">
@@ -749,7 +896,7 @@ docs/generated/
   dashboard.html
 artifacts/features/</code></pre>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-mindmap.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-mindmap.mmd" role="img"
                         aria-label="Repository layout mindmap detailing skills, memories, artifacts, rules, and docs directories.">
                         <div class="mermaid-loading">Rendering corezero-mindmap…</div>
                     </div>
@@ -863,7 +1010,7 @@ artifacts/features/</code></pre>
                         <span class="flow-arrow">→</span>
                         <span class="flow-node">Verification</span>
                         <span class="flow-arrow">→</span>
-                        <span class="flow-node">Memory Sync</span>
+                        <span class="flow-node">Closeout</span>
                     </div>
                 </div>
                 <p class="node-desc">The kit sits between the request and the code change, anchoring every action to
@@ -885,7 +1032,7 @@ artifacts/features/</code></pre>
                 </p>
 
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-memory.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-memory.mmd" role="img"
                         aria-label="Three-tier memory architecture: instruction, auto, and extracted tiers with promotion and extraction paths.">
                         <div class="mermaid-loading">Rendering corezero-memory…</div>
                     </div>
@@ -939,77 +1086,6 @@ artifacts/features/</code></pre>
             </div>
 
             <div class="section-card">
-                <h3>Six-Tier Context Assembly</h3>
-                <p class="node-desc">Context is assembled per session in tiers, from always-loaded routing to
-                    just-in-time code
-                    reads. Higher tiers persist across sessions; lower tiers are transient.</p>
-
-                <div class="tier-stack">
-                    <div class="tier-row" data-tier="1">
-                        <span class="tier-badge">TIER 1</span>
-                        <div class="tier-content">
-                            <strong>Router &amp; Entrypoint</strong>
-                            <span><code>AGENTS.md</code>, <code>MASTER_INDEX.md</code>, skill registry, priority
-                                rules.</span>
-                        </div>
-                        <div class="tier-load">Always loaded</div>
-                    </div>
-                    <div class="tier-row" data-tier="2">
-                        <span class="tier-badge">TIER 2</span>
-                        <div class="tier-content">
-                            <strong>Always-On Memory</strong>
-                            <span><code>core-policies.md</code> — constitution, security, harness config.</span>
-                        </div>
-                        <div class="tier-load">Always loaded</div>
-                    </div>
-                    <div class="tier-row" data-tier="3">
-                        <span class="tier-badge">TIER 3</span>
-                        <div class="tier-content">
-                            <strong>By-Intent Memory</strong>
-                            <span>PKB, heuristics, domain packs, ADR log — pulled by trigger keyword match.</span>
-                        </div>
-                        <div class="tier-load">Loaded on match</div>
-                    </div>
-                    <div class="tier-row" data-tier="4">
-                        <span class="tier-badge">TIER 4</span>
-                        <div class="tier-content">
-                            <strong>Feature Artifacts</strong>
-                            <span><code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>,
-                                <code>status.md</code>,
-                                <code>review.md</code> for the active slug.</span>
-                        </div>
-                        <div class="tier-load">Loaded on slug</div>
-                    </div>
-                    <div class="tier-row" data-tier="5">
-                        <span class="tier-badge">TIER 5</span>
-                        <div class="tier-content">
-                            <strong>Raw Code (JIT)</strong>
-                            <span>Source files, generated codemap — read just-in-time as the task requires.</span>
-                        </div>
-                        <div class="tier-load">Just-in-time</div>
-                    </div>
-                    <div class="tier-row" data-tier="6">
-                        <span class="tier-badge">TIER 6</span>
-                        <div class="tier-content">
-                            <strong>Transient Logs</strong>
-                            <span>Command output, test results, subagent reports — evicted at session boundary.</span>
-                        </div>
-                        <div class="tier-load">Session-only</div>
-                    </div>
-                </div>
-
-                <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-context-assembly.mmd"
-                        role="img"
-                        aria-label="Six-tier context assembly: router, always memory, by-intent memory, feature artifacts, raw code, transient logs.">
-                        <div class="mermaid-loading">Rendering corezero-context-assembly…</div>
-                    </div>
-                    <figcaption class="kit-diagram-caption">Figure 5.1 &mdash; Six-tier context assembly. Assembly
-                        order: 1→2 always; 3 by intent; 4 before edit; 5 JIT; 6 on demand.</figcaption>
-                </figure>
-            </div>
-
-            <div class="section-card">
                 <h3>Smart Context Routing</h3>
                 <p class="node-desc">Active sessions load only matching memories based on trigger keywords declared in
                     <code>MASTER_INDEX.md</code>. This keeps context windows lean and prevents LLM context fatigue.
@@ -1048,11 +1124,11 @@ artifacts/features/</code></pre>
                     </div>
                 </div>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-context-routing.mmd"
-                        role="img" aria-label="Smart context routing flowchart.">
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-context-routing.mmd" role="img"
+                        aria-label="Smart context routing flowchart.">
                         <div class="mermaid-loading">Rendering corezero-context-routing…</div>
                     </div>
-                    <figcaption class="kit-diagram-caption">Figure 5.2 &mdash; Intent-based smart context routing with
+                    <figcaption class="kit-diagram-caption">Figure 5.1 &mdash; Intent-based smart context routing with
                         partial-load fallback.</figcaption>
                 </figure>
             </div>
@@ -1109,12 +1185,12 @@ artifacts/features/</code></pre>
             <div class="section-card">
                 <h3>Self-Improving Knowledge Loop</h3>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-self-improving-kb.mmd"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-self-improving-kb.mmd"
                         role="img"
                         aria-label="Self-improving knowledge loop: session extracts, telemetry, post-ship sync, triage, promotion.">
                         <div class="mermaid-loading">Rendering corezero-self-improving-kb…</div>
                     </div>
-                    <figcaption class="kit-diagram-caption">Figure 5.3 &mdash; Self-improving KB: extracts &rarr; triage
+                    <figcaption class="kit-diagram-caption">Figure 5.2 &mdash; Self-improving KB: extracts &rarr; triage
                         &rarr;
                         instruction tier, with auto tier capturing failures.</figcaption>
                 </figure>
@@ -1123,12 +1199,11 @@ artifacts/features/</code></pre>
             <div class="section-card">
                 <h3>Subagent Fan-Out</h3>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-subagent-fanout.mmd"
-                        role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-subagent-fanout.mmd" role="img"
                         aria-label="Subagent fan-out: parent delegates reads to child agents, receives summary reports.">
                         <div class="mermaid-loading">Rendering corezero-subagent-fanout…</div>
                     </div>
-                    <figcaption class="kit-diagram-caption">Figure 5.4 &mdash; Subagent fan-out keeps the parent context
+                    <figcaption class="kit-diagram-caption">Figure 5.3 &mdash; Subagent fan-out keeps the parent context
                         small
                         while parallelizing discovery.</figcaption>
                 </figure>
@@ -1171,8 +1246,7 @@ artifacts/features/</code></pre>
                 subsystem. All 17 skills ship in <code>kit/skills/</code> and any adopter repo can install them.</p>
 
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-skills-taxonomy.mmd"
-                    role="img"
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-skills-taxonomy.mmd" role="img"
                     aria-label="All 17 skills grouped by subsystem: Project Starter, Context Engineering, Spec-Driven Development, Harness Engineering, Docs and Specialist.">
                     <div class="mermaid-loading">Rendering corezero-skills-taxonomy…</div>
                 </div>
@@ -1447,7 +1521,7 @@ artifacts/features/</code></pre>
                 mechanical gates.</p>
 
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-full-flow.mmd" role="img"
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-full-flow.mmd" role="img"
                     aria-label="End-to-end lifecycle across all skills with required and optional paths, decisions, and gates.">
                     <div class="mermaid-loading">Rendering corezero-full-flow…</div>
                 </div>
@@ -1564,7 +1638,7 @@ artifacts/features/</code></pre>
                     and
                     memory:</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-dataflow.mmd" role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-dataflow.mmd" role="img"
                         aria-label="Artifact data flow from analysis to spec, plan, code, review, extracts, and memory.">
                         <div class="mermaid-loading">Rendering corezero-dataflow…</div>
                     </div>
@@ -1580,8 +1654,7 @@ artifacts/features/</code></pre>
                     the sole authority for marking a feature Done.
                 </p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-status-machine.mmd"
-                        role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-status-machine.mmd" role="img"
                         aria-label="Feature status state machine: Init through Researching, Specing, Planning, Implementing, Verifying, Done.">
                         <div class="mermaid-loading">Rendering corezero-status-machine…</div>
                     </div>
@@ -1596,8 +1669,7 @@ artifacts/features/</code></pre>
                     locked
                     requirement. No orphaned requirements, no ghost code.</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-traceability.mmd"
-                        role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-traceability.mmd" role="img"
                         aria-label="Traceability chain: requirement to acceptance criterion to task to code to proof.">
                         <div class="mermaid-loading">Rendering corezero-traceability…</div>
                     </div>
@@ -1610,7 +1682,7 @@ artifacts/features/</code></pre>
                 <p class="node-desc">The runtime interaction between user, agent runtime, skill files, memory, and
                     artifacts:</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/skills-end-to-end-execution.mmd"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/skills-end-to-end-execution.mmd"
                         role="img"
                         aria-label="End-to-end skill execution sequence: user invokes, agent reads SKILL.md, loads memory, writes artifacts, post-ship sync.">
                         <div class="mermaid-loading">Rendering skills-end-to-end-execution…</div>
@@ -1627,8 +1699,7 @@ artifacts/features/</code></pre>
                     file or records an explicit reason it was untouched.
                 </p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-post-ship-sync.mmd"
-                        role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-post-ship-sync.mmd" role="img"
                         aria-label="Post-ship sync sequence: harness-verify hands off to context-memory for MASTER_INDEX sweep.">
                         <div class="mermaid-loading">Rendering corezero-post-ship-sync…</div>
                     </div>
@@ -1649,7 +1720,7 @@ artifacts/features/</code></pre>
                 guide, and post-ship memory sync.</p>
 
             <figure class="kit-diagram">
-                <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-verify-gate.mmd" role="img"
+                <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-verify-gate.mmd" role="img"
                     aria-label="Eleven-step verify gate: initialization, mechanical gate, clean-state, alignment, security, helpers, fallow pass, write review, scenarios, verdict, memory sync.">
                     <div class="mermaid-loading">Rendering corezero-verify-gate…</div>
                 </div>
@@ -1659,7 +1730,7 @@ artifacts/features/</code></pre>
             <div class="section-card">
                 <h3>Interactive Verify Gate Flow</h3>
                 <p class="node-desc">A standalone interactive companion visual — click through the gate sequence:</p>
-                <iframe src="/CoreZero/documents/diagrams/corezero-verify-gate-interactive.html"
+                <iframe src="../documents/diagrams/corezero-verify-gate-interactive.html"
                     style="width:100%; height:600px; border:1px solid var(--border); border-radius:14px; background:var(--surface);"
                     title="Interactive verify gate flow" loading="lazy"></iframe>
             </div>
@@ -1741,8 +1812,7 @@ artifacts/features/</code></pre>
                 <h3>Onboarding: Greenfield vs Brownfield</h3>
                 <p class="node-desc">The kit detects your repo state and branches accordingly:</p>
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-onboarding.mmd"
-                        role="img"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-onboarding.mmd" role="img"
                         aria-label="Onboarding decision tree: detect repo state, branch to greenfield or brownfield path.">
                         <div class="mermaid-loading">Rendering corezero-onboarding…</div>
                     </div>
@@ -1755,9 +1825,8 @@ artifacts/features/</code></pre>
                             memories, pick
                             first feature &rarr; <code>/spec-requirements</code>. Full greenfield flow:</p>
                         <figure class="kit-diagram" style="margin-top:8px;">
-                            <div class="mermaid-render"
-                                data-mmd="/CoreZero/documents/diagrams/corezero-greenfield-flow.mmd" role="img"
-                                aria-label="Greenfield onboarding flow.">
+                            <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-greenfield-flow.mmd"
+                                role="img" aria-label="Greenfield onboarding flow.">
                                 <div class="mermaid-loading">Rendering corezero-greenfield-flow…</div>
                             </div>
                         </figure>
@@ -1769,9 +1838,8 @@ artifacts/features/</code></pre>
                             behaviors. Phase B bootstrap then <code>/spec-research</code> for the first safe feature.
                         </p>
                         <figure class="kit-diagram" style="margin-top:8px;">
-                            <div class="mermaid-render"
-                                data-mmd="/CoreZero/documents/diagrams/corezero-brownfield-flow.mmd" role="img"
-                                aria-label="Brownfield onboarding flow.">
+                            <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-brownfield-flow.mmd"
+                                role="img" aria-label="Brownfield onboarding flow.">
                                 <div class="mermaid-loading">Rendering corezero-brownfield-flow…</div>
                             </div>
                         </figure>
@@ -2082,7 +2150,7 @@ artifacts/features/</code></pre>
                 </div>
 
                 <figure class="kit-diagram">
-                    <div class="mermaid-render" data-mmd="/CoreZero/documents/diagrams/corezero-harness-maintenance.mmd"
+                    <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-harness-maintenance.mmd"
                         role="img" aria-label="Five modes of harness-maintain: assess, create, improve, eval, doctor.">
                         <div class="mermaid-loading">Rendering corezero-harness-maintenance…</div>
                     </div>

@@ -16,7 +16,7 @@ flowchart TD
     %% Investigation phase
     NEEDRES -. yes .-> RES["spec-research<br/>(analysis.md)"]
     RES --> SPEC
-    NEEDRES --> SPEC["spec-requirements<br/>(grilling waves + spec.md)"]
+    NEEDRES --> SPEC["spec-requirements<br/>complexity triage → grilling waves →<br/>proposal → scope cut → author spec.md →<br/>gray-area lock → readiness review → locked"]
 
     %% Design phase
     SPEC --> NEEDVIS{Complex flow<br/>worth a diagram?}
@@ -25,7 +25,7 @@ flowchart TD
     NEEDVIS --> NEEDADR{Architectural<br/>decision?}
     NEEDADR -. yes .-> ADR["spec-adr<br/>(adr-NNN.md)"]
     ADR --> PLAN
-    NEEDADR --> PLAN["spec-plan<br/>(plan.md + tasks.md + design.md)"]
+    NEEDADR --> PLAN["spec-plan<br/>(plan.md + tasks.md)"]
 
     %% Execution phase
     PLAN --> IMPL["spec-implement<br/>(one task at a time + proof)"]
