@@ -17,7 +17,7 @@ Managing the agent's context budget is critical for long-running tasks. Overload
 
 ## 4. Avoiding Context Pollution
 *   Do not load massive log files, generated build artifacts, or irrelevant feature files into the context window unless explicitly needed for debugging.
-*   Prefer durable generated references such as `docs/project/code-map.md` over repeated broad codebase reads.
+*   Prefer durable generated references such as `core-zero/project/code-map.md` over repeated broad codebase reads.
 
 ## 5. Subagent Delegation
 *   Offload broad exploration (e.g., "Find all usages of function X") to a subagent.

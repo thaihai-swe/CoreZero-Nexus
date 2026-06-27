@@ -25,9 +25,9 @@ Each documentation skill saves to a canonical location. Do not deviate unless th
 
 | Skill | Feature-scoped invocation | Global / standalone invocation |
 |---|---|---|
-| `/technical-docs` | `--mode api` -> `artifacts/features/<slug>/api-docs.md`<br>`--mode flow` -> `artifacts/features/<slug>/flows.md`<br>`--mode both` -> `artifacts/features/<slug>/technical-docs.md` | `--mode api` -> `docs/api/<version>.md`<br>`--mode flow` -> `docs/flows/<name>.md`<br>`--mode both` -> `docs/technical-docs/<name>.md` |
-| `/codebase-documenter` | *(always global)* | `docs/` root (`README.md`, `ARCHITECTURE.md`, etc.) |
-| `/visualize` | `artifacts/features/<slug>/diagrams/<name>.svg` or `.mmd` | `docs/generated/diagrams/<name>.svg` or `.mmd` |
+| `/technical-docs` | `--mode api` -> `artifacts/features/<slug>/api-docs.md`<br>`--mode flow` -> `artifacts/features/<slug>/flows.md`<br>`--mode both` -> `artifacts/features/<slug>/technical-docs.md` | `--mode api` -> `core-zero/api/<version>.md`<br>`--mode flow` -> `core-zero/flows/<name>.md`<br>`--mode both` -> `core-zero/technical-core-zero/<name>.md` |
+| `/codebase-documenter` | *(always global)* | `core-zero/` root (`README.md`, `ARCHITECTURE.md`, etc.) |
+| `/visualize` | `artifacts/features/<slug>/diagrams/<name>.svg` or `.mmd` | `core-zero/generated/diagrams/<name>.svg` or `.mmd` |
 
 A **feature-scoped invocation** is one triggered from inside a feature lifecycle (i.e., a feature slug exists and is active in `status.md`). A **global invocation** is one triggered directly by the user with no active slug.
 

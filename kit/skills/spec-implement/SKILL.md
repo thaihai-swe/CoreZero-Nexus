@@ -14,7 +14,7 @@ next_skill: 'harness-verify'
 Use this skill to perform the coding work. Follow `artifacts/features/<slug>/tasks.md` , execute one approved task at a time, and keep task state and proof honest. Answers: can I complete the selected task and prove it without inventing new scope?
 
 ## I/O Hand-off Protocol
-- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `docs/rules/ponytail.md`.
+- **Reads**: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `core-zero/rules/ponytail.md`.
 - **Writes**: Source code, `artifacts/features/<slug>/tasks.md` (to mark tasks done), `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.jsonl`, `.corezero/sessions/<slug>/progress.md`, `artifacts/features/<slug>/session-extracts.md` (candidate-only; promoted by `/context-memory` post-ship-sync).
 - **Next Skill**: `/harness-verify`
 

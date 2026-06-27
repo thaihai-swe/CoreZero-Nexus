@@ -19,7 +19,7 @@ Generates targeted technical documentation for features, specifically focusing o
 
 ## I/O Hand-off Protocol
 - **Reads:** Source code, tests, `spec.md`, `plan.md`.
-- **Writes:** Targeted files under `docs/` or `docs/generated/` based on the feature's layout.
+- **Writes:** Targeted files under `core-zero/` or `core-zero/generated/` based on the feature's layout.
 - **Next Skill:** Return to previous skill (e.g., `/spec-implement` or `/harness-verify`).
 
 ## Workflow

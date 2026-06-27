@@ -137,7 +137,7 @@ flowchart TB
 | 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
 
 **Intent groups (Tier 3) — defined in `MASTER_INDEX.md`:**
-- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `docs/project/architecture.md`, `docs/project/code-map.md`)
+- **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `core-zero/project/architecture.md`, `core-zero/project/code-map.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
 - **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
@@ -150,7 +150,7 @@ flowchart TB
 | `core-policies.md` | Normative repo-wide rules (CC-*), security boundaries, promotion thresholds | Rare — when tooling/policies change |
 | `project-knowledge-base.md` | Durable facts, conventions, patterns | As project evolves |
 | `learned-heuristics.md` | Evidence-backed execution patterns | After repeated observations |
-| `docs/project/architecture.md` | System boundaries, components, integration seams | When architecture changes |
+| `core-zero/project/architecture.md` | System boundaries, components, integration seams | When architecture changes |
 | `adr-log.md` | ADR index | Lazy-created on first ADR |
 
 #### Auto Tier — Failure-Driven, Append-Only
@@ -533,8 +533,8 @@ The `## 3. Phase × Guidance Matrix` section is a 5-column table. The first colu
 |---|---|---|---|---|---|
 | `core-policies.md` | Must {## Purpose, ## Normative Rules} | Must {## Amendment Rules, ## Release Guardrails} | Must {## Normative Rules, ## Security Policy} | Must {## Memory Promotion Thresholds, ## Security Policy} |
 | `harness-config.md` | Skip | Should {## Artifact Routing, ## Verification Commands} | Should {## Verification Commands, ## Session Defaults} | Skip |
-| `docs/project/architecture.md` | Should | Should | Skip | Should |
-| `docs/rules/*.md` | Skip | Should | Must | Should |
+| `core-zero/project/architecture.md` | Should | Should | Skip | Should |
+| `core-zero/rules/*.md` | Skip | Should | Must | Should |
 
 Short names (e.g. `core-policies.md`) are resolved to paths under `memories/repo/` by `_path_for_source()` in `context_engine.py`. Expressions with `*` are expanded as globs against the repo root. Entries with parenthetical suffixes like `(on language/domain match)` are parsed and the condition is dropped — the condition must be enforced by the caller.
 
@@ -548,7 +548,7 @@ Located at `kit/scripts/core/context_engine.py`. Exposes class `ContextEngine`. 
 3. Parses every `| \`...\` | ... |` table row in that section.
 4. Filters to the column matching the requested phase (`spec`/`plan`/`implement`/`verify`).
 5. Drops `Skip` rows, keeps `Must` and `Should`.
-6. Resolves short names via `_path_for_source()` (line 142): maps `core-policies.md` → `memories/repo/core-policies.md`, `domain/glossary.md` → `memories/domain/glossary.md`, `docs/rules/*.md` → expanded glob. Returns `None` for entries like `session-extracts.md` (not auto-loaded).
+6. Resolves short names via `_path_for_source()` (line 142): maps `core-policies.md` → `memories/repo/core-policies.md`, `domain/glossary.md` → `memories/domain/glossary.md`, `core-zero/rules/*.md` → expanded glob. Returns `None` for entries like `session-extracts.md` (not auto-loaded).
 7. Returns list of `(resolved_path, tier, sections_or_none)` tuples — section lists from `{## Sec1, ## Sec2}` annotations are parsed via `parse_tier()`.
 
 **Tier protection** — `TIER_BOOST` (line 137):
@@ -592,7 +592,7 @@ Thin wrapper at `kit/scripts/context-loader.py` (45 lines). Four usage patterns:
 python3 kit/scripts/context-loader.py --route plan --mode summary
 
 # Direct file: load one file with compression
-python3 kit/scripts/context-loader.py docs/rules/ponytail.md --mode compress
+python3 kit/scripts/context-loader.py core-zero/rules/ponytail.md --mode compress
 
 # Section extract: load a single H2 section
 python3 kit/scripts/context-loader.py --section "Security Policy" memories/repo/core-policies.md
@@ -611,7 +611,7 @@ python3 kit/scripts/context-loader.py --intent "api auth" --budget 5000 file1.md
 3. `context-loader.py` instantiates `ContextEngine` and calls `run_route("implement")`.
 4. `run_route()` calls `resolve_route(root, "implement")`:
    - Opens `MASTER_INDEX.md`, finds `## 3. Phase × Guidance Matrix`.
-   - Reads column "Implement" with section annotations: `core-policies.md` `Must {## Normative Rules, ## Security Policy}` (section-loaded, ~500 tokens), `project-knowledge-base.md` (Should, full file), `tech-stack.md` (Should), `code-map.md` (Should), `code-design.md` (Should), `docs/rules/*.md` (Must) — expanded to all matching rule files, etc.
+   - Reads column "Implement" with section annotations: `core-policies.md` `Must {## Normative Rules, ## Security Policy}` (section-loaded, ~500 tokens), `project-knowledge-base.md` (Should, full file), `tech-stack.md` (Should), `code-map.md` (Should), `code-design.md` (Should), `core-zero/rules/*.md` (Must) — expanded to all matching rule files, etc.
    - Returns ~12 resolved paths with tiers and optional section lists.
 5. For each file, `run_route()`:
    - Sets tier → file gets base score 40 (Must) or 20 (Should).
@@ -620,4 +620,3 @@ python3 kit/scripts/context-loader.py --intent "api auth" --budget 5000 file1.md
    - Outputs in `partial` mode (up to 1200 tokens per file via `PARTIAL_BUDGET`).
 6. After all files loaded, `evict_to_budget()` runs. If total tokens exceed cap, lowest-scored files are evicted. Must files (score ≥40) are rarely touched.
 7. **Result**: agent has ~8–12 phase-relevant files (some section-loaded, some partially loaded) under token budget — no manual selection needed.
-

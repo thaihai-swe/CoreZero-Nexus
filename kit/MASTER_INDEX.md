@@ -7,8 +7,8 @@
 
 | File | Contents | When to load |
 |------|----------|--------------|
-| `docs/project/code-map.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
-| `docs/rules/*.md` | Per-domain coding and policy rules (security, simplicity, etc.). | When the active task touches a security-sensitive domain or when loading a specific rule set. |
+| `core-zero/project/code-map.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
+| `core-zero/rules/*.md` | Per-domain coding and policy rules (security, simplicity, etc.). | When the active task touches a security-sensitive domain or when loading a specific rule set. |
 | `manifest.json` | Installation manifest listing kit-managed (overwrite) and adopter-owned (copyIfMissing/preserve) files. | When auditing or modifying the kit file structure or installation behavior. |
 | memories/repo/core-policies.md | Repo-wide normative rules (CC-* identifiers), security policy, and memory promotion thresholds. | Read at session start and before changing core policies or security rules. |
 | memories/repo/harness-config.md | Adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, lifecycle. | Load when the task touches setup, bootstrap, commands, session defaults, or lifecycle configuration. |
@@ -44,12 +44,12 @@ Broad Intent Keywords: `architecture`, `pattern`, `convention`, `stack`, `module
 
 - `memories/repo/project-knowledge-base.md` — durable patterns, watchouts, project continuity facts.
 - `memories/repo/adr-log.md` — index of architecture decisions; load when the task touches prior decisions or architectural tradeoffs. *(Skip if the file does not exist yet.)*
-- `docs/project/architecture.md` — durable system structure, boundaries, integration seams.
-- `docs/project/product-sense.md` — product vision, target users, success metrics. Load on product/scoping work.
-- `docs/project/glossary.md` — shared vocabulary and naming conventions. Load when naming or terminology matters.
-- `docs/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations. If gitnexus is listed under Development Tools, the project's code graph is available via MCP.
-- `docs/project/project-constraints.md` — budgets, compliance, deploy, security constraints. Load when constraints bound the change.
-- `docs/project/code-map.md` — generated map of code locations.
+- `core-zero/project/architecture.md` — durable system structure, boundaries, integration seams.
+- `core-zero/project/product-sense.md` — product vision, target users, success metrics. Load on product/scoping work.
+- `core-zero/project/glossary.md` — shared vocabulary and naming conventions. Load when naming or terminology matters.
+- `core-zero/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations. If gitnexus is listed under Development Tools, the project's code graph is available via MCP.
+- `core-zero/project/project-constraints.md` — budgets, compliance, deploy, security constraints. Load when constraints bound the change.
+- `core-zero/project/code-map.md` — generated map of code locations.
 
 ### By Intent — Rules
 
@@ -57,9 +57,9 @@ Broad Intent Keywords: `security`, `secret`, `auth`, `input validation`, `inject
 
 *(Evaluate files individually; do not block-load the group)*
 
-- `docs/rules/security.md` — cross-language security do/don't patterns; load on security-sensitive work (secrets, auth, external input).
-- `docs/rules/ponytail.md` — lazy senior dev rules (YAGNI, minimal code); load when writing, planning, or refactoring code to enforce simplicity.
-- `docs/policies/code-design.md` — normative cross-cutting coding policy (overengineering pitfalls, spec/behavior drift); load when changing or adding software design. Its `MUST`/`MUST NOT` rules carry priority-rule weight.
+- `core-zero/rules/security.md` — cross-language security do/don't patterns; load on security-sensitive work (secrets, auth, external input).
+- `core-zero/rules/ponytail.md` — lazy senior dev rules (YAGNI, minimal code); load when writing, planning, or refactoring code to enforce simplicity.
+- `core-zero/policies/code-design.md` — normative cross-cutting coding policy (overengineering pitfalls, spec/behavior drift); load when changing or adding software design. Its `MUST`/`MUST NOT` rules carry priority-rule weight.
 
 ### By Intent — Learned
 
@@ -100,15 +100,15 @@ The Always group loads every session. This matrix says what to **add** at each p
 | `core-policies.md` | Must {## Purpose, ## Normative Rules} | Must {## Amendment Rules, ## Release Guardrails} | Must {## Normative Rules, ## Active Session Limits & FinOps Guardrails, ## Security Policy} | Must {## Memory Promotion Thresholds, ## Security Policy} |
 | `harness-config.md` | Skip | Should {## Artifact Routing, ## Verification Commands} | Should {## Verification Commands, ## Session Defaults} | Skip |
 | `project-knowledge-base.md` | Should | Must | Should | Should |
-| `docs/project/architecture.md` | Should | Should | Skip | Should |
-| `docs/project/product-sense.md` | Should | Skip | Skip | Skip |
-| `docs/project/glossary.md` | Should | Should | Skip | Skip |
-| `docs/project/tech-stack.md` | Skip | Should | Should | Skip |
-| `docs/project/project-constraints.md` | Should | Should | Skip | Should |
+| `core-zero/project/architecture.md` | Should | Should | Skip | Should |
+| `core-zero/project/product-sense.md` | Should | Skip | Skip | Skip |
+| `core-zero/project/glossary.md` | Should | Should | Skip | Skip |
+| `core-zero/project/tech-stack.md` | Skip | Should | Should | Skip |
+| `core-zero/project/project-constraints.md` | Should | Should | Skip | Should |
 | `learned-heuristics.md` | Should | Should | Should | Should |
-| `docs/project/code-map.md` | Should | Should | Should | Skip |
-| `docs/rules/*.md` (on language/domain match) | Skip | Should | Must | Should |
-| `docs/policies/code-design.md` (on software-design change) | Skip | Should | Should | Skip |
+| `core-zero/project/code-map.md` | Should | Should | Should | Skip |
+| `core-zero/rules/*.md` (on language/domain match) | Skip | Should | Must | Should |
+| `core-zero/policies/code-design.md` (on software-design change) | Skip | Should | Should | Skip |
 | `domain/glossary.md` (on match) | Should | Should | Should | Skip |
 | `domain/boundaries.md` (on match) | Should | Should | Skip | Should |
 | `domain/patterns.md` (on match) | Skip | Should | Must | Skip |
@@ -134,7 +134,7 @@ Domain packs add project-specific semantic context to the memory router. Each pa
 Domain packs live in `memories/domain/`. The memory router loads a pack when the active task's keywords match the pack's declared triggers.
 
 > [!NOTE]
-> Domain packs represent context for a specific *bounded subdomain* within the app. They do not replace or duplicate project-wide documentation. Use `docs/project/glossary.md` for project-wide dictionary terms, `docs/project/architecture.md` for top-level component maps, and `docs/project/tech-stack.md` for global dependencies.
+> Domain packs represent context for a specific *bounded subdomain* within the app. They do not replace or duplicate project-wide documentation. Use `core-zero/project/glossary.md` for project-wide dictionary terms, `core-zero/project/architecture.md` for top-level component maps, and `core-zero/project/tech-stack.md` for global dependencies.
 
 ### Trigger Keyword Rules
 

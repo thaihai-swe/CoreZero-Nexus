@@ -53,7 +53,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 ## 3. Memory Files (`memories/repo/`)
 
 The memory layer is structured in a **3-Tier Memory Architecture**:
-- **Instruction tier** (human-curated): constitution, learned-heuristics, project-knowledge-base, and `docs/project/architecture.md`.
+- **Instruction tier** (human-curated): constitution, learned-heuristics, project-knowledge-base, and `core-zero/project/architecture.md`.
 - **Auto tier** (agent-written): harness-telemetry.
 - **Extracted tier** (per-feature candidates): session-extracts.
 
@@ -68,28 +68,28 @@ The memory layer is structured in a **3-Tier Memory Architecture**:
 
 ---
 
-## 4. Shipped Adopter-Owned Docs (`docs/project/`)
+## 4. Shipped Adopter-Owned Docs (`core-zero/project/`)
 
 These docs are copied to adopter repositories for customization (`copyIfMissing`):
 
 | File | Purpose | Primary Public Consumers |
 |------|---------|--------------------------|
-| [`project/architecture.md`](../kit/docs/project/architecture.md) | System structure, component boundaries | `/spec-research`, `/spec-plan` |
-| [`project/code-map.md`](../kit/docs/project/code-map.md) | Codebase map, module index | `/spec-research`, `/spec-implement` |
-| [`project/agent-capabilities.md`](../kit/docs/project/agent-capabilities.md) | Agent capability inventory | `/harness-maintain`, `/starter-init` |
-| [`project/product-sense.md`](../kit/docs/project/product-sense.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
-| [`project/project-constraints.md`](../kit/docs/project/project-constraints.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
-| [`project/glossary.md`](../kit/docs/project/glossary.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |
-| [`project/tech-stack.md`](../kit/docs/project/tech-stack.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
+| [`project/architecture.md`](../kit/core-zero/project/architecture.md) | System structure, component boundaries | `/spec-research`, `/spec-plan` |
+| [`project/code-map.md`](../kit/core-zero/project/code-map.md) | Codebase map, module index | `/spec-research`, `/spec-implement` |
+| [`project/agent-capabilities.md`](../kit/core-zero/project/agent-capabilities.md) | Agent capability inventory | `/harness-maintain`, `/starter-init` |
+| [`project/product-sense.md`](../kit/core-zero/project/product-sense.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
+| [`project/project-constraints.md`](../kit/core-zero/project/project-constraints.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
+| [`project/glossary.md`](../kit/core-zero/project/glossary.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |
+| [`project/tech-stack.md`](../kit/core-zero/project/tech-stack.md) | Dependencies, APIs, tools | `/spec-research`, `/spec-plan` |
 
 ### Shipped Config (`overwrite`)
 
 | File | Purpose | Consumers |
 |------|---------|-----------|
-| [`project/harness-config.yaml`](../kit/docs/project/harness-config.yaml) | Phase precondition configuration | `harness.py`, `phase-gate.sh` |
-| [`project/spec-schema.json`](../kit/docs/project/spec-schema.json) | Spec validation JSON schema | — |
-| [`project/adr/index.md`](../kit/docs/project/adr/index.md) | ADR log registry | `/spec-adr` |
-| [`project/adr/0001-example.md`](../kit/docs/project/adr/0001-example.md) | Example ADR template | `/spec-adr` |
+| [`project/harness-config.yaml`](../kit/core-zero/project/harness-config.yaml) | Phase precondition configuration | `harness.py`, `phase-gate.sh` |
+| [`project/spec-schema.json`](../kit/core-zero/project/spec-schema.json) | Spec validation JSON schema | — |
+| [`project/adr/index.md`](../kit/core-zero/project/adr/index.md) | ADR log registry | `/spec-adr` |
+| [`project/adr/0001-example.md`](../kit/core-zero/project/adr/0001-example.md) | Example ADR template | `/spec-adr` |
 
 ---
 
@@ -97,7 +97,7 @@ These docs are copied to adopter repositories for customization (`copyIfMissing`
 
 | File | Purpose | Primary Public Consumers |
 |------|---------|--------------------------|
-| [`policies/code-design.md`](../kit/docs/policies/code-design.md) | Normative coding-policy guidance | `/spec-plan`, `/spec-implement`, `/harness-verify` |
+| [`policies/code-design.md`](../kit/core-zero/policies/code-design.md) | Normative coding-policy guidance | `/spec-plan`, `/spec-implement`, `/harness-verify` |
 
 ---
 

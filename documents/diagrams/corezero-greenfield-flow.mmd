@@ -6,7 +6,7 @@ flowchart TD
 
     INIT --> AGENTS["Configure AGENTS.md router<br/>Verify entrypoint file is present"]:::step
     INIT --> MEMSEED["Seed memories/repo/<br/>core-policies.md,<br/>and project-knowledge-base.md"]:::step
-    INIT --> TMPL["Pre-fill templates<br/>docs/project/*.md<br/>and docs/project/architecture.md"]:::step
+    INIT --> TMPL["Pre-fill templates<br/>core-zero/project/*.md<br/>and core-zero/project/architecture.md"]:::step
     INIT --> BASE["Harness Readiness Check<br/>Run build and baseline tests"]:::step
 
     AGENTS --> SPEC

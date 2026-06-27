@@ -40,7 +40,7 @@ Updates persistent AI memories (e.g., rules, architecture) so future agents don'
 The kit uses three durability tiers for persistent memory. Each tier has a different owner, lifecycle, and promotion path.
 
 ### Instruction Tier
-- **Files:** `memories/repo/core-policies.md` (CC-* rules), `docs/policies/code-design.md`.
+- **Files:** `memories/repo/core-policies.md` (CC-* rules), `core-zero/policies/code-design.md`.
 - **Owner:** `/context-memory` + user.
 - **Promotion:** Candidate rules from `learned-heuristics.md` are promoted when recurrence-count >= 3.
 - **Demotion:** Rules are deprecated via CC-* amendment, never deleted silently.
@@ -54,7 +54,7 @@ The kit uses three durability tiers for persistent memory. Each tier has a diffe
 ### Extracted Tier
 - **Files:** `artifacts/features/<slug>/session-extracts.md` (EXT-* candidates).
 - **Owner:** `/context-session` writes candidates; `/context-memory` triages via `references/extraction-triage.md`.
-- **Promotion:** Candidate → triage (promote/defer/discard) → destination by category (Heuristic → `learned-heuristics.md` LH-*; Pattern → `project-knowledge-base.md` or `docs/project/architecture.md`; Rule → `core-policies.md` CC-*).
+- **Promotion:** Candidate → triage (promote/defer/discard) → destination by category (Heuristic → `learned-heuristics.md` LH-*; Pattern → `project-knowledge-base.md` or `core-zero/project/architecture.md`; Rule → `core-policies.md` CC-*).
 - **Demotion:** Discarded candidates remain in `## Triaged` with a reason. The trail matters — do not delete.
 
 ### Identifier Namespaces
@@ -94,7 +94,7 @@ Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
    d. No edits — report only. Matches existing audit philosophy.
 
 ### Output
-Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `docs/generated/memory-audit.md` (global). Sections:
+Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `core-zero/generated/memory-audit.md` (global). Sections:
 
 - `## Summary` — counts by severity (info / warn / error)
 - `## Size Findings` — table of file, line count, severity, suggested action

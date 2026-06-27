@@ -14,7 +14,7 @@ Append (or update) the `## 🧪 Intake` section in `artifacts/features/<slug>/st
 - **Input type:** <new_spec | spec_slice | change_request | new_initiative | maintenance | harness_improvement>
 - **Risk flags:** <comma-separated list, or `none`>
 - **One-line restatement:** <what this work actually is, in your own words>
-- **Affected docs/specs:** <paths or `n/a`>
+- **Affected core-zero/specs:** <paths or `n/a`>
 - **Reasoning:** <one sentence — why this classification>
 ```
 

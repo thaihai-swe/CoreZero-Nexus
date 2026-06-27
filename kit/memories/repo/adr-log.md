@@ -19,7 +19,7 @@ Append-only index of Architecture Decision Records for this repository.
 ## How To Use This File
 
 - One entry per ADR. Do not edit past entries.
-- Each entry links to the full ADR artifact under `docs/project/adr/[number]-[slug].md`.
+- Each entry links to the full ADR artifact under `core-zero/project/adr/[number]-[slug].md`.
 - Status values: `Proposed`, `Accepted`, `Deprecated`, `Superseded`.
 - `/context-memory` may read this file for architecture drift detection but does not append entries.
 
@@ -30,7 +30,7 @@ Append-only index of Architecture Decision Records for this repository.
 
 - Date: YYYY-MM-DD
 - Feature slug: <slug>
-- Artifact: docs/project/adr/[number]-[slug].md
+- Artifact: core-zero/project/adr/[number]-[slug].md
 - Status: Proposed | Accepted | Deprecated | Superseded
 - Superseded by: <ADR-NNN or none>
 - One-line summary: <What was decided and why>

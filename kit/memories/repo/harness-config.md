@@ -31,13 +31,13 @@
 ## Artifact Routing
 
 - Feature artifact root: `artifacts/features/<slug>/`
-- Docs root: `docs/`
-- Architecture doc path: `docs/project/architecture.md`
+- Docs root: `core-zero/`
+- Architecture doc path: `core-zero/project/architecture.md`
 - Security policy path: `memories/repo/core-policies.md` `## Security Policy`
 - Learned heuristics path: `memories/repo/learned-heuristics.md`
-- ADR location: `docs/project/adr/[number]-[slug].md`
-- Generated documentation location: `docs/generated/`
-- Codemap path: `docs/project/code-map.md`
+- ADR location: `core-zero/project/adr/[number]-[slug].md`
+- Generated documentation location: `core-zero/generated/`
+- Codemap path: `core-zero/project/code-map.md`
 
 ## Verification Commands
 

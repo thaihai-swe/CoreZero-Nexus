@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Track all architecture decisions in one place for discoverability. Each ADR lives in `docs/project/adr/[number]-[slug].md` but is indexed here for cross-feature visibility.
+Track all architecture decisions in one place for discoverability. Each ADR lives in `core-zero/project/adr/[number]-[slug].md` but is indexed here for cross-feature visibility.
 
 ## Write Contract
 
@@ -16,7 +16,7 @@ Track all architecture decisions in one place for discoverability. Each ADR live
 ## How To Use This File
 
 - One entry per ADR. Do not edit past entries.
-- Each entry links to the full ADR artifact under `docs/project/adr/[number]-[slug].md`.
+- Each entry links to the full ADR artifact under `core-zero/project/adr/[number]-[slug].md`.
 - Status values: `Proposed`, `Accepted`, `Deprecated`, `Superseded`.
 - `/context-memory` may read this file for architecture drift detection but does not append entries.
 
@@ -27,7 +27,7 @@ Track all architecture decisions in one place for discoverability. Each ADR live
 
 - Date: YYYY-MM-DD
 - Feature slug: <slug>
-- Artifact: docs/project/adr/[number]-[slug].md
+- Artifact: core-zero/project/adr/[number]-[slug].md
 - Status: Proposed | Accepted | Deprecated | Superseded
 - Superseded by: <ADR-NNN or none>
 - One-line summary: <What was decided and why>

@@ -23,7 +23,7 @@ These override all other guidance. Key non-obvious ones:
 - **Fail loud.** Do not mark work done if verification was skipped or failed.
 - **Touch only the request.** No drive-by refactors, formatting churn, or unrelated cleanup.
 - **Preserve behavior** unless explicitly asked to change it.
-- **Read `kit/docs/policies/code-design.md`** before architecture or refactoring work — its rules carry equal weight.
+- **Read `kit/core-zero/policies/code-design.md`** before architecture or refactoring work — its rules carry equal weight.
 
 ## Kit architecture (non-obvious)
 
@@ -31,7 +31,7 @@ These override all other guidance. Key non-obvious ones:
 - **INDEX.md does not exist.** The root AGENTS.md historically referenced it. Use `kit/MASTER_INDEX.md` instead for context routing.
 - **No build system, no package.json, no test runner for the kit itself.** The kit is a collection of bash scripts, markdown skill files, and Python helpers. Verification is via `doctor.sh`.
 - **17 shipped slash commands (skills)** live in `kit/skills/<name>/SKILL.md`. Each is a behavioral spec for one command.
-- **`docs/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
+- **`core-zero/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
 - **`scripts/harness/`** — all mechanical gates and validation scripts.
 
 ## Commands (exact, non-obvious)
@@ -68,8 +68,8 @@ Priority order:
 ## Operating loop (short)
 
 1. Understand the goal in repo-specific terms.
-2. Inspect before building (read relevant code/docs/artifacts/patterns first).
-3. Plan the smallest safe change. Load `kit/docs/rules/ponytail.md` before architecture or implementation work.
+2. Inspect before building (read relevant code/core-zero/artifacts/patterns first).
+3. Plan the smallest safe change. Load `kit/core-zero/rules/ponytail.md` before architecture or implementation work.
 4. Implement surgically. Match existing style. No dead code cleanup unless asked.
 5. Verify with `doctor.sh` + install dry-run + grep audits.
 6. Report: what changed, what verified, what gaps remain, next step.

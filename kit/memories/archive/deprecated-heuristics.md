@@ -21,7 +21,7 @@ in recent feature work and may be revived if the pattern recurs.
   - repeated over-generation of boilerplate sections that the codebase never uses (e.g., full docstrings, empty method stubs, placeholder configs)
 - Confidence: High
 - Last reviewed: 2026-06-20
-- Original status: **[PROMOTED]** Added to `docs/policies/code-design.md`
+- Original status: **[PROMOTED]** Added to `core-zero/policies/code-design.md`
 - Archive date: 2026-06-25
 - Archive reason: Promoted to normative code-design.md rule; original heuristic superseded by normative requirement.
 

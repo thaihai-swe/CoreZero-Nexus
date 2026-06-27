@@ -12,7 +12,7 @@
 - *Input type:* (new_spec | spec_slice | change_request | new_initiative | maintenance | harness_improvement)
 - *Risk flags:* (comma-separated list, or `none`)
 - *One-line restatement:*
-- *Affected docs/specs:*
+- *Affected core-zero/specs:*
 - *Reasoning:*
 
 # Active Task

@@ -144,7 +144,7 @@ Did this change break adopter-visible behavior?
     └── NO
         Did it fix or improve existing behavior?
         ├── YES → Patch
-        └── NO  → Don't release (chore/docs/refactor)
+        └── NO  → Don't release (chore/core-zero/refactor)
 ```
 
 ## Commit prefix → bump (automatic flow)

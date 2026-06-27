@@ -207,7 +207,7 @@ To build a template compatible with both greenfield and brownfield initiatives t
 ```
 <project-root>/
 ├── AGENTS.md                      # Canonical agent-agnostic entrypoint router
-├── docs/                          # Human-readable & agent-readable documentation
+├── core-zero/                          # Human-readable & agent-readable documentation
 │   ├── README.md                  # Project overview & command list
 │   ├── project/                   # Structural docs and project-specific context
 │   ├── policies/                  # Kit-managed coding policy guidance (e.g. code-design.md)
@@ -230,7 +230,7 @@ To build a template compatible with both greenfield and brownfield initiatives t
 │       ├── boundaries.md          # Domain boundaries template
 
 ├── skills/                        # Shipped agent capability definitions (SKILL.md)
-├── docs/rules/                    # Shipped syntax/lint coding standards
+├── core-zero/rules/                    # Shipped syntax/lint coding standards
 └── scripts/                       # Harness validation & repair utilities
     ├── install.sh                 # Bootstrap and upgrade script
     ├── context-loader.py          # MVC-enforcing partial context loader (--mode summary, --section)

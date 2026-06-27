@@ -42,7 +42,7 @@ def parse_feature_status(status_file: Path):
     phase_match = re.search(r"## .*Current Phase:\s*(.*)", content, re.IGNORECASE)
     if not phase_match:
         phase_match = re.search(r"-\s+(Phase|State):\s*(.*)", content, re.IGNORECASE)
-    
+
     complexity_match = re.search(r"## .*Complexity:\s*(.*)", content, re.IGNORECASE)
     active_task_match = re.search(r"## .*Active Task\n+([^\n]+)", content, re.IGNORECASE)
 
@@ -552,7 +552,7 @@ def get_html_template(features_json):
                         <div class="card-header">
                             <div>
                                 <div class="card-title">${{escapeHtml(feat.title)}}</div>
-                                
+
                                 <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">${{escapeHtml(feat.slug)}}</div>
                             </div>
                             <span class="badge ${{phaseClass}}">${{escapeHtml(feat.phase)}}</span>
@@ -614,7 +614,7 @@ def main():
     root = Path(args.root).resolve()
 
     if args.output is None:
-        output_path = root / "docs/generated/dashboard.html"
+        output_path = root / "core-zero/generated/dashboard.html"
     else:
         output_path = Path(args.output).resolve()
 

@@ -36,7 +36,7 @@ Verify that a feature is not just functionally correct but operationally ready f
 
 ### Performance
 
-- [ ] Response time within budget (check `docs/project/project-constraints.md`)
+- [ ] Response time within budget (check `core-zero/project/project-constraints.md`)
 - [ ] No N+1 queries or unbounded loops
 - [ ] Database queries have appropriate indexes
 - [ ] Caching strategy implemented where needed

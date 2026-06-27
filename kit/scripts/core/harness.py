@@ -104,7 +104,7 @@ class Lifecycle:
         return [p.name for p in self.phases]
 
     def _state_path(self, root, feature_slug):
-        return Path(root) / "docs/generated/harness-state.json"
+        return Path(root) / "core-zero/generated/harness-state.json"
 
     def transition(self, current_phase_name, target_phase_name, feature_dir, dry_run=False, root=None):
         current_idx = -1
@@ -131,7 +131,7 @@ class Lifecycle:
         if root:
             state_path = self._state_path(root, feature_slug)
         else:
-            state_path = Path(feature_dir).parent.parent / "docs/generated/harness-state.json"
+            state_path = Path(feature_dir).parent.parent / "core-zero/generated/harness-state.json"
         state = self._load_state(state_path) if not dry_run else {}
 
         if target_phase_name == "Verifying" and state.get(feature_slug, {}).get("consecutive_gate_failures", 0) >= 2:
@@ -193,9 +193,9 @@ class Lifecycle:
 
     def get_state(self, feature_slug, root=None):
         if root:
-            state_path = Path(root) / "docs/generated/harness-state.json"
+            state_path = Path(root) / "core-zero/generated/harness-state.json"
         else:
-            state_path = Path(feature_slug).parent.parent / "docs/generated/harness-state.json"
+            state_path = Path(feature_slug).parent.parent / "core-zero/generated/harness-state.json"
         state = self._load_state(state_path)
         return state.get(feature_slug, {})
 
@@ -259,7 +259,7 @@ class HarnessConfig:
 
 def cmd_gates(args):
     root = resolve_root(args.root)
-    config = HarnessConfig(args.config or root / "docs/project/harness-config.yaml")
+    config = HarnessConfig(args.config or root / "core-zero/project/harness-config.yaml")
     if not args.stack:
         args.stack = config.detect_stack(root) or ""
     gates = config.get_gates_for_stack(args.stack)
@@ -288,11 +288,11 @@ def cmd_gates(args):
 
 def cmd_phase_gate(args):
     root = resolve_root(args.root)
-    config = HarnessConfig(args.config or root / "docs/project/harness-config.yaml")
+    config = HarnessConfig(args.config or root / "core-zero/project/harness-config.yaml")
     lifecycle = Lifecycle(config.data)
     try:
         if args.phase == "Verifying":
-            state_path = root / "docs/generated/harness-state.json"
+            state_path = root / "core-zero/generated/harness-state.json"
             state = json.loads(state_path.read_text()) if state_path.exists() else {}
             entry = state.get(args.feature, {})
             failures = entry.get("consecutive_gate_failures", 0)
@@ -324,7 +324,7 @@ def cmd_phase_gate(args):
 
 def cmd_lifecycle(args):
     root = resolve_root(args.root)
-    config = HarnessConfig(args.config or root / "docs/project/harness-config.yaml")
+    config = HarnessConfig(args.config or root / "core-zero/project/harness-config.yaml")
     lifecycle = Lifecycle(config.data)
     try:
         if args.action == "transition":
@@ -334,7 +334,7 @@ def cmd_lifecycle(args):
             )
             print(msg)
         elif args.action == "state":
-            state_path = root / "docs/generated/harness-state.json"
+            state_path = root / "core-zero/generated/harness-state.json"
             if state_path.exists():
                 print(state_path.read_text())
             else:
@@ -361,7 +361,7 @@ def cmd_lifecycle(args):
 
 def cmd_config_validate(args):
     root = resolve_root(args.root)
-    config = HarnessConfig(args.config or root / "docs/project/harness-config.yaml")
+    config = HarnessConfig(args.config or root / "core-zero/project/harness-config.yaml")
     print(f"Config validates OK: {len(config.data.get('phases', []))} phases, "
           f"{len(config.data.get('gates', []))} gates")
 

@@ -202,7 +202,7 @@ Do not claim deferred outputs as completed work.
 
 **Output location**: Follow canonical paths from `../_shared/doc-conventions.md → ## Output Locations`.
 - Feature-scoped: `artifacts/features/<slug>/diagrams/<name>.svg` (or `.mmd`)
-- Global/standalone: `docs/generated/diagrams/<name>.svg` (or `.mmd`)
+- Global/standalone: `core-zero/generated/diagrams/<name>.svg` (or `.mmd`)
 
 Validate Mermaid with:
 

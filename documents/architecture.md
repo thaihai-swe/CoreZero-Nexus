@@ -78,7 +78,7 @@ And bounded-context guidance in `memories/domain/`:
 - Domain packs containing: `glossary.md`, `patterns.md`, `anti-patterns.md`, `boundaries.md`
 
 **3-Tier Memory Architecture:**
-- **Instruction tier** (human-curated): core-policies.md, learned-heuristics.md, project-knowledge-base.md, memories/domain/*, docs/project/architecture.md
+- **Instruction tier** (human-curated): core-policies.md, learned-heuristics.md, project-knowledge-base.md, memories/domain/*, core-zero/project/architecture.md
 - **Auto tier** (agent-written): harness-telemetry.md (written by `harness-maintain` Improve Mode)
 - **Extracted tier** (per-feature candidates): artifacts/features/<slug>/session-extracts.md (written by `context-session` end and `harness-verify` post-ship sync)
 
@@ -166,7 +166,7 @@ CoreZero/
 │   │                           # (version in manifest.json)
 │   ├── AGENTS.md                # Template entrypoint (seeded to root)
 │   ├── MASTER_INDEX.md          # Master routing index for the repository
-│   ├── docs/                    # Adopter-facing documentation surface
+│   ├── core-zero/                    # Adopter-facing documentation surface
 │   │   ├── index.html           # Documentation portal
 │   │   ├── policies/            # Adopter-owned design policies
 │   │   ├── project/             # Adopter-owned project docs (architecture, product sense, etc)
@@ -197,7 +197,7 @@ This is the layout created in a downstream project after running the installer s
 ├── AGENTS.md                    # Runtime instruction router (adopter-owned)
 ├── MASTER_INDEX.md              # Master routing index for the repository
 ├── .corezero-version            # Installed semver stamp
-├── docs/                        # Installed documentation surface
+├── core-zero/                        # Installed documentation surface
 │   ├── index.html               # Documentation portal
 │   ├── generated/
 │   │   └── dashboard.html       # Visual interactive dashboard
@@ -311,7 +311,7 @@ mindmap
     .corezero/sessions/slug/
       progress.md
       handoff.md
-    docs/
+    core-zero/
       generated/
       policies/
       project/

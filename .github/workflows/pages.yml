@@ -16,7 +16,7 @@ jobs:
         run: |
           mkdir -p _site
           mkdir -p _site/adopters _site/maintainers
-          cp -R kit/docs/* _site/adopters/
+          cp -R kit/core-zero/* _site/adopters/
           cp -R page-document/* _site/
           cp documents/README.md _site/maintainers/
           cp documents/architecture.md _site/maintainers/

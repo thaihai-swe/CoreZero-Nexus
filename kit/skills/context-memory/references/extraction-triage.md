@@ -11,7 +11,7 @@ When processing extracted-tier or auto-tier memory entries:
    - **Distillation & Deduplication Check:** Before promoting any candidate, cross-reference it with the existing guidelines/heuristics in the target file. If there is semantic overlap or the target already covers the core lesson, merge the evidence, increment the recurrence count, and distill the rule to keep the descriptions concise, active-voice, and distinct. Do not append separate duplicate entries.
 3. **Promote** when the candidate is durable, evidence-backed, and matches an instruction-tier file:
    - Heuristic with confirming evidence -> append to `learned-heuristics.md`
-   - Pattern or boundary fact -> integrate into `project-knowledge-base.md` or `docs/project/architecture.md`
+   - Pattern or boundary fact -> integrate into `project-knowledge-base.md` or `core-zero/project/architecture.md`
    - Normative rule with team agreement -> amend `core-policies.md` (CC-*)
    - Permission, trust, or sandbox rule -> amend `core-policies.md` `## Security Policy`
    - Harness gap -> route to `harness-maintain` Improve Mode

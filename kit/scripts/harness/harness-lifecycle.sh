@@ -33,7 +33,7 @@ RESOLVED_ROOT="$(cd "$RESOLVED_ROOT" && pwd)"
 
 PYTHON_ENGINE="$SCRIPT_DIR/../core/harness.py"
 
-ARGS=(--config "$RESOLVED_ROOT/docs/project/harness-config.yaml" --root "$RESOLVED_ROOT")
+ARGS=(--config "$RESOLVED_ROOT/core-zero/project/harness-config.yaml" --root "$RESOLVED_ROOT")
 [[ -n "$DRY_RUN" ]] && ARGS+=("$DRY_RUN")
 ARGS+=(lifecycle --action "$ACTION")
 [[ -n "$PHASE" ]] && ARGS+=(--phase "$PHASE")

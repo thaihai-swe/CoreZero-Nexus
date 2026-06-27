@@ -19,7 +19,7 @@ flowchart TD
 
     TRIAGE --> DECIDE{Triage Action?}:::decision
     DECIDE -->|Promote Heuristic| HEUR["learned-heuristics.md"]:::promote
-    DECIDE -->|Promote Fact/Pattern| PKB["project-knowledge-base.md<br/>or docs/project/architecture.md"]:::promote
+    DECIDE -->|Promote Fact/Pattern| PKB["project-knowledge-base.md<br/>or core-zero/project/architecture.md"]:::promote
     DECIDE -->|Promote Normative/Sandbox Rule| CONST["core-policies.md<br/>(CC-* with user approval)"]:::promote
     DECIDE -->|Defer| DEF["Defer<br/>(Wait for next signal)"]:::discard
     DECIDE -->|Discard| DISC["Discard<br/>(Retired, trail kept)"]:::discard

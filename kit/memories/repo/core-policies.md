@@ -34,7 +34,7 @@ Change only what is required by the stated task. No drive-by refactors, formatti
 The `spec.md` artifact defines what is being built and why. If implementation diverges from spec, one of them must be corrected before verification passes. Resolving divergence in chat history is not sufficient.
 
 ### CC-007 — Workflow and documentation must stay aligned
-When a public command, artifact contract, or skill workflow changes, update `docs/`, `documents/`, and any generated references in the same change. Documentation drift is a real defect.
+When a public command, artifact contract, or skill workflow changes, update `core-zero/`, `documents/`, and any generated references in the same change. Documentation drift is a real defect.
 
 ### CC-008 — Session handoff is mandatory for long work sessions
 `context-session END` and `handoff.md` generation are required before closing any long kit work session. Chat history is volatile; handoff artifacts are the system of record.
@@ -54,7 +54,7 @@ Any change to an approved `spec.md` MUST be recorded in the spec's `## Spec Amen
 ## Release Guardrails
 
 - Treat missing fixtures, missing docs, or stale command tables as real regressions.
-- Any change to the public installed surface (`docs/`, `skills/`, `scripts/`) must be reflected in `manifest.json` and verified by a dry-run install before shipping.
+- Any change to the public installed surface (`core-zero/`, `skills/`, `scripts/`) must be reflected in `manifest.json` and verified by a dry-run install before shipping.
 
 ## Amendment Rules
 

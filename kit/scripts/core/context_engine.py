@@ -186,7 +186,7 @@ def _path_for_source(source):
     if source.startswith("`") and source.endswith("`"):
         source = source[1:-1]
     source = source.strip()
-    if source.startswith("docs/") or source.startswith("skills/") or source.startswith("scripts/"):
+    if source.startswith("core-zero/") or source.startswith("skills/") or source.startswith("scripts/"):
         return source
     if source.startswith("domain/"):
         return f"memories/{source}"

@@ -14,7 +14,7 @@ Administrative tools to assess harness health, repair missing state, and evolve 
 
 ## I/O Hand-off Protocol
 - **Reads**: Entire codebase, `memories/repo/`, `manifest.json`, `harness-telemetry.md`.
-- **Writes**: `docs/generated/harness-assessment.md`, `memories/repo/learned-heuristics.md`, `docs/project/code-map.md`, `docs/generated/dashboard.html`.
+- **Writes**: `core-zero/generated/harness-assessment.md`, `memories/repo/learned-heuristics.md`, `core-zero/project/code-map.md`, `core-zero/generated/dashboard.html`.
 
 ## Modes
 
@@ -34,11 +34,11 @@ When invoking this skill, you must specify one of the following modes:
 1. Read all files in `memories/repo/`. Count line lengths. Flag any file > 600 lines as a warning, > 800 lines as a critical compaction risk.
 2. Check for orphaned feature artifacts (e.g., a directory in `artifacts/features/` with no `status.md`).
 3. Check for missing required sections in `memories/repo/core-policies.md`.
-4. Output a structured health report to `docs/generated/harness-assessment.md`.
+4. Output a structured health report to `core-zero/generated/harness-assessment.md`.
 
 ### 2. Create Mode (`create`)
 1. Read the health report or system baseline.
-2. Scaffold any missing standard directories (e.g., `memories/domain/`, `docs/generated/`).
+2. Scaffold any missing standard directories (e.g., `memories/domain/`, `core-zero/generated/`).
 3. Create missing placeholder files if they were accidentally deleted.
 
 ### 3. Improve Mode (`improve`)
@@ -58,7 +58,7 @@ When invoking this skill, you must specify one of the following modes:
 ### 5. Doctor Mode (`doctor`)
 1. Run Assess steps to check for structural health.
 2. Check for broken markdown file links inside `skills/**/*.md`.
-3. Regenerate `docs/project/code-map.md` with the updated repository hierarchy.
+3. Regenerate `core-zero/project/code-map.md` with the updated repository hierarchy.
 4. Run `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard.
 5. Report what was fixed and what still requires manual intervention.
 

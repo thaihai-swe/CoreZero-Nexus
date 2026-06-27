@@ -17,16 +17,16 @@ Record significant architectural decisions.
 - **System Proposals:** Reviewing and refining new component designs.
 - **Refactoring Decisions:** Documenting major structural changes and their rationale.
 ## I/O Hand-off Protocol
-- **Reads**: Codebase context, `docs/rules/ponytail.md`.
-- **Writes**: `docs/project/adr/[number]-[slug].md` (new file) and `memories/repo/adr-log.md` (append entry via Write Contract).
+- **Reads**: Codebase context, `core-zero/rules/ponytail.md`.
+- **Writes**: `core-zero/project/adr/[number]-[slug].md` (new file) and `memories/repo/adr-log.md` (append entry via Write Contract).
 - **Next Skill**: Return to previous skill (e.g., `/spec-plan` or `/spec-implement`).
 
 ## Workflow
 1. **Identify Decision Needs**: Note when tech choices, structural shifts, design tradeoffs, or major refactorings require a durable architectural record.
 2. **Evaluate Alternatives**: Research and evaluate at least two options. Analyze them against complexity, cost, scalability, and team familiarity dimensions.
-3. **Draft Decision Record**: Author the ADR document under `docs/project/adr/[number]-[slug].md` using `references/adr-template.md` (or the lightweight format for minor decisions).
+3. **Draft Decision Record**: Author the ADR document under `core-zero/project/adr/[number]-[slug].md` using `references/adr-template.md` (or the lightweight format for minor decisions).
 4. **Append to Log Ledger**: Update `memories/repo/adr-log.md` by appending a structured entry using the format defined in `## Entry Template`.
-5. **Update Central Registry**: Add the decision to the index table in `docs/project/adr/index.md` to maintain cross-feature visibility.
+5. **Update Central Registry**: Add the decision to the index table in `core-zero/project/adr/index.md` to maintain cross-feature visibility.
 
 ## Core Rules
 - **Comparative Analysis:** Always include at least two options with pros and cons.

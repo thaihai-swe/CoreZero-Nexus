@@ -24,7 +24,7 @@ curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero/main/kit/scrip
   | bash -s -- /path/to/your/project
 ```
 
-After install, start with [kit/docs/index.html](kit/docs/index.html) and [documents/onboarding.md](documents/onboarding.md).
+After install, start with [kit/core-zero/index.html](kit/core-zero/index.html) and [documents/onboarding.md](documents/onboarding.md).
 
 ## Shipped Commands
 
@@ -53,9 +53,9 @@ The installed package now ships the full workflow surface: core delivery, govern
 The installed surface comes from `kit/` and includes:
 
 - root entrypoints: `AGENTS.md`, `MASTER_INDEX.md`
-- first-read docs: `docs/index.html`, `docs/policies/code-design.md`
-- adopter-owned seeded docs under `docs/project/*`
-- seeded placeholders under `docs/generated/*`
+- first-read docs: `core-zero/index.html`, `core-zero/policies/code-design.md`
+- adopter-owned seeded docs under `core-zero/project/*`
+- seeded placeholders under `core-zero/generated/*`
 - shipped memories under `memories/repo/*` and `memories/domain/*`
 - shipped skills under `skills/`, including docs authoring and visualization helpers
 - shipped rules under `rules/`
@@ -69,6 +69,6 @@ Maintainer docs under `documents/` and site assets under `page-document/` do not
 
 ## Choose Your Surface
 
-- Adopting the kit into a project: [kit/docs/index.html](kit/docs/index.html)
+- Adopting the kit into a project: [kit/core-zero/index.html](kit/core-zero/index.html)
 - Maintaining the kit itself: [documents/README.md](documents/README.md)
 - Exact shipped tree and ownership: [documents/TEMPLATE_SURFACE.md](documents/TEMPLATE_SURFACE.md)

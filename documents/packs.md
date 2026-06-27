@@ -72,9 +72,9 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 - `AGENTS.md` (router entrypoint)
 - `memories/repo/*` (memory router and seed instruction files)
 - `memories/repo/project-knowledge-base.md` (high-risk area notes from archaeology sweep recorded here under `## Repository Overview`)
-- `docs/project/architecture.md` (durable architecture baseline)
-- `docs/project/*.md` adopter-owned docs seeded for refinement
-- `docs/generated/*` (dashboard artifacts)
+- `core-zero/project/architecture.md` (durable architecture baseline)
+- `core-zero/project/*.md` adopter-owned docs seeded for refinement
+- `core-zero/generated/*` (dashboard artifacts)
 
 Starter-init archaeology (Phase A) is now the documented first step for established repositories. Its
 artifacts live in the memory layer, but they are not yet auto-routed by `MASTER_INDEX.md`; later
@@ -107,8 +107,8 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `.corezero/sessions/<slug>/progress.md`
 - `.corezero/sessions/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
-- `docs/project/architecture.md`
-- `docs/project/code-map.md`
+- `core-zero/project/architecture.md`
+- `core-zero/project/code-map.md`
 
 
 ---
@@ -140,10 +140,10 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`
 - `memories/repo/adr-log.md`
-- [`docs/project/product-sense.md`](../kit/docs/project/product-sense.md)
-- [`docs/project/glossary.md`](../kit/docs/project/glossary.md)
-- [`docs/project/tech-stack.md`](../kit/docs/project/tech-stack.md)
-- [`docs/project/project-constraints.md`](../kit/docs/project/project-constraints.md)
+- [`core-zero/project/product-sense.md`](../kit/core-zero/project/product-sense.md)
+- [`core-zero/project/glossary.md`](../kit/core-zero/project/glossary.md)
+- [`core-zero/project/tech-stack.md`](../kit/core-zero/project/tech-stack.md)
+- [`core-zero/project/project-constraints.md`](../kit/core-zero/project/project-constraints.md)
 
 ---
 
@@ -162,7 +162,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 * `/harness-maintain` — Assesses, configures, or evaluates the harness systems.
 
 ### Key Files Touched
-- `docs/policies/code-design.md`
+- `core-zero/policies/code-design.md`
 - `artifacts/features/<slug>/review.md`
 - `artifacts/features/<slug>/testing-scenarios.md`
 - `artifacts/features/<slug>/harness-assessment.md`

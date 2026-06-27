@@ -18,8 +18,8 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 
 - PR description and diff
 - `memories/repo/core-policies.md` (code standards, naming, principles, security boundaries, and sensitive paths)
-- `docs/rules/ponytail.md` (simplicity, anti-abstraction, and verifiable increments)
-- Style guides under `docs/rules/`
+- `core-zero/rules/ponytail.md` (simplicity, anti-abstraction, and verifiable increments)
+- Style guides under `core-zero/rules/`
 
 ## When to Use
 
@@ -31,7 +31,7 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 ### Inputs
 - PR description, diff, and linked issues
 - `memories/repo/core-policies.md` (code standards, security policy)
-- `docs/rules/` style guides
+- `core-zero/rules/` style guides
 
 ### Outputs
 - Structured review verdict: overall decision, mandatory findings, optional suggestions
@@ -122,5 +122,5 @@ For each review dimension, tick off before writing the verdict:
 ## Output Rules
 
 - Produce structured response: overall verdict, mandatory changes, optional suggestions, positive callouts.
-- **Standalone mode**: Write verdict to `artifacts/features/<slug>/review.md`. If no active slug, write to `docs/reviews/review-<YYYY-MM-DD>.md`.
+- **Standalone mode**: Write verdict to `artifacts/features/<slug>/review.md`. If no active slug, write to `core-zero/reviews/review-<YYYY-MM-DD>.md`.
 - **Gated Integration mode** (called from `/harness-verify`): Return structured response to the caller; `/harness-verify` writes it to `review.md`.

@@ -73,10 +73,10 @@ for f in \
   "memories/repo/adr-log.md" \
   "memories/repo/learned-heuristics.md" \
   "memories/repo/harness-telemetry.md" \
-  "docs/rules/security.md" \
-  "docs/rules/ponytail.md" \
-  "docs/policies/code-design.md" \
-  "docs/index.html" \
+  "core-zero/rules/security.md" \
+  "core-zero/rules/ponytail.md" \
+  "core-zero/policies/code-design.md" \
+  "core-zero/index.html" \
   "skills/README.md" \
   "scripts/install.sh" \
   "scripts/harness/gate-runner.sh" \

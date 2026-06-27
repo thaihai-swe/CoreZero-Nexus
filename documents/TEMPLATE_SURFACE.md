@@ -16,7 +16,7 @@ When installed into an empty project directory, the shipped folder structure loo
 ├── .corezero-version             # Installed semver stamp
 ├── artifacts/
 │   └── features/                 # Per-feature process state
-├── docs/
+├── core-zero/
 │   ├── generated/
 │   │   └── dashboard.html        # Visual interactive dashboard
 │   ├── policies/
@@ -101,7 +101,7 @@ When installed into an empty project directory, the shipped folder structure loo
     ├── spec-requirements/
     ├── spec-research/
     ├── starter-init/
-    ├── technical-docs/
+    ├── technical-core-zero/
     └── visualize/
 ```
 

@@ -144,7 +144,7 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 #### Phase 1: Repository Bootstrapping ([`/starter-init`](../kit/skills/starter-init/SKILL.md))
 - Initializes the environment, parses dependencies, and registers targets.
-- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`docs/generated/*`, `memories/repo/harness-telemetry.md`) from version control.
+- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`core-zero/generated/*`, `memories/repo/harness-telemetry.md`) from version control.
 - **Greenfield Mode:** Prefills standard templates and triggers.
 - **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and records risk area notes into `memories/repo/project-knowledge-base.md`.
 
@@ -163,7 +163,7 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 #### Phase 5: Implementation ([`/spec-implement`](../kit/skills/spec-implement/SKILL.md))
 - Agent executes modifications in targeted files.
-- Coding standards in [`docs/rules/`](../kit/docs/rules/) (syntax, language-specific lints, and security standards) must be strictly adhered to.
+- Coding standards in [`core-zero/rules/`](../kit/core-zero/rules/) (syntax, language-specific lints, and security standards) must be strictly adhered to.
 - For every task item, the agent runs the localized mechanical verification gate via `kit/scripts/harness/gate-runner.sh`.
 - **Telemetry Collection:** If the gate fails, errors are piped to `kit/scripts/harness/telemetry-collector.sh` to update `harness-telemetry.md`.
 - **Minimum Viable Context & Eviction:** The agent operates under strict Minimum Viable Context (MVC) guidelines, JIT-loading only targeted files, and evicts raw execution output from the active context window immediately after summarization.

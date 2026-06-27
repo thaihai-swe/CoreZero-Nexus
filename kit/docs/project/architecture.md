@@ -17,19 +17,19 @@ Living architecture doc for the installed CoreZero surface.
 | Component | Responsibility | Key Paths | Notes |
 | --- | --- | --- | --- |
 | Router and policy entrypoints | Load-order and operating defaults | `AGENTS.md`, `memories/repo/*` | Router stays thin; durable rules live in memory files |
-| Installed docs | User-facing operating guidance | `docs/project/*`, `docs/policies/code-design.md`, `docs/generated/*` | Must match shipped files exactly |
+| Installed docs | User-facing operating guidance | `core-zero/project/*`, `core-zero/policies/code-design.md`, `core-zero/generated/*` | Must match shipped files exactly |
 | Skill contracts | Canonical workflow behavior | `skills/*/SKILL.md`, `skills/*/references/` | Behavioral source of truth |
 | Maintenance scripts | Install helpers | `scripts/install.sh` | Used for install and upgrades |
 
 ## Runtime Boundaries
 
 - Boundary: Installed docs vs source-repo maintainer docs
-  Owner: `docs/` in the installed repo; `documents/` in the source repo
+  Owner: `core-zero/` in the installed repo; `documents/` in the source repo
   Crossing rule: installed docs must never depend on nonexistent local maintainer files
 
 - Boundary: Skill behavior vs explanation surfaces
   Owner: `skills/*/SKILL.md`
-  Crossing rule: when a command or artifact contract changes, update `skills/`, `docs/`, `documents/`, and generated references together
+  Crossing rule: when a command or artifact contract changes, update `skills/`, `core-zero/`, `documents/`, and generated references together
 
 - Boundary: Kit-managed vs adopter-owned files
   Owner: `manifest.json` in the source repo
@@ -37,10 +37,10 @@ Living architecture doc for the installed CoreZero surface.
 
 ## Safe Change Guidance
 
-- High-risk areas: `scripts/install.sh`, `docs/generated/*`, shipped path claims in `docs/project/*`, and `docs/policies/code-design.md`
+- High-risk areas: `scripts/install.sh`, `core-zero/generated/*`, shipped path claims in `core-zero/project/*`, and `core-zero/policies/code-design.md`
 - Required proof: installer dry-run and install smoke test
 
 ## Architectural Decision Records (ADRs)
 
-All architectural decisions for this project are documented individually to maintain context over time. 
+All architectural decisions for this project are documented individually to maintain context over time.
 See the [ADR Master Index](adr/index.md) for a complete log of decisions.

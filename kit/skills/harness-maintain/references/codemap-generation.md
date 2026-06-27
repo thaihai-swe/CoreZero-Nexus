@@ -4,7 +4,7 @@ Generated references shrink context costs by replacing broad code reads with dur
 
 ## Canonical Generated Files
 
-- `docs/project/code-map.md`
+- `core-zero/project/code-map.md`
 
 ## What A Codemap Should Capture
 

@@ -93,7 +93,7 @@ When user answers contradict each other:
 
 ## Term Coining Triggers
 
-Update `docs/project/glossary.md` inline (in the same turn the term is resolved, not batched at the end) when any of these fire:
+Update `core-zero/project/glossary.md` inline (in the same turn the term is resolved, not batched at the end) when any of these fire:
 
 | Trigger | Example | Action |
 |---|---|---|
@@ -107,7 +107,7 @@ Discipline:
 - **Definitions only.** No implementation detail, no rationale, no design choices in glossary entries. If it explains *why*, it belongs in `spec.md` or an ADR, not the glossary.
 - **One-line `Used in` pointer max.** Naming where the term first appears is fine. Quoting paragraphs is not.
 - **Use what you coin.** A term coined and never used in `spec.md` or `plan.md` is glossary debt — either drop it or commit to it.
-- **Skip if no glossary exists.** If the adopting project has not initialized `docs/project/glossary.md` into a project glossary, do not silently create one — flag the gap and continue.
+- **Skip if no glossary exists.** If the adopting project has not initialized `core-zero/project/glossary.md` into a project glossary, do not silently create one — flag the gap and continue.
 
 ## Output
 

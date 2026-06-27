@@ -35,7 +35,7 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ### Outputs
 - Multi-file documentation set: README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md
-- Output directory determined by user or default to `docs/`
+- Output directory determined by user or default to `core-zero/`
 
 ### Next Skill
 None (terminal — documentation is consumed by developers directly)

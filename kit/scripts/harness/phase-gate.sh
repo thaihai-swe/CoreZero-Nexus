@@ -31,4 +31,4 @@ RESOLVED_ROOT="$(cd "$RESOLVED_ROOT" && pwd)"
 
 PYTHON_ENGINE="$SCRIPT_DIR/../core/harness.py"
 
-exec python3 "$PYTHON_ENGINE" --config "$RESOLVED_ROOT/docs/project/harness-config.yaml" --root "$RESOLVED_ROOT" $DRY_RUN phase-gate --phase "$TARGET_PHASE" --feature "$FEATURE_SLUG"
+exec python3 "$PYTHON_ENGINE" --config "$RESOLVED_ROOT/core-zero/project/harness-config.yaml" --root "$RESOLVED_ROOT" $DRY_RUN phase-gate --phase "$TARGET_PHASE" --feature "$FEATURE_SLUG"

@@ -2,7 +2,7 @@
 
 ## System Reference Documents
 
-- **Architecture Boundary Map:** Refer to `docs/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
+- **Architecture Boundary Map:** Refer to `core-zero/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
 - **Rules & Mandates:** Refer to `memories/repo/core-policies.md` for normative CC-* mandates.
 
 ## Repository Overview

@@ -92,7 +92,7 @@ The support skills are real shipped skills, but they are not all mandatory for e
 
 | Skill | Required? | Modes | Use when | Primary artifacts |
 |---|---|---|---|---|
-| [`/starter-init`](../kit/skills/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `docs/`, `memories/`, `.gitignore`, project memory seeds |
+| [`/starter-init`](../kit/skills/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `core-zero/`, `memories/`, `.gitignore`, project memory seeds |
 | [`/spec-research`](../kit/skills/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, or root cause is unclear | `artifacts/features/<slug>/analysis.md`, `status.md` |
 | [`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md) | Required per feature | Requirements authoring | Define what must be built and how it will be accepted | `spec.md`, `status.md` |
 | [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into technical design and tasks | `plan.md`, `tasks.md`, `status.md` |
@@ -100,13 +100,13 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | [`/harness-verify`](../kit/skills/harness-verify/SKILL.md) | Required per feature | Verification | Prove implementation against tasks and spec | `status.md`, verification output, `harness-telemetry.md` |
 | [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md` |
 | [`/context-memory`](../kit/skills/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
-| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/`, `artifacts/`, or `docs/generated/` |
-| [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `docs/generated/dashboard.html` |
-| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `docs/project/code-map.md`, eval reports |
-| [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `docs/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
+| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/`, `artifacts/`, or `core-zero/generated/` |
+| [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `core-zero/generated/dashboard.html` |
+| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `core-zero/project/code-map.md`, eval reports |
+| [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `core-zero/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
 | [`/code-review`](../kit/skills/code-review/SKILL.md) | Optional helper | Review | Manual review is requested or verification calls for deeper review | Review findings, usually feature-scoped |
 | [`/ponytail`](../kit/skills/ponytail/SKILL.md) | Optional helper | `lite`, `full` (default), `ultra` | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features | Advisory — no artifacts |
-| [`/technical-docs`](../kit/skills/technical-docs/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
+| [`/technical-docs`](../kit/skills/technical-core-zero/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
 | [`/codebase-documenter`](../kit/skills/codebase-documenter/SKILL.md) | Optional helper | Codebase documentation | Need broader repo onboarding or architecture documentation | README-style guides, architecture docs, setup docs |
 | [`/visualize`](../kit/skills/visualize/SKILL.md) | Optional helper, conditional for complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts |
 
@@ -143,7 +143,7 @@ Run:
 /starter-init
 ```
 
-Required once per adopter repo. This prepares `docs/`, `memories/`, and baseline project memory. It has two practical paths:
+Required once per adopter repo. This prepares `core-zero/`, `memories/`, and baseline project memory. It has two practical paths:
 
 - **Greenfield path:** bootstrap the harness and seed unknown project facts with `[UNKNOWN]`.
 - **Brownfield path:** inspect existing code/tests/CI enough to record baseline proof surfaces and project-specific memory.
@@ -274,7 +274,7 @@ Run:
 
 Use this when you need cross-feature visibility, blocker awareness, or next-command guidance. It is optional for a single small feature, but valuable when multiple feature slugs or multiple agents are active.
 
-The status surface reads feature artifacts and can refresh `docs/generated/dashboard.html`.
+The status surface reads feature artifacts and can refresh `core-zero/generated/dashboard.html`.
 
 ### Phase 10: Docs And Diagrams
 
@@ -302,7 +302,7 @@ Use `/visualize` when a diagram clarifies architecture, data flow, sequence, sta
 
 ### Phase 11: Harness Maintenance (`/harness-maintain`)
 
-You don't need to run `/harness-maintain` while building normal features. Think of it like a "system tune-up" tool. 
+You don't need to run `/harness-maintain` while building normal features. Think of it like a "system tune-up" tool.
 
 #### What exactly is the "Harness"?
 The "Harness" refers to the entire invisible scaffolding that keeps your AI agent disciplined. It includes:

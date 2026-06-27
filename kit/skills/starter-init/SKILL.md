@@ -10,16 +10,16 @@ next_skill: 'spec-research'
 # Starter Init
 
 ## Overview
-Bootstraps the `docs/` and `memories/` directories with standard templates, then guides the adopter through customizing the seeded memory files for their project.
+Bootstraps the `core-zero/` and `memories/` directories with standard templates, then guides the adopter through customizing the seeded memory files for their project.
 Establishes the repository baseline for the harness before feature work begins. Detects repo type, runs a read-only archaeology pass for brownfield repositorys, and sets up the initial memory scaffold with adopter-specific content.
 ## I/O Hand-off Protocol
 - **Reads**: target repo structure, `memories/repo/*.md` seeded by the installer.
-- **Writes**: Generates `docs/` and `memories/` folders, baseline markdown files, `.gitignore` entries, and customized memory files.
+- **Writes**: Generates `core-zero/` and `memories/` folders, baseline markdown files, `.gitignore` entries, and customized memory files.
 - **Next Skill**: `/spec-research` (brownfield) or `/spec-requirements` (greenfield).
 
 ## Workflow
 
-1. **Step 1: Initialization**: Read `docs/project/agent-capabilities.md` and check that the current agent has all Required capabilities (shell execution, file editing, skill invocation). Warn if Recommended (subagent) or Optional (Python 3, mmdc) capabilities are missing. Create `docs/project`, `docs/generated`, `memories/repo`, and `memories/domain`. Ensure `.gitignore` is populated with kit ignores (`docs/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh`). Use `references/init-checklist.md` to guide the bootstrap process.
+1. **Step 1: Initialization**: Read `core-zero/project/agent-capabilities.md` and check that the current agent has all Required capabilities (shell execution, file editing, skill invocation). Warn if Recommended (subagent) or Optional (Python 3, mmdc) capabilities are missing. Create `core-zero/project`, `core-zero/generated`, `memories/repo`, and `memories/domain`. Create each required seed file if it does not already exist: read the kit's shipped seed template from `memories/repo/<file>` (present after `install.sh`), or if the seed file is also missing, create a minimal scaffold with `[USER REVIEW NEEDED]` placeholders. The seed set is: `memories/repo/core-policies.md`, `memories/repo/harness-config.md`, `memories/repo/learned-heuristics.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/harness-telemetry.md`, `memories/repo/adr-log.md`, `core-zero/project/architecture.md`, `core-zero/project/product-sense.md`, `core-zero/project/project-constraints.md`, `core-zero/project/glossary.md`, `core-zero/project/tech-stack.md`, `core-zero/project/code-map.md`, `core-zero/project/agent-capabilities.md`. Ensure `.gitignore` is populated with kit ignores (`core-zero/generated/*`, `memories/repo/harness-telemetry.md`, `scripts/harness/gate-runner.local.sh`). Use `references/init-checklist.md` to guide the bootstrap process.
 2. **Step 2: Archaeology Sweep (Phase A)**: Detect greenfield vs. brownfield.
    - Greenfield: empty repo or only the kit's own files. Skip archaeology.
    - Brownfield: Follow `references/brownfield-mode.md` to conduct a read-only archaeology sweep. Delegate broad searches using subagents (Subagent-First Exploration). Create `memories/repo/brownfield/brownfield-map.md` to document the findings. Record the baseline test command and high-risk paths. If no baseline exists, prompt the adopter.
@@ -43,14 +43,15 @@ Establishes the repository baseline for the harness before feature work begins. 
 - **Read-Only Archaeology**: The subagent exploration (Phase A) MUST be read-only. No source code modifications during the sweep.
 - **Subagent Summaries Only**: Raw subagent output (file listings, grep output) never floods the main context. Only summary reports merge back.
 - **Profile Auto-Promotion**: Record in `brownfield-map.md` under `## Profile Rules`: any feature touching a path rated `high` or `critical` MUST be promoted to `Complex` in its `status.md`.
-- **No Shadow Installer**: Do not create missing harness files that `install.sh` was supposed to seed. Stop and repair the install surface instead.
+- **No Shadow Installer**: Do not create missing harness infrastructure files (scripts, skills, rules, gate-runner templates) that `install.sh` was supposed to seed. Stop and repair the install surface instead. This restriction does NOT apply to seed memory files (`memories/repo/*.md`, `core-zero/project/*.md`) — this skill is authorized to create those during initialization.
 - **Router Entrypoint**: `AGENTS.md` is the canonical shipped router. Downstream init seeds from that source.
 - **Security Baseline**: Formulate trust boundaries in `memories/repo/core-policies.md` `## Security Policy` during bootstrap.
 
 ## Output Rules
-- **Can update**: Seeded installer files (`AGENTS.md`, `memories/repo/core-policies.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/learned-heuristics.md`, `docs/project/architecture.md`, `docs/project/code-map.md`, `docs/project/glossary.md`, `docs/project/tech-stack.md`, `docs/project/product-sense.md`, `docs/project/project-constraints.md`, and project-policy docs under `docs/project/*.md`).
+- **Can update**: Seeded installer files (`AGENTS.md`, `memories/repo/core-policies.md`, `memories/repo/project-knowledge-base.md`, `memories/repo/learned-heuristics.md`, `core-zero/project/architecture.md`, `core-zero/project/code-map.md`, `core-zero/project/glossary.md`, `core-zero/project/tech-stack.md`, `core-zero/project/product-sense.md`, `core-zero/project/project-constraints.md`, and project-policy docs under `core-zero/project/*.md`).
+- **Can create** (initial seed only): `memories/repo/*.md`, `core-zero/project/*.md` — create with kit seed content if missing.
 - **Can create** (Brownfield Phase A only): `memories/repo/brownfield/brownfield-map.md`, `memories/repo/brownfield/dependency-graph.md`.
-- **Cannot create**: Missing harness surface files that `install.sh` was supposed to seed; stop and repair the install surface instead.
+- **Cannot create**: Missing harness infrastructure files (scripts, skills, rules, gate-runner templates) that `install.sh` was supposed to seed; stop and repair the install surface instead.
 - **Cannot create**: `spec.md`, `plan.md`, `tasks.md`.
 
 `starter-init` creates and seeds memory files at init time. It does not overwrite non-empty versions of these files on re-init. Ongoing updates are owned by `/context-memory`.

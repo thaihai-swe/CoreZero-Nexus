@@ -42,7 +42,7 @@ flowchart TD
     %% Documentation and Review phase (optional utility skills)
     SYNC --> NEEDDOCS{Refresh docs<br/>or review PR?}
     NEEDDOCS -. technical docs changed .-> TECHDOC["technical-docs<br/>(api, flow, or both modes)"]
-    NEEDDOCS -. architecture changed .-> CODEDOC["codebase-documenter<br/>(docs/ root README/ARCHITECTURE)"]
+    NEEDDOCS -. architecture changed .-> CODEDOC["codebase-documenter<br/>(core-zero/ root README/ARCHITECTURE)"]
     NEEDDOCS -. PR ready .-> CODEREV["code-review<br/>(review.md)"]
     TECHDOC -.-> ENDS
     CODEDOC -.-> ENDS

@@ -6,7 +6,7 @@ Use this guide to select the appropriate diagram style for the context. Default 
 
 | Context | Style |
 |---|---|
-| Light-mode documentation (README, docs/) | `style-1-flat-icon.md` (default) |
+| Light-mode documentation (README, core-zero/) | `style-1-flat-icon.md` (default) |
 | Presentations / slide decks | `style-7-openai.md` or `style-5-glassmorphism.md` |
 | Dark-mode documentation or terminals | `style-2-dark-terminal.md` |
 | Blueprint / engineering precision diagrams | `style-3-blueprint.md` |

@@ -17,7 +17,7 @@ This is a focused maintenance operation, not a feature workflow. It does not rou
 
 ## I/O Hand-off Protocol
 
-- **Reads**: Target oversized file from `memories/repo/` (or `docs/project/`).
+- **Reads**: Target oversized file from `memories/repo/` (or `core-zero/project/`).
 - **Writes**: Compacted version of the same file, in-place.
 - **Next Skill**: Done. If the target file was `core-policies.md`, run `/context-memory --audit` afterwards to confirm no stale references remain.
 
@@ -113,7 +113,7 @@ This skill may compact any of the following files. All other files are outside s
 | `memories/repo/learned-heuristics.md` | `LH-*` | Merge overlapping heuristics; never drop one with `recurrence-count ≥ 3`. Tombstoned LH-* entries (marked [ARCHIVED]) are excluded from compaction merges but their IDs MUST be preserved. |
 | `memories/repo/project-knowledge-base.md` | None (prose) | Dedup aggressively. |
 | `memories/domain/*/boundaries.md` | `INV-*` | Do not remove invariants; do not compact `## Change Log` entries younger than 1 month. |
-| `docs/project/architecture.md` | None (prose) | Trim stale component descriptions only. |
+| `core-zero/project/architecture.md` | None (prose) | Trim stale component descriptions only. |
 
 ## Core Rules
 

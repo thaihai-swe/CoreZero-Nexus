@@ -62,7 +62,7 @@ Each dimension is scored 1-5:
 | 4 | Clearly feasible; risks are documented with mitigation strategies |
 | 5 | Feasible, low-risk, and aligned with existing architecture patterns |
 
-**Check:** Does the spec respect `docs/project/project-constraints.md` and `docs/project/architecture.md`?
+**Check:** Does the spec respect `core-zero/project/project-constraints.md` and `core-zero/project/architecture.md`?
 
 ### 5. Safety (Risks and controls are documented)
 

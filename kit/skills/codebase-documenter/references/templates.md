@@ -1,6 +1,6 @@
 # Documentation Templates
 
-Compact templates for the standard `docs/` outputs. Fill in the placeholders. Keep prose short and link generously.
+Compact templates for the standard `core-zero/` outputs. Fill in the placeholders. Keep prose short and link generously.
 
 ## README.md
 

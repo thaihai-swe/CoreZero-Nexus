@@ -19,9 +19,9 @@ Use this checklist to ensure the repository is fully prepared for harnessed agen
 - [ ] `memories/repo/core-policies.md` contains a Security Policy section that captures permission tiers, trust boundaries, and secret handling.
 - [ ] `memories/repo/learned-heuristics.md` exists and captures descriptive repeated heuristics only.
 - [ ] `memories/repo/project-knowledge-base.md` exists and contains descriptive stack details, patterns, and conventions.
-- [ ] Seeded adopter-owned docs under `docs/project/*.md` exist before pre-fill begins.
-- [ ] `docs/project/architecture.md` exists when the repository has meaningful subsystem boundaries, runtime layers, or external integrations.
-- [ ] `docs/project/code-map.md` exists when the repo is large enough to benefit from a generated structural map.
+- [ ] Seeded adopter-owned docs under `core-zero/project/*.md` exist before pre-fill begins.
+- [ ] `core-zero/project/architecture.md` exists when the repository has meaningful subsystem boundaries, runtime layers, or external integrations.
+- [ ] `core-zero/project/code-map.md` exists when the repo is large enough to benefit from a generated structural map.
 - [ ] Language runtime and dependency config files (e.g. package.json, requirements.txt, Cargo.toml) identified from manual code search.
 - [ ] Test runner command identified from manifests and documented in `core-policies.md`.
 - [ ] Lint/format/type-check commands identified from configurations and documented in `core-policies.md`.

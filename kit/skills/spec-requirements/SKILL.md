@@ -31,7 +31,7 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found
 
 1. **Initialization**: Create `status.md` if missing (from `_shared/status-template.md`). Set phase to `Spec'ing`.
 2. **Intake & Routing**: Classify input type (`new_spec`, `spec_slice`, `change_request`, `new_initiative`, `maintenance`, `harness_improvement`) and risk flags in `status.md` per `references/intake.md`.
-    - **System Spec Mode**: If the request is cross-cutting or system-wide, switch to System Spec Mode. Output target becomes `docs/system-specs/<name>.md`.
+    - **System Spec Mode**: If the request is cross-cutting or system-wide, switch to System Spec Mode. Output target becomes `core-zero/system-specs/<name>.md`.
 3. **Context Alignment**:
     - **Domain Pack Scan**: If any keyword from the feature description matches a domain pack trigger in `memories/domain/<name>/glossary.md` frontmatter, you MUST load that pack before writing the spec and note it in `status.md`.
     - **Analysis Check**: Read `artifacts/features/<slug>/analysis.md` (if exists) and record open research questions.

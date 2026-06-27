@@ -419,7 +419,7 @@
                     <div class="nn-item"><strong>Keep design SOLID.</strong> <strong>SHOULD</strong> follow SOLID
                         principles when changing or adding software design.</div>
                     <div class="nn-item"><strong>Apply code-design rules.</strong> Check
-                        <code>docs/policies/code-design.md</code> for cross-cutting pitfalls.
+                        <code>core-zero/policies/code-design.md</code> for cross-cutting pitfalls.
                     </div>
                     <div class="nn-item"><strong>Read the Master Index.</strong> <strong>SHOULD</strong> consult
                         <code>MASTER_INDEX.md</code> before non-trivial work.
@@ -604,7 +604,9 @@
 
             <div class="section-card">
                 <h3>The Core Loop</h3>
-                <p class="node-desc">The harness is organized into five cooperating layers — see <a href="#architecture">Architecture &amp; Repository Shape</a> for the full deep dive. The core delivery loop:</p>
+                <p class="node-desc">The harness is organized into five cooperating layers — see <a
+                        href="#architecture">Architecture &amp; Repository Shape</a> for the full deep dive. The core
+                    delivery loop:</p>
                 <div class="flow-diagram">
                     <div class="flow-track">
                         <span class="flow-node">Request</span>
@@ -631,23 +633,35 @@
 
             <div class="section-card">
                 <h3>Key Capabilities</h3>
-                <p class="node-desc">Beyond the core loop, four mechanisms prevent the kit from degrading into conversational drift:</p>
+                <p class="node-desc">Beyond the core loop, four mechanisms prevent the kit from degrading into
+                    conversational drift:</p>
                 <div class="metric-grid">
                     <div class="metric-card">
                         <h4>Circuit Breaker</h4>
-                        <p class="node-desc">Every test/command failure is logged to <code>harness-telemetry.md</code> as an <code>OBS-NNN</code> observation. After <strong>2 consecutive failures</strong> on the same task, the agent is locked out of <code>Implementation</code> and forced back to <code>/spec-plan</code> to rethink the approach — no blind guessing toward a passing test.</p>
+                        <p class="node-desc">Every test/command failure is logged to <code>harness-telemetry.md</code>
+                            as an <code>OBS-NNN</code> observation. After <strong>2 consecutive failures</strong> on the
+                            same task, the agent is locked out of <code>Implementation</code> and forced back to
+                            <code>/spec-plan</code> to rethink the approach — no blind guessing toward a passing test.
+                        </p>
                     </div>
                     <div class="metric-card">
                         <h4>100% Traceability</h4>
-                        <p class="node-desc">Every acceptance criterion in <code>spec.md</code> must map to a task in <code>tasks.md</code>, and every task must have a recorded passing terminal command. <strong>One requirement without proof → the build fails.</strong></p>
+                        <p class="node-desc">Every acceptance criterion in <code>spec.md</code> must map to a task in
+                            <code>tasks.md</code>, and every task must have a recorded passing terminal command.
+                            <strong>One requirement without proof → the build fails.</strong></p>
                     </div>
                     <div class="metric-card">
                         <h4>Three-Track Memory</h4>
-                        <p class="node-desc">Instead of dumping the entire codebase into context, the kit loads only what's needed: <strong>Instruction tier</strong> (absolute constitutional rules), <strong>Auto tier</strong> (what approaches failed and why), <strong>Extracted tier</strong> (durable lessons promoted at session end).</p>
+                        <p class="node-desc">Instead of dumping the entire codebase into context, the kit loads only
+                            what's needed: <strong>Instruction tier</strong> (absolute constitutional rules),
+                            <strong>Auto tier</strong> (what approaches failed and why), <strong>Extracted tier</strong>
+                            (durable lessons promoted at session end).</p>
                     </div>
                     <div class="metric-card">
                         <h4>Subagent Parallelization</h4>
-                        <p class="node-desc">During planning, independent non-blocking components are flagged with <code>[P]</code>. The master agent spawns isolated subagents to build these in parallel, merging results through mechanical gates.</p>
+                        <p class="node-desc">During planning, independent non-blocking components are flagged with
+                            <code>[P]</code>. The master agent spawns isolated subagents to build these in parallel,
+                            merging results through mechanical gates.</p>
                     </div>
                 </div>
             </div>
@@ -671,7 +685,7 @@
                 <div class="gate-stack">
                     <div class="gate-layer constitution">
                         Constitution
-                        <small>core-policies.md · ADR log · docs/rules/ · security</small>
+                        <small>core-policies.md · ADR log · core-zero/rules/ · security</small>
                     </div>
                     <span class="gate-arrow"></span>
                     <div class="gate-layer spec">
@@ -721,17 +735,24 @@
 
             <div class="section-card">
                 <h3>The CoreZero Stack</h3>
-                <p class="node-desc">The harness combines an execution engine (skills + scripts) that does the work and a data stack (6 layers) that it reads and writes. Each data layer describes what it <em>contains</em> and how the agent <em>loads</em> it into context.</p>
+                <p class="node-desc">The harness combines an execution engine (skills + scripts) that does the work and
+                    a data stack (6 layers) that it reads and writes. Each data layer describes what it
+                    <em>contains</em> and how the agent <em>loads</em> it into context.</p>
 
                 <h4 style="margin-top: var(--space-8); color: var(--accent);">Execution Engine</h4>
                 <div class="arch-grid" style="margin-bottom: var(--space-8);">
                     <div class="arch-card">
                         <h4>Skill Layer</h4>
-                        <p class="node-desc"><code>skills/&lt;name&gt;/SKILL.md</code> — 17 self-contained behavioral specs. Each defines: overview, workflow steps, stop conditions, core rules, red flags, verification criteria. References under <code>references/</code> load on demand.</p>
+                        <p class="node-desc"><code>skills/&lt;name&gt;/SKILL.md</code> — 17 self-contained behavioral
+                            specs. Each defines: overview, workflow steps, stop conditions, core rules, red flags,
+                            verification criteria. References under <code>references/</code> load on demand.</p>
                     </div>
                     <div class="arch-card">
                         <h4>Harness Layer</h4>
-                        <p class="node-desc"><code>scripts/</code> — mechanical gates (<code>gate-runner.sh</code>, <code>phase-gate.sh</code>), telemetry (<code>telemetry-collector.sh</code>), Python context engine (<code>context_engine.py</code>), and <code>doctor.sh</code>. Governs the runtime environment.</p>
+                        <p class="node-desc"><code>scripts/</code> — mechanical gates (<code>gate-runner.sh</code>,
+                            <code>phase-gate.sh</code>), telemetry (<code>telemetry-collector.sh</code>), Python context
+                            engine (<code>context_engine.py</code>), and <code>doctor.sh</code>. Governs the runtime
+                            environment.</p>
                     </div>
                 </div>
 
@@ -741,7 +762,8 @@
                         <span class="tier-badge">LAYER 1</span>
                         <div class="tier-content">
                             <strong>Router &amp; Entrypoint</strong>
-                            <span><code>AGENTS.md</code>, <code>MASTER_INDEX.md</code>, skill registry, priority rules.</span>
+                            <span><code>AGENTS.md</code>, <code>MASTER_INDEX.md</code>, skill registry, priority
+                                rules.</span>
                         </div>
                         <div class="tier-load">Always loaded</div>
                     </div>
@@ -749,7 +771,8 @@
                         <span class="tier-badge">LAYER 2</span>
                         <div class="tier-content">
                             <strong>Constitution &amp; Policy</strong>
-                            <span><code>core-policies.md</code>, <code>docs/rules/</code>, <code>adr-log.md</code> — normative rules, constraints, architectural decisions.</span>
+                            <span><code>core-policies.md</code>, <code>core-zero/rules/</code>, <code>adr-log.md</code>
+                                — normative rules, constraints, architectural decisions.</span>
                         </div>
                         <div class="tier-load">Always / by-intent</div>
                     </div>
@@ -757,7 +780,9 @@
                         <span class="tier-badge">LAYER 3</span>
                         <div class="tier-content">
                             <strong>Knowledge &amp; Heuristics</strong>
-                            <span><code>project-knowledge-base.md</code>, <code>learned-heuristics.md</code>, <code>memories/domain/</code> — durable facts, patterns, evidence-backed instincts.</span>
+                            <span><code>project-knowledge-base.md</code>, <code>learned-heuristics.md</code>,
+                                <code>memories/domain/</code> — durable facts, patterns, evidence-backed
+                                instincts.</span>
                         </div>
                         <div class="tier-load">Loaded on keyword match</div>
                     </div>
@@ -765,7 +790,10 @@
                         <span class="tier-badge">LAYER 4</span>
                         <div class="tier-content">
                             <strong>Feature Artifacts</strong>
-                            <span><code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>, <code>review.md</code>, <code>status.md</code>, <code>handoff.md</code>, <code>session-extracts.md</code>, <code>testing-scenarios.md</code> for the active slug.</span>
+                            <span><code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>,
+                                <code>review.md</code>, <code>status.md</code>, <code>handoff.md</code>,
+                                <code>session-extracts.md</code>, <code>testing-scenarios.md</code> for the active
+                                slug.</span>
                         </div>
                         <div class="tier-load">Loaded on active slug</div>
                     </div>
@@ -781,7 +809,8 @@
                         <span class="tier-badge">LAYER 6</span>
                         <div class="tier-content">
                             <strong>Transient &amp; Telemetry</strong>
-                            <span>Command output, test results, subagent reports, <code>harness-telemetry.md</code> — evicted or rotated at session boundary.</span>
+                            <span>Command output, test results, subagent reports, <code>harness-telemetry.md</code> —
+                                evicted or rotated at session boundary.</span>
                         </div>
                         <div class="tier-load">Session-only / by-debug</div>
                     </div>
@@ -793,7 +822,8 @@
                         aria-label="Six-layer data stack: router, constitution, knowledge, feature artifacts, raw code, transient and telemetry.">
                         <div class="mermaid-loading">Rendering corezero-context-assembly…</div>
                     </div>
-                    <figcaption class="kit-diagram-caption">Figure 4.0 &mdash; The CoreZero data stack. Bottom layers load every session; upper layers load by intent, on slug match, or just-in-time.</figcaption>
+                    <figcaption class="kit-diagram-caption">Figure 4.0 &mdash; The CoreZero data stack. Bottom layers
+                        load every session; upper layers load by intent, on slug match, or just-in-time.</figcaption>
                 </figure>
             </div>
 
@@ -870,9 +900,9 @@ scripts/
   render_template.py
   template_convert.py
   core/
-docs/policies/
+core-zero/policies/
   code-design.md
-docs/rules/
+core-zero/rules/
   *.md
 memories/repo/
   core-policies.md
@@ -887,11 +917,11 @@ memories/domain/
   anti-patterns.md
   boundaries.md
   spec.md
-docs/project/architecture.md
-docs/project/adr/
+core-zero/project/architecture.md
+core-zero/project/adr/
   index.md
   0001-example.md
-docs/generated/
+core-zero/generated/
   code-map.md
   dashboard.html
 artifacts/features/</code></pre>
@@ -1056,7 +1086,7 @@ artifacts/features/</code></pre>
                                 <td><strong>Instruction</strong></td>
                                 <td><code>core-policies.md</code>, <code>learned-heuristics.md</code>,
                                     <code>project-knowledge-base.md</code>, <code>adr-log.md</code>,
-                                    <code>memories/domain/*</code>, <code>docs/project/architecture.md</code>
+                                    <code>memories/domain/*</code>, <code>core-zero/project/architecture.md</code>
                                 </td>
                                 <td><code>/context-memory</code> + user</td>
                                 <td>Promoted from candidates; demoted via CC-* amendment, never silently deleted</td>
@@ -1102,7 +1132,7 @@ artifacts/features/</code></pre>
                     </div>
                     <div class="metric-card">
                         <strong>By Intent: Rules</strong>
-                        <p><code>docs/rules/*.md</code>, <code>docs/policies/code-design.md</code> &mdash; on
+                        <p><code>core-zero/rules/*.md</code>, <code>core-zero/policies/code-design.md</code> &mdash; on
                             <em>security, auth, simplicity, ponytail, refactor</em>.
                         </p>
                     </div>
@@ -1405,7 +1435,8 @@ artifacts/features/</code></pre>
                             Immutable after acceptance.</p>
                         <div class="artifacts-list"><span class="artifact-item"
                                 data-tooltip="Decision log">adr-log.md</span>
-                            <span class="artifact-item" data-tooltip="ADR document">docs/project/adr/NNN-slug.md</span>
+                            <span class="artifact-item"
+                                data-tooltip="ADR document">core-zero/project/adr/NNN-slug.md</span>
                         </div>
                         <p class="node-desc" style="font-size:12px; margin-top:8px;"><strong>Key rule:</strong> Always
                             include at least two options with pros/cons. Supersede, never delete.</p>
@@ -1799,7 +1830,7 @@ artifacts/features/</code></pre>
                 <pre><code>curl -fsSL https://raw.githubusercontent.com/thaihai-swe/CoreZero/main/kit/scripts/install.sh \
   | bash -s -- /path/to/your/project</code></pre>
                 <p class="node-desc">The installer copies <code>skills/</code>, <code>scripts/</code>,
-                    <code>docs/</code>,
+                    <code>core-zero/</code>,
                     and seeds the memory router and starter memory. It preserves existing <code>memories/repo/</code>
                     and
                     <code>artifacts/</code> content.
@@ -1992,12 +2023,12 @@ artifacts/features/</code></pre>
                             </tr>
                             <tr>
                                 <td><code>api-document-template.md</code></td>
-                                <td><code>skills/technical-docs/references/</code></td>
+                                <td><code>skills/technical-core-zero/references/</code></td>
                                 <td><code>/technical-docs --mode api</code></td>
                             </tr>
                             <tr>
                                 <td><code>flow-document-template.md</code></td>
-                                <td><code>skills/technical-docs/references/</code></td>
+                                <td><code>skills/technical-core-zero/references/</code></td>
                                 <td><code>/technical-docs --mode flow</code></td>
                             </tr>
                             <tr>
@@ -2008,7 +2039,8 @@ artifacts/features/</code></pre>
                         </tbody>
                     </table>
                 </div>
-                <p class="node-desc">Project templates live in <code>docs/project/</code> and are seeded during install:
+                <p class="node-desc">Project templates live in <code>core-zero/project/</code> and are seeded during
+                    install:
                 </p>
                 <div class="table-wrapper">
                     <table>
@@ -2205,7 +2237,7 @@ artifacts/features/</code></pre>
                     <li><code>documents/diagrams/</code> &mdash; update affected .mmd files</li>
                     <li><code>kit/scripts/harness/doctor.sh</code> &mdash; add new checks if manifest structure changed
                     </li>
-                    <li>Adopter-facing docs (<code>kit/docs/</code>) &mdash; update if API or config changed</li>
+                    <li>Adopter-facing docs (<code>kit/core-zero/</code>) &mdash; update if API or config changed</li>
                 </ul>
             </div>
 

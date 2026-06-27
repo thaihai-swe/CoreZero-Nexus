@@ -16,7 +16,7 @@ flowchart TD
         CONST[core-policies.md<br/>Normative rules, boundaries & config]
         PKB[project-knowledge-base.md<br/>Patterns, watchouts]
         HEUR[learned-heuristics.md<br/>Evidence-backed instincts]
-        ARCH[docs/project/architecture.md<br/>System structure]
+        ARCH[core-zero/project/architecture.md<br/>System structure]
     end
 
     subgraph AUTO["Auto Tier — Failure-Driven, Append-Only"]
@@ -78,7 +78,7 @@ flowchart TD
 | `core-policies.md` | Normative | Repo-wide constitutional rules (CC-*), security policy, memory promotion thresholds | Rare — when policy changes |
 | `project-knowledge-base.md` | Descriptive | Durable facts, patterns, conventions | As project evolves |
 | `learned-heuristics.md` | Descriptive | Evidence-backed execution patterns | After repeated observations |
-| `docs/project/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
+| `core-zero/project/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
 
 ### Auto Tier — Failure-Driven, Append-Only
 
@@ -116,7 +116,7 @@ When a finding emerges from analysis, implementation, or review:
    - Repo-wide or security/permission rule → `core-policies.md`
    - Repeated execution pattern (2+ features) → `learned-heuristics.md`
    - Durable fact or convention → `project-knowledge-base.md`
-   - Structural map → `docs/project/architecture.md`
+   - Structural map → `core-zero/project/architecture.md`
    - Still local → Keep in `artifacts/features/<slug>/`
 
 ### Extraction Triage
@@ -156,7 +156,7 @@ Each heuristic has:
 - **Heuristic:** What to do
 - **Evidence:** What proved this works
 - **Recurrence count:** Tracks how many times a heuristic has been repeatedly observed.
-- **Semantic links:** Standard markdown links forming a **Semantic Knowledge Graph** tying the heuristic to `docs/project/architecture.md` or domain specs.
+- **Semantic links:** Standard markdown links forming a **Semantic Knowledge Graph** tying the heuristic to `core-zero/project/architecture.md` or domain specs.
 - **Confidence:** High / Medium / Low
 - **Review date:** When to re-evaluate
 
@@ -258,7 +258,7 @@ sequenceDiagram
 
 ## Skill Write Access
 
-Files under `memories/`, `docs/project/`, and `docs/policies/` are updated by different skills depending on their tier. Below is the mapping against the actual shipped manifest.
+Files under `memories/`, `core-zero/project/`, and `core-zero/policies/` are updated by different skills depending on their tier. Below is the mapping against the actual shipped manifest.
 
 ### Memory Files (`memories/repo/` — all `copyIfMissing`)
 
@@ -281,7 +281,7 @@ Files under `memories/`, `docs/project/`, and `docs/policies/` are updated by di
 | `anti-patterns.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
 | `boundaries.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
 
-### Shipped Docs (`docs/project/` — all `copyIfMissing`)
+### Shipped Docs (`core-zero/project/` — all `copyIfMissing`)
 
 | File | Created By | Updated By |
 |------|-----------|------------|
@@ -293,14 +293,14 @@ Files under `memories/`, `docs/project/`, and `docs/policies/` are updated by di
 | `project-constraints.md` | `/starter-init` | Adopter |
 | `tech-stack.md` | `/starter-init` | Adopter |
 
-### Shipped Config (`docs/project/` — `overwrite`)
+### Shipped Config (`core-zero/project/` — `overwrite`)
 
 | File | Maintained By |
 |------|--------------|
 | `harness-config.yaml` | Kit-managed (overwrite on install) |
 | `spec-schema.json` | Kit-managed (overwrite on install) |
 
-### Kit-Managed Policy (`docs/policies/`)
+### Kit-Managed Policy (`core-zero/policies/`)
 
 | File | Maintained By |
 |------|--------------|
