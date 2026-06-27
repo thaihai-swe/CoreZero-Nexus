@@ -36,10 +36,10 @@ Use only the sections that materially help the investigation.
 
 Formalize the investigation using the diagnose loop.
 
-1. **Reproduce:** How was the failure triggered? (Link to reproduction script/evidence)
-2. **Hypothesize:** What are the suspected causes?
-3. **Instrument/Observe:** What tools or logs were used to narrow the cause?
-4. **Conclusion:** What was the confirmed root cause?
+1. *Reproduce:* How was the failure triggered? (Link to reproduction script/evidence)
+2. *Hypothesize:* What are the suspected causes?
+3. *Instrument/Observe:* What tools or logs were used to narrow the cause?
+4. *Conclusion:* What was the confirmed root cause?
 
 ## Reproduction Evidence
 

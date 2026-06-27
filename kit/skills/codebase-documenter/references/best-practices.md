@@ -31,32 +31,32 @@ This reference provides guidelines for creating high-quality, maintainable docum
 ## Structure Guidelines
 
 ### README.md
-**Purpose**: Entry point for new developers
+*Purpose*: Entry point for new developers
 
-**Must Include**:
+*Must Include*:
 - One-sentence project description
 - Quick start instructions that work
 - Link to detailed documentation
 - How to get help
 
-**Keep It Short**: 200-400 lines max
+*Keep It Short*: 200-400 lines max
 
 ### ARCHITECTURE.md
-**Purpose**: Explain system design and decisions
+*Purpose*: Explain system design and decisions
 
-**Must Include**:
+*Must Include*:
 - High-level architecture diagram
 - Design principles and patterns
 - Component responsibilities
 - Data flow diagrams
 - Key architectural decisions (with rationale)
 
-**Avoid**: Implementation details (those go in COMPONENTS.md)
+*Avoid*: Implementation details (those go in COMPONENTS.md)
 
 ### DEVELOPMENT.md
-**Purpose**: Get developers productive quickly
+*Purpose*: Get developers productive quickly
 
-**Must Include**:
+*Must Include*:
 - Prerequisites (with versions)
 - Step-by-step setup instructions
 - How to run tests
@@ -64,12 +64,12 @@ This reference provides guidelines for creating high-quality, maintainable docum
 - Common issues and solutions
 - Development workflow
 
-**Test It**: Have someone follow the instructions on a fresh machine
+*Test It*: Have someone follow the instructions on a fresh machine
 
 ### API.md
-**Purpose**: Document all API endpoints
+*Purpose*: Document all API endpoints
 
-**Must Include**:
+*Must Include*:
 - Endpoint list with descriptions
 - Request/response formats
 - Authentication requirements
@@ -77,7 +77,7 @@ This reference provides guidelines for creating high-quality, maintainable docum
 - Rate limiting
 - Examples using curl or similar
 
-**Format**: Consistent structure for each endpoint
+*Format*: Consistent structure for each endpoint
 
 ## Code Examples
 
@@ -87,11 +87,11 @@ This reference provides guidelines for creating high-quality, maintainable docum
 // Validates JWT token and attaches user to request
 async function authenticateToken(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
-  
+
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
   }
-  
+
   try {
     const user = await jwt.verify(token, process.env.JWT_SECRET);
     req.user = user;
@@ -102,7 +102,7 @@ async function authenticateToken(req, res, next) {
 }
 ```
 
-**Why It's Good**:
+*Why It's Good*:
 - Shows actual code from the codebase
 - Includes file:line reference
 - Has a clear comment explaining purpose
@@ -116,7 +116,7 @@ function auth(req, res, next) {
 }
 ```
 
-**Why It's Bad**:
+*Why It's Bad*:
 - No file reference
 - Placeholder instead of real code
 - No explanation of how it works
@@ -125,11 +125,11 @@ function auth(req, res, next) {
 ## Diagram Guidelines
 
 ### When to Use Diagrams
-- **Architecture**: Always use diagrams for system architecture
-- **Data Flow**: Use for complex data transformations
-- **Sequences**: Use for multi-step processes
-- **State**: Use for state machines or workflows
-- **Relationships**: Use for entity relationships
+- *Architecture*: Always use diagrams for system architecture
+- *Data Flow*: Use for complex data transformations
+- *Sequences*: Use for multi-step processes
+- *State*: Use for state machines or workflows
+- *Relationships*: Use for entity relationships
 
 ### When NOT to Use Diagrams
 - Simple linear processes (use a list)
@@ -147,45 +147,45 @@ function auth(req, res, next) {
 ## Common Mistakes
 
 ### Mistake 1: Documentation Rot
-**Problem**: Docs become outdated as code changes
+*Problem*: Docs become outdated as code changes
 
-**Solution**:
+*Solution*:
 - Link docs to code reviews (require doc updates)
 - Date-stamp documentation
 - Regular doc review cycles
 - Automated checks for broken links
 
 ### Mistake 2: Too Much Detail
-**Problem**: Docs read like code listings
+*Problem*: Docs read like code listings
 
-**Solution**:
+*Solution*:
 - Focus on "why" not "what"
 - Use diagrams for structure
 - Link to code instead of copying it
 - Summarize, don't transcribe
 
 ### Mistake 3: Missing Context
-**Problem**: Assumes reader knows background
+*Problem*: Assumes reader knows background
 
-**Solution**:
+*Solution*:
 - Explain architectural decisions
 - Document gotchas and edge cases
 - Include "why we chose X over Y"
 - Link to related concepts
 
 ### Mistake 4: Inconsistent Terminology
-**Problem**: Same concept called different names
+*Problem*: Same concept called different names
 
-**Solution**:
+*Solution*:
 - Create a glossary
 - Use project dictionary from `memories/repo/`
 - Be consistent across all docs
 - Define terms on first use
 
 ### Mistake 5: Untested Instructions
-**Problem**: Setup instructions don't work
+*Problem*: Setup instructions don't work
 
-**Solution**:
+*Solution*:
 - Test on a fresh machine
 - Include exact commands
 - Specify versions
@@ -273,11 +273,11 @@ function auth(req, res, next) {
 ## Tools and Automation
 
 ### Useful Tools
-- **Linters**: markdownlint, write-good
-- **Link Checkers**: markdown-link-check
-- **Diagram Tools**: Mermaid, PlantUML
-- **API Docs**: Swagger/OpenAPI, JSDoc
-- **Static Site Generators**: Docusaurus, MkDocs
+- *Linters*: markdownlint, write-good
+- *Link Checkers*: markdown-link-check
+- *Diagram Tools*: Mermaid, PlantUML
+- *API Docs*: Swagger/OpenAPI, JSDoc
+- *Static Site Generators*: Docusaurus, MkDocs
 
 ### Automation Opportunities
 - Generate API docs from code

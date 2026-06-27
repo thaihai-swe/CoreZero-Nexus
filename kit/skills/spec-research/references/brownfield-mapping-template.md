@@ -8,19 +8,19 @@ This template doubles as the kit's brownfield readiness artifact for the first s
 
 ---
 
-## Metadata
+# Metadata
 
 - Repository:
 - Mapped by:
 - Date:
 - Confidence: High | Medium | Low
 
-## Scope
+# Scope
 
 - What is being mapped:
 - What is explicitly out of scope:
 
-## Entry Points
+# Entry Points
 
 List all primary entry points into the system.
 
@@ -28,7 +28,7 @@ List all primary entry points into the system.
 |---|---|---|---|
 | | CLI / HTTP / Queue / Cron | | |
 
-## Major Boundaries
+# Major Boundaries
 
 Map the major subsystem boundaries. For each, note what it owns, what it depends on, and what must not change.
 
@@ -36,7 +36,7 @@ Map the major subsystem boundaries. For each, note what it owns, what it depends
 |---|---|---|---|---|
 | | | | | Low / Medium / High |
 
-## Test Coverage State
+# Test Coverage State
 
 - Test runner: `[command]`
 - Current pass rate: `[X/Y tests passing]`
@@ -45,7 +45,7 @@ Map the major subsystem boundaries. For each, note what it owns, what it depends
 - Areas with no test coverage:
 - Areas with strong coverage:
 
-## Known Fragile Areas
+# Known Fragile Areas
 
 List subsystems, files, or integrations that are risky to touch.
 
@@ -53,7 +53,7 @@ List subsystems, files, or integrations that are risky to touch.
 |---|---|---|---|
 | | | | |
 
-## Brownfield Risk Register
+# Brownfield Risk Register
 
 List the highest-risk areas that could cause regressions or stalled delivery during the first feature.
 
@@ -61,7 +61,7 @@ List the highest-risk areas that could cause regressions or stalled delivery dur
 |---|---|---|---|
 | | | | |
 
-## Preserved Behavior Inventory
+# Preserved Behavior Inventory
 
 List behaviors that must not change regardless of what feature work is done. These become brownfield constraints in downstream specs and plans.
 
@@ -69,7 +69,7 @@ List behaviors that must not change regardless of what feature work is done. The
 |---|---|---|---|
 | | | | |
 
-## Existing Patterns To Reuse
+# Existing Patterns To Reuse
 
 List coding patterns, conventions, or utilities already in the codebase that new work should follow rather than reinvent.
 
@@ -77,20 +77,20 @@ List coding patterns, conventions, or utilities already in the codebase that new
 |---|---|---|
 | | | |
 
-## Migration Constraints
+# Migration Constraints
 
 - Existing migrations or data contracts to preserve:
 - Rollback limits:
 - Compatibility promises:
 
-## Security And Permission Watchouts
+# Security And Permission Watchouts
 
 - Auth/session handling location:
 - Secret or credential handling:
 - Known security-sensitive paths:
 - Prompt-injection or external-input surfaces:
 
-## Recommended First-Touch Surface
+# Recommended First-Touch Surface
 
 Based on the map above, what is the safest, smallest area to start feature work?
 
@@ -99,7 +99,7 @@ Based on the map above, what is the safest, smallest area to start feature work?
 - What to avoid until later:
 - Suggested first `spec-research` investigation target:
 
-## Open Questions
+# Open Questions
 
 - Q-001 Question:
   Why unresolved:

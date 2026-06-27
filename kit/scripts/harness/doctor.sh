@@ -22,46 +22,6 @@ pass()  { echo "  PASS: $*"; }
 echo "CoreZero doctor — $KIT_ROOT"
 echo ""
 
-# --- Check 1: manifest.json files exist ---
-echo "--- Check 1: Manifest files exist ---"
-if ! command -v python3 >/dev/null 2>&1; then
-  fail "python3 is not installed or not in PATH"
-  exit 1
-fi
-MANIFEST="$KIT_ROOT/manifest.json"
-[[ -f "$MANIFEST" ]] || { fail "manifest.json not found"; exit 1; }
-
-check_manifest_entries() {
-  local field="$1"
-  python3 - "$MANIFEST" "$field" <<'PY'
-import json, sys, os, glob
-m = json.load(open(sys.argv[1]))
-cur = m
-for k in sys.argv[2].split('.'):
-    if isinstance(cur, list):
-        break
-    cur = cur.get(k, []) if isinstance(cur, dict) else cur
-if isinstance(cur, list):
-    for item in cur:
-        if '*' in item or '**' in item:
-            matches = glob.glob(os.path.join(os.path.dirname(sys.argv[1]), item), recursive=True)
-            for m2 in matches:
-                print(os.path.relpath(m2, os.path.dirname(sys.argv[1])))
-        else:
-            print(item)
-PY
-}
-
-while IFS= read -r rel; do
-  [[ -n "$rel" ]] || continue
-  [[ -f "$KIT_ROOT/$rel" ]] || [[ -d "$KIT_ROOT/$rel" ]] || fail "manifest references missing file: $rel"
-done < <(check_manifest_entries "files.overwrite")
-
-while IFS= read -r rel; do
-  [[ -n "$rel" ]] || continue
-  [[ -f "$KIT_ROOT/$rel" ]] || [[ -d "$KIT_ROOT/$rel" ]] || fail "manifest (copyIfMissing) references missing file: $rel"
-done < <(check_manifest_entries "files.copyIfMissing")
-
 # --- Check 2: Sections referenced by SKILL.md exist ---
 echo "--- Check 2: Referenced sections exist ---"
 

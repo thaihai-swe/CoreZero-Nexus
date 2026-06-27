@@ -22,10 +22,10 @@ A canned prompt for stepping up a level of abstraction when research is too deep
 
 ## Rules
 
-- **Vocabulary discipline:** Use glossary terms when they exist. Coining new names for existing concepts is a research smell.
-- **One-screen ceiling:** If the map does not fit on one screen, the abstraction is still too low.
-- **Cite, don't invent:** Every module named in the map must be backed by a real path. Inferred boundaries should be marked as inferred.
-- **Pair with a decision:** A zoom-out is a means, not the end. Name the decision the map should unblock.
+- *Vocabulary discipline:* Use glossary terms when they exist. Coining new names for existing concepts is a research smell.
+- *One-screen ceiling:* If the map does not fit on one screen, the abstraction is still too low.
+- *Cite, don't invent:* Every module named in the map must be backed by a real path. Inferred boundaries should be marked as inferred.
+- *Pair with a decision:* A zoom-out is a means, not the end. Name the decision the map should unblock.
 
 ## Anti-Patterns
 
