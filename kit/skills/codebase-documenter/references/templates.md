@@ -37,7 +37,7 @@ graph TD
 
 ## Key Features
 
-- **Feature 1**: [description]
+- Feature 1: [description]
 
 ## Documentation
 
@@ -59,7 +59,7 @@ graph TD
 
 ## Design Principles
 
-1. **[Principle]**: [explanation]
+1. [Principle]: [explanation]
 
 ## Architecture Diagram
 
@@ -88,7 +88,7 @@ graph TB
 
 ## Decisions
 
-- **[Decision]**: [Rationale]. See [ADR](./decisions/).
+- [Decision]: [Rationale]. See [ADR](./decisions/).
 ```
 
 ## COMPONENTS.md
@@ -98,11 +98,11 @@ graph TB
 
 ## [Component Name]
 
-- **Path**: `src/path/`
-- **Responsibility**: [What it does]
-- **Public interface**: [Exports / API]
-- **Dependencies**: [Internal and external]
-- **Extension points**: [How to extend]
+- Path: `src/path/`
+- Responsibility: [What it does]
+- Public interface: [Exports / API]
+- Dependencies: [Internal and external]
+- Extension points: [How to extend]
 
 [Repeat per major component.]
 ```
@@ -114,15 +114,15 @@ graph TB
 
 ## Entity: [Name]
 
-- **Storage**: [Database table / collection]
-- **Schema**:
+- Storage: [Database table / collection]
+- Schema:
   | Field | Type | Notes |
   |---|---|---|
   | id | uuid | Primary key |
 
-- **Relationships**: [Links to other entities]
-- **Validation**: [Rules]
-- **Migrations**: [Notable changes]
+- Relationships: [Links to other entities]
+- Validation: [Rules]
+- Migrations: [Notable changes]
 ```
 
 ## DEVELOPMENT.md
@@ -150,7 +150,7 @@ graph TB
 
 ## Common Tasks
 
-- **[Task]**: [How to do it]
+- [Task]: [How to do it]
 ```
 
 ## API.md (if applicable)
@@ -166,17 +166,17 @@ graph TB
 
 ### `METHOD /path`
 
-- **Description**: [What it does]
-- **Auth**: [Required auth]
-- **Request**:
+- Description: [What it does]
+- Auth: [Required auth]
+- Request:
   \`\`\`json
   { "field": "value" }
   \`\`\`
-- **Response (200)**:
+- Response (200):
   \`\`\`json
   { "result": "..." }
   \`\`\`
-- **Errors**: [Common error responses]
+- Errors: [Common error responses]
 ```
 
 ## DEPLOYMENT.md

@@ -5,9 +5,9 @@ triggers: [example, sample, demo, template, walkthrough]
 
 # Domain — Glossary
 
-> **Ownership:** Collaborative — skill-updated + user-maintained.
-> **Updated by:** `/context-memory` post-ship sync when new terms emerge from a completed feature.
-> **Read by:** `/spec-requirements`, `/spec-plan`, `/spec-implement` to enforce consistent naming.
+> Ownership: Collaborative — skill-updated + user-maintained.
+> Updated by: `/context-memory` post-ship sync when new terms emerge from a completed feature.
+> Read by: `/spec-requirements`, `/spec-plan`, `/spec-implement` to enforce consistent naming.
 
 This is a worked example of a domain pack glossary. Replace with your domain's
 ubiquitous language. Add this domain to `MASTER_INDEX.md` under

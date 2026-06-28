@@ -3,8 +3,8 @@
 Agent memory is volatile across context windows and sessions. A robust harness relies on durable state stored in the file system.
 
 ## 1. Constitution vs. Knowledge Base
-*   **Constitution (`memories/repo/core-policies.md`)**: Contains normative, repo-wide rules (the "musts"). Examples: Security guardrails, mandatory formatting rules, quality gates.
-*   **Knowledge Base (`memories/repo/project-knowledge-base.md`)**: Contains descriptive facts (the "whats" and "hows"). Examples: Tech stack details, architecture boundaries, common conventions.
+*   Constitution (`memories/repo/core-policies.md`): Contains normative, repo-wide rules (the "musts"). Examples: Security guardrails, mandatory formatting rules, quality gates.
+*   Knowledge Base (`memories/repo/project-knowledge-base.md`): Contains descriptive facts (the "whats" and "hows"). Examples: Tech stack details, architecture boundaries, common conventions.
 
 ## 2. Session Progress Logs
 *   A `progress.md` file tracks what was done in a specific session.

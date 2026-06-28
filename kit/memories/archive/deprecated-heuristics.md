@@ -21,7 +21,7 @@ in recent feature work and may be revived if the pattern recurs.
   - repeated over-generation of boilerplate sections that the codebase never uses (e.g., full docstrings, empty method stubs, placeholder configs)
 - Confidence: High
 - Last reviewed: 2026-06-20
-- Original status: **[PROMOTED]** Added to `core-zero/policies/code-design.md`
+- Original status: [PROMOTED] Added to `core-zero/policies/code-design.md`
 - Archive date: 2026-06-25
 - Archive reason: Promoted to normative code-design.md rule; original heuristic superseded by normative requirement.
 
@@ -34,6 +34,6 @@ in recent feature work and may be revived if the pattern recurs.
   - features built without loading domain packs repeated patterns that were already captured in the pack, or violated boundary rules
 - Confidence: High
 - Last reviewed: 2026-06-20
-- Original status: **[PROMOTED]** Added as a MUST rule in `spec-requirements/SKILL.md`
+- Original status: [PROMOTED] Added as a MUST rule in `spec-requirements/SKILL.md`
 - Archive date: 2026-06-25
 - Archive reason: Promoted to normative spec-requirements SKILL.md rule; original heuristic superseded by MUST requirement.

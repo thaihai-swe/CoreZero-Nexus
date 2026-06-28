@@ -24,9 +24,9 @@ Required for Moderate and Complex when the feature has more than one user story.
 
 Group tasks into independently shippable slices. Each story slice must be:
 
-- **Independently testable** — its proving commands run without depending on later slices.
-- **Independently shippable** — releasing only this slice produces a useful, complete outcome.
-- **Priority-tagged** — `P1` ships first (MVP must-have), `P2` ships next, `P3` is follow-up.
+- Independently testable — its proving commands run without depending on later slices.
+- Independently shippable — releasing only this slice produces a useful, complete outcome.
+- Priority-tagged — `P1` ships first (MVP must-have), `P2` ships next, `P3` is follow-up.
 
 Cross-slice dependency rule: a `P2` task may depend on `P1` tasks; a `P3` task may depend on `P1` or `P2` tasks; never the reverse. Setup and Foundational phases are not stories — they have no priority lane and no `User story:` linkage.
 

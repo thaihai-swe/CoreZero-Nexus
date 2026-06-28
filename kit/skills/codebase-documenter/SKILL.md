@@ -17,9 +17,9 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ## When to Use (vs. Others)
 
-- **Use `/codebase-documenter`** for repo onboarding: setup, directories, build commands, and contributing guides.
-- **Use `/technical-docs --mode flow`** for event/transaction workflow narratives (2-5 core flows).
-- **Use `/technical-docs --mode api`** for HTTP route inputs and outputs.
+- Use `/codebase-documenter` for repo onboarding: setup, directories, build commands, and contributing guides.
+- Use `/technical-docs --mode flow` for event/transaction workflow narratives (2-5 core flows).
+- Use `/technical-docs --mode api` for HTTP route inputs and outputs.
 
 ## Read First
 
@@ -42,16 +42,16 @@ None (terminal — documentation is consumed by developers directly)
 
 ## Workflow
 
-1. **Scope & Depth**:
+1. Scope & Depth:
    - `Quick`: Produce `README.md` and `ARCHITECTURE.md` only. No component-level deep dives. Use when the user needs a fast orientation.
    - `Moderate` (default): All 6 output files (README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md). Moderate component depth.
    - `Deep`: All 6 files plus: inline code walkthrough for 2–3 key flows, test coverage map, and a runnable onboarding validation script. Use when new team members need hands-on depth.
 
    If the user does not specify, default to `Moderate`.
-2. **Explore**: Map folders, dependencies, and main entry points.
-3. **Trace**: Trace key execution flows through code to construct mental models.
-4. **Document**: Write separate Markdown pages using templates. Embed system architecture diagrams. Provide real code snippets with `file:line` references.
-5. **Verify**: Before finalizing:
+2. Explore: Map folders, dependencies, and main entry points.
+3. Trace: Trace key execution flows through code to construct mental models.
+4. Document: Write separate Markdown pages using templates. Embed system architecture diagrams. Provide real code snippets with `file:line` references.
+5. Verify: Before finalizing:
    - Run `grep -rI 'TODO\|PLACEHOLDER\|TBD' <output-dir>` — any hit is a verification failure. Fix or document it explicitly.
    - Confirm every command in `DEVELOPMENT.md` is syntactically valid shell. If a `Makefile` or `package.json` exists, cross-check command names against their definitions.
    - Confirm every directory listed in `ARCHITECTURE.md` or `COMPONENTS.md` matches the actual filesystem layout (`ls` or `find` to verify).

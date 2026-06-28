@@ -4,9 +4,9 @@ A short reference for refactor and architecture-shaping tasks. Loaded only when 
 
 ## Deep Modules
 
-A **deep module** has a small interface and lots of behavior behind it. The interface is what callers depend on; the implementation is everything they don't have to know about. The asymmetry is the point: depth = (behavior hidden) ÷ (interface exposed).
+A deep module has a small interface and lots of behavior behind it. The interface is what callers depend on; the implementation is everything they don't have to know about. The asymmetry is the point: depth = (behavior hidden) ÷ (interface exposed).
 
-A **shallow module** is the opposite — its interface is almost as wide as its implementation. Callers have to know nearly as much to use it as they would to inline the code.
+A shallow module is the opposite — its interface is almost as wide as its implementation. Callers have to know nearly as much to use it as they would to inline the code.
 
 Reach for depth when:
 
@@ -24,11 +24,11 @@ Reference: John Ousterhout, *A Philosophy of Software Design*. The kit doesn't r
 
 ## The Deletion Test
 
-Before adding (or keeping) an abstraction layer, ask: **if I deleted this module, would the complexity disappear, or just move?**
+Before adding (or keeping) an abstraction layer, ask: if I deleted this module, would the complexity disappear, or just move?
 
-- **Disappears (or shrinks):** The abstraction was earning its keep. Callers were genuinely simpler because of it.
-- **Moves to callers, ~unchanged in total:** The module was a renaming exercise. Each caller now does the same work the module did. You traded one place to read for many.
-- **Concentrates in one caller:** Probably fine — that caller is the only real consumer, and the abstraction was speculative.
+- Disappears (or shrinks): The abstraction was earning its keep. Callers were genuinely simpler because of it.
+- Moves to callers, ~unchanged in total: The module was a renaming exercise. Each caller now does the same work the module did. You traded one place to read for many.
+- Concentrates in one caller: Probably fine — that caller is the only real consumer, and the abstraction was speculative.
 
 Apply the deletion test when:
 

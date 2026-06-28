@@ -12,27 +12,27 @@ next_skill: ''
 ## Overview
 Record significant architectural decisions.
 ## When to Use
-- **Technology Choices:** Choosing between Kafka vs SQS, React vs Angular, etc.
-- **Design Trade-offs:** Documenting why a specific architectural pattern was chosen over another.
-- **System Proposals:** Reviewing and refining new component designs.
-- **Refactoring Decisions:** Documenting major structural changes and their rationale.
+- Technology Choices: Choosing between Kafka vs SQS, React vs Angular, etc.
+- Design Trade-offs: Documenting why a specific architectural pattern was chosen over another.
+- System Proposals: Reviewing and refining new component designs.
+- Refactoring Decisions: Documenting major structural changes and their rationale.
 ## I/O Hand-off Protocol
-- **Reads**: Codebase context, `core-zero/rules/ponytail.md`.
-- **Writes**: `core-zero/project/adr/[number]-[slug].md` (new file) and `memories/repo/adr-log.md` (append entry via Write Contract).
-- **Next Skill**: Return to previous skill (e.g., `/spec-plan` or `/spec-implement`).
+- Reads: Codebase context, `core-zero/rules/ponytail.md`.
+- Writes: `core-zero/project/adr/[number]-[slug].md` (new file) and `memories/repo/adr-log.md` (append entry via Write Contract).
+- Next Skill: Return to previous skill (e.g., `/spec-plan` or `/spec-implement`).
 
 ## Workflow
-1. **Identify Decision Needs**: Note when tech choices, structural shifts, design tradeoffs, or major refactorings require a durable architectural record.
-2. **Evaluate Alternatives**: Research and evaluate at least two options. Analyze them against complexity, cost, scalability, and team familiarity dimensions.
-3. **Draft Decision Record**: Author the ADR document under `core-zero/project/adr/[number]-[slug].md` using `references/adr-template.md` (or the lightweight format for minor decisions).
-4. **Append to Log Ledger**: Update `memories/repo/adr-log.md` by appending a structured entry using the format defined in `## Entry Template`.
-5. **Update Central Registry**: Add the decision to the index table in `core-zero/project/adr/index.md` to maintain cross-feature visibility.
+1. Identify Decision Needs: Note when tech choices, structural shifts, design tradeoffs, or major refactorings require a durable architectural record.
+2. Evaluate Alternatives: Research and evaluate at least two options. Analyze them against complexity, cost, scalability, and team familiarity dimensions.
+3. Draft Decision Record: Author the ADR document under `core-zero/project/adr/[number]-[slug].md` using `references/adr-template.md` (or the lightweight format for minor decisions).
+4. Append to Log Ledger: Update `memories/repo/adr-log.md` by appending a structured entry using the format defined in `## Entry Template`.
+5. Update Central Registry: Add the decision to the index table in `core-zero/project/adr/index.md` to maintain cross-feature visibility.
 
 ## Core Rules
-- **Comparative Analysis:** Always include at least two options with pros and cons.
-- **Traceability:** Link ADRs to `spec.md` when writing during the spec phase. Link to `plan.md` only when the planning phase has completed and the plan exists.
-- **Immutability:** Once "Accepted," ADRs should be superseded or deprecated, not deleted or significantly altered.
-- **Surgical Scope:** Focus on the architectural decision, not the implementation details.
+- Comparative Analysis: Always include at least two options with pros and cons.
+- Traceability: Link ADRs to `spec.md` when writing during the spec phase. Link to `plan.md` only when the planning phase has completed and the plan exists.
+- Immutability: Once "Accepted," ADRs should be superseded or deprecated, not deleted or significantly altered.
+- Surgical Scope: Focus on the architectural decision, not the implementation details.
 
 ## Read First
 

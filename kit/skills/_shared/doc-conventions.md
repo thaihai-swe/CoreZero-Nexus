@@ -4,13 +4,13 @@ Shared rules for the documentation skills (`technical-docs`, `codebase-documente
 
 ## Core Rules
 
-- **Document observed behavior only.** If the code and existing docs conflict, trust the code and note the conflict.
-- **No fabrication.** Do not invent file paths, sample payloads, enum values, status codes, configuration values, or behavior. If examples cannot be derived from source or trusted docs, say so.
-- **Build a mental model first.** A reader should understand the system without opening implementation files first.
-- **Reuse shared concepts.** Document a concept once and reference it; do not repeat the same explanation across sections.
-- **Name by role.** Components and actors are named by what they do, not by filename.
-- **Label uncertainty.** Mark assumptions, gaps, and open questions explicitly instead of guessing.
-- **Stop on missing fundamentals.** If you cannot determine the system boundary, primary entry points, or which routes are in scope, stop and ask.
+- Document observed behavior only. If the code and existing docs conflict, trust the code and note the conflict.
+- No fabrication. Do not invent file paths, sample payloads, enum values, status codes, configuration values, or behavior. If examples cannot be derived from source or trusted docs, say so.
+- Build a mental model first. A reader should understand the system without opening implementation files first.
+- Reuse shared concepts. Document a concept once and reference it; do not repeat the same explanation across sections.
+- Name by role. Components and actors are named by what they do, not by filename.
+- Label uncertainty. Mark assumptions, gaps, and open questions explicitly instead of guessing.
+- Stop on missing fundamentals. If you cannot determine the system boundary, primary entry points, or which routes are in scope, stop and ask.
 
 ## Output Rules
 
@@ -29,7 +29,7 @@ Each documentation skill saves to a canonical location. Do not deviate unless th
 | `/codebase-documenter` | *(always global)* | `core-zero/` root (`README.md`, `ARCHITECTURE.md`, etc.) |
 | `/visualize` | `artifacts/features/<slug>/diagrams/<name>.svg` or `.mmd` | `core-zero/generated/diagrams/<name>.svg` or `.mmd` |
 
-A **feature-scoped invocation** is one triggered from inside a feature lifecycle (i.e., a feature slug exists and is active in `status.md`). A **global invocation** is one triggered directly by the user with no active slug.
+A feature-scoped invocation is one triggered from inside a feature lifecycle (i.e., a feature slug exists and is active in `status.md`). A global invocation is one triggered directly by the user with no active slug.
 
 ## Verification (shared checks)
 

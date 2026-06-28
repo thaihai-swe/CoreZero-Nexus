@@ -17,9 +17,9 @@ This is a focused maintenance operation, not a feature workflow. It does not rou
 
 ## I/O Hand-off Protocol
 
-- **Reads**: Target oversized file from `memories/repo/` (or `core-zero/project/`).
-- **Writes**: Compacted version of the same file, in-place.
-- **Next Skill**: Done. If the target file was `core-policies.md`, run `/context-memory --audit` afterwards to confirm no stale references remain.
+- Reads: Target oversized file from `memories/repo/` (or `core-zero/project/`).
+- Writes: Compacted version of the same file, in-place.
+- Next Skill: Done. If the target file was `core-policies.md`, run `/context-memory --audit` afterwards to confirm no stale references remain.
 
 ## When to Use
 
@@ -27,7 +27,7 @@ This is a focused maintenance operation, not a feature workflow. It does not rou
 - `/context-memory --audit` flags a file as oversized.
 - The user explicitly requests compaction of a named file.
 
-**Do not invoke this skill for:**
+Do not invoke this skill for:
 - Routing or promoting new knowledge — use `/context-memory`.
 - Editing the content of rules or heuristics — use `/context-memory` or direct edit.
 - Files under 200 lines — compaction cannot reduce below a meaningful minimum.
@@ -66,14 +66,14 @@ Apply these techniques in order. Do not delete content — only condense present
 
 | Technique | What to do |
 |---|---|
-| **Paragraph → bullets** | Convert multi-sentence prose into tight bullet lists. |
-| **Merge overlapping entries** | If two heuristics or rules say the same thing from different angles, merge them into one entry. Update the `recurrence-count` to the sum. |
-| **Remove superseded content** | If a rule, heuristic, or note explicitly contradicts a newer entry in the same file, keep the newer one; remove the older. |
-| **Drop resolved examples** | Remove inline examples that duplicate what the rule states. Keep only examples that add genuine disambiguation. |
-| **Trim verbose preambles** | Section intros that restate the section header add no value. Remove them. |
-| **Compress history tables** | In `## Change Log` or `## Delta History` tables, collapse entries older than 1 month into a single `(N older entries archived)` row. |
+| Paragraph → bullets | Convert multi-sentence prose into tight bullet lists. |
+| Merge overlapping entries | If two heuristics or rules say the same thing from different angles, merge them into one entry. Update the `recurrence-count` to the sum. |
+| Remove superseded content | If a rule, heuristic, or note explicitly contradicts a newer entry in the same file, keep the newer one; remove the older. |
+| Drop resolved examples | Remove inline examples that duplicate what the rule states. Keep only examples that add genuine disambiguation. |
+| Trim verbose preambles | Section intros that restate the section header add no value. Remove them. |
+| Compress history tables | In `## Change Log` or `## Delta History` tables, collapse entries older than 1 month into a single `(N older entries archived)` row. |
 
-**Hard rules:**
+Hard rules:
 - Do NOT delete any CC-*, LH-*, INV-* identifier or its core constraint.
 - Do NOT remove `##` or `###` headers — only compress the body underneath.
 - Do NOT change the meaning of any rule, even when rewording.
@@ -89,18 +89,18 @@ diff /tmp/ids_before.txt /tmp/ids_after.txt
 wc -l <file>
 ```
 
-**Abort conditions — restore from `.bak` immediately if:**
+Abort conditions — restore from `.bak` immediately if:
 - Any identifier present in `ids_before.txt` is missing from `ids_after.txt`.
 - Line count increased (compaction made the file larger).
 - Line count reduction is less than 10% — the file was not meaningfully oversized; do not save.
 
-**On abort:** restore from `.bak`, report exactly which identifiers were lost and why, and stop.
+On abort: restore from `.bak`, report exactly which identifiers were lost and why, and stop.
 
 ### Step 5 — Confirm and Clean Up
 
 1. Report the before/after line count and reduction percentage to the user.
 2. List any identifiers that were merged (note: merged, not removed).
-3. **Wait for explicit user confirmation** before deleting the `.bak` file.
+3. Wait for explicit user confirmation before deleting the `.bak` file.
 4. On confirmation: `rm <file>.bak`.
 
 ## Target Files
@@ -117,11 +117,11 @@ This skill may compact any of the following files. All other files are outside s
 
 ## Core Rules
 
-- **No data loss**: Compaction reduces word count, not intent.
-- **Safety protocol is mandatory**: Never compact without the pre/post snapshot.
-- **Target 30–50% reduction**: Less than 10% means the file wasn't ready; more than 60% suggests content was deleted, not compacted.
-- **One file at a time**: Do not compact multiple files in a single pass. Run the full workflow per file.
-- **Never self-promote**: If compaction reveals the file should be split, not compacted, stop and propose a promotion instead of proceeding.
+- No data loss: Compaction reduces word count, not intent.
+- Safety protocol is mandatory: Never compact without the pre/post snapshot.
+- Target 30–50% reduction: Less than 10% means the file wasn't ready; more than 60% suggests content was deleted, not compacted.
+- One file at a time: Do not compact multiple files in a single pass. Run the full workflow per file.
+- Never self-promote: If compaction reveals the file should be split, not compacted, stop and propose a promotion instead of proceeding.
 
 ## Verification Checklist
 

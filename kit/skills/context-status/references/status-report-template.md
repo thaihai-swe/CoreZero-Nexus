@@ -21,19 +21,19 @@ Total Features: [N]
 
 ## Phase Definitions
 
-- **Init** — Repository bootstrapped, harness initialized
-- **Researching** — Investigating existing behavior or brownfield state
-- **Spec'ing** — Defining requirements and acceptance criteria
-- **Planning** — Designing solution and breaking into tasks
-- **Implementing** — Executing tasks, building code
-- **Verifying** — Running mechanical gate, alignment audit, security check
-- **Done** — Feature complete, verified, ready for merge
+- Init — Repository bootstrapped, harness initialized
+- Researching — Investigating existing behavior or brownfield state
+- Spec'ing — Defining requirements and acceptance criteria
+- Planning — Designing solution and breaking into tasks
+- Implementing — Executing tasks, building code
+- Verifying — Running mechanical gate, alignment audit, security check
+- Done — Feature complete, verified, ready for merge
 
 ## Profile Definitions
 
-- **Simple** — Small, reversible, low-risk (1–2 hours)
-- **Moderate** — Clear feature or bug-fix (4–8 hours)
-- **Complex** — Ambiguity, cross-boundary, risky (1–2 days)
+- Simple — Small, reversible, low-risk (1–2 hours)
+- Moderate — Clear feature or bug-fix (4–8 hours)
+- Complex — Ambiguity, cross-boundary, risky (1–2 days)
 
 ## Blocker Format
 
@@ -42,12 +42,12 @@ When a feature has blockers, expand the summary table with a "Blockers" section:
 ```
 ### Blockers
 
-**Feature: `<slug>`**
-- **Blocker:** [Description]
-- **Reason:** [Why it's blocked]
-- **Unblocks:** [What happens when resolved]
-- **Owner:** [Who can unblock]
-- **ETA:** [When expected to resolve]
+Feature: `<slug>`
+- Blocker: [Description]
+- Reason: [Why it's blocked]
+- Unblocks: [What happens when resolved]
+- Owner: [Who can unblock]
+- ETA: [When expected to resolve]
 ```
 
 ## Next-Step Guidance
@@ -82,18 +82,18 @@ Total Features: 3
 
 ## Blockers
 
-**Feature: `password-reset`**
-- **Blocker:** Product team hasn't decided on email provider (SendGrid vs AWS SES)
-- **Reason:** Affects spec acceptance criteria for email delivery SLA
-- **Unblocks:** Can finalize spec and move to planning
-- **Owner:** Product Manager
-- **ETA:** 2026-05-30
+Feature: `password-reset`
+- Blocker: Product team hasn't decided on email provider (SendGrid vs AWS SES)
+- Reason: Affects spec acceptance criteria for email delivery SLA
+- Unblocks: Can finalize spec and move to planning
+- Owner: Product Manager
+- ETA: 2026-05-30
 
 ## Recommendations
 
-1. **Unblock `password-reset`** — Follow up with product on email provider decision
-2. **Continue `oauth-integration`** — On track, no blockers
-3. **Archive `user-auth`** — Complete and verified, ready for merge
+1. Unblock `password-reset` — Follow up with product on email provider decision
+2. Continue `oauth-integration` — On track, no blockers
+3. Archive `user-auth` — Complete and verified, ready for merge
 ```
 
 ## Output Rules

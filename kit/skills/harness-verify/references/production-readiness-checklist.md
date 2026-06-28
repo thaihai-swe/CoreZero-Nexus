@@ -87,7 +87,7 @@ Verify that a feature is not just functionally correct but operationally ready f
 | Operational | [Pass \| Fail] | |
 | Documentation | [Pass \| Fail] | |
 
-**Overall:** [Ready for Production | Blocked — see notes]
+Overall: [Ready for Production | Blocked — see notes]
 
 ## When to Use
 

@@ -74,17 +74,17 @@
 ## Delivery Loop Lifecycle
 
 Every feature lifecycle follows the canonical 7-Phase Delivery Loop:
-1. **Bootstrap**: Environment setup via `/starter-init`.
-2. **Session START**: Active feature boundaries setup via `/context-session START`.
-3. **Requirements Intake**: Defining and locking spec checks via `/spec-requirements`.
-4. **Planning**: Creating implementation task lists and proofs via `/spec-plan`.
-5. **Implementation**: Coding, task proof validation, and context eviction via `/spec-implement`.
-6. **Verification**: Mechanical verification gates, alignment audits, and review via `/harness-verify`.
-7. **Memory Sync**: Post-ship promotion and session close via `/context-memory` and `/context-session END`.
+1. Bootstrap: Environment setup via `/starter-init`.
+2. Session START: Active feature boundaries setup via `/context-session START`.
+3. Requirements Intake: Defining and locking spec checks via `/spec-requirements`.
+4. Planning: Creating implementation task lists and proofs via `/spec-plan`.
+5. Implementation: Coding, task proof validation, and context eviction via `/spec-implement`.
+6. Verification: Mechanical verification gates, alignment audits, and review via `/harness-verify`.
+7. Memory Sync: Post-ship promotion and session close via `/context-memory` and `/context-session END`.
 
 ## Known Limits & Workarounds
 
-- **Observability log:** Empty until real failures get captured. Expect entries once features run end-to-end.
-- **Session extracts:** Only exist per-feature; expect them to populate as features run `/context-session END`.
-- **Mermaid rendering:** `visualize` ships in the package, but Mermaid-to-SVG rendering still depends on optional `mmdc` (CLI tool). Structural Mermaid validation works without it.
-- **Adversarial spec review:** Recommended for cross-cutting or high-risk work but not yet a separate skill.
+- Observability log: Empty until real failures get captured. Expect entries once features run end-to-end.
+- Session extracts: Only exist per-feature; expect them to populate as features run `/context-session END`.
+- Mermaid rendering: `visualize` ships in the package, but Mermaid-to-SVG rendering still depends on optional `mmdc` (CLI tool). Structural Mermaid validation works without it.
+- Adversarial spec review: Recommended for cross-cutting or high-risk work but not yet a separate skill.

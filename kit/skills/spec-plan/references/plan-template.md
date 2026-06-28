@@ -13,20 +13,20 @@
 
 ## Part 1: Technical Design
 
-> **Design depth guide:** Use the **Lightweight Design** format for simple, self-contained changes. Use the **Comprehensive Design** format for features introducing new architecture, data flows, external integrations, or cross-cutting changes. Delete the section you do not use.
+> Design depth guide: Use the Lightweight Design format for simple, self-contained changes. Use the Comprehensive Design format for features introducing new architecture, data flows, external integrations, or cross-cutting changes. Delete the section you do not use.
 
 ### [Option A] Lightweight Design
-- **Approach:** Describe in 3–5 sentences what changes, where it lives, and the patterns it follows.
-- **Key Decision:** What is the primary technical choice and why? (one line)
+- Approach: Describe in 3–5 sentences what changes, where it lives, and the patterns it follows.
+- Key Decision: What is the primary technical choice and why? (one line)
 
 ### [Option B] Comprehensive Design
-- **Design Summary:** Describe the technical shape of the solution in a few sentences.
-- **Current State:** Baseline, repository patterns, and brownfield constraints.
-- **Proposed Architecture:** Major components, responsibilities, and interaction models.
-- **Data Flow & Interfaces:** Inputs, data transformations, and storage changes.
-- **Key Decisions & Tradeoffs:** List major decisions, why they were chosen, and what tradeoffs were made.
-- **Non-Functional Considerations:** Performance, reliability, security.
-- **Protected Behavior:** What existing behavior must be preserved during this change?
+- Design Summary: Describe the technical shape of the solution in a few sentences.
+- Current State: Baseline, repository patterns, and brownfield constraints.
+- Proposed Architecture: Major components, responsibilities, and interaction models.
+- Data Flow & Interfaces: Inputs, data transformations, and storage changes.
+- Key Decisions & Tradeoffs: List major decisions, why they were chosen, and what tradeoffs were made.
+- Non-Functional Considerations: Performance, reliability, security.
+- Protected Behavior: What existing behavior must be preserved during this change?
 
 ---
 

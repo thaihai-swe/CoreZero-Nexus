@@ -2,12 +2,12 @@
 
 ## Index
 
-- **CC-001 to CC-012** — Normative rules (skill contracts, evidence, unknowns, permissions, surgical updates, spec truth, alignment, handoff, promotion, domain vs. normative, MVC, spec mutation logging)
-- **Release Guardrails** — manifest/dry-run checks before shipping
-- **Amendment Rules** — how to add or refine CC-* rules
-- **Memory Promotion Thresholds** — canonical line-count ladder
-- **Active Session Limits & FinOps Guardrails** — session budgets, amnesia thresholds
-- **Security Policy** — trust boundaries, permission tiers, sandbox rules, prompt-injection defense, validation
+- CC-001 to CC-012 — Normative rules (skill contracts, evidence, unknowns, permissions, surgical updates, spec truth, alignment, handoff, promotion, domain vs. normative, MVC, spec mutation logging)
+- Release Guardrails — manifest/dry-run checks before shipping
+- Amendment Rules — how to add or refine CC-* rules
+- Memory Promotion Thresholds — canonical line-count ladder
+- Active Session Limits & FinOps Guardrails — session budgets, amnesia thresholds
+- Security Policy — trust boundaries, permission tiers, sandbox rules, prompt-injection defense, validation
 
 ## Purpose
 
@@ -76,19 +76,19 @@ Canonical threshold ladder. All skills and reference files quote this section by
 | >= 1200 | Hard cap | Block all appends; split or compact mandatory |
 
 Additional triggers:
-- **Distinct subtopics:** 3 or more H2 sections covering separable concerns → open promotion proposal.
-- **Artifact references:** 5 or more `artifacts/features/<slug>/` files cite the same slice of one memory file → open promotion proposal.
+- Distinct subtopics: 3 or more H2 sections covering separable concerns → open promotion proposal.
+- Artifact references: 5 or more `artifacts/features/<slug>/` files cite the same slice of one memory file → open promotion proposal.
 
-**Actions:**
-- **Structural promotion (split/extract/retire):** add the file to `## Promotion Watchlist` in `MASTER_INDEX.md` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`. Promotion requires user approval.
-- **Compaction (shrink in-place):** handled by `/context-compact`. See `skills/context-compact/SKILL.md` for the full safety protocol and eligible target files.
+Actions:
+- Structural promotion (split/extract/retire): add the file to `## Promotion Watchlist` in `MASTER_INDEX.md` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`. Promotion requires user approval.
+- Compaction (shrink in-place): handled by `/context-compact`. See `skills/context-compact/SKILL.md` for the full safety protocol and eligible target files.
 
 ## Active Session Limits & FinOps Guardrails
 
-- **Session Token Capacity:** 200,000 tokens
-- **Amnesia Warning Threshold:** 80% saturation (160,000 tokens)
-- **FinOps Guardrails:** Max 10 tool calls per loop, Cost-per-Accepted-Outcome (CAPO) monitored via run limits.
-- **Verification Threshold:** Backtesting pass^k reliability (multiple consecutive passing trials required for complex logic).
+- Session Token Capacity: 200,000 tokens
+- Amnesia Warning Threshold: 80% saturation (160,000 tokens)
+- FinOps Guardrails: Max 10 tool calls per loop, Cost-per-Accepted-Outcome (CAPO) monitored via run limits.
+- Verification Threshold: Backtesting pass^k reliability (multiple consecutive passing trials required for complex logic).
 
 ## Security Policy
 

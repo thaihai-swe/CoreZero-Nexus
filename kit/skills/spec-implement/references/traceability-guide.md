@@ -36,7 +36,7 @@ function calculateTotal(cart: Cart): number {
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 ```
 
-**Rules:**
+Rules:
 - Place the comment on the line before or the same line as the behavior.
 - Use the format `// AC-NNN` or `// REQ-NNN` — either is acceptable.
 - For multi-line implementations, comment at the entry point (function/method/class) not each line.
@@ -61,7 +61,7 @@ describe("AC-002: checkout enforces minimum order", () => {
 });
 ```
 
-**Rules:**
+Rules:
 - Include the `AC-NNN` prefix in the test name, description, or `describe` block.
 - If a test covers multiple ACs, list all: `test_ac001_ac002_checkout_flow`.
 - Integration and end-to-end tests can reference `REQ-*` when they cover a full requirement rather than one criterion.
@@ -86,10 +86,10 @@ The `spec-implement` skill writes proof commands and evidence into each task blo
 ```markdown
 ### TASK-01
 
-**Implements:** AC-001, AC-002
-**Proof command:** `pytest tests/test_auth.py -v`
-**Proof evidence:** All tests pass; exit code 0 recorded at YYYY-MM-DD HH:MM.
-**Status:** Done
+Implements: AC-001, AC-002
+Proof command: `pytest tests/test_auth.py -v`
+Proof evidence: All tests pass; exit code 0 recorded at YYYY-MM-DD HH:MM.
+Status: Done
 ```
 
 ## Alignment Audit Expectations

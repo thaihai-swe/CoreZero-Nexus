@@ -13,8 +13,8 @@ next_skill: 'spec-adr'
 Administrative tools to assess harness health, repair missing state, and evolve rules based on telemetry logs. The harness is evaluated across seven core subsystems: Instructions, State, Verification, Scope, Lifecycle, Security, and Context Engineering. See `references/assessment-rubric.md` for the full scoring model.
 
 ## I/O Hand-off Protocol
-- **Reads**: Entire codebase, `memories/repo/`, `manifest.json`, `harness-telemetry.md`.
-- **Writes**: `core-zero/generated/harness-assessment.md`, `memories/repo/learned-heuristics.md`, `core-zero/project/code-map.md`, `core-zero/generated/dashboard.html`.
+- Reads: Entire codebase, `memories/repo/`, `manifest.json`, `harness-telemetry.md`.
+- Writes: `core-zero/generated/harness-assessment.md`, `memories/repo/learned-heuristics.md`, `core-zero/project/code-map.md`, `core-zero/generated/dashboard.html`.
 
 ## Modes
 
@@ -22,11 +22,11 @@ When invoking this skill, you must specify one of the following modes:
 
 | Mode | Trigger | Focus |
 |---|---|---|
-| **assess** | `assess` | Generates a health report checking memory sizes, stale references, and orphaned artifacts. |
-| **create** | `create` | Scaffolds missing harness directories or files. |
-| **improve** | `improve` | Self-healing: reads telemetry logs and drafts new heuristics/rules from failures. |
-| **eval** | `eval` | Validates internal consistency of CC-* rules, manifest, and harness scripts. |
-| **doctor** | `doctor` | The "fix it" mode. Runs assess + regenerates stale codemaps and dashboard. |
+| assess | `assess` | Generates a health report checking memory sizes, stale references, and orphaned artifacts. |
+| create | `create` | Scaffolds missing harness directories or files. |
+| improve | `improve` | Self-healing: reads telemetry logs and drafts new heuristics/rules from failures. |
+| eval | `eval` | Validates internal consistency of CC-* rules, manifest, and harness scripts. |
+| doctor | `doctor` | The "fix it" mode. Runs assess + regenerates stale codemaps and dashboard. |
 
 ## Workflow
 
@@ -48,7 +48,7 @@ When invoking this skill, you must specify one of the following modes:
 4. Append the draft to `memories/repo/learned-heuristics.md` clearly marked as `[DRAFT]`.
 5. Update the `## Trend Summary` table in `harness-telemetry.md`.
 6. Set the entry status to `promoted`.
-7. **Rule**: Never finalize a `[DRAFT]` rule without explicit user review.
+7. Rule: Never finalize a `[DRAFT]` rule without explicit user review.
 
 ### 4. Eval Mode (`eval`)
 1. Verify all `CC-*` identifiers defined in `memories/repo/core-policies.md` are present and sequential.
@@ -57,11 +57,11 @@ When invoking this skill, you must specify one of the following modes:
 
 ### 5. Doctor Mode (`doctor`)
 1. Run Assess steps to check for structural health.
-2. Check for broken markdown file links inside `skills/**/*.md`.
+2. Check for broken markdown file links inside `skills//*.md`.
 3. Regenerate `core-zero/project/code-map.md` with the updated repository hierarchy.
 4. Run `python3 scripts/generate-dashboard.py` to regenerate the HTML dashboard.
 5. Report what was fixed and what still requires manual intervention.
 
 ## Core Rules
-- **No Silent Promotion**: Improve mode drafts rules but the user must approve them.
-- **Audit Before Ship**: Every package release requires running Eval mode to ensure manifest consistency.
+- No Silent Promotion: Improve mode drafts rules but the user must approve them.
+- Audit Before Ship: Every package release requires running Eval mode to ensure manifest consistency.

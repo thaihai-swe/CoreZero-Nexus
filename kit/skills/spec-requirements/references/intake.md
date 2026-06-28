@@ -1,8 +1,8 @@
 # Intake (Opening Wave)
 
-The intake gate is the first step in `spec-requirements`. It runs **before** any grilling, codebase reading, or spec authoring. Its job is to classify the work in two dimensions — *what kind of work this is* and *what risk it carries* — and produce a one-line classification recorded in `status.md`.
+The intake gate is the first step in `spec-requirements`. It runs before any grilling, codebase reading, or spec authoring. Its job is to classify the work in two dimensions — *what kind of work this is* and *what risk it carries* — and produce a one-line classification recorded in `status.md`.
 
-The principle: **classification first.** A misclassified piece of work may skip critical checks it required. The intake step makes that classification explicit and durable.
+The principle: classification first. A misclassified piece of work may skip critical checks it required. The intake step makes that classification explicit and durable.
 
 ## Output
 
@@ -11,11 +11,11 @@ Append (or update) the `## 🧪 Intake` section in `artifacts/features/<slug>/st
 ```markdown
 ## 🧪 Intake
 
-- **Input type:** <new_spec | spec_slice | change_request | new_initiative | maintenance | harness_improvement>
-- **Risk flags:** <comma-separated list, or `none`>
-- **One-line restatement:** <what this work actually is, in your own words>
-- **Affected core-zero/specs:** <paths or `n/a`>
-- **Reasoning:** <one sentence — why this classification>
+- Input type: <new_spec | spec_slice | change_request | new_initiative | maintenance | harness_improvement>
+- Risk flags: <comma-separated list, or `none`>
+- One-line restatement: <what this work actually is, in your own words>
+- Affected core-zero/specs: <paths or `n/a`>
+- Reasoning: <one sentence — why this classification>
 ```
 
 ## Input Types
@@ -58,6 +58,6 @@ Stop and ask the user before proceeding when:
 
 ## Anti-Patterns
 
-- **Proceeding without checking risk flags.** If `auth`, `data_model`, `security`, or `harness-maintain` is touched, the agent must pay extra care during planning and verification.
-- **Recording `none` for risk flags without inspecting.** Read at least the affected files first.
-- **Skipping intake on `change_request` because "we already have a spec."** A change request still needs a fresh intake classification to check for new risk flags.
+- Proceeding without checking risk flags. If `auth`, `data_model`, `security`, or `harness-maintain` is touched, the agent must pay extra care during planning and verification.
+- Recording `none` for risk flags without inspecting. Read at least the affected files first.
+- Skipping intake on `change_request` because "we already have a spec." A change request still needs a fresh intake classification to check for new risk flags.

@@ -2,14 +2,14 @@
 
 ## System Reference Documents
 
-- **Architecture Boundary Map:** Refer to `core-zero/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
-- **Rules & Mandates:** Refer to `memories/repo/core-policies.md` for normative CC-* mandates.
+- Architecture Boundary Map: Refer to `core-zero/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
+- Rules & Mandates: Refer to `memories/repo/core-policies.md` for normative CC-* mandates.
 
 ## Repository Overview
 
-- **Purpose:** [One-line description of the repository]
-- **Core workflow:** [How the AI workflow is structured — e.g., skills, spec-driven flow]
-- **Structure:** [Top-level directory layout]
+- Purpose: [One-line description of the repository]
+- Core workflow: [How the AI workflow is structured — e.g., skills, spec-driven flow]
+- Structure: [Top-level directory layout]
 
 ## Key Architectural Boundaries
 

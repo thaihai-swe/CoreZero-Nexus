@@ -50,27 +50,27 @@ What problem are we solving, for whom, and why now?
 
 ### Detailed Scenarios
 
-- **Scenario 1 (Happy Path):**
-  - **Given:**
-  - **When:**
-  - **Then:**
-- **Scenario 2 (Edge Case):**
-  - **Given:**
-  - **When:**
-  - **Then:**
-- **Scenario 3 (Error State):**
-  - **Given:**
-  - **When:**
-  - **Then:**
+- Scenario 1 (Happy Path):
+  - Given:
+  - When:
+  - Then:
+- Scenario 2 (Edge Case):
+  - Given:
+  - When:
+  - Then:
+- Scenario 3 (Error State):
+  - Given:
+  - When:
+  - Then:
 
 ## Current Context
 
 *Brownfield only. Leave blank for greenfield.*
 
-- **Current behavior summary:**
-- **Impacted boundaries:**
-- **Preserved behavior:**
-- **Brownfield risk rating:** Low | Medium | High
+- Current behavior summary:
+- Impacted boundaries:
+- Preserved behavior:
+- Brownfield risk rating: Low | Medium | High
   - Low: isolated area, strong test coverage, no external dependents
   - Medium: shared module, partial coverage, or known fragile integrations
   - High: load-bearing path, weak coverage, external dependents, or migration required

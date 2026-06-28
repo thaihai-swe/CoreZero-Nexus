@@ -4,7 +4,7 @@ Entrypoint agent instruction router for this repository — the CoreZero kit sou
 
 ## What this repo is
 
-**Source repo for the CoreZero kit** — a spec-anchored AI software delivery framework shipped via `install.sh` into downstream repos.
+Source repo for the CoreZero kit — a spec-anchored AI software delivery framework shipped via `install.sh` into downstream repos.
 
 Three surfaces:
 - `kit/` — the shipped package (what adopters install)
@@ -17,22 +17,22 @@ The shipped adopter router is at `kit/AGENTS.md`. The shipped master index is at
 
 These override all other guidance. Key non-obvious ones:
 
-- **No flattery, no filler.** Start with the answer, action, or blocker. No ceremonial openers.
-- **Correct false premises** immediately if the user is wrong.
-- **Never fabricate.** Read files or say `[UNKNOWN]`. Never guess paths, hashes, test results, or API behavior.
-- **Fail loud.** Do not mark work done if verification was skipped or failed.
-- **Touch only the request.** No drive-by refactors, formatting churn, or unrelated cleanup.
-- **Preserve behavior** unless explicitly asked to change it.
-- **Read `kit/core-zero/policies/code-design.md`** before architecture or refactoring work — its rules carry equal weight.
+- No flattery, no filler. Start with the answer, action, or blocker. No ceremonial openers.
+- Correct false premises immediately if the user is wrong.
+- Never fabricate. Read files or say `[UNKNOWN]`. Never guess paths, hashes, test results, or API behavior.
+- Fail loud. Do not mark work done if verification was skipped or failed.
+- Touch only the request. No drive-by refactors, formatting churn, or unrelated cleanup.
+- Preserve behavior unless explicitly asked to change it.
+- Read `kit/core-zero/policies/code-design.md` before architecture or refactoring work — its rules carry equal weight.
 
 ## Kit architecture (non-obvious)
 
-- **Two AGENTS.md files exist.** Root `AGENTS.md` (this file) is for source-repo maintainers. `kit/AGENTS.md` ships into downstream repos.
-- **INDEX.md does not exist.** The root AGENTS.md historically referenced it. Use `kit/MASTER_INDEX.md` instead for context routing.
-- **No build system, no package.json, no test runner for the kit itself.** The kit is a collection of bash scripts, markdown skill files, and Python helpers. Verification is via `doctor.sh`.
-- **17 shipped slash commands (skills)** live in `kit/skills/<name>/SKILL.md`. Each is a behavioral spec for one command.
-- **`kit/core-zero/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
-- **`scripts/harness/`** — all mechanical gates and validation scripts.
+- Two AGENTS.md files exist. Root `AGENTS.md` (this file) is for source-repo maintainers. `kit/AGENTS.md` ships into downstream repos.
+- INDEX.md does not exist. The root AGENTS.md historically referenced it. Use `kit/MASTER_INDEX.md` instead for context routing.
+- No build system, no package.json, no test runner for the kit itself. The kit is a collection of bash scripts, markdown skill files, and Python helpers. Verification is via `doctor.sh`.
+- 17 shipped slash commands (skills) live in `kit/skills/<name>/SKILL.md`. Each is a behavioral spec for one command.
+- `kit/core-zero/rules/*.md` — per-language coding rules shipped as overwrite-only instruction files.
+- `scripts/harness/` — all mechanical gates and validation scripts.
 
 ## Commands (exact, non-obvious)
 
@@ -63,7 +63,7 @@ Priority order:
 - Single version source: `kit/manifest.json` → `version` field. No separate `VERSION` files.
 - CI auto-bumps on merge to `main` based on commit prefix: `feat:` → minor, `fix:` → patch, `major:` or `BREAKING CHANGE:` → major. `chore:` / `docs:` / `refactor:` → no release.
 - Tag format: `v<semver>`. Release workflow verifies the tag matches manifest.json before creating a release.
-- Version in manifest.json on disk is the **next** release version (before tag), not the current live release.
+- Version in manifest.json on disk is the next release version (before tag), not the current live release.
 
 ## Operating loop (short)
 

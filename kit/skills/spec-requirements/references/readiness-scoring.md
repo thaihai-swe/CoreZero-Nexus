@@ -26,7 +26,7 @@ Each dimension is scored 1-5:
 | 4 | All requirements are specific with defined terms; edge cases acknowledged |
 | 5 | Requirements are precise, measurable, and leave no room for interpretation |
 
-**Check:** Can two different implementers read this spec and build the same thing?
+Check: Can two different implementers read this spec and build the same thing?
 
 ### 2. Completeness (All required sections are filled)
 
@@ -38,7 +38,7 @@ Each dimension is scored 1-5:
 | 4 | All sections complete; verification surface covers all requirements |
 | 5 | Complete with gray-area decisions, non-goals, and brownfield observations |
 
-**Check:** Could an implementer start work without asking clarifying questions?
+Check: Could an implementer start work without asking clarifying questions?
 
 ### 3. Testability (Acceptance criteria are measurable)
 
@@ -50,7 +50,7 @@ Each dimension is scored 1-5:
 | 4 | All criteria have named proof surfaces; mechanical verification is possible |
 | 5 | All criteria have proof surfaces with specific commands or test names; Complex specs add a Gherkin `Given / When / Then` block per AC with a named `Test path:` |
 
-**Check:** Can the verification gate be run mechanically without human judgment? For Complex, can a tester read the AC's scenario and the named test path together to reproduce the proof?
+Check: Can the verification gate be run mechanically without human judgment? For Complex, can a tester read the AC's scenario and the named test path together to reproduce the proof?
 
 ### 4. Feasibility (Technical approach is realistic)
 
@@ -62,7 +62,7 @@ Each dimension is scored 1-5:
 | 4 | Clearly feasible; risks are documented with mitigation strategies |
 | 5 | Feasible, low-risk, and aligned with existing architecture patterns |
 
-**Check:** Does the spec respect `core-zero/project/project-constraints.md` and `core-zero/project/architecture.md`?
+Check: Does the spec respect `core-zero/project/project-constraints.md` and `core-zero/project/architecture.md`?
 
 ### 5. Safety (Risks and controls are documented)
 
@@ -74,7 +74,7 @@ Each dimension is scored 1-5:
 | 4 | Comprehensive risk assessment with controls and rollback strategy |
 | 5 | Full risk matrix with controls, monitoring, and incident response |
 
-**Check:** If this feature fails in production, is the blast radius understood?
+Check: If this feature fails in production, is the blast radius understood?
 
 ### 6. Traceability (Requirements map to tasks and tests)
 
@@ -86,7 +86,7 @@ Each dimension is scored 1-5:
 | 4 | REQ → AC mapping complete; verification surface names proof for each |
 | 5 | Full REQ → AC → proof chain with no orphaned requirements |
 
-**Check:** Can you trace every requirement to its proof?
+Check: Can you trace every requirement to its proof?
 
 ## Readiness Verdict
 
@@ -110,8 +110,8 @@ Each dimension is scored 1-5:
 | Feasibility | X/5 | |
 | Safety | X/5 | |
 | Traceability | X/5 | |
-| **Total** | **XX/30** | |
+| Total | XX/30 | |
 
-**Verdict:** [Ready | Ready with caveats | Not ready | Critical gaps]
-**Blocking issues:** [List any dimension scored 1-2]
+Verdict: [Ready | Ready with caveats | Not ready | Critical gaps]
+Blocking issues: [List any dimension scored 1-2]
 ```

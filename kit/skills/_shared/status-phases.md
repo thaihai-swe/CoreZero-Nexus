@@ -37,24 +37,24 @@ these three terms. Legacy aliases (`Tiny`, `Standard`) map as follows:
 
 # Transition Rules
 
-1. **Forward only.** A skill must not set a phase to an earlier state unless it is
+1. Forward only. A skill must not set a phase to an earlier state unless it is
    explicitly correcting a failed or stale state (e.g., reopening a spec after a
    planning blocker is discovered).
 
-2. **Set phase at skill start.** Each skill sets the in-progress phase as its
+2. Set phase at skill start. Each skill sets the in-progress phase as its
    first `status.md` update (e.g., `spec-plan` sets `Planning` at step 1 before
    any design work begins). This makes the current state visible immediately.
 
-3. **Approved/Done phase requires verification.** A skill MUST NOT set
+3. Approved/Done phase requires verification. A skill MUST NOT set
    `Spec Approved`, `Plan Approved`, or `Done` unless its own internal
    verification checklist passes. Setting the approved phase is the last act
    of the skill, not the first.
 
-4. **No phase skipping.** `spec-implement` requires `Plan Approved`.
+4. No phase skipping. `spec-implement` requires `Plan Approved`.
    `harness-verify` requires `Implementing` or a re-verify trigger.
    An agent must not skip phases to save time.
 
-5. **Re-entry is explicit.** If implementation reveals a spec gap, the correct
+5. Re-entry is explicit. If implementation reveals a spec gap, the correct
    action is to return to `spec-requirements` (setting phase back to `Spec'ing`)
    with an explicit note in `status.md` explaining why. Silent re-entry is a Red Flag.
 

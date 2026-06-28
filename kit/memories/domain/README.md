@@ -37,7 +37,7 @@ Body: Ubiquitous language table — terms the agent must use consistently when w
 ### patterns.md
 
 Proven implementation patterns for this domain. Each pattern entry:
-- **Pattern name** (bold heading)
+- Pattern name (bold heading)
 - When to use it
 - Key implementation notes
 - Citation (file or PR where this was established)
@@ -45,7 +45,7 @@ Proven implementation patterns for this domain. Each pattern entry:
 ### anti-patterns.md
 
 Known failure modes and what NOT to do. Each entry:
-- **Anti-pattern name** (bold heading)
+- Anti-pattern name (bold heading)
 - Why it fails in this domain
 - What to do instead
 - Citation (incident, review, or post-mortem)
@@ -53,9 +53,9 @@ Known failure modes and what NOT to do. Each entry:
 ### boundaries.md
 
 What this domain owns, what it explicitly does NOT own, and how it integrates with adjacent domains.
-- **Owns:** What this domain is responsible for
-- **Does not own:** What this domain defers to other domains
-- **Integration contracts:** How this domain's outputs become other domains' inputs
+- Owns: What this domain is responsible for
+- Does not own: What this domain defers to other domains
+- Integration contracts: How this domain's outputs become other domains' inputs
 
 ### spec.md (optional)
 
@@ -80,7 +80,7 @@ Skip it when:
 
 ## Lifecycle
 
-- Domain packs are **adopter-owned** — the kit seeds the schema but does not prescribe content.
+- Domain packs are adopter-owned — the kit seeds the schema but does not prescribe content.
 - Update packs during `/context-memory` Post-Ship Sync when new patterns emerge from features.
 - Promote durable patterns from `artifacts/features/<slug>/session-extracts.md` into the domain pack.
 - Remove outdated entries when the codebase no longer uses a pattern.

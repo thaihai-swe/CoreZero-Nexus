@@ -30,22 +30,22 @@
 
 <!-- Security constraints that apply to all features. -->
 
-- **Authentication model:** 
-- **Authorization model:** 
-- **Data classification:** 
-- **Encryption requirements:** 
-- **Secret management:** 
-- **Audit logging:** 
+- Authentication model:
+- Authorization model:
+- Data classification:
+- Encryption requirements:
+- Secret management:
+- Audit logging:
 
 ## Deployment Model
 
 <!-- How software gets to production. -->
 
-- **Environments:** 
-- **Release cadence:** 
-- **Deployment method:** 
-- **Rollback strategy:** 
-- **Feature flags:** 
+- Environments:
+- Release cadence:
+- Deployment method:
+- Rollback strategy:
+- Feature flags:
 
 ## Technology Constraints
 
@@ -72,26 +72,26 @@
 
 <!-- Minimum versions or pinning requirements. -->
 
-- 
+-
 
 ## Operational Constraints
 
-- **Uptime SLA:** 
-- **Monitoring:** 
-- **Alerting:** 
-- **On-call:** 
-- **Incident response:** 
+- Uptime SLA:
+- Monitoring:
+- Alerting:
+- On-call:
+- Incident response:
 
 ## Accessibility Requirements
 
 <!-- Accessibility standards and testing requirements. -->
 
-- **Standard:** 
-- **Testing tools:** 
-- **Key requirements:** 
+- Standard:
+- Testing tools:
+- Key requirements:
 
 ## Budget & Resource Constraints
 
 <!-- Non-technical constraints that affect scope and approach. -->
 
-- 
+-

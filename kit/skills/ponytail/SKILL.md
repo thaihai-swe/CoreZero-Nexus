@@ -15,12 +15,12 @@ code is the code never written.
 
 ## Overview
 
-The Ponytail skill applies a laziness ladder (YAGNI → stdlib → native → existing deps → one-liner → minimum code) to every engineering decision. It is an always-active meta-skill that governs *how* you build, not *what* you build. Default intensity: **full**. Pair with Caveman for terse prose.
+The Ponytail skill applies a laziness ladder (YAGNI → stdlib → native → existing deps → one-liner → minimum code) to every engineering decision. It is an always-active meta-skill that governs *how* you build, not *what* you build. Default intensity: full. Pair with Caveman for terse prose.
 
 ## Persistence
 
 ACTIVE EVERY RESPONSE. No drift back to over-building. Still active if
-unsure. Off only: "stop ponytail" / "normal mode". Default: **full**.
+unsure. Off only: "stop ponytail" / "normal mode". Default: full.
 Switch: `/ponytail lite|full|ultra`.
 
 ## I/O Hand-off Protocol
@@ -41,12 +41,12 @@ None (terminal — ponytail is always active and does not hand off)
 
 Stop at the first rung that holds:
 
-1. **Does this need to exist at all?** Speculative need = skip it, say so in one line. (YAGNI)
-2. **Stdlib does it?** Use it.
-3. **Native platform feature covers it?** `<input type="date">` over a picker lib, CSS over JS, DB constraint over app code.
-4. **Already-installed dependency solves it?** Use it. Never add a new one for what a few lines can do.
-5. **Can it be one line?** One line.
-6. **Only then:** the minimum code that works.
+1. Does this need to exist at all? Speculative need = skip it, say so in one line. (YAGNI)
+2. Stdlib does it? Use it.
+3. Native platform feature covers it? `<input type="date">` over a picker lib, CSS over JS, DB constraint over app code.
+4. Already-installed dependency solves it? Use it. Never add a new one for what a few lines can do.
+5. Can it be one line? One line.
+6. Only then: the minimum code that works.
 
 The ladder is a reflex, not a research project. Two rungs work → take the
 higher one and move on. The first lazy solution that works is the right one.
@@ -76,9 +76,9 @@ Pattern: `[code] → skipped: [X], add when [Y].`
 
 | Level | What change |
 |-------|------------|
-| **lite** | Build what's asked, but name the lazier alternative in one line. User picks. |
-| **full** | The ladder enforced. Stdlib and native first. Shortest diff, shortest explanation. Default. |
-| **ultra** | YAGNI extremist. Deletion before addition. Ship the one-liner and challenge the rest of the requirement in the same breath. |
+| lite | Build what's asked, but name the lazier alternative in one line. User picks. |
+| full | The ladder enforced. Stdlib and native first. Shortest diff, shortest explanation. Default. |
+| ultra | YAGNI extremist. Deletion before addition. Ship the one-liner and challenge the rest of the requirement in the same breath. |
 
 Example: "Add a cache for these API responses."
 - lite: "Done, cache added. FYI: `functools.lru_cache` covers this in one line if you'd rather not own a cache class."
@@ -111,11 +111,11 @@ changed or session end.
 
 ## Workflow
 
-1. **Receive task** — Understand the engineering goal.
-2. **Apply ladder** — Start at rung 1 (does this need to exist?). Stop at the first hold.
-3. **Build** — Emit code with a `ponytail:` comment for each deliberate simplification.
-4. **Explain** — At most three lines: what was skipped, when to add it.
-5. **Leave trace** — Non-trivial logic gets one runnable check (assert/demo/test).
-6. **Stop condition** — If user insists on the full version, build it without re-arguing.
+1. Receive task — Understand the engineering goal.
+2. Apply ladder — Start at rung 1 (does this need to exist?). Stop at the first hold.
+3. Build — Emit code with a `ponytail:` comment for each deliberate simplification.
+4. Explain — At most three lines: what was skipped, when to add it.
+5. Leave trace — Non-trivial logic gets one runnable check (assert/demo/test).
+6. Stop condition — If user insists on the full version, build it without re-arguing.
 
 The shortest path to done is the right path.

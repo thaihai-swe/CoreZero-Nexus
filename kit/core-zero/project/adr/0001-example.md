@@ -1,11 +1,11 @@
 # ADR-001: Example Decision
 
-**Status:** Accepted
-**Date:** 2026-06-23
-**Deciders:** CoreZero Maintainers
-**Feature slug:** none
-**Related spec:** none
-**Related plan:** none
+Status: Accepted
+Date: 2026-06-23
+Deciders: CoreZero Maintainers
+Feature slug: none
+Related spec: none
+Related plan: none
 
 ## Context
 Adopter repositories require a starting architecture decision template and example to understand the format and usage of the ADR loop.

@@ -6,30 +6,30 @@
 
 Load context from highest-signal to lowest-signal:
 
-1. **Router**
+1. Router
    - `AGENTS.md` — runtime instruction router (always loaded)
    - `MASTER_INDEX.md` — master context routing index and memory router (always loaded)
    - Purpose: locate the workflow contract, repo entry rules, and the memory map
-2. **Repo Memory — Always**
+2. Repo Memory — Always
    - `memories/repo/core-policies.md`
    - Purpose: durable normative rules, security policy, and memory promotion thresholds needed every session
-3. **Repo Memory — By Intent**
+3. Repo Memory — By Intent
    - Resolve by matching the active task against trigger keywords listed in `MASTER_INDEX.md`.
-   - **Config group** (`memories/repo/harness-config.md`) — loaded when the task touches setup, bootstrap, install, repository identity, commands, session defaults, lifecycle, or known limits.
+   - Config group (`memories/repo/harness-config.md`) — loaded when the task touches setup, bootstrap, install, repository identity, commands, session defaults, lifecycle, or known limits.
 
-   - **Knowledge group** (`project-knowledge-base.md`) — loaded when the task touches patterns, conventions, stack, or domain language.
-   - **Learned group** (`learned-heuristics.md`) — loaded when the task echoes a heuristic trigger (recurring instinct, "we always/never", "last time").
-   - **Architecture group** (`core-zero/project/architecture.md`, `core-zero/project/adr/index.md`, `core-zero/project/code-map.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
-   - **Debug group** (`memories/repo/harness-telemetry.md`, prior `session-extracts.md`) — loaded only on debug, retro, failure, or post-mortem work.
+   - Knowledge group (`project-knowledge-base.md`) — loaded when the task touches patterns, conventions, stack, or domain language.
+   - Learned group (`learned-heuristics.md`) — loaded when the task echoes a heuristic trigger (recurring instinct, "we always/never", "last time").
+   - Architecture group (`core-zero/project/architecture.md`, `core-zero/project/adr/index.md`, `core-zero/project/code-map.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
+   - Debug group (`memories/repo/harness-telemetry.md`, prior `session-extracts.md`) — loaded only on debug, retro, failure, or post-mortem work.
    - Purpose: durable knowledge, but loaded by relevance, not by default. Skip groups whose triggers do not match.
-4. **Feature Artifacts**
+4. Feature Artifacts
    - `status.md`, `handoff.md`, `progress.md`
    - relevant `spec.md`, `plan.md`, `tasks.md`, `review.md`
    - Purpose: the current feature contract and exact execution state
-5. **Raw Code**
+5. Raw Code
    - only the files needed for the immediate task or failing proof surface
    - Purpose: implementation and debugging evidence
-6. **Transient Logs**
+6. Transient Logs
    - command output, grep results, stack traces, browser traces
    - Purpose: short-lived debugging evidence that should be summarized quickly
 
@@ -46,7 +46,7 @@ Load context from highest-signal to lowest-signal:
 ## Intent Routing Rules
 
 - A group loads when any of its trigger keywords or semantic concepts conceptually appear in the user request, the active feature `spec.md`, or the active `tasks.md` row.
-- **Semantic Trigger Evaluation:** Evaluate the task requirements. If they align conceptually with architecture patterns, API contracts, codebase constraints, or previous heuristics, trigger the load even if literal keyword matching is absent.
+- Semantic Trigger Evaluation: Evaluate the task requirements. If they align conceptually with architecture patterns, API contracts, codebase constraints, or previous heuristics, trigger the load even if literal keyword matching is absent.
 - When the task is genuinely cross-cutting, load multiple groups but state which and why.
 - When no by-intent group matches conceptually, proceed with the Always tier only and record "no by-intent groups matched" in the session opener — silent skipping is not allowed.
 - If `MASTER_INDEX.md` is missing or stale, fall back to loading every memory file and route the gap to `context-memory` for index repair.
@@ -54,9 +54,9 @@ Load context from highest-signal to lowest-signal:
 ## Confidence-Scored Loading
 
 - Count keyword matches between the active task and a group's trigger keywords (declared in `MASTER_INDEX.md`).
-- **0–2 matches (low confidence)**: partial-load via `scripts/context-loader.py <file> --mode summary`.
-- **3+ matches (high confidence)**: full-load the file.
-- **Semantic match allowed**: if the file's core purpose matches the task intent even without literal keyword overlap, treat as high confidence.
+- 0–2 matches (low confidence): partial-load via `scripts/context-loader.py <file> --mode summary`.
+- 3+ matches (high confidence): full-load the file.
+- Semantic match allowed: if the file's core purpose matches the task intent even without literal keyword overlap, treat as high confidence.
 
 ## Compaction Triggers
 

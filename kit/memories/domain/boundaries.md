@@ -1,8 +1,8 @@
 # Domain — Boundaries
 
-> **Ownership:** Collaborative — skill-updated + user-maintained.
-> **Updated by:** `/context-memory` post-ship sync when a feature changes domain ownership, an integration contract evolves, or an invariant is added/removed.
-> **Read by:** `/spec-requirements`, `/spec-plan`, `/spec-implement`, `/harness-verify` to prevent boundary violations and regression.
+> Ownership: Collaborative — skill-updated + user-maintained.
+> Updated by: `/context-memory` post-ship sync when a feature changes domain ownership, an integration contract evolves, or an invariant is added/removed.
+> Read by: `/spec-requirements`, `/spec-plan`, `/spec-implement`, `/harness-verify` to prevent boundary violations and regression.
 
 Defines what this domain owns, does not own, how it integrates with adjacent domains, and the invariants that must never be violated. Replace with your domain's actual boundaries.
 

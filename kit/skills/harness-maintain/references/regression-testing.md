@@ -106,8 +106,8 @@ Run before declaring any feature complete:
 ## Continuous Regression Prevention
 
 The harness prevents regression through:
-- **Clean-state guarantee:** `/starter-init` ensures baseline is green before work starts
-- **Mechanical gates:** Exact commands that must pass — catches regressions mechanically
-- **Fallow pass:** `/harness-verify` cleans up debt without changing behavior
-- **Session continuity:** Handoffs preserve verification state across sessions
-- **Observability log:** Patterns of failure drive harness improvements
+- Clean-state guarantee: `/starter-init` ensures baseline is green before work starts
+- Mechanical gates: Exact commands that must pass — catches regressions mechanically
+- Fallow pass: `/harness-verify` cleans up debt without changing behavior
+- Session continuity: Handoffs preserve verification state across sessions
+- Observability log: Patterns of failure drive harness improvements

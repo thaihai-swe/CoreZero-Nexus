@@ -162,8 +162,8 @@ graph TB
 
 ## Tips for Codebase Diagrams
 
-1. **Match the actual structure.** Use the names and groupings that exist in the codebase, not generic placeholders.
-2. **Subgraph by responsibility.** Group services, layers, or tiers — not files.
-3. **Show the main paths.** Highlight golden-path flows; leave edge cases for prose.
-4. **Label arrows with intent.** "Replication," "publishes event," "reads from cache" — not just lines.
-5. **Test rendering.** Verify diagrams render in the target viewer (GitHub, docs site).
+1. Match the actual structure. Use the names and groupings that exist in the codebase, not generic placeholders.
+2. Subgraph by responsibility. Group services, layers, or tiers — not files.
+3. Show the main paths. Highlight golden-path flows; leave edge cases for prose.
+4. Label arrows with intent. "Replication," "publishes event," "reads from cache" — not just lines.
+5. Test rendering. Verify diagrams render in the target viewer (GitHub, docs site).

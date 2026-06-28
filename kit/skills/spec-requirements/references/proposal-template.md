@@ -21,5 +21,5 @@
 - [ ] Criterion 2
 
 ---
-**Status:** 🟡 Awaiting Alignment
+Status: 🟡 Awaiting Alignment
 *(Move to 🟢 Aligned once user approves this proposal)*

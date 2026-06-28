@@ -3,9 +3,9 @@
 When tasks are complex, a single agent context becomes a bottleneck. Harnesses use subagent patterns to distribute load.
 
 ## 1. Subagent Delegation
-*   **Exploration:** Use a research subagent to search the codebase and summarize findings.
-*   **Execution:** Delegate repetitive or highly constrained tasks to an implementation subagent.
-*   **Review:** Use a verification subagent to red-team the implementation against the spec.
+*   Exploration: Use a research subagent to search the codebase and summarize findings.
+*   Execution: Delegate repetitive or highly constrained tasks to an implementation subagent.
+*   Review: Use a verification subagent to red-team the implementation against the spec.
 
 ## 2. Specialization Workflows
 *   Pass the baton systematically: Researcher → Planner → Implementer → Reviewer.

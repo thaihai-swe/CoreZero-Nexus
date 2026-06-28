@@ -10,29 +10,29 @@ AI agents can fabricate file paths, test results, API names, commit hashes, and 
 
 ### 1. File Path Claims
 
-**Risk:** Agent claims to have created or modified a file that doesn't exist.
+Risk: Agent claims to have created or modified a file that doesn't exist.
 
-**Check:**
+Check:
 - For every file path mentioned in `tasks.md` evidence: verify the file exists
 - For every "created file" claim: `ls` the path
 - For every import statement in new code: verify the imported module exists
 
-**Red flags:**
+Red flags:
 - Path uses a naming convention inconsistent with the project
 - Path references a directory that doesn't exist
 - File extension doesn't match the language being used
 
 ### 2. Test Result Claims
 
-**Risk:** Agent claims tests pass without actually running them.
+Risk: Agent claims tests pass without actually running them.
 
-**Check:**
+Check:
 - Evidence must include the exact command run and its output
 - Timestamp of test run must be from the current session
 - Test count must match the actual test files
 - "All tests pass" without naming specific tests is suspicious
 
-**Red flags:**
+Red flags:
 - Round numbers ("100 tests pass") without specifics
 - No command output shown
 - Claims of passing tests for code that was just written (no time to run)
@@ -40,43 +40,43 @@ AI agents can fabricate file paths, test results, API names, commit hashes, and 
 
 ### 3. API & Library Claims
 
-**Risk:** Agent references functions, methods, or APIs that don't exist.
+Risk: Agent references functions, methods, or APIs that don't exist.
 
-**Check:**
+Check:
 - Verify imported functions exist in the dependency
 - Check that API endpoints referenced actually exist
 - Verify method signatures match the library version in use
 
-**Red flags:**
+Red flags:
 - Function names that sound plausible but aren't in the docs
 - API endpoints with inconsistent URL patterns
 - Method signatures that mix conventions from different libraries
 
 ### 4. Verification Evidence Claims
 
-**Risk:** Agent claims verification passed based on plausible reasoning rather than actual execution.
+Risk: Agent claims verification passed based on plausible reasoning rather than actual execution.
 
-**Check:**
+Check:
 - Evidence must include raw command output, not just "it passed"
 - Mechanical gate commands must show exit code 0
 - Lint/typecheck output must be empty (no errors)
 - If evidence says "no changes needed" — verify the diff is actually empty
 
-**Red flags:**
+Red flags:
 - "I verified this works" without showing how
 - Evidence that's too clean (real test output has noise)
 - Claims that skip the mechanical gate ("tests are unnecessary for this change")
 
 ### 5. Commit & Git Claims
 
-**Risk:** Agent references commits, branches, or git state that doesn't match reality.
+Risk: Agent references commits, branches, or git state that doesn't match reality.
 
-**Check:**
+Check:
 - Verify commit hashes with `git log`
 - Verify branch existence with `git branch`
 - Verify file state matches what the agent claims
 
-**Red flags:**
+Red flags:
 - Commit hashes that are too short or don't resolve
 - Claims about "the last commit" without verifying
 - Branch names that don't follow project conventions
@@ -101,7 +101,7 @@ Apply these checks:
 ## Prevention
 
 The harness prevents hallucination through:
-- **Mechanical gates:** Commands must actually run and exit 0
-- **Evidence freshness:** Stale evidence is a finding
-- **Artifact-first:** If it's not in the artifact with proof, it didn't happen
-- **Task discipline:** Proving command named BEFORE editing, run AFTER
+- Mechanical gates: Commands must actually run and exit 0
+- Evidence freshness: Stale evidence is a finding
+- Artifact-first: If it's not in the artifact with proof, it didn't happen
+- Task discipline: Proving command named BEFORE editing, run AFTER

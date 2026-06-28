@@ -7,8 +7,8 @@ A well-engineered harness restricts what tools can do and how they interact to p
 *   For destructive operations (e.g., database migrations), ensure clear warnings and rollback mechanisms are documented.
 
 ## 2. Tool Approval Policies
-*   **Auto-Approve:** Read-only tools (view file, grep, list dir) and local unit tests.
-*   **Require Approval:** Destructive file modifications outside the feature scope, external API calls, or wide-ranging refactors.
+*   Auto-Approve: Read-only tools (view file, grep, list dir) and local unit tests.
+*   Require Approval: Destructive file modifications outside the feature scope, external API calls, or wide-ranging refactors.
 
 ## 3. Concurrency Control
 *   Prevent parallel writes to the same file.
