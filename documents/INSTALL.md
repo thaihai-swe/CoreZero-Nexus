@@ -31,11 +31,17 @@ After install:
 
 1. Read `kit-map.md` to understand the command layers
 2. Read `skills-guide.md` for the shipped command roster
-3. Run `/starter-init`
-4. Continue with `/spec-research` or `/spec-requirements`
-5. Use `/context-status`, `/harness-maintain`, and `/spec-adr` when governance or multi-feature coordination work needs them
-6. Use `/technical-docs` and `/codebase-documenter` when the repo needs durable documentation outputs
-7. Use `/visualize` when a polished SVG or Mermaid diagram materially improves clarity
+3. (Optional but recommended) Install and index GitNexus for code-aware context:
+   ```bash
+   npm install -g gitnexus
+   cd /path/to/project && gitnexus analyze && gitnexus setup
+   ```
+   GitNexus exposes a knowledge graph (deps, call chains, clusters) via MCP. The kit auto-detects it — `AGENTS.md` prefers `gitnexus context` / `gitnexus impact` before reading source files. See [agent-capabilities.md](https://github.com/abhigyanpatwari/GitNexus) for details.
+4. Run `/starter-init`
+5. Continue with `/spec-research` or `/spec-requirements`
+6. Use `/context-status`, `/harness-maintain`, and `/spec-adr` when governance or multi-feature coordination work needs them
+7. Use `/technical-docs` and `/codebase-documenter` when the repo needs durable documentation outputs
+8. Use `/visualize` when a polished SVG or Mermaid diagram materially improves clarity
 
 ## Validation For Packaging Changes
 

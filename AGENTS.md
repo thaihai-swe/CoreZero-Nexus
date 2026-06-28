@@ -31,7 +31,7 @@ These override all other guidance. Key non-obvious ones:
 - **INDEX.md does not exist.** The root AGENTS.md historically referenced it. Use `kit/MASTER_INDEX.md` instead for context routing.
 - **No build system, no package.json, no test runner for the kit itself.** The kit is a collection of bash scripts, markdown skill files, and Python helpers. Verification is via `doctor.sh`.
 - **17 shipped slash commands (skills)** live in `kit/skills/<name>/SKILL.md`. Each is a behavioral spec for one command.
-- **`core-zero/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
+- **`kit/core-zero/rules/*.md`** — per-language coding rules shipped as overwrite-only instruction files.
 - **`scripts/harness/`** — all mechanical gates and validation scripts.
 
 ## Commands (exact, non-obvious)
@@ -68,7 +68,7 @@ Priority order:
 ## Operating loop (short)
 
 1. Understand the goal in repo-specific terms.
-2. Inspect before building (read relevant code/core-zero/artifacts/patterns first).
+2. Inspect before building (read relevant code, artifacts, and patterns first).
 3. Plan the smallest safe change. Load `kit/core-zero/rules/ponytail.md` before architecture or implementation work.
 4. Implement surgically. Match existing style. No dead code cleanup unless asked.
 5. Verify with `doctor.sh` + install dry-run + grep audits.
