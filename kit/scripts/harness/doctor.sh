@@ -142,12 +142,15 @@ done
 
 # --- Check 9: Version consistency ---
 echo "--- Check 9: Version consistency ---"
-MANIFEST_VER=$(python3 -c "import json; print(json.load(open('$KIT_ROOT/manifest.json'))['version'])" 2>/dev/null | tr -d ' \n\r')
-
-if [[ -n "$MANIFEST_VER" ]]; then
-  pass "Version: $MANIFEST_VER (kit/manifest.json)"
+if [[ -f "$KIT_ROOT/manifest.json" ]]; then
+  MANIFEST_VER=$(python3 -c "import json; print(json.load(open('$KIT_ROOT/manifest.json'))['version'])" 2>/dev/null | tr -d ' \n\r')
+  if [[ -n "$MANIFEST_VER" ]]; then
+    pass "Version: $MANIFEST_VER (kit/manifest.json)"
+  else
+    fail "Could not read version from kit/manifest.json"
+  fi
 else
-  fail "Could not read version from kit/manifest.json"
+  warn "manifest.json not found (source-kit only, not shipped to adopter) - skipping version check"
 fi
 
 # --- Check 10: Phase×Guidance Matrix section annotations exist ---
