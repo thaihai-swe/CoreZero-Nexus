@@ -84,7 +84,7 @@ When installed into an empty project directory, the shipped folder structure loo
 │   │   ├── _lib/root.sh          # Repo root resolution helper
 │   │   └── plugins/              # Harness plugin extensibility
 │   └── install.sh                # Idempotent manifest-driven installer
-└── skills/                       # 17 shipped skills (kit-managed)
+└── skills/                       # 18 shipped skills (kit-managed)
     ├── _shared/                  # Shared resources
     ├── code-review/
     ├── codebase-documenter/
@@ -100,8 +100,9 @@ When installed into an empty project directory, the shipped folder structure loo
     ├── spec-plan/
     ├── spec-requirements/
     ├── spec-research/
+    ├── spec-testing-scenario/
     ├── starter-init/
-    ├── technical-core-zero/
+    ├── technical-docs/
     └── visualize/
 ```
 

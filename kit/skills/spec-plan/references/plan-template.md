@@ -2,12 +2,9 @@
 
 ## Metadata
 
-- Feature name:
-- Related spec:
-- Related requirements review:
-- Owner:
-- Status: Draft | In Review | Approved | In Progress | Done
-- Last updated:
+- Feature slug: 
+- Date: 
+- Status: 
 
 ---
 

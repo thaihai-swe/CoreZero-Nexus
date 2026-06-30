@@ -2,14 +2,9 @@
 
 ## Metadata
 
-- Feature name:
-- Feature slug:
-- Related spec:
-- Related plan:
-- Related tasks:
-- Reviewer:
-- Status: Draft | Completed
-- Last updated:
+- Feature slug: 
+- Date: 
+- Status: 
 
 ## Verdict
 

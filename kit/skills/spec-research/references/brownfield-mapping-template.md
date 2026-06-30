@@ -1,13 +1,5 @@
 # Brownfield Mapping Template
 
-Use this template when running `spec-research` in brownfield mapping mode — before any feature work begins on an inherited or unfamiliar codebase. The goal is a decision-ready map, not a feature investigation.
-
-Output path: `artifacts/features/<slug>/analysis.md` or `core-zero/brownfield-map.md` for repo-wide mapping.
-
-This template doubles as the kit's brownfield readiness artifact for the first safe feature in an inherited codebase.
-
----
-
 # Metadata
 
 - Repository:

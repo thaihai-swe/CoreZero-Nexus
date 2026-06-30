@@ -30,7 +30,7 @@ Investigate system behaviors and produce `artifacts/features/<slug>/analysis.md`
    2. Reproduce & Minimize: Shrink the repro to the smallest scenario that still goes red.
    3. Hypothesize: Generate 3-5 ranked, falsifiable hypotheses before testing any.
    4. Instrument: Add targeted logs or debugger probes to test one hypothesis at a time.
-   5. Propose Fix: Document the verified root cause and propose the regression test seam and fix in `analysis.md` (to be handed off to implementation).
+   5. Propose Fix: Document the verified root cause and propose the regression test seam and fix in `analysis.md` (to be handed off to implementation). Include the "Bug Investigation Add-On" section from `references/analysis-template.md` (use this add-on only when debugging).
    6. Cleanup: Ensure all debug instrumentation is removed.
    - Subagent-First Exploration (SFE): For large unknown subsystems, delegate bounded explorations to subagents and return summaries.
 4. Brownfield Mapping: Map target files, trace dependencies, identify preserved behaviors, boundary contracts, reuse patterns, risks, and migration constraints.

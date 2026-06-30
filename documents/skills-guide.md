@@ -32,7 +32,7 @@ Use this guide after installing the kit into an adopter repository.
 | `/harness-verify` | Verify proof, alignment, and closeout | Shipped now |
 | `/context-session` | Manage feature-session continuity | Shipped now |
 | `/context-memory` | Maintain durable repo memory | Shipped now |
-| `/context-compact` | Compact a named oversized memory file (>600 lines). Preserves all normative identifiers (CC-\*, LH-\*, INV-\*) with a mandatory pre/post safety protocol | Shipped now |
+| `/context-compact` | Compact a named oversized memory file (thresholds: 100-line early warning, 200-line breach, 3200-line hard cap). Preserves all normative identifiers (CC-\*, LH-\*, INV-\*) with a mandatory pre/post safety protocol | Shipped now |
 | `/context-status` | Report multi-feature status and regenerate dashboard | Shipped now |
 | `/harness-maintain` | Assess and improve the harness itself | Shipped now |
 | `/spec-adr` | Capture durable architecture decisions | Shipped now |
@@ -41,6 +41,7 @@ Use this guide after installing the kit into an adopter repository.
 | `/codebase-documenter` | Generate repo onboarding and architecture doc sets | Shipped now |
 | `/visualize` | Generate SVG and Mermaid technical diagrams | Shipped now |
 | `/ponytail` | Enforces simplicity-first coding — YAGNI, laziest effective solution, trims over-engineering. Intensity: lite / full (default) / ultra. | Shipped now |
+| `/spec-testing-scenario`| Draft manual testing scenarios guide (optional) | Shipped now |
 
 ---
 
@@ -163,7 +164,7 @@ The installer treats files according to `manifest.json`:
 
 Run `/context-memory --audit` to produce a structured report of memory system health. The audit checks:
 
-- File sizes against the soft warning threshold (800 lines) and hard limit (1200 lines) configured in `core-policies.md`
+- File sizes against the thresholds configured in `core-policies.md` (100-line Early Warning, 200-line Threshold Breach, 3200-line Hard Cap)
 - Domain pack trigger keyword relevance against the current codebase
 - Stale references in memory files (paths or identifiers that no longer exist)
 - Unused domain packs (no recent load events in telemetry or session extracts)
@@ -182,7 +183,7 @@ Run `/context-compact --file <path>` to safely reduce the size of an oversized m
 
 ### How audit and compact work together
 
-1. **Diagnose**: Run `/context-memory --audit` to check memory health. The report flags files approaching the soft warning (800 lines) or hard limit (1200 lines).
+1. **Diagnose**: Run `/context-memory --audit` to check memory health. The report flags files approaching the warning threshold (100 lines), threshold breach (200 lines), or hard cap (3200 lines).
 2. **Fix**: Run `/context-compact --file memories/repo/<file>.md` on the flagged file to condense it back under the threshold.
 3. **Verify**: The safety protocol confirms all normative identifiers survived the compaction.
 

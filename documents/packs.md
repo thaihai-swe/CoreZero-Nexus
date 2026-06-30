@@ -6,7 +6,7 @@ This guide documents the four core packs that organize CoreZero commands and fil
 
 ## The 4 Core Packs
 
-CoreZero organizes its capabilities into **4 Core Packs** containing **17 shipped skills** (with the core 12 shown in the taxonomy map below):
+CoreZero organizes its capabilities into **4 Core Packs** containing **18 shipped skills** (with the core 13 shown in the taxonomy map below):
 
 ```mermaid
 mindmap
@@ -23,6 +23,7 @@ mindmap
       /spec-adr
       /spec-plan
       /spec-implement
+      /spec-testing-scenario
     Harness Engineering
       /harness-verify
       /harness-maintain
@@ -46,6 +47,7 @@ Translates feature requests into surgical code modifications.
 - **`/spec-adr`**: Records formal Architectural Decision Records for technical trade-offs.
 - **`/spec-plan`**: Designs the solution and breaks it down into granular, 2-to-5 minute tasks (`tasks.md`).
 - **`/spec-implement`**: Surgical task-by-task code implementation with mandatory pre-change proofs.
+- **`/spec-testing-scenario`**: Drafts manual testing scenarios guide (optional) covering happy paths and edge cases.
 
 ### 📦 Pack 4: Harness Engineering (Verification & Reviews)
 Guarantees delivery quality and continuously improves the harness.
@@ -130,6 +132,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 * `/spec-plan` — Sets plans, design files, and micro-task lists.
 * `/spec-implement` — Executes task-by-task implementations with local proofs.
 * `/spec-adr` — Records and indexes Architectural Decision Records (ADRs).
+* `/spec-testing-scenario` — Drafts manual testing scenarios guide (optional).
 
 ### Key Files Touched
 - `artifacts/features/<slug>/analysis.md`
@@ -139,6 +142,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/plan.md`
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`
+- `artifacts/features/<slug>/testing-scenarios.md` (optional)
 - `memories/repo/adr-log.md`
 - [`core-zero/project/product-sense.md`](../kit/core-zero/project/product-sense.md)
 - [`core-zero/project/glossary.md`](../kit/core-zero/project/glossary.md)

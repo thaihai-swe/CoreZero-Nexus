@@ -22,6 +22,24 @@ Used to resume, checkpoint, or close work for an existing feature slug. This ski
 
 `END` is required for long sessions because chat history is volatile. It is not the only mode.
 
+## Extract Guidance
+
+### How To Use Session Extracts
+- `context-session END` appends candidates to the feature's `session-extracts.md`. Do not edit candidates from prior sessions; append new ones.
+- Each candidate is a hypothesis, not a rule. Weak signal goes here so it does not bloat instruction-tier memory.
+- `context-memory` reads this file and decides per candidate: promote, defer, or discard.
+- Promoted candidates are removed from the `## Pending Candidates` section and recorded under `## Triaged` with their destination.
+- Discarded candidates are recorded under `## Triaged` with `discarded` and a one-line reason. Do not delete them — the trail matters.
+
+### Candidate Categories
+When appending, classify the candidate so triage is fast:
+- Heuristic — a repeatable execution pattern that worked. Likely promotion: `learned-heuristics.md`.
+- Pattern — a durable code or architecture observation. Likely promotion: `project-knowledge-base.md`.
+- Rule — a normative constraint the team should follow. Likely promotion: `core-policies.md`.
+- Security — a permission, trust, or sandbox observation. Likely promotion: `core-policies.md` `## Security Policy`.
+- Harness gap — the environment allowed a mistake. Likely promotion: `harness-telemetry.md` (auto tier) for further analysis.
+- Spec gap — the requirement was ambiguous. Likely action: route back to `spec-requirements`.
+
 ## I/O Hand-off Protocol
 - Reads: `AGENTS.md`, `MASTER_INDEX.md`, feature `status.md`, `tasks.md`, `.corezero/sessions/<slug>/progress.md`, optional `.corezero/sessions/<slug>/handoff.md`, and routed memory files.
 - Writes: `.corezero/sessions/<slug>/progress.md`, `.corezero/sessions/<slug>/handoff.md`, optional `artifacts/features/<slug>/session-extracts.md`, and telemetry pruning updates when required.

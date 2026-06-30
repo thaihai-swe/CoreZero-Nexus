@@ -7,6 +7,11 @@ If the feature slug does not exist yet or `artifacts/features/<slug>/status.md` 
 - route to `/spec-requirements` when the behavior can be specified directly
 - route to `/spec-research` when the codebase is brownfield or the current behavior is still unknown
 
+0.  Token-Cost Pre-flight: Before loading any context, estimate the session token budget:
+    - Count the files in the Always group + likely by-intent groups (based on feature phase).
+    - Add 2x buffer for tool output (apply LH-006).
+    - If the estimated load exceeds 60% of the session capacity (120,000 tokens), plan to split the session: load only the Always group + the single highest-priority by-intent group, and note the constraint in the readiness summary.
+    - Record the estimate: "Estimated load: ~N tokens (X% of capacity)" in the readiness summary.
 1.  Load Memory Router: Read `MASTER_INDEX.md` first. It declares which files are always loaded, which load by intent, and which load only on debug. If `MASTER_INDEX.md` is missing, load every memory file and route the gap to `context-memory` for index repair.
 2.  Load Always Group: Read every file in the `MASTER_INDEX.md` Always section. By default this is `core-policies.md` — it holds normative rules, security policy, and memory promotion thresholds needed every session.
 3.  Resolve Intent And Load By-Intent Groups: Match the active task (user request + feature `spec.md` + active `tasks.md` row when present) against the trigger keywords and semantic concepts listed in `MASTER_INDEX.md`. Evaluate if the conceptual intent of the task aligns with any of the intent groups (e.g. system architecture structure, heuristics, debugging context). Load only the groups whose triggers hit or whose semantic relevance matches. Record loaded groups and intentionally skipped groups in the readiness summary — silent skipping is not allowed.
@@ -24,6 +29,7 @@ If the feature slug does not exist yet or `artifacts/features/<slug>/status.md` 
     *   Phase: [current phase]
     *   Next Task: [task ID]
     *   Blockers: [None, or list them]
+    *   Token Estimate: [~N tokens, X% of capacity]
     *   Context Loaded: [Always group + by-intent groups loaded with the keywords that matched]
     *   Context Skipped: [by-intent groups intentionally skipped, with one-line reason each]
     *   Stale Context: [None, or describe stale tasks/plans found in Step 7.5]

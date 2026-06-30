@@ -7,7 +7,6 @@
 - Delivery profile: Simple | Moderate | Complex
 - Owner:
 - Status: Draft | In Review | Approved | In Progress | Done
-- Last updated:
 - Related knowledge artifact(s):
 
 ## Problem Statement
@@ -96,7 +95,6 @@ What problem are we solving, for whom, and why now?
 - Acceptance notes:
 - Validation surface:
 
-*(Add REQ-002, REQ-003, ... as needed using the same fields.)*
 
 ## Non-Functional Requirements
 
@@ -135,7 +133,6 @@ What problem are we solving, for whom, and why now?
   - Validation method:
   - Proof target:
 
-*(Add AC-002, AC-003, ... as needed.)*
 
 ## Related ADRs
 

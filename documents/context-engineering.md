@@ -369,7 +369,7 @@ When a finding is identified in a feature folder (`session-extracts.md` or `harn
 ### Promotion Watchlist Thresholds
 
 To prevent file bloat, memory segments are audited against these boundaries (from `core-policies.md`):
-- Memory file length $\ge$ 800 lines (warning) / 1200 lines (hard limit).
+- Memory file length $\ge$ 100 lines (early warning) / 200 lines (breach) / 3200 lines (hard cap).
 - $\ge$ 3 distinct H2 subtopics covering separate concerns.
 - $\ge$ 5 features referencing the same slice.
 

@@ -1,13 +1,11 @@
 # Requirements Review
 
 ## Metadata
-
-- Feature name:
-- Feature slug:
+- Feature name:- Feature slug:
 - Related spec:
 - Reviewer:
-- Status: Draft | Completed
-- Last updated:
+- Date:
+- Status:
 
 ## Review Summary
 

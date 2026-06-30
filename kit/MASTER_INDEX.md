@@ -113,16 +113,21 @@ The Always group loads every session. This matrix says what to **add** at each p
 | `domain/boundaries.md` (on match) | Should | Should | Skip | Should |
 | `domain/patterns.md` (on match) | Skip | Should | Must | Skip |
 | `domain/anti-patterns.md` (on match) | Skip | Skip | Skip | Must |
-| `gitnexus` MCP (if installed) | Skip | Should | Should | Should | — Use `gitnexus impact` / `gitnexus context` before planning changes. If not installed, skip. |
-
+| `gitnexus` MCP (if installed) | Should | Should | Should | Should | — Use `gitnexus query` / `gitnexus impact` / `gitnexus context` during research and before planning changes. If not installed, skip. |
 | `harness-telemetry.md` | Skip | Skip | Skip | Should |
 | Prior `session-extracts.md` | Skip | Should | Skip | Skip |
+
+> **When any memory file hits the Early Warning threshold (≥ 100 lines):**
+> Run `/context-compact` before continuing. This applies at any phase.
+> Do not wait for post-ship audit mode to discover bloat.
 
 Phase definitions (Mapped to the canonical 7-Phase Delivery Loop):
 - **Bootstrap**: Initializing workspace via `starter-init`.
 - **Session START**: Starting session via `context-session START`.
 - **Requirements Intake (Spec)**: Defining requirements via `spec-requirements`.
 - **Planning (Plan)**: Designing features and drafting task lists via `spec-plan`.
+- **Testing Scenarios (Optional)**: Drafting manual test scenario guides via `spec-testing-scenario`. Fully user-optional; invoke at any point before or after implementation.
+- **Compaction (any phase)**: Triggered when a memory file hits Early Warning. Run `/context-compact` to shrink the file before context budget is impacted.
 - **Implementation (Implement)**: Coding, proving tasks, and evicting context via `spec-implement`.
 - **Verification (Verify)**: Running mechanical test runners and audits via `harness-verify`.
 - **Memory Sync**: Triaging and promoting heuristics via `context-memory` and closing session via `context-session END`.

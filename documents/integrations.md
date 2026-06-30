@@ -60,6 +60,7 @@ Add to `~/.config/opencode/config.json`:
 
 | Skill | GitNexus tool used | Why |
 |-------|-------------------|-----|
+| `spec-research` | `context`, `query` | Architecture exploration and finding execution flows |
 | `spec-plan` | `impact` | Blast radius analysis before designing changes |
 | `spec-implement` | `context` | Dependency awareness during implementation |
 | `harness-verify` | `impact` | Verify no unexpected side effects |

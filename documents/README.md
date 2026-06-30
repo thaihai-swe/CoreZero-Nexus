@@ -50,6 +50,9 @@ The installed package ships the full command surface:
   - `/technical-docs`
   - `/codebase-documenter`
   - `/visualize`
+  - `/context-compact`
+  - `/spec-testing-scenario`
+  - `/ponytail`
 - the `source-only` marker is reserved for future skills that remain in the repo but stay out of `kit/manifest.json`
 
 ## Validation
@@ -70,7 +73,7 @@ CoreZero operates across five distinct layers that separate concerns and maintai
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin task router -> points to skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  17 skills across 4 groups (Lifecycle, Context & Memory, Quality & Docs, Visualization)
+│  2. Skill Layer (skills/*/SKILL.md)         │  18 skills across 4 groups (Lifecycle, Context & Memory, Quality & Docs, Visualization)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (ETCLOVG Taxonomy)        │  Rules, validation commands, and session control
 ├─────────────────────────────────────────────┤

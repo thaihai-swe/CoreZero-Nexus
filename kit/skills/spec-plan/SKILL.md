@@ -17,6 +17,45 @@ Converts an approved spec into a concrete execution strategy. Produces `plan.md`
 - Writes: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/status.md`.
 - Next Skill: `/spec-implement`
 
+## Task Formulation Guidance
+
+### Rules
+- Keep tasks proportional to delivery profile; Simple stays compact.
+- Each task small, testable, and traceable to REQ/AC/plan.
+- Mark `[P]` only when truly independent (no write/contract conflicts); state ownership boundary.
+- Prefer explicit file/module targets when known.
+- First unblocked task must be executable from this file alone.
+- Task states: `Not Started` | `In Progress` | `Blocked` | `Done` | `Deferred`.
+- Behavior-changing tasks: name the failing proof/test expected before the fix (TDD: RED → GREEN).
+- Don't finalize until REQ → AC → TASK → validation coverage is complete.
+
+### User Story Decomposition
+Required for Moderate and Complex when the feature has more than one user story. Skipped for Simple and single-story features.
+Group tasks into independently shippable slices. Each story slice must be:
+- Independently testable — its proving commands run without depending on later slices.
+- Independently shippable — releasing only this slice produces a useful, complete outcome.
+- Priority-tagged — `P1` ships first (MVP must-have), `P2` ships next, `P3` is follow-up.
+
+Cross-slice dependency rule: a `P2` task may depend on `P1` tasks; a `P3` task may depend on `P1` or `P2` tasks; never the reverse. Setup and Foundational phases are not stories — they have no priority lane and no `User story:` linkage.
+
+| Phase | Purpose | Story | Ships independently |
+|---|---|---|---|
+| Setup | Project scaffolding, dependency install, CI wiring | n/a | no |
+| Foundational | Shared infra all stories depend on | n/a | no |
+| Story P1: <name> | First MVP-shippable behavior | US-001 | yes |
+| Story P2: <name> | Next slice | US-002 | yes (with P1 deployed) |
+| Story P3: <name> | Follow-up slice | US-003 | yes (with P1 + P2 deployed) |
+| Polish | Docs, perf, observability cleanup | n/a | no |
+
+### Implementation Strategy
+Required when User Story Decomposition is filled. Pick one strategy and record the reason in the tasks artifact. The choice guides ordering and review pacing.
+
+| Strategy | When to use | Effect |
+|---|---|---|
+| MVP-first | Moderate/Complex with multiple stories where the team wants to ship as soon as P1 is verified | Complete and verify P1 (including its tests) before any P2 work begins; each story is a separate ship gate |
+| Incremental | Stories tightly coupled or built sequentially against the same module | Run all P1 tasks, then all P2, then all P3; one final verification covers the feature |
+| Parallel-team | Subagent or multi-developer slices with clean ownership boundaries | After Foundational completes, stories run concurrently; each slice owns its boundary and verifies itself |
+
 ## Workflow
 1. Initialize State: Update the `## Current Phase` section of `artifacts/features/<slug>/status.md` to set phase to `Planning`.
 2. Design First: You MUST write `artifacts/features/<slug>/plan.md` using `references/plan-template.md`. You must complete Part 1: Technical Design before defining execution phases or tasks. Read the `## Complexity` from `status.md` and choose depth for the Technical Design section:

@@ -24,6 +24,7 @@ Use this path for normal feature work:
 - `/code-review` performs an adversarial or constructive code review against policies and spec.
 - `/harness-verify` proves the work against the spec, plan, and available checks.
 - `/ponytail` modifies agent behavior to force the simplest, laziest working solution.
+- `/spec-testing-scenario` drafts an optional manual testing scenarios guide.
 
 ### Session And Memory
 
@@ -100,6 +101,7 @@ When in doubt, check `manifest.json` before editing a file as part of a kit upgr
 | Need durable API or flow docs | `/technical-docs` |
 | Need broader repo documentation | `/codebase-documenter` |
 | Need a diagram | `/visualize` |
+| Need manual testing scenarios documented | `/spec-testing-scenario` |
 
 ## Common Confusions
 

@@ -70,10 +70,10 @@ Canonical threshold ladder. All skills and reference files quote this section by
 
 | Lines | State | Action |
 |-------|-------|--------|
-| < 600 | Healthy | No action |
-| 600–799 | Early warning | Open promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` `## Promotion Watchlist` |
-| 800–1199 | Threshold breach | Compaction required before new appends; proposal must be reviewed by user |
-| >= 1200 | Hard cap | Block all appends; split or compact mandatory |
+| < 100 | Healthy | No action |
+| 100–199 | Early warning | Open promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` `## Promotion Watchlist` |
+| 200–3199 | Threshold breach | Compaction required before new appends; proposal must be reviewed by user |
+| >= 3200 | Hard cap | Block all appends; split or compact mandatory |
 
 Additional triggers:
 - Distinct subtopics: 3 or more H2 sections covering separable concerns → open promotion proposal.
@@ -86,8 +86,9 @@ Actions:
 ## Active Session Limits & FinOps Guardrails
 
 - Session Token Capacity: 200,000 tokens
-- Amnesia Warning Threshold: 80% saturation (160,000 tokens)
-- FinOps Guardrails: Max 10 tool calls per loop, Cost-per-Accepted-Outcome (CAPO) monitored via run limits.
+- Graduated Escalation: See `skills/context-session/references/context-condensation.md ## Token Budget Escalation` for the full 4-band response ladder (Green/Yellow/Orange/Red).
+- Amnesia Threshold (Red): 80% saturation (160,000 tokens) — force `/context-session END`.
+- FinOps Guardrails: Max 10 tool calls per loop, CAPO monitored via run limits.
 - Verification Threshold: Backtesting pass^k reliability (multiple consecutive passing trials required for complex logic).
 
 ## Security Policy

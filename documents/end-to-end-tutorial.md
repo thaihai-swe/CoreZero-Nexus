@@ -1,6 +1,6 @@
 # End-to-End Tutorial
 
-This tutorial explains the full CoreZero skill flow from install to closeout. It covers all 17 shipped skills, their modes, and whether each skill is required, conditional, optional, or maintenance-only.
+This tutorial explains the full CoreZero skill flow from install to closeout. It covers all 18 shipped skills, their modes, and whether each skill is required, conditional, optional, or maintenance-only.
 
 CoreZero has one required feature-delivery spine. The other skills are supporting branches for session continuity, memory health, governance, documentation, diagrams, and harness repair.
 
@@ -35,6 +35,8 @@ flowchart TD
     SpecADR --> Plan
 
     Plan --> Implement["/spec-implement<br/>Required per feature"]
+    Plan -.-> Test["/spec-testing-scenario<br/>Optional helper"]
+    Test -.-> Implement
     Implement --> Verify["/harness-verify<br/>Required per feature"]
     Verify --> Memory["/context-memory<br/>Conditional post-ship sync"]
     Verify --> Done[Done]
@@ -100,15 +102,16 @@ The support skills are real shipped skills, but they are not all mandatory for e
 | [`/harness-verify`](../kit/skills/harness-verify/SKILL.md) | Required per feature | Verification | Prove implementation against tasks and spec | `status.md`, verification output, `harness-telemetry.md` |
 | [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md` |
 | [`/context-memory`](../kit/skills/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
-| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized or context is too heavy | Compacted target under `memories/`, `artifacts/`, or `core-zero/generated/` |
+| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized (thresholds: 100/200/3200 lines) | Compacted target under `memories/`, `artifacts/`, or `core-zero/generated/` |
 | [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `core-zero/generated/dashboard.html` |
 | [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `core-zero/project/code-map.md`, eval reports |
 | [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `core-zero/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
 | [`/code-review`](../kit/skills/code-review/SKILL.md) | Optional helper | Review | Manual review is requested or verification calls for deeper review | Review findings, usually feature-scoped |
 | [`/ponytail`](../kit/skills/ponytail/SKILL.md) | Optional helper | `lite`, `full` (default), `ultra` | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features | Advisory — no artifacts |
-| [`/technical-docs`](../kit/skills/technical-core-zero/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
+| [`/technical-docs`](../kit/skills/technical-docs/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
 | [`/codebase-documenter`](../kit/skills/codebase-documenter/SKILL.md) | Optional helper | Codebase documentation | Need broader repo onboarding or architecture documentation | README-style guides, architecture docs, setup docs |
 | [`/visualize`](../kit/skills/visualize/SKILL.md) | Optional helper, conditional for complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts |
+| [`/spec-testing-scenario`](../kit/skills/spec-testing-scenario/SKILL.md) | Optional helper | Manual testing scenarios | Need structured manual test guides covering happy/edge paths | `testing-scenarios.md` |
 
 ---
 

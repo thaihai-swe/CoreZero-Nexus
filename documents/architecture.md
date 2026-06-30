@@ -10,7 +10,7 @@ CoreZero implements **Harness Engineering** — the discipline of designing envi
 ┌─────────────────────────────────────────────┐
 │  1. Entrypoint Layer (AGENTS.md)            │  Thin router → skills
 ├─────────────────────────────────────────────┤
-│  2. Skill Layer (skills/*/SKILL.md)         │  12 core delivery + 5 specialist (17 total)
+│  2. Skill Layer (skills/*/SKILL.md)         │  13 core delivery + 5 specialist (18 total)
 ├─────────────────────────────────────────────┤
 │  3. Harness Layer (6 subsystems)            │  Environment control
 ├─────────────────────────────────────────────┤
@@ -84,7 +84,7 @@ And bounded-context guidance in `memories/domain/`:
 
 ## Data Flow
 
-The diagram below details the sequence of interactions across the 5 layers during feature development, from user request to post-ship knowledge sync (see details in [evaluation-report.md](file:///Users/thaihai-swe/Desktop/AI-agents-dev-kits/documents/evaluation-report.md)):
+The diagram below details the sequence of interactions across the 5 layers during feature development, from user request to post-ship knowledge sync:
 
 ```mermaid
 sequenceDiagram
@@ -94,7 +94,7 @@ sequenceDiagram
     participant Sub as Research Subagents
     participant Art as Feature Artifacts
     participant Mem as Memory Layer
-    participant Cmd as Verification Commands
+    participant Cmd as Verification Gates (gate-runner.sh)
 
     User->>Agent: Request Feature/Bug Fix
     Agent->>Mem: Read MASTER_INDEX.md & Always-loaded memory (T1 & T2)
@@ -110,27 +110,33 @@ sequenceDiagram
     end
 
     Agent->>Agent: Route to /spec-requirements
-    Agent->>User: Socratic Grilling (Batch Questions)
+    Agent->>User: Socratic Evaluation Questions
     User-->>Agent: Clarifications
     Agent->>Art: Write spec.md (AC-* criteria) & proposal.md
     Note over Agent,Art: Lock specifications
 
     Agent->>Agent: Route to /spec-plan
-    Agent->>Art: Write design.md, plan.md & tasks.md (Granular Tasks + Proofs)
+    Agent->>Art: Write plan.md & tasks.md (Granular Tasks + Proofs)
 
     loop For each task in tasks.md
         Agent->>Agent: Route to /spec-implement --task <task-id>
         Agent->>Agent: Modify code JIT (T5)
-        Agent->>Cmd: Run local proof command (e.g., unit test)
-        Cmd-->>Agent: Proof output (T6)
-        Agent->>Agent: Evict raw proof output, record outcome in tasks.md
+        Agent->>Cmd: Run gate-runner.sh validation
+        alt Gate Fails
+            Cmd-->>Agent: Gate error logs
+            Agent->>Cmd: Pipe error to telemetry-collector.sh
+            Agent->>Agent: Summarize error, evict raw logs, repair code
+        else Gate Passes
+            Cmd-->>Agent: Verification success
+            Agent->>Agent: Evict raw proof output, record outcome in tasks.md
+        end
     end
 
     Agent->>Agent: Route to /harness-verify
-    Agent->>Cmd: Run mechanical verification (Lint, Build, Test suites)
+    Agent->>Cmd: Run gate-runner.sh mechanical verify suite (Lint, Build, Test)
     Cmd-->>Agent: Mechanical PASS
     Agent->>Agent: Run alignment audit (Map AC-* to task proofs)
-    Agent->>Agent: Run code review audit against google-eng guidelines
+    Agent->>Agent: Run security lens audit
 
     Agent->>Mem: Post-Ship Memory Sweep (context-memory)
     Note over Agent,Mem: Read memory files in MASTER_INDEX.md, append lessons to session-extracts.md
@@ -172,7 +178,7 @@ CoreZero/
 │   │   ├── project/             # Adopter-owned project docs (architecture, product sense, etc)
 │   │   ├── rules/               # Shipped coding and security standards
 │   │   └── generated/           # Codemap and reference index placeholders
-│   ├── skills/                  # 17 core/utility skills for coding agents
+│   ├── skills/                  # 18 core/utility skills for coding agents
 │   │   ├── _shared/             # Shared resources across skills
 │   │   └── <skill>/
 │   │       ├── SKILL.md         # Compressed token-efficient skill card
@@ -219,7 +225,7 @@ This is the layout created in a downstream project after running the installer s
 │       ├── ponytail.md
 │       ├── python.md
 │       └── security.md
-├── skills/                      # 17 shipped skills (kit-managed)
+├── skills/                      # 18 shipped skills (kit-managed)
 ├── scripts/
 │   ├── context-loader.py        # MVC context loader
 │   ├── generate-dashboard.py    # Dashboard generator
@@ -270,7 +276,7 @@ Full file/folder structure the kit ships and the artifacts it produces during wo
 mindmap
   root((CoreZero Nexus))
     skills/
-      Core 12
+      Core 13
         starter-init
         context-session
         context-status
@@ -283,6 +289,7 @@ mindmap
         spec-implement
         harness-verify
         harness-maintain
+        spec-testing-scenario
       Specialist 5
         code-review
         visualize
@@ -321,7 +328,7 @@ mindmap
 
 ## Skill Grouping
 
-The 17 skills (12 core delivery + 5 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
+The 18 skills (13 core delivery + 5 specialist tools) cluster into three groups by purpose: bootstrap + context, delivery pipeline, and specialist tools.
 
 ```mermaid
 flowchart TB
@@ -340,6 +347,7 @@ flowchart TB
         IMPL["spec-implement"]
         VERIFY["harness-verify"]
         HAND["context-session"]
+        TEST["spec-testing-scenario"]
     end
 
     subgraph ST["Specialist Tools"]
@@ -359,6 +367,8 @@ flowchart TB
     SPEC --> ADR
     SPEC --> PLAN
     PLAN --> IMPL
+    PLAN -.-> TEST
+    TEST -.-> IMPL
     IMPL --> VERIFY
     VERIFY --> HAND
     VERIFY -. invokes internally .-> CR
@@ -374,6 +384,6 @@ flowchart TB
     classDef neutral fill:#ffffff,stroke:#d0d7de,color:#0d0d0d,stroke-width:1.2px;
     classDef internal fill:#ffffff,stroke:#f59e0b,color:#0d0d0d,stroke-width:1.2px,stroke-dasharray:4 2;
     class START,MEMORY,SPEC,PLAN primary;
-    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,TECDOC,CODE,MAINTAIN neutral;
+    class STATUS,RESEARCH,ADR,IMPL,VERIFY,HAND,VIS,TECDOC,CODE,MAINTAIN,TEST neutral;
     class CR internal;
 ```

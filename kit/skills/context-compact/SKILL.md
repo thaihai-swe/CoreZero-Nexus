@@ -30,7 +30,7 @@ This is a focused maintenance operation, not a feature workflow. It does not rou
 Do not invoke this skill for:
 - Routing or promoting new knowledge — use `/context-memory`.
 - Editing the content of rules or heuristics — use `/context-memory` or direct edit.
-- Files under 200 lines — compaction cannot reduce below a meaningful minimum.
+- Files under 100 lines — compaction cannot reduce below a meaningful minimum.
 
 ## Read First
 
@@ -44,7 +44,7 @@ Before compacting, read:
 ### Step 1 — Triage
 
 1. Count lines in the target file: `wc -l <file>`.
-2. If lines < 200: stop. The file is not oversized. Report this and exit.
+2. If lines < 100: stop. The file is not oversized. Report this and exit.
 3. If the file is already in `MASTER_INDEX.md ## 5. Promotion Watchlist`: stop. Compaction is the wrong tool — the file needs to be *split*, not compressed. Surface this to the user.
 4. Otherwise: proceed.
 
@@ -114,6 +114,8 @@ This skill may compact any of the following files. All other files are outside s
 | `memories/repo/project-knowledge-base.md` | None (prose) | Dedup aggressively. |
 | `memories/domain/*/boundaries.md` | `INV-*` | Do not remove invariants; do not compact `## Change Log` entries younger than 1 month. |
 | `core-zero/project/architecture.md` | None (prose) | Trim stale component descriptions only. |
+| `memories/repo/harness-telemetry.md` | `OBS-*` | Compact `## Retired Entries` only. Active OBS-* entries must not be compacted — only entries in `## Retired Entries`. |
+| `artifacts/features/*/session-extracts.md` | `EXT-*` | Compact only triaged entries (marked `[PROMOTED]` or `[DISCARDED]`). Candidate entries must not be touched. |
 
 ## Core Rules
 

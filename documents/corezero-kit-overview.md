@@ -63,13 +63,14 @@ The kit doesn't just build code; it maintains its own health and architectural i
 *   **/codebase-documenter**: Generates broad, multi-file documentation for human onboarding (architecture, component relationships, deployment guides).
 *   **/visualize**: Generates Mermaid diagrams and SVGs to visualize complex data flows or state machines.
 *   **/context-status**: The AI Project Manager. Scans all active feature logs and generates a high-level HTML dashboard reporting on progress, blockers, and next steps across the entire repository.
+*   **/spec-testing-scenario**: Drafts an optional, user-invoked manual testing scenarios guide covering happy paths and edge cases for a feature.
 
 ---
 
 ## Summary of the Flow
 1. Start with **`/starter-init`**.
 2. Jump into the feature loop (**`/spec-research`** ➔ **`/spec-requirements`** ➔ **`/spec-plan`** ➔ **`/spec-implement`** ➔ **`/harness-verify`**).
-3. If things get complicated, branch out into **`/spec-adr`** or **`/code-review`**.
+3. If things get complicated, branch out into **`/spec-adr`**, **`/code-review`**, or **`/spec-testing-scenario`**.
 4. When the feature ships, document it with **`/technical-docs`**.
 5. Wrap up every day using the Context Governance commands (**`/context-memory`** ➔ **`/context-session END`**).
 

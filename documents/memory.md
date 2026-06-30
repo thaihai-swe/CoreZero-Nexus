@@ -134,7 +134,7 @@ Security candidates always escalate immediately regardless of repetition count.
 ### Promotion Thresholds (from `core-policies.md`)
 
 A memory file approaching the thresholds in `core-policies.md` `## Memory Promotion Thresholds` is added to `MASTER_INDEX.md ## Promotion Watchlist`:
-- File length thresholds (600-line Early Warning, 800-line Threshold Breach, 1200-line Hard Cap)
+- File length thresholds (100-line Early Warning, 200-line Threshold Breach, 3200-line Hard Cap)
 - 3+ distinct H2 subtopics covering separable concerns
 - 5+ feature artifacts citing the same slice
 

@@ -17,14 +17,15 @@ This reference catalog details the public commands, feature artifact schemas, re
 | `/spec-adr` | SDD | Documents structural decisions and alternatives formally | `adr-NNN.md`, `adr-log.md` |
 | `/spec-plan` | SDD | Maps designs to micro-tasks with dedicated proof commands | `plan.md`, `tasks.md` |
 | `/spec-implement` | SDD | Implements code surgically task-by-task with pre-change proofs | Touches target source files |
-| `/harness-verify` | Harness | Performs mechanical build gates and spec alignment audits | `review.md`, `testing-scenarios.md` |
+| `/harness-verify` | Harness | Performs mechanical build gates and spec alignment audits | `review.md` |
 | `/harness-maintain` | Harness | Evaluates and improves harness rules based on logged errors | `harness-telemetry.md` |
 | `/code-review` | Specialist | Audits code health against Google's Engineering Practices | Integrated reviews in `review.md` |
 | `/ponytail` | Specialist | Enforces the laziest effective solution — checks for over-engineering, trims bloat, maximises platform-native features. Supports lite / full (default) / ultra intensity levels | (no artifacts — advisory mode) |
-| `/context-compact` | Context | Compact oversized memory files (>600 lines). Preserves all normative identifiers with pre/post safety protocol | Compacted target file under `memories/` or `artifacts/` |
+| `/context-compact` | Context | Compact oversized memory files (thresholds: 100-line early warning, 200-line breach, 3200-line hard cap). Preserves all normative identifiers with pre/post safety protocol | Compacted target file under `memories/` or `artifacts/` |
 | `/visualize` | Specialist | Generates visual SVG/Mermaid flowcharts and class diagrams | `.svg`, `.mermaid` |
 | `/codebase-documenter`| Specialist | Compiles complete technical onboarding guides for new teams | `README.md`, `CONTRIBUTING.md` |
 | `/technical-docs` | Specialist | Compiles API contracts (`--mode api`) and/or system flows (`--mode flow`/`both`) | `api-docs.md`, `flows.md`, `technical-docs.md` |
+| `/spec-testing-scenario`| SDD | Drafts manual testing scenarios guide (optional) | `testing-scenarios.md` |
 
 ---
 
@@ -40,7 +41,7 @@ This reference catalog details the public commands, feature artifact schemas, re
 | `plan.md` | `/spec-plan` | Technical design + execution strategy |
 | `tasks.md` | `/spec-plan` / `/spec-implement` | Task breakdown + evidence |
 | `review.md` | `/harness-verify` | Verification verdict |
-| `testing-scenarios.md` | `/harness-verify` | Manual test guide |
+| `testing-scenarios.md` | `/spec-testing-scenario` | Manual test guide (optional) |
 | `progress.md` | `/context-session` | Session log |
 | `handoff.md` | `/context-session` | Continuity artifact |
 | `session-extracts.md` | `/context-session` / `/harness-verify` | Extracted-tier memory candidates |

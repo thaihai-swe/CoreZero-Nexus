@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoreZero — Spec-Anchored AI Software Delivery · Thai Hai</title>
     <meta name="description"
-        content="An engineering harness for AI coding agents. 17 skills, durable memory tiers, mechanical verification gates, full traceability — turning chat-driven drift into reproducible delivery.">
+        content="An engineering harness for AI coding agents. 18 skills, durable memory tiers, mechanical verification gates, full traceability — turning chat-driven drift into reproducible delivery.">
     <meta name="author" content="Thai Hai">
     <meta name="theme-color" content="#635BFF">
 
@@ -20,7 +20,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="CoreZero — Spec-Anchored AI Software Delivery">
     <meta name="twitter:description"
-        content="An engineering harness for AI coding agents. 17 skills, durable memory, mechanical verification gates, full traceability.">
+        content="An engineering harness for AI coding agents. 18 skills, durable memory, mechanical verification gates, full traceability.">
 
     <link rel="stylesheet" href="common.css">
     <link
@@ -181,7 +181,7 @@
                     <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false">Workflow
                         <span class="caret" aria-hidden="true">▾</span></button>
                     <ul class="nav-dropdown">
-                        <li><a href="#skills">The 17 Skills</a></li>
+                        <li><a href="#skills">The 18 Skills</a></li>
                         <li><a href="#workflow">The Delivery Workflow</a></li>
                         <li><a href="#verify-gate">The Verify Gate</a></li>
                     </ul>
@@ -253,7 +253,7 @@
             <h2 id="about-heading" class="about-title">A personal R&amp;D project on agent-first software delivery</h2>
             <p>
                 I built this kit to answer a question I kept hitting in real work: <em>how do you make AI coding agents
-                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 17-skill
+                    behave like disciplined engineers instead of confident chat partners?</em> The result is a 18-skill
                 harness that anchors every change to a locked spec, plans tasks in 2&ndash;5 minute units, gates
                 completion behind mechanical verification, and grows a durable memory tier over time so the next session
                 doesn't start from zero.
@@ -270,7 +270,7 @@
                 <span class="about-tag">Spec-anchored delivery</span>
                 <span class="about-tag">Mechanical verification</span>
                 <span class="about-tag">Durable memory</span>
-                <span class="about-tag">17 shipped skills</span>
+                <span class="about-tag">18 shipped skills</span>
             </div>
         </aside>
 
@@ -285,7 +285,7 @@
                 <li><a href="#how-it-works">3. How It Works (One-Minute Overview)</a></li>
                 <li><a href="#architecture">4. Architecture &amp; Repository Shape</a></li>
                 <li><a href="#memory-context">5. Memory &amp; Context Engineering</a></li>
-                <li><a href="#skills">6. The 17 Skills</a></li>
+                <li><a href="#skills">6. The 18 Skills</a></li>
                 <li><a href="#workflow">7. The Delivery Workflow</a></li>
                 <li><a href="#verify-gate">8. The Verify Gate</a></li>
                 <li><a href="#getting-started">9. Getting Started (Install &amp; Onboarding)</a></li>
@@ -323,7 +323,7 @@
                         <ul>
                             <li>Follow the 10-minute start steps below.</li>
                             <li>Read <a href="#getting-started">Getting Started</a> for install and first commands.</li>
-                            <li>Explore <a href="#skills">The 17 Skills</a> to see available commands.</li>
+                            <li>Explore <a href="#skills">The 18 Skills</a> to see available commands.</li>
                         </ul>
                         <a class="btn btn-secondary audience-link" href="#getting-started">Go to getting started</a>
                     </div>
@@ -743,7 +743,7 @@
                 <div class="arch-grid" style="margin-bottom: var(--space-8);">
                     <div class="arch-card">
                         <h4>Skill Layer</h4>
-                        <p class="node-desc"><code>skills/&lt;name&gt;/SKILL.md</code> — 17 self-contained behavioral
+                        <p class="node-desc"><code>skills/&lt;name&gt;/SKILL.md</code> — 18 self-contained behavioral
                             specs. Each defines: overview, workflow steps, stop conditions, core rules, red flags,
                             verification criteria. References under <code>references/</code> load on demand.</p>
                     </div>
@@ -860,7 +860,7 @@
                             <tr>
                                 <td><strong>L</strong> Logic</td>
                                 <td>Skills &amp; decision routing</td>
-                                <td>17 <code>SKILL.md</code> contracts → 7-phase delivery loop</td>
+                                <td>18 <code>SKILL.md</code> contracts → 7-phase delivery loop</td>
                             </tr>
                             <tr>
                                 <td><strong>O</strong> Observability</td>
@@ -1270,17 +1270,17 @@ artifacts/features/</code></pre>
 
         <!--SECTION:6-->
         <section id="skills">
-            <h2>6. The 17 Skills</h2>
+            <h2>6. The 18 Skills</h2>
             <p class="node-desc">Every shipped slash command with its purpose, artifacts, and key contract rules.
                 Grouped by
-                subsystem. All 17 skills ship in <code>kit/skills/</code> and any adopter repo can install them.</p>
+                subsystem. All 18 skills ship in <code>kit/skills/</code> and any adopter repo can install them.</p>
 
             <figure class="kit-diagram">
                 <div class="mermaid-render" data-mmd="../documents/diagrams/corezero-skills-taxonomy.mmd" role="img"
-                    aria-label="All 17 skills grouped by subsystem: Project Starter, Context Engineering, Spec-Driven Development, Harness Engineering, Docs and Specialist.">
+                    aria-label="All 18 skills grouped by subsystem: Project Starter, Context Engineering, Spec-Driven Development, Harness Engineering, Docs and Specialist.">
                     <div class="mermaid-loading">Rendering corezero-skills-taxonomy…</div>
                 </div>
-                <figcaption class="kit-diagram-caption">Figure 6.0 &mdash; All 17 skills grouped by subsystem.
+                <figcaption class="kit-diagram-caption">Figure 6.0 &mdash; All 18 skills grouped by subsystem.
                 </figcaption>
             </figure>
 
@@ -1441,6 +1441,16 @@ artifacts/features/</code></pre>
                         <p class="node-desc" style="font-size:12px; margin-top:8px;"><strong>Key rule:</strong> Always
                             include at least two options with pros/cons. Supersede, never delete.</p>
                     </div>
+                    <div class="skill-card">
+                        <div class="status-badge" style="position:static; display:inline-block; margin-bottom:8px;">
+                            Optional</div>
+                        <span class="node-title"><code>/spec-testing-scenario</code></span>
+                        <p class="node-desc">Draft a manual testing scenario guide covering happy paths, edge cases, and regressions before or after implementation.</p>
+                        <div class="artifacts-list"><span class="artifact-item"
+                                data-tooltip="Manual guide">testing-scenarios.md</span>
+                        </div>
+                        <p class="node-desc" style="font-size:12px; margin-top:8px;"><strong>Key rule:</strong> Every AC must appear in the scenario matrix.</p>
+                    </div>
                 </div>
             </div>
 
@@ -1454,7 +1464,6 @@ artifacts/features/</code></pre>
                         <p class="node-desc">Close the loop: mechanical gates, alignment audit, security lens, manual
                             testing guide, post-ship memory sync, final verdict.</p>
                         <div class="artifacts-list"><span class="artifact-item" data-tooltip="Evidence">review.md</span>
-                            <span class="artifact-item" data-tooltip="Manual guide">testing-scenarios.md</span>
                         </div>
                         <p class="node-desc" style="font-size:12px; margin-top:8px;"><strong>Key rule:</strong> Beyonce
                             Rule: every AC maps to a task with recorded validation evidence.</p>
@@ -2007,6 +2016,11 @@ artifacts/features/</code></pre>
                                 <td><code>/spec-adr</code></td>
                             </tr>
                             <tr>
+                                <td><code>adr-lightweight-template.md</code></td>
+                                <td><code>skills/spec-adr/references/</code></td>
+                                <td><code>/spec-adr</code></td>
+                            </tr>
+                            <tr>
                                 <td><code>analysis-template.md</code></td>
                                 <td><code>skills/spec-research/references/</code></td>
                                 <td><code>/spec-research</code></td>
@@ -2017,9 +2031,14 @@ artifacts/features/</code></pre>
                                 <td><code>/context-session END</code></td>
                             </tr>
                             <tr>
-                                <td><code>requirements-review.md</code></td>
+                                <td><code>requirements-review-template.md</code></td>
                                 <td><code>skills/spec-requirements/references/</code></td>
                                 <td><code>/spec-requirements</code> (on gap detection)</td>
+                            </tr>
+                            <tr>
+                                <td><code>testing-scenarios-template.md</code></td>
+                                <td><code>skills/spec-testing-scenario/references/</code></td>
+                                <td><code>/spec-testing-scenario</code></td>
                             </tr>
                             <tr>
                                 <td><code>api-document-template.md</code></td>

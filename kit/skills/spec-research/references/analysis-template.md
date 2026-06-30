@@ -3,11 +3,10 @@
 Use only the sections that materially help the investigation.
 
 ## Metadata
-
 - Investigation name:
-- Feature or issue slug:
-- Owner:
-- Last updated:
+- Feature slug:
+- Date:
+- Status:
 
 ## Scope
 
@@ -63,8 +62,6 @@ Formalize the investigation using the diagnose loop.
 - Exact next prompt or action:
 
 ## Bug Investigation Add-On
-
-Use these only when debugging:
 
 - Reported symptom:
 - Expected behavior:

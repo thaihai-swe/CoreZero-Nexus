@@ -85,7 +85,7 @@ for f in \
 done
 
 
-# --- Check 5: Threshold consistency (600/800/1200) ---
+# --- Check 5: Threshold consistency (100/200/3200) ---
 echo "--- Check 5: Threshold consistency ---"
 check_threshold() {
   local file="$1" val="$2"
@@ -95,7 +95,7 @@ check_threshold() {
   return 1
 }
 # Just check core-policies.md has the canonical thresholds
-if grep -q "Memory Promotion Thresholds" "$KIT_ROOT/memories/repo/core-policies.md" && grep -qE "800.1199" "$KIT_ROOT/memories/repo/core-policies.md"; then
+if grep -q "Memory Promotion Thresholds" "$KIT_ROOT/memories/repo/core-policies.md" && grep -qE "200.3199" "$KIT_ROOT/memories/repo/core-policies.md"; then
   pass "core-policies.md has canonical thresholds table"
 else
   fail "core-policies.md missing canonical thresholds"

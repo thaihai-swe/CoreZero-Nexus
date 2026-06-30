@@ -74,9 +74,9 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
 - Last reviewed: 2026-06-18
 - Promote to stronger rule? No — operational guidance, not normative
 
-### LH-007: Memory promotion thresholds trigger after files are already oversized
+### LH-007: [PROMOTED CANDIDATE] Memory promotion thresholds trigger after files are already oversized
 - Trigger:
-  - running `/context-memory audit` or noticing a memory file exceeds 800 lines
+  - running `/context-memory audit` or noticing a memory file exceeds 100 lines
 - Working heuristic:
   - track memory file sizes proactively in `harness-telemetry.md` Trend Summary. When any file reaches the Early Warning threshold (per `core-policies.md` `## Memory Promotion Thresholds`), create a promotion proposal early rather than waiting for the Threshold Breach band.
 - Evidence:

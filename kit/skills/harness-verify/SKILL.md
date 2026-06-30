@@ -34,7 +34,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 10. Helper Skills:
     - Code Review: For substantial changes, invoke `/code-review` and merge findings into `review.md`.
     - Harness Maintain: Invoke `/harness-maintain` if changes touch the kit structure.
-11. Artifact Generation: Write findings into `review.md`. Draft `testing-scenarios.md` using `references/testing-scenarios-template.md` (Required for `Moderate` and `Complex`, optional for `Simple`).
+11. Artifact Generation: Write findings into `review.md`. If `artifacts/features/<slug>/testing-scenarios.md` exists, reference it in `review.md`. This file is user-optional — invoke `/spec-testing-scenario` separately if you want structured test scenario documentation; do not generate it here.
 12. Finalization & Handoff: Apply `references/definition-of-done.md` checklist before issuing verdict. Set verdict (`Pass`, `Pass with Follow-Up Debt`, or `Fail`). If passed, update `status.md` to `Done` and explicitly hand off to `/context-memory` for post-ship sync.
 
 ## Core Rules
