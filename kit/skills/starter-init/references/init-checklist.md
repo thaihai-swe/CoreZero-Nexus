@@ -6,19 +6,19 @@ Use this checklist to ensure the repository is fully prepared for harnessed agen
 
 - [ ] Repo confirmed non-trivial (has existing code, tests, CI, or meaningful history).
 - [ ] Subagent read-only sweep completed. No raw grep output in main context — summaries only.
-- [ ] Archaeology sweep findings (baseline commands, security paths, and preserved behaviors) recorded in `memories/repo/project-knowledge-base.md` and `memories/repo/core-policies.md`.
-- [ ] `memories/repo/learned-heuristics.md` has 3–5 new entries with file citations.
-- [ ] `memories/repo/core-policies.md` limits/caveats updated.
+- [ ] Archaeology sweep findings (baseline commands, security paths, and preserved behaviors) recorded in `core-zero/memories/repo/project-knowledge-base.md` and `core-zero/memories/repo/core-policies.md`.
+- [ ] `core-zero/memories/repo/learned-heuristics.md` has 3–5 new entries with file citations.
+- [ ] `core-zero/memories/repo/core-policies.md` limits/caveats updated.
 
 ### Phase B — Bootstrap (all repos)
 
 - [ ] `install.sh` has already seeded the harness surface. If a seeded file is missing, re-run the installer before init continues.
 - [ ] `AGENTS.md` exists at the project root and is router-style (< 50 lines, links to deeper docs).
-- [ ] `memories/repo/core-policies.md` exists and captures repository workflow defaults.
-- [ ] `memories/repo/core-policies.md` exists and contains normative repo-wide rules.
-- [ ] `memories/repo/core-policies.md` contains a Security Policy section that captures permission tiers, trust boundaries, and secret handling.
-- [ ] `memories/repo/learned-heuristics.md` exists and captures descriptive repeated heuristics only.
-- [ ] `memories/repo/project-knowledge-base.md` exists and contains descriptive stack details, patterns, and conventions.
+- [ ] `core-zero/memories/repo/core-policies.md` exists and captures repository workflow defaults.
+- [ ] `core-zero/memories/repo/core-policies.md` exists and contains normative repo-wide rules.
+- [ ] `core-zero/memories/repo/core-policies.md` contains a Security Policy section that captures permission tiers, trust boundaries, and secret handling.
+- [ ] `core-zero/memories/repo/learned-heuristics.md` exists and captures descriptive repeated heuristics only.
+- [ ] `core-zero/memories/repo/project-knowledge-base.md` exists and contains descriptive stack details, patterns, and conventions.
 - [ ] Seeded adopter-owned docs under `core-zero/project/*.md` exist before pre-fill begins.
 - [ ] `core-zero/project/architecture.md` exists when the repository has meaningful subsystem boundaries, runtime layers, or external integrations.
 - [ ] `core-zero/project/code-map.md` exists when the repo is large enough to benefit from a generated structural map.

@@ -19,4 +19,4 @@ As a session progresses, the context window fills up with conversation history, 
 | 65–79% | Orange | Apply all 7 strategies. Evict all transient logs. Run `/context-session CHECKPOINT`. Warn user. |
 | ≥ 80% | Red (Amnesia Risk) | Stop the current task. Run `/context-session END`. Hand off to a new session. Do not attempt further work. |
 
-- **Persistent Memory Bloat**: If a `memories/repo/*.md` file itself exceeds the thresholds in `core-policies.md ## Memory Promotion Thresholds`, do not condense it in-session — route to `/context-compact` instead.
+- **Persistent Memory Bloat**: If a `core-zero/memories/repo/*.md` file itself exceeds the thresholds in `core-policies.md ## Memory Promotion Thresholds`, do not condense it in-session — route to `/context-compact` instead.

@@ -6,14 +6,14 @@ CoreZero has two explicit products:
 - `documents/` plus `page-document/` — maintainer and public explainer surfaces
 
 ## Purpose
-| Area |Target State |
-|------|---------------|--------------|
-| **Harness Engineering**  | Configurable execution harness with lifecycle management |
-| **Context Engineering**  | Dynamic context assembly, compression, relevance scoring |
-| **Spec-Driven Development**  | Formal spec format, validation, traceability |
-| **Templates**  | Composable template system with slots, conditions, chains |
-| **Skills Library**  | Curated skill definitions with patterns |
-| **Tooling**   | CLI, validators, generators |
+| Area                        | Target State                                              |
+| --------------------------- | --------------------------------------------------------- |  |
+| **Harness Engineering**     | Configurable execution harness with lifecycle management  |
+| **Context Engineering**     | Dynamic context assembly, compression, relevance scoring  |
+| **Spec-Driven Development** | Formal spec format, validation, traceability              |
+| **Templates**               | Composable template system with slots, conditions, chains |
+| **Skills Library**          | Curated skill definitions with patterns                   |
+| **Tooling**                 | CLI, validators, generators                               |
 
 
 
@@ -56,7 +56,7 @@ The installed surface comes from `kit/` and includes:
 - first-read docs: `core-zero/index.html`, `core-zero/policies/code-design.md`
 - adopter-owned seeded docs under `core-zero/project/*`
 - seeded placeholders under `core-zero/generated/*`
-- shipped memories under `memories/repo/*` and `memories/domain/*`
+- shipped memories under `core-zero/memories/repo/*` and `core-zero/memories/domain/*`
 - shipped skills under `skills/`, including docs authoring and visualization helpers
 - shipped rules under `rules/`
 - install and validation helpers under `scripts/`

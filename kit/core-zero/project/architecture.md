@@ -16,7 +16,7 @@ Living architecture doc for the installed CoreZero surface.
 
 | Component | Responsibility | Key Paths | Notes |
 | --- | --- | --- | --- |
-| Router and policy entrypoints | Load-order and operating defaults | `AGENTS.md`, `memories/repo/*` | Router stays thin; durable rules live in memory files |
+| Router and policy entrypoints | Load-order and operating defaults | `AGENTS.md`, `core-zero/memories/repo/*` | Router stays thin; durable rules live in memory files |
 | Installed docs | User-facing operating guidance | `core-zero/project/*`, `core-zero/policies/code-design.md`, `core-zero/generated/*` | Must match shipped files exactly |
 | Skill contracts | Canonical workflow behavior | `skills/*/SKILL.md`, `skills/*/references/` | Behavioral source of truth |
 | Maintenance scripts | Install helpers | `scripts/install.sh` | Used for install and upgrades |
@@ -33,7 +33,7 @@ Living architecture doc for the installed CoreZero surface.
 
 - Boundary: Kit-managed vs adopter-owned files
   Owner: `manifest.json` in the source repo
-  Crossing rule: overwrite only kit-managed files; preserve adopter-owned seeded content and artifacts. Posture detail (`overwrite` / `copyIfMissing` / `preserve`) is explained in `memories/repo/project-knowledge-base.md` §1.
+  Crossing rule: overwrite only kit-managed files; preserve adopter-owned seeded content and artifacts. Posture detail (`overwrite` / `copyIfMissing` / `preserve`) is explained in `core-zero/memories/repo/project-knowledge-base.md` §1.
 
 ## Safe Change Guidance
 

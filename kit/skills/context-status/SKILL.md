@@ -13,8 +13,8 @@ next_skill: 'harness-maintain'
 Aggregates status across all active feature branches, updates the repo-wide status dashboard, and synchronizes the active task phase.
 
 ## I/O Hand-off Protocol
-- Reads: `memories/repo/harness-telemetry.md`, `artifacts/features/*/status.md`, `artifacts/features/*/tasks.md`.
-- Writes: `memories/repo/harness-telemetry.md` `# Current State` section, command line status dashboard.
+- Reads: `core-zero/memories/repo/harness-telemetry.md`, `artifacts/features/*/status.md`, `artifacts/features/*/tasks.md`.
+- Writes: `core-zero/memories/repo/harness-telemetry.md` `# Current State` section, command line status dashboard.
 
 ## Dashboard Formatting Guidance
 
@@ -96,7 +96,7 @@ Feature: `password-reset`
 - Regenerate on each session to reflect current state
 
 ## Workflow
-1. Load Current State: Read `memories/repo/harness-telemetry.md` to load the current global phase and failure counters.
+1. Load Current State: Read `core-zero/memories/repo/harness-telemetry.md` to load the current global phase and failure counters.
 2. Scan Features: Scan all feature subdirectories under `artifacts/features/` and read their respective `status.md` and `tasks.md` files. Identify:
    - Feature slug name.
    - Active phase (`## Current Phase`).
@@ -109,7 +109,7 @@ Feature: `password-reset`
    - A list of all active features, their current phase, and active task.
    - Any currently active blocker flags.
    - Current failure logs summary.
-4. Update Current State: If the active feature slug or current task phase has changed, write the updated `# Current State` values to `memories/repo/harness-telemetry.md`.
+4. Update Current State: If the active feature slug or current task phase has changed, write the updated `# Current State` values to `core-zero/memories/repo/harness-telemetry.md`.
 5. Regenerate HTML Dashboard: You MUST run `python3 scripts/generate-dashboard.py` to sync status to `core-zero/generated/dashboard.html`.
 6. Feature Completion Cleanup (GC): If `status.md` shows `## Current Phase: Done`:
    - Check if `artifacts/features/<slug>/session-extracts.md` has been triaged (look for `<!-- triaged: true -->`).

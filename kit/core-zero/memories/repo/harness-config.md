@@ -16,7 +16,7 @@
 
 - Project name: AI Agents Development Kit (CoreZero)
 - Repository type: Harness Engineering kit (template/starter kit)
-- Primary code roots: `skills/`, `scripts/`, `memories/repo/`
+- Primary code roots: `skills/`, `scripts/`, `core-zero/memories/repo/`
 - Default working branch: main
 - Supported agent clients: All standard autonomous agents (using AGENTS.md)
 
@@ -33,8 +33,8 @@
 - Feature artifact root: `artifacts/features/<slug>/`
 - Docs root: `core-zero/`
 - Architecture doc path: `core-zero/project/architecture.md`
-- Security policy path: `memories/repo/core-policies.md` `## Security Policy`
-- Learned heuristics path: `memories/repo/learned-heuristics.md`
+- Security policy path: `core-zero/memories/repo/core-policies.md` `## Security Policy`
+- Learned heuristics path: `core-zero/memories/repo/learned-heuristics.md`
 - ADR location: `core-zero/project/adr/[number]-[slug].md`
 - Generated documentation location: `core-zero/generated/`
 - Codemap path: `core-zero/project/code-map.md`

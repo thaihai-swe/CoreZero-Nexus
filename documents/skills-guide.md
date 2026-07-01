@@ -22,26 +22,26 @@ Use this guide after installing the kit into an adopter repository.
 
 ## Shipped Commands
 
-| Command | Role | Status |
-|---|---|---|
-| `/starter-init` | Bootstrap a repository and customize seeded memory files for the adopter project | Shipped now |
-| `/spec-research` | Brownfield or unknown-behavior analysis | Shipped now |
-| `/spec-requirements` | Define requirements and acceptance criteria | Shipped now |
-| `/spec-plan` | Convert requirements into a safe execution plan | Shipped now |
-| `/spec-implement` | Execute planned work task by task | Shipped now |
-| `/harness-verify` | Verify proof, alignment, and closeout | Shipped now |
-| `/context-session` | Manage feature-session continuity | Shipped now |
-| `/context-memory` | Maintain durable repo memory | Shipped now |
-| `/context-compact` | Compact a named oversized memory file (thresholds: 100-line early warning, 200-line breach, 3200-line hard cap). Preserves all normative identifiers (CC-\*, LH-\*, INV-\*) with a mandatory pre/post safety protocol | Shipped now |
-| `/context-status` | Report multi-feature status and regenerate dashboard | Shipped now |
-| `/harness-maintain` | Assess and improve the harness itself | Shipped now |
-| `/spec-adr` | Capture durable architecture decisions | Shipped now |
-| `/code-review` | Review implementation quality | Shipped now |
-| `/technical-docs` | Generate grounded API and flow documentation | Shipped now |
-| `/codebase-documenter` | Generate repo onboarding and architecture doc sets | Shipped now |
-| `/visualize` | Generate SVG and Mermaid technical diagrams | Shipped now |
-| `/ponytail` | Enforces simplicity-first coding — YAGNI, laziest effective solution, trims over-engineering. Intensity: lite / full (default) / ultra. | Shipped now |
-| `/spec-testing-scenario`| Draft manual testing scenarios guide (optional) | Shipped now |
+| Command                  | Role                                                                                                                                                                                                                  | Status      |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `/starter-init`          | Bootstrap a repository and customize seeded memory files for the adopter project                                                                                                                                      | Shipped now |
+| `/spec-research`         | Brownfield or unknown-behavior analysis                                                                                                                                                                               | Shipped now |
+| `/spec-requirements`     | Define requirements and acceptance criteria                                                                                                                                                                           | Shipped now |
+| `/spec-plan`             | Convert requirements into a safe execution plan                                                                                                                                                                       | Shipped now |
+| `/spec-implement`        | Execute planned work task by task                                                                                                                                                                                     | Shipped now |
+| `/harness-verify`        | Verify proof, alignment, and closeout                                                                                                                                                                                 | Shipped now |
+| `/context-session`       | Manage feature-session continuity                                                                                                                                                                                     | Shipped now |
+| `/context-memory`        | Maintain durable repo memory                                                                                                                                                                                          | Shipped now |
+| `/context-compact`       | Compact a named oversized memory file (thresholds: 100-line early warning, 200-line breach, 3200-line hard cap). Preserves all normative identifiers (CC-\*, LH-\*, INV-\*) with a mandatory pre/post safety protocol | Shipped now |
+| `/context-status`        | Report multi-feature status and regenerate dashboard                                                                                                                                                                  | Shipped now |
+| `/harness-maintain`      | Assess and improve the harness itself                                                                                                                                                                                 | Shipped now |
+| `/spec-adr`              | Capture durable architecture decisions                                                                                                                                                                                | Shipped now |
+| `/code-review`           | Review implementation quality                                                                                                                                                                                         | Shipped now |
+| `/technical-docs`        | Generate grounded API and flow documentation                                                                                                                                                                          | Shipped now |
+| `/codebase-documenter`   | Generate repo onboarding and architecture doc sets                                                                                                                                                                    | Shipped now |
+| `/visualize`             | Generate SVG and Mermaid technical diagrams                                                                                                                                                                           | Shipped now |
+| `/ponytail`              | Enforces simplicity-first coding — YAGNI, laziest effective solution, trims over-engineering. Intensity: lite / full (default) / ultra.                                                                               | Shipped now |
+| `/spec-testing-scenario` | Draft manual testing scenarios guide (optional)                                                                                                                                                                       | Shipped now |
 
 ---
 
@@ -80,9 +80,9 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 #### Phase 1: Repository Bootstrapping ([`/starter-init`](../kit/skills/starter-init/SKILL.md))
 - Initializes the environment, parses dependencies, and registers targets.
-- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`core-zero/generated/*`, `memories/repo/harness-telemetry.md`) from version control.
+- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`core-zero/generated/*`, `core-zero/memories/repo/harness-telemetry.md`) from version control.
 - **Greenfield Mode:** Prefills standard templates and triggers.
-- **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and records risk area notes into `memories/repo/project-knowledge-base.md`.
+- **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and records risk area notes into `core-zero/memories/repo/project-knowledge-base.md`.
 
 #### Phase 2: Session Initialization ([`/context-session START`](../kit/skills/context-session/SKILL.md))
 - Initiates the feature sandbox under a specific slug (e.g. `feature-abc`).
@@ -113,7 +113,7 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 #### Phase 7: Memory Promotion ([`/context-memory`](../kit/skills/context-memory/SKILL.md))
 - Closes out the session via `/context-session END` which distills lesson candidates into `session-extracts.md`.
-- Post-ship sync evaluates candidate lessons and promotes them to the durable instruction tier (`project-knowledge-base.md`, `learned-heuristics.md`, or domain packs under `memories/domain/`).
+- Post-ship sync evaluates candidate lessons and promotes them to the durable instruction tier (`project-knowledge-base.md`, `learned-heuristics.md`, or domain packs under `core-zero/memories/domain/`).
 
 ---
 
@@ -187,11 +187,11 @@ flowchart TD
 
 Use `/context-session` only after a feature slug and `artifacts/features/<slug>/status.md` already exist.
 
-| Situation | Command |
-|---|---|
-| Resume an existing feature | `/context-session START` |
-| Pause after meaningful progress | `/context-session CHECKPOINT` |
-| Close a long session or prepare handoff | `/context-session END` |
+| Situation                               | Command                       |
+| --------------------------------------- | ----------------------------- |
+| Resume an existing feature              | `/context-session START`      |
+| Pause after meaningful progress         | `/context-session CHECKPOINT` |
+| Close a long session or prepare handoff | `/context-session END`        |
 
 `END` is emphasized because it creates durable handoff context before chat history disappears. It is not the only mode.
 
@@ -250,7 +250,7 @@ Run `/context-compact --file <path>` to safely reduce the size of an oversized m
 ### How audit and compact work together
 
 1. **Diagnose**: Run `/context-memory --audit` to check memory health. The report flags files approaching the warning threshold (100 lines), threshold breach (200 lines), or hard cap (3200 lines).
-2. **Fix**: Run `/context-compact --file memories/repo/<file>.md` on the flagged file to condense it back under the threshold.
+2. **Fix**: Run `/context-compact --file core-zero/memories/repo/<file>.md` on the flagged file to condense it back under the threshold.
 3. **Verify**: The safety protocol confirms all normative identifiers survived the compaction.
 
 ---
@@ -259,11 +259,11 @@ Run `/context-compact --file <path>` to safely reduce the size of an oversized m
 
 Run `/context-memory` at different cadences depending on scope:
 
-| Cadence | Command | Purpose |
-|---------|---------|---------|
-| **Daily (Feature End)** | `/context-memory` (default mode) | Extract immediate lessons from the finished feature. Lightweight — no flags needed. |
-| **Monthly (Milestone End)** | `/context-memory --audit` | Scheduled health check. Flags bloated files, stale references, and unused heuristics. Output goes to `memory-audit.md`. |
-| **After Audit Review** | `/context-memory --apply-decay` | After reading the audit report, if you agree with the archive suggestions, run with `--apply-decay` to tombstone old LH-* entries and move them to `deprecated-heuristics.md`. |
+| Cadence                     | Command                          | Purpose                                                                                                                                                                        |
+| --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Daily (Feature End)**     | `/context-memory` (default mode) | Extract immediate lessons from the finished feature. Lightweight — no flags needed.                                                                                            |
+| **Monthly (Milestone End)** | `/context-memory --audit`        | Scheduled health check. Flags bloated files, stale references, and unused heuristics. Output goes to `memory-audit.md`.                                                        |
+| **After Audit Review**      | `/context-memory --apply-decay`  | After reading the audit report, if you agree with the archive suggestions, run with `--apply-decay` to tombstone old LH-* entries and move them to `deprecated-heuristics.md`. |
 
 ---
 

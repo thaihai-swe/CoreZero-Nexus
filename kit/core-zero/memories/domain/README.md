@@ -1,6 +1,6 @@
 # Domain Packs
 
-Each domain subdirectory under `memories/domain/` is a self-contained domain pack with 4 required files (plus an optional `spec.md`).
+Each domain subdirectory under `core-zero/memories/domain/` is a self-contained domain pack with 4 required files (plus an optional `spec.md`).
 
 | File | When to load | Purpose |
 |---|---|---|
@@ -12,7 +12,7 @@ Each domain subdirectory under `memories/domain/` is a self-contained domain pac
 ## Directory schema
 
 ```
-memories/domain/
+core-zero/memories/domain/
   <name>/
     glossary.md       — frontmatter with `domain:` and `triggers:` arrays
     patterns.md       — reusable implementation patterns
@@ -72,7 +72,7 @@ Skip it when:
 
 ## Creating a Domain Pack
 
-1. Create directory: `memories/domain/<name>`
+1. Create directory: `core-zero/memories/domain/<name>`
 2. Create all 4 required files using the schema above.
 3. Optionally create `spec.md` if the domain has a cross-cutting REQ/AC contract.
 4. Add trigger keywords to `glossary.md` frontmatter.
@@ -88,4 +88,4 @@ Skip it when:
 
 ## Shipped example
 
-See `memories/domain/` for a worked schema demo. Replace it with a real domain pack.
+See `core-zero/memories/domain/` for a worked schema demo. Replace it with a real domain pack.

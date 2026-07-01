@@ -24,7 +24,7 @@ Investigate system behaviors and produce `artifacts/features/<slug>/analysis.md`
 ## Workflow
 
 1. Initialization: Create `status.md` if missing (from `_shared/status-template.md`). Update the `## Current Phase` section to set phase to `Researching`.
-2. Context Alignment: For each installed pack listed in `MASTER_INDEX.md`, read `memories/domain/<name>/glossary.md` frontmatter `triggers:`. If matched, note in `status.md` and load that pack's `glossary.md` before conducting research.
+2. Context Alignment: For each installed pack listed in `MASTER_INDEX.md`, read `core-zero/memories/domain/<name>/glossary.md` frontmatter `triggers:`. If matched, note in `status.md` and load that pack's `glossary.md` before conducting research.
 3. Bug Diagnosis Mode (For Bugs/Regressions): Recreate the failure with a script or concrete steps before investigating. You MUST follow this strict debugging loop:
    1. Build a Feedback Loop: Create a red-capable command (a fast, deterministic test, curl, or script) that asserts the exact bug symptom. Do not proceed without this.
    2. Reproduce & Minimize: Shrink the repro to the smallest scenario that still goes red.

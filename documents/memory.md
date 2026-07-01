@@ -67,37 +67,37 @@ flowchart TD
 
 ### Memory Router
 
-| File | Purpose |
-|------|---------|
+| File              | Purpose                                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
 | `MASTER_INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug groups. Sessions read this first. |
 
 ### Instruction Tier — Human-Curated, Durable
 
-| File | Type | Content | Update Frequency |
-|------|------|---------|-----------------|
-| `core-policies.md` | Normative | Repo-wide constitutional rules (CC-*), security policy, memory promotion thresholds | Rare — when policy changes |
-| `project-knowledge-base.md` | Descriptive | Durable facts, patterns, conventions | As project evolves |
-| `learned-heuristics.md` | Descriptive | Evidence-backed execution patterns | After repeated observations |
-| `core-zero/project/architecture.md` | Structural | System boundaries, components, integration seams | When architecture changes |
+| File                                | Type        | Content                                                                             | Update Frequency            |
+| ----------------------------------- | ----------- | ----------------------------------------------------------------------------------- | --------------------------- |
+| `core-policies.md`                  | Normative   | Repo-wide constitutional rules (CC-*), security policy, memory promotion thresholds | Rare — when policy changes  |
+| `project-knowledge-base.md`         | Descriptive | Durable facts, patterns, conventions                                                | As project evolves          |
+| `learned-heuristics.md`             | Descriptive | Evidence-backed execution patterns                                                  | After repeated observations |
+| `core-zero/project/architecture.md` | Structural  | System boundaries, components, integration seams                                    | When architecture changes   |
 
 ### Auto Tier — Failure-Driven, Append-Only
 
-| File | Type | Content | Written By |
-|------|------|---------|-----------|
+| File                   | Type | Content                            | Written By                                          |
+| ---------------------- | ---- | ---------------------------------- | --------------------------------------------------- |
 | `harness-telemetry.md` | Auto | Harness/Model/Spec failure entries | `/harness-maintain` Improve Mode, `/harness-verify` |
 
 ### Extracted Tier — Per-Feature Candidates
 
-| File | Type | Content | Written By |
-|------|------|---------|-----------|
+| File                                            | Type      | Content                                      | Written By                                               |
+| ----------------------------------------------- | --------- | -------------------------------------------- | -------------------------------------------------------- |
 | `artifacts/features/<slug>/session-extracts.md` | Candidate | Session distillation — hypotheses, not rules | `/context-session END`, `/harness-verify` post-ship sync |
 
 ## Normative vs Descriptive
 
-| Type | Meaning | Language | Example |
-|------|---------|----------|---------|
-| **Normative** | Rules that MUST be followed | "must", "must not", "requires" | "Tests must pass before marking done" |
-| **Descriptive** | Facts that ARE true | "uses", "follows", "prefers" | "The API uses JWT with 24h expiry" |
+| Type            | Meaning                     | Language                       | Example                               |
+| --------------- | --------------------------- | ------------------------------ | ------------------------------------- |
+| **Normative**   | Rules that MUST be followed | "must", "must not", "requires" | "Tests must pass before marking done" |
+| **Descriptive** | Facts that ARE true         | "uses", "follows", "prefers"   | "The API uses JWT with 24h expiry"    |
 
 Normative rules go in `core-policies.md`.
 Descriptive facts go in `project-knowledge-base.md` or `learned-heuristics.md`.
@@ -123,11 +123,11 @@ When a finding emerges from analysis, implementation, or review:
 
 `/context-session END` appends candidates to `session-extracts.md`. `/context-memory` Extraction Triage processes each candidate:
 
-| Decision | Condition |
-|---|---|
+| Decision    | Condition                                                        |
+| ----------- | ---------------------------------------------------------------- |
 | **Promote** | Evidence-based, seen in 2+ features, durable beyond this feature |
-| **Defer** | Promising but needs one more confirming signal |
-| **Discard** | Feature-local, not generalizable — record reason, don't delete |
+| **Defer**   | Promising but needs one more confirming signal                   |
+| **Discard** | Feature-local, not generalizable — record reason, don't delete   |
 
 Security candidates always escalate immediately regardless of repetition count.
 
@@ -173,7 +173,7 @@ Heuristics are promoted only when:
 - Version the constitution with semantic versioning
 - Route descriptive knowledge to PKB, not constitution
 - Evict stale context from sessions — raw logs are transient, not durable
-- **Memory Decay**: `/context-memory --audit` mechanically scans `learned-heuristics.md`. If an LH-* entry hasn't been cited in 5+ features and is over 1 month old, it is tombstoned in-place and the full text moved to `memories/archive/deprecated-heuristics.md`.
+- **Memory Decay**: `/context-memory --audit` mechanically scans `learned-heuristics.md`. If an LH-* entry hasn't been cited in 5+ features and is over 1 month old, it is tombstoned in-place and the full text moved to `core-zero/memories/archive/deprecated-heuristics.md`.
 
 ## Self-Improving Loop
 
@@ -258,63 +258,63 @@ sequenceDiagram
 
 ## Skill Write Access
 
-Files under `memories/`, `core-zero/project/`, and `core-zero/policies/` are updated by different skills depending on their tier. Below is the mapping against the actual shipped manifest.
+Files under `core-zero/memories/`, `core-zero/project/`, and `core-zero/policies/` are updated by different skills depending on their tier. Below is the mapping against the actual shipped manifest.
 
-### Memory Files (`memories/repo/` — all `copyIfMissing`)
+### Memory Files (`core-zero/memories/repo/` — all `copyIfMissing`)
 
-| File | Created By | Updated By | Content |
-|------|-----------|------------|---------|
-| `core-policies.md` | `/starter-init` | `/context-memory` | Normative repo rules (CC-*), security boundaries, promotion thresholds |
-| `project-knowledge-base.md` | `/starter-init` | `/context-memory` | Durable facts, conventions, patterns |
-| `learned-heuristics.md` | `/starter-init` | `/context-memory`, `/harness-maintain` | Evidence-backed execution patterns |
-| `harness-config.md` | `/starter-init` | `/context-memory` | Adopter-tailored repo identity, artifact routing, lifecycle |
-| `harness-telemetry.md` | `/starter-init` | `/harness-verify`, `/spec-implement`, `telemetry-collector.sh` | Failure log (auto tier) |
-| `adr-log.md` | `/spec-adr` (lazy) | `/spec-adr` | ADR registry |
-| `deprecated-heuristics.md` | `/starter-init` | `/context-memory` (audit mode) | Tombstoned LH-* entries moved from `learned-heuristics.md` |
+| File                        | Created By         | Updated By                                                     | Content                                                                |
+| --------------------------- | ------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `core-policies.md`          | `/starter-init`    | `/context-memory`                                              | Normative repo rules (CC-*), security boundaries, promotion thresholds |
+| `project-knowledge-base.md` | `/starter-init`    | `/context-memory`                                              | Durable facts, conventions, patterns                                   |
+| `learned-heuristics.md`     | `/starter-init`    | `/context-memory`, `/harness-maintain`                         | Evidence-backed execution patterns                                     |
+| `harness-config.md`         | `/starter-init`    | `/context-memory`                                              | Adopter-tailored repo identity, artifact routing, lifecycle            |
+| `harness-telemetry.md`      | `/starter-init`    | `/harness-verify`, `/spec-implement`, `telemetry-collector.sh` | Failure log (auto tier)                                                |
+| `adr-log.md`                | `/spec-adr` (lazy) | `/spec-adr`                                                    | ADR registry                                                           |
+| `deprecated-heuristics.md`  | `/starter-init`    | `/context-memory` (audit mode)                                 | Tombstoned LH-* entries moved from `learned-heuristics.md`             |
 
-### Domain Packs (`memories/domain/`)
+### Domain Packs (`core-zero/memories/domain/`)
 
-| File | Created By | Updated By |
-|------|-----------|------------|
-| `glossary.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
-| `patterns.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
+| File               | Created By                | Updated By                        |
+| ------------------ | ------------------------- | --------------------------------- |
+| `glossary.md`      | `/starter-init` (example) | `/context-memory` (adopter-owned) |
+| `patterns.md`      | `/starter-init` (example) | `/context-memory` (adopter-owned) |
 | `anti-patterns.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
-| `boundaries.md` | `/starter-init` (example) | `/context-memory` (adopter-owned) |
+| `boundaries.md`    | `/starter-init` (example) | `/context-memory` (adopter-owned) |
 
 ### Shipped Docs (`core-zero/project/` — all `copyIfMissing`)
 
-| File | Created By | Updated By |
-|------|-----------|------------|
-| `architecture.md` | `/starter-init` | `/context-memory`, adopter |
-| `code-intelligence.md` | `/starter-init` | Adopter |
-| `code-map.md` | `/starter-init` | `/harness-maintain` |
-| `agent-capabilities.md` | `/starter-init` | Adopter |
-| `glossary.md` | `/starter-init` | `/context-memory` |
-| `product-sense.md` | `/starter-init` | Adopter |
-| `project-constraints.md` | `/starter-init` | Adopter |
-| `tech-stack.md` | `/starter-init` | Adopter |
+| File                     | Created By      | Updated By                 |
+| ------------------------ | --------------- | -------------------------- |
+| `architecture.md`        | `/starter-init` | `/context-memory`, adopter |
+| `code-intelligence.md`   | `/starter-init` | Adopter                    |
+| `code-map.md`            | `/starter-init` | `/harness-maintain`        |
+| `agent-capabilities.md`  | `/starter-init` | Adopter                    |
+| `glossary.md`            | `/starter-init` | `/context-memory`          |
+| `product-sense.md`       | `/starter-init` | Adopter                    |
+| `project-constraints.md` | `/starter-init` | Adopter                    |
+| `tech-stack.md`          | `/starter-init` | Adopter                    |
 
 ### Shipped Config (`core-zero/project/` — `overwrite`)
 
-| File | Maintained By |
-|------|--------------|
+| File                  | Maintained By                      |
+| --------------------- | ---------------------------------- |
 | `harness-config.yaml` | Kit-managed (overwrite on install) |
-| `spec-schema.json` | Kit-managed (overwrite on install) |
+| `spec-schema.json`    | Kit-managed (overwrite on install) |
 
 ### Kit-Managed Policy (`core-zero/policies/`)
 
-| File | Maintained By |
-|------|--------------|
+| File             | Maintained By                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
 | `code-design.md` | Kit-managed (overwrite on install), consumed by `/spec-plan`, `/spec-implement`, `/harness-verify` |
 
 ### Summary by Skill
 
-| Skill | Writes To |
-|-------|-----------|
-| `/starter-init` | All `copyIfMissing` seeds (first-run only) |
-| `/context-memory` | `core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`, `harness-config.md`, `deprecated-heuristics.md`, domain packs |
-| `/spec-adr` | `adr-*.md`, `adr-log.md` |
-| `/harness-verify` | `harness-telemetry.md` (on gate failure) |
-| `/spec-implement` | `harness-telemetry.md` (on gate failure) |
-| `/harness-maintain` | `learned-heuristics.md`, `code-map.md`, `harness-telemetry.md` |
-| `telemetry-collector.sh` | `harness-telemetry.md` (append failure record) |
+| Skill                    | Writes To                                                                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `/starter-init`          | All `copyIfMissing` seeds (first-run only)                                                                                              |
+| `/context-memory`        | `core-policies.md`, `project-knowledge-base.md`, `learned-heuristics.md`, `harness-config.md`, `deprecated-heuristics.md`, domain packs |
+| `/spec-adr`              | `adr-*.md`, `adr-log.md`                                                                                                                |
+| `/harness-verify`        | `harness-telemetry.md` (on gate failure)                                                                                                |
+| `/spec-implement`        | `harness-telemetry.md` (on gate failure)                                                                                                |
+| `/harness-maintain`      | `learned-heuristics.md`, `code-map.md`, `harness-telemetry.md`                                                                          |
+| `telemetry-collector.sh` | `harness-telemetry.md` (append failure record)                                                                                          |

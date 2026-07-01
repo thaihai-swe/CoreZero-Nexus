@@ -178,7 +178,7 @@ function auth(req, res, next) {
 
 *Solution*:
 - Create a glossary
-- Use project dictionary from `memories/repo/`
+- Use project dictionary from `core-zero/memories/repo/`
 - Be consistent across all docs
 - Define terms on first use
 

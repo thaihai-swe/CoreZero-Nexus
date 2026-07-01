@@ -14,7 +14,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 
 ## I/O Hand-off Protocol
 - Reads: `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/status.md`
-- Writes: `artifacts/features/<slug>/status.md`, `memories/repo/harness-telemetry.md`
+- Writes: `artifacts/features/<slug>/status.md`, `core-zero/memories/repo/harness-telemetry.md`
 - Next Skill: `/context-memory` (to log lessons learned) or done.
 
 ## Workflow
@@ -26,7 +26,7 @@ Use this skill to close the loop on a feature. It updates `status.md` to `Verify
 5. Alignment Audit: For each AC in `spec.md`, identify the task ID (`TASK-NNN`) in `tasks.md` whose validation covers it.
    Pass/Fail threshold: Zero tolerance — every `AC-*` item in `spec.md` must map to at least one task with recorded validation evidence in `tasks.md`. A single AC with no implementation evidence = `Fail`. There is no partial pass.
 6. Design Conformance Check: Read `plan.md`. For each major component or decision listed in the Technical Design section, confirm it is reflected in the delivered code and task list. Any component in the design section with zero corresponding implementation evidence in `tasks.md` is a `Fail`.
-7. Security Lens: Audit verified scope against `memories/repo/core-policies.md` `## Security Policy`.
+7. Security Lens: Audit verified scope against `core-zero/memories/repo/core-policies.md` `## Security Policy`.
 8. Production Readiness (Optional): If the change is production-bound, run `references/production-readiness-checklist.md` and append findings to `review.md`.
 9. Fallow Pass (Optional): Simplify touched files by removing dead code/unused imports.
    Scope limit: Applies only to files explicitly listed in this feature's `tasks.md` task targets. No structural refactors are allowed during this step.

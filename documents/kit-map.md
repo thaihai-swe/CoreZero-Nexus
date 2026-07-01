@@ -56,17 +56,17 @@ Use this layer when the repo needs durable explanation:
 
 ## What Each Folder Means
 
-| Folder | Owner | Purpose |
-|---|---|---|
-| `skills/` | Kit-managed | Slash-command contracts and references. |
-| `scripts/` | Kit-managed | Installer, context loader, template renderer, engine layer (`core/`: context engine, harness engine, spec validator, template engine), verification harness (`harness/`: gate runner, telemetry, phase gates, readiness, traceability). |
-| `core-zero/rules/` | Kit-managed | Language and security rules. |
-| `core-zero/policies/` | Kit-managed | Cross-cutting code design and architectural policies. |
-| `core-zero/project/` | Adopter-owned seed | Project facts the adopter fills in and maintains. |
-| `core-zero/generated/` | Adopter-owned seed | Generated dashboard output (`dashboard.html`). |
-| `memories/repo/` | Adopter-owned seed | Durable memory, policies, heuristics, and telemetry. |
-| `memories/domain/` | Adopter-owned seed | Domain pack templates to replace with project-specific knowledge. |
-| `artifacts/features/` | Adopter-owned state | Per-feature specs, plans, tasks, status, reviews, handoffs. |
+| Folder                       | Owner               | Purpose                                                                                                                                                                                                                                 |
+| ---------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `skills/`                    | Kit-managed         | Slash-command contracts and references.                                                                                                                                                                                                 |
+| `scripts/`                   | Kit-managed         | Installer, context loader, template renderer, engine layer (`core/`: context engine, harness engine, spec validator, template engine), verification harness (`harness/`: gate runner, telemetry, phase gates, readiness, traceability). |
+| `core-zero/rules/`           | Kit-managed         | Language and security rules.                                                                                                                                                                                                            |
+| `core-zero/policies/`        | Kit-managed         | Cross-cutting code design and architectural policies.                                                                                                                                                                                   |
+| `core-zero/project/`         | Adopter-owned seed  | Project facts the adopter fills in and maintains.                                                                                                                                                                                       |
+| `core-zero/generated/`       | Adopter-owned seed  | Generated dashboard output (`dashboard.html`).                                                                                                                                                                                          |
+| `core-zero/memories/repo/`   | Adopter-owned seed  | Durable memory, policies, heuristics, and telemetry.                                                                                                                                                                                    |
+| `core-zero/memories/domain/` | Adopter-owned seed  | Domain pack templates to replace with project-specific knowledge.                                                                                                                                                                       |
+| `artifacts/features/`        | Adopter-owned state | Per-feature specs, plans, tasks, status, reviews, handoffs.                                                                                                                                                                             |
 
 ## Install Ownership Rules
 
@@ -80,28 +80,28 @@ When in doubt, check `manifest.json` before editing a file as part of a kit upgr
 
 ## Which Command Should I Use?
 
-| Situation | Command |
-|---|---|
-| Installing the kit into a repo | `scripts/install.sh <target_dir>` |
-| First time in an adopter repo | `/starter-init` |
-| Need to understand existing behavior first | `/spec-research` |
-| Ready to define a feature | `/spec-requirements` |
-| Requirements are approved | `/spec-plan` |
-| Plan and tasks are ready | `/spec-implement` |
-| Ready to review completed code | `/code-review` |
-| Work appears complete | `/harness-verify` |
-| Resuming an existing feature | `/context-session START` |
-| Pausing but not done | `/context-session CHECKPOINT` |
-| Ending a long session | `/context-session END` |
-| Memory files are too large | `/context-compact` |
-| Need project-wide status | `/context-status` |
-| Need to repair or evaluate the harness | `/harness-maintain` |
-| Need to document an architectural decision | `/spec-adr` |
-| Need the simplest, laziest working solution | `/ponytail` |
-| Need durable API or flow docs | `/technical-docs` |
-| Need broader repo documentation | `/codebase-documenter` |
-| Need a diagram | `/visualize` |
-| Need manual testing scenarios documented | `/spec-testing-scenario` |
+| Situation                                   | Command                           |
+| ------------------------------------------- | --------------------------------- |
+| Installing the kit into a repo              | `scripts/install.sh <target_dir>` |
+| First time in an adopter repo               | `/starter-init`                   |
+| Need to understand existing behavior first  | `/spec-research`                  |
+| Ready to define a feature                   | `/spec-requirements`              |
+| Requirements are approved                   | `/spec-plan`                      |
+| Plan and tasks are ready                    | `/spec-implement`                 |
+| Ready to review completed code              | `/code-review`                    |
+| Work appears complete                       | `/harness-verify`                 |
+| Resuming an existing feature                | `/context-session START`          |
+| Pausing but not done                        | `/context-session CHECKPOINT`     |
+| Ending a long session                       | `/context-session END`            |
+| Memory files are too large                  | `/context-compact`                |
+| Need project-wide status                    | `/context-status`                 |
+| Need to repair or evaluate the harness      | `/harness-maintain`               |
+| Need to document an architectural decision  | `/spec-adr`                       |
+| Need the simplest, laziest working solution | `/ponytail`                       |
+| Need durable API or flow docs               | `/technical-docs`                 |
+| Need broader repo documentation             | `/codebase-documenter`            |
+| Need a diagram                              | `/visualize`                      |
+| Need manual testing scenarios documented    | `/spec-testing-scenario`          |
 
 ## Common Confusions
 

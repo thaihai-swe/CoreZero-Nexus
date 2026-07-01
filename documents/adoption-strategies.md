@@ -2,12 +2,12 @@
 
 ## Adoption Ladder
 
-| Stage | Scope | Skills Used | Duration |
-|-------|-------|-------------|----------|
-| **Solo Pilot** | One developer, one feature | `starter-init`, `spec-requirements`, `spec-plan`, `spec-implement`, `harness-verify` | 1-2 weeks |
-| **Team Trial** | Small team, 2-3 features | Guided pack flow across Starter, Context, Spec, and Harness | 2-4 weeks |
-| **Full Adoption** | Entire team, all new features | Full pack workflow + harness assessment | Ongoing |
-| **Advanced** | Governance, evaluation, multi-team | Advanced Pack templates + eval mode + optional code intelligence provider | Mature teams |
+| Stage             | Scope                              | Skills Used                                                                          | Duration     |
+| ----------------- | ---------------------------------- | ------------------------------------------------------------------------------------ | ------------ |
+| **Solo Pilot**    | One developer, one feature         | `starter-init`, `spec-requirements`, `spec-plan`, `spec-implement`, `harness-verify` | 1-2 weeks    |
+| **Team Trial**    | Small team, 2-3 features           | Guided pack flow across Starter, Context, Spec, and Harness                          | 2-4 weeks    |
+| **Full Adoption** | Entire team, all new features      | Full pack workflow + harness assessment                                              | Ongoing      |
+| **Advanced**      | Governance, evaluation, multi-team | Advanced Pack templates + eval mode + optional code intelligence provider            | Mature teams |
 
 ## Starting Small
 
@@ -31,13 +31,13 @@ For existing projects with history:
 
 The kit adapts to work size:
 
-| Work Size | Profile | Ceremony | What You Skip |
-|-----------|---------|----------|---------------|
-| Typo fix | None — just fix it | Everything |  |
-| Small bug | Tiny | Compact spec, lean plan, mechanical-gate-only verify | Design doc, ADR, full grilling |
-| Standard feature | Standard | Full spec, plan, task breakdown, gate + alignment + security lens | Nothing skipped, but kept lean |
-| Complex/risky work | Complex | Grilling waves, design doc, ADR, detailed plan, full verify with traceability | Nothing — full ceremony |
-| Repo-wide / harness change | Complex | adversarial review, phased rollout, `/harness-maintain` eval mode | Nothing |
+| Work Size                  | Profile            | Ceremony                                                                      | What You Skip                  |
+| -------------------------- | ------------------ | ----------------------------------------------------------------------------- | ------------------------------ |
+| Typo fix                   | None — just fix it | Everything                                                                    |                                |
+| Small bug                  | Tiny               | Compact spec, lean plan, mechanical-gate-only verify                          | Design doc, ADR, full grilling |
+| Standard feature           | Standard           | Full spec, plan, task breakdown, gate + alignment + security lens             | Nothing skipped, but kept lean |
+| Complex/risky work         | Complex            | Grilling waves, design doc, ADR, detailed plan, full verify with traceability | Nothing — full ceremony        |
+| Repo-wide / harness change | Complex            | adversarial review, phased rollout, `/harness-maintain` eval mode             | Nothing                        |
 
 The `/spec-requirements` skill triages automatically. You don't need to declare the profile upfront.
 
@@ -55,13 +55,13 @@ The kit works identically without it — code intelligence is additive, not requ
 
 ## Common Adoption Pitfalls
 
-| Pitfall | Why It Happens | Fix |
-|---------|---------------|-----|
-| Over-ceremony for small work | Applying Complex profile to Tiny changes | Trust the triage — Tiny work gets lean treatment |
-| Skipping verify | "I know it works" | The mechanical gate is the kit's core value — don't skip it |
-| Not using handoffs | "I'll remember where I was" | Context resets are inevitable — always generate handoffs |
-| Treating memory as a diary | Writing session notes to PKB | Memory is for durable, reusable knowledge only |
-| Ignoring the grilling | "I already know what to build" | The grilling catches assumptions you don't know you're making |
+| Pitfall                      | Why It Happens                           | Fix                                                           |
+| ---------------------------- | ---------------------------------------- | ------------------------------------------------------------- |
+| Over-ceremony for small work | Applying Complex profile to Tiny changes | Trust the triage — Tiny work gets lean treatment              |
+| Skipping verify              | "I know it works"                        | The mechanical gate is the kit's core value — don't skip it   |
+| Not using handoffs           | "I'll remember where I was"              | Context resets are inevitable — always generate handoffs      |
+| Treating memory as a diary   | Writing session notes to PKB             | Memory is for durable, reusable knowledge only                |
+| Ignoring the grilling        | "I already know what to build"           | The grilling catches assumptions you don't know you're making |
 
 ## Measuring Success
 
@@ -85,7 +85,7 @@ flowchart TD
 
     BOOT --> INIT[starter-init<br/>Greenfield Mode]
     INIT --> AGENTS[Create AGENTS.md router<br/>under 50 lines]
-    INIT --> MEMSEED[Seed memories/repo/<br/>INDEX + constitution + security<br/>+ harness-config + PKB]
+    INIT --> MEMSEED[Seed core-zero/memories/repo/<br/>INDEX + constitution + security<br/>+ harness-config + PKB]
     INIT --> TMPL[Pre-fill Tier 1 templates<br/>TECH_STACK / ARCHITECTURE<br/>from code evidence]
     INIT --> BASE[Clean-state check<br/>build + tests pass]
 

@@ -16,7 +16,7 @@ CoreZero implements **Harness Engineering** — the discipline of designing envi
 ├─────────────────────────────────────────────┤
 │  4. Artifact Layer (artifacts/features/)    │  Per-feature durable state
 ├─────────────────────────────────────────────┤
-│  5. Memory Layer (memories/repo/)           │  Durable cross-feature guidance
+│  5. Memory Layer (core-zero/memories/repo/)           │  Durable cross-feature guidance
 └─────────────────────────────────────────────┘
 ```
 
@@ -42,14 +42,14 @@ Skills also have `references/` directories with templates and guidance documents
 
 ### Layer 3: Harness (6 Subsystems)
 
-| Subsystem | What It Controls | Key Mechanisms |
-|-----------|-----------------|----------------|
-| **Instructions** | What the agent knows | Progressive disclosure, JIT loading, router pattern |
-| **State** | What's done/in-progress/blocked | status.md, tasks.md, progress.md |
-| **Verification** | Proof that work is correct | Mechanical gates, alignment audit, security lens |
-| **Scope** | What the agent can touch | Task IDs, bounded targets, proving commands |
-| **Lifecycle** | Session continuity | Init → session → handoff, context assembly tiers |
-| **Security** | What the agent is allowed to do | Permission tiers, trust boundaries, prompt-injection defense |
+| Subsystem        | What It Controls                | Key Mechanisms                                               |
+| ---------------- | ------------------------------- | ------------------------------------------------------------ |
+| **Instructions** | What the agent knows            | Progressive disclosure, JIT loading, router pattern          |
+| **State**        | What's done/in-progress/blocked | status.md, tasks.md, progress.md                             |
+| **Verification** | Proof that work is correct      | Mechanical gates, alignment audit, security lens             |
+| **Scope**        | What the agent can touch        | Task IDs, bounded targets, proving commands                  |
+| **Lifecycle**    | Session continuity              | Init → session → handoff, context assembly tiers             |
+| **Security**     | What the agent is allowed to do | Permission tiers, trust boundaries, prompt-injection defense |
 
 ### Layer 4: Artifacts
 
@@ -65,7 +65,7 @@ Per-feature state lives in `artifacts/features/<slug>/`:
 
 ### Layer 5: Memory
 
-Durable cross-feature guidance in `memories/repo/`:
+Durable cross-feature guidance in `core-zero/memories/repo/`:
 - `core-policies.md` — Repo-wide normative rules (CC-*), security policy, memory promotion thresholds
 - `harness-config.md` — Adopter-tailored config: repository identity, work tracking, artifact routing, verification commands, session defaults, lifecycle, known limits
 - `learned-heuristics.md` — Evidence-backed execution patterns
@@ -74,11 +74,11 @@ Durable cross-feature guidance in `memories/repo/`:
 - `adr-log.md` — ADR index (lazy-created on first ADR)
 - `archive/deprecated-heuristics.md` — Cold storage for decayed heuristics
 
-And bounded-context guidance in `memories/domain/`:
+And bounded-context guidance in `core-zero/memories/domain/`:
 - Domain packs containing: `glossary.md`, `patterns.md`, `anti-patterns.md`, `boundaries.md`
 
 **3-Tier Memory Architecture:**
-- **Instruction tier** (human-curated): core-policies.md, learned-heuristics.md, project-knowledge-base.md, memories/domain/*, core-zero/project/architecture.md
+- **Instruction tier** (human-curated): core-policies.md, learned-heuristics.md, project-knowledge-base.md, core-zero/memories/domain/*, core-zero/project/architecture.md
 - **Auto tier** (agent-written): harness-telemetry.md (written by `harness-maintain` Improve Mode)
 - **Extracted tier** (per-feature candidates): artifacts/features/<slug>/session-extracts.md (written by `context-session` end and `harness-verify` post-ship sync)
 
@@ -150,13 +150,13 @@ sequenceDiagram
 
 When something goes wrong, the kit classifies the failure:
 
-| Classification | Meaning | Fix Location |
-|---------------|---------|--------------|
-| **Harness Problem** | Environment allowed or encouraged the mistake | Improve the harness (gates, templates, rules), record in harness-telemetry.md |
-| **Model Problem** | Environment was adequate but execution was poor | Add explicit guidance to skill Core Rules, record in harness-telemetry.md |
-| **Spec Problem** | Artifact contract was underspecified or contradictory | Return to `/spec-requirements` |
+| Classification      | Meaning                                               | Fix Location                                                                  |
+| ------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **Harness Problem** | Environment allowed or encouraged the mistake         | Improve the harness (gates, templates, rules), record in harness-telemetry.md |
+| **Model Problem**   | Environment was adequate but execution was poor       | Add explicit guidance to skill Core Rules, record in harness-telemetry.md     |
+| **Spec Problem**    | Artifact contract was underspecified or contradictory | Return to `/spec-requirements`                                                |
 
-Failures are classified by `harness-maintain` Improve Mode and recorded in `memories/repo/harness-telemetry.md` (auto tier). Extraction Triage later promotes durable lessons to the instruction tier.
+Failures are classified by `harness-maintain` Improve Mode and recorded in `core-zero/memories/repo/harness-telemetry.md` (auto tier). Extraction Triage later promotes durable lessons to the instruction tier.
 
 ## Repository Layouts
 
@@ -183,7 +183,7 @@ CoreZero/
 │   │   └── <skill>/
 │   │       ├── SKILL.md         # Compressed token-efficient skill card
 │   │       └── references/      # Templates and checklist references
-│   ├── memories/                # Scaffolding memory layer
+│   ├── core-zero/memories/                # Scaffolding memory layer
 │   │   ├── repo/                # Templates for the 3 memory tiers
 │   │   └── domain/              # Seeded domain-pack schema + example pack
 │   └── scripts/                 # Installer, context loader, template renderers, Python engine (core/), harness (gate runner, telemetry, phase gates)
@@ -247,7 +247,7 @@ This is the layout created in a downstream project after running the installer s
 │   │   ├── telemetry-render.sh
 │   │   └── harness-lifecycle.sh
 │   └── install.sh               # Shipped installer script
-├── memories/repo/               # Durable repository memory (3 tiers)
+├── core-zero/memories/repo/               # Durable repository memory (3 tiers)
 │   ├── archive/                 # Cold storage for decayed memory
 │   │   └── deprecated-heuristics.md
 │   ├── adr-log.md               # ADR index
@@ -255,7 +255,7 @@ This is the layout created in a downstream project after running the installer s
 │   ├── harness-telemetry.md     # Failure logs and telemetry
 │   ├── learned-heuristics.md    # Discovered project insights
 │   └── project-knowledge-base.md # Project continuity knowledge
-├── memories/domain/             # Domain context packs
+├── core-zero/memories/domain/             # Domain context packs
 │   ├── README.md
 │   └── example/                 # Example pack (adopter-owned)
 │       ├── glossary.md
@@ -297,13 +297,13 @@ mindmap
         codebase-documenter
         technical-docs
         ponytail
-    memories/repo/
+    core-zero/memories/repo/
       adr-log.md
       core-policies.md
       harness-telemetry.md
       learned-heuristics.md
       project-knowledge-base.md
-    memories/domain/
+    core-zero/memories/domain/
       anti-patterns.md
       boundaries.md
       glossary.md

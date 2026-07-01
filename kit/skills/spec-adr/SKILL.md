@@ -18,14 +18,14 @@ Record significant architectural decisions.
 - Refactoring Decisions: Documenting major structural changes and their rationale.
 ## I/O Hand-off Protocol
 - Reads: Codebase context, `core-zero/rules/ponytail.md`.
-- Writes: `core-zero/project/adr/[number]-[slug].md` (new file) and `memories/repo/adr-log.md` (append entry via Write Contract).
+- Writes: `core-zero/project/adr/[number]-[slug].md` (new file) and `core-zero/memories/repo/adr-log.md` (append entry via Write Contract).
 - Next Skill: Return to previous skill (e.g., `/spec-plan` or `/spec-implement`).
 
 ## Workflow
 1. Identify Decision Needs: Note when tech choices, structural shifts, design tradeoffs, or major refactorings require a durable architectural record.
 2. Evaluate Alternatives: Research and evaluate at least two options. Analyze them against complexity, cost, scalability, and team familiarity dimensions.
 3. Draft Decision Record: Author the ADR document under `core-zero/project/adr/[number]-[slug].md` using `references/adr-template.md` (for major architectural decisions) or `references/adr-lightweight-template.md` (for minor, low-ceremony decisions).
-4. Append to Log Ledger: Update `memories/repo/adr-log.md` by appending a structured entry using the format defined in `## Entry Template`.
+4. Append to Log Ledger: Update `core-zero/memories/repo/adr-log.md` by appending a structured entry using the format defined in `## Entry Template`.
 5. Update Central Registry: Add the decision to the index table in `core-zero/project/adr/index.md` to maintain cross-feature visibility.
 
 ## Core Rules
@@ -37,7 +37,7 @@ Record significant architectural decisions.
 ## ADR Log Guidance
 
 ### Purpose
-Track all architecture decisions in one place for discoverability. Each ADR lives in `core-zero/project/adr/[number]-[slug].md` but is indexed in `memories/repo/adr-log.md` for cross-feature visibility.
+Track all architecture decisions in one place for discoverability. Each ADR lives in `core-zero/project/adr/[number]-[slug].md` but is indexed in `core-zero/memories/repo/adr-log.md` for cross-feature visibility.
 
 ### Write Contract
 - Write Authority: Only `/spec-adr` has write authority over this index.

@@ -10,7 +10,7 @@
 #   - Backs up existing kit-managed files to <target>/.corezero-backup-<timestamp>/.
 #   - Overwrites kit content (skills, scripts, rules, doc references).
 #   - Copies user-content files (memory, templates, architecture) only if missing.
-#   - Preserves user state (memories/repo content, artifacts/, local settings).
+#   - Preserves user state (core-zero/memories/repo content, artifacts/, local settings).
 #   - Idempotent. Re-running upgrades the kit and preserves your content.
 #
 # Curl-pipe support:
@@ -336,6 +336,9 @@ warn_orphans() {
     "skills/harness-maintain/references/references-index-template.md"
     "core-zero/generated/references-index.md"
     "memories/repo/security-policy.md"
+    "memories/repo"
+    "memories/domain"
+    "memories/archive"
     "INDEX.md"
     "core-zero/README.md"
     "skills/context-status/references/dashboard-template.html"
@@ -374,9 +377,9 @@ if [[ "$DRY_RUN" != "true" ]]; then
   validate_path "skills/visualize/SKILL.md" "Visualize skill"
   validate_path "skills/visualize/scripts/validate_mermaid.py" "Visualize Mermaid validator"
   validate_path "skills/visualize/templates/architecture.svg" "Visualize SVG template"
-  validate_path "memories/repo" "Memory layer"
-  validate_path "memories/repo/core-policies.md" "Core policies"
-  validate_path "memories/repo/harness-config.md" "Harness config"
+  validate_path "core-zero/memories/repo" "Memory layer"
+  validate_path "core-zero/memories/repo/core-policies.md" "Core policies"
+  validate_path "core-zero/memories/repo/harness-config.md" "Harness config"
   validate_path "AGENTS.md" "Runtime entrypoint"
   validate_path "core-zero/rules/security.md" "Security rules"
   validate_path "core-zero/rules/ponytail.md" "Ponytail rules"

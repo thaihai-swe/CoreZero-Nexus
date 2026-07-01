@@ -83,6 +83,6 @@ This file captures repeated, evidence-backed heuristics that improve maintenance
   - `project-knowledge-base.md` and `learned-heuristics.md` have grown past early-warning thresholds without triggering promotion because the check only runs during post-ship sync
 - Confidence: Medium
 - Last reviewed: 2026-06-18
-- Promote to stronger rule? Yes — candidate for `memories/repo/core-policies.md` Memory Promotion Thresholds
+- Promote to stronger rule? Yes — candidate for `core-zero/memories/repo/core-policies.md` Memory Promotion Thresholds
 
 ### LH-008: Domain packs are ignored when building new features — ARCHIVED on 2026-06-25, see archive/deprecated-heuristics.md

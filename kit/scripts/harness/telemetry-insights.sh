@@ -17,7 +17,7 @@ KIT_ROOT=$(resolve_repo_root) || {
   exit 1
 }
 
-TELEMETRY_JSONL="$KIT_ROOT/memories/repo/harness-telemetry.jsonl"
+TELEMETRY_JSONL="$KIT_ROOT/core-zero/memories/repo/harness-telemetry.jsonl"
 
 if [[ ! -f "$TELEMETRY_JSONL" ]]; then
   echo "[telemetry-insights] No harness-telemetry.jsonl found — skipping."

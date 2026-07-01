@@ -11,7 +11,7 @@
 ## System Reference Documents
 
 - Architecture Boundary Map: Refer to `core-zero/project/architecture.md` for static system snapshots, components, and runtime boundaries. Do not duplicate structural maps here.
-- Rules & Mandates: Refer to `memories/repo/core-policies.md` for normative CC-* mandates.
+- Rules & Mandates: Refer to `core-zero/memories/repo/core-policies.md` for normative CC-* mandates.
 
 ## Repository Overview
 
@@ -44,7 +44,7 @@ The dual-purpose behavior of `code-review` (standalone PR mode vs. `/harness-ver
 The shipped helpers own the following durable surfaces:
 - `/context-status` owns status reporting across `artifacts/features/` and regenerates `core-zero/generated/dashboard.html`.
 - `/harness-maintain` owns codemap/reference-index regeneration and observability-driven harness assessment and improvement.
-- `/spec-adr` owns ADR creation and append-only log updates in `memories/repo/adr-log.md`.
+- `/spec-adr` owns ADR creation and append-only log updates in `core-zero/memories/repo/adr-log.md`.
 - `/technical-docs` owns feature-scoped API and flow documentation outputs.
 - `/codebase-documenter` owns broader repo onboarding and architecture doc sets.
 - `/visualize` owns optional SVG and Mermaid diagram outputs when a dedicated visual artifact is required.

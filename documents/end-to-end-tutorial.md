@@ -10,13 +10,13 @@ CoreZero has one required feature-delivery spine. The other skills are supportin
 
 ### Required-vs-Optional Legend
 
-| Label | Meaning |
-|---|---|
-| Required once per repo | Run during initial adopter setup. |
-| Required per feature | Run for every feature that moves through the delivery lifecycle. |
-| Conditional | Run when the stated condition applies. |
-| Optional helper | Use when it improves clarity, documentation, review depth, or operator visibility. |
-| Maintenance-only | Use when maintaining or repairing the harness itself. |
+| Label                  | Meaning                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| Required once per repo | Run during initial adopter setup.                                                  |
+| Required per feature   | Run for every feature that moves through the delivery lifecycle.                   |
+| Conditional            | Run when the stated condition applies.                                             |
+| Optional helper        | Use when it improves clarity, documentation, review depth, or operator visibility. |
+| Maintenance-only       | Use when maintaining or repairing the harness itself.                              |
 
 ### Five Skill Bands
 
@@ -92,26 +92,26 @@ The support skills are real shipped skills, but they are not all mandatory for e
 
 ## 2. Command Matrix
 
-| Skill | Required? | Modes | Use when | Primary artifacts |
-|---|---|---|---|---|
-| [`/starter-init`](../kit/skills/starter-init/SKILL.md) | Required once per repo | Greenfield path, brownfield path | First setup after installation | `core-zero/`, `memories/`, `.gitignore`, project memory seeds |
-| [`/spec-research`](../kit/skills/spec-research/SKILL.md) | Conditional | Research analysis | Behavior is unknown, repo is brownfield, or root cause is unclear | `artifacts/features/<slug>/analysis.md`, `status.md` |
-| [`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md) | Required per feature | Requirements authoring | Define what must be built and how it will be accepted | `spec.md`, `status.md` |
-| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md) | Required per feature | Planning | Convert approved requirements into technical design and tasks | `plan.md`, `tasks.md`, `status.md` |
-| [`/spec-implement`](../kit/skills/spec-implement/SKILL.md) | Required per feature | Task execution | Implement approved tasks one at a time | Source changes, `tasks.md`, `status.md`, telemetry on failures |
-| [`/harness-verify`](../kit/skills/harness-verify/SKILL.md) | Required per feature | Verification | Prove implementation against tasks and spec | `status.md`, verification output, `harness-telemetry.md` |
-| [`/context-session`](../kit/skills/context-session/SKILL.md) | Conditional | `START`, `CHECKPOINT`, `END` | Resume, pause, or close long feature sessions | `progress.md`, `handoff.md`, `session-extracts.md` |
-| [`/context-memory`](../kit/skills/context-memory/SKILL.md) | Conditional | Regular update, `--audit` | Promote evidence-backed lessons or audit memory health | `memories/repo/*`, `memory-audit.md` |
-| [`/context-compact`](../kit/skills/context-compact/SKILL.md) | Conditional | Target-file compaction | Memory files are oversized (thresholds: 100/200/3200 lines) | Compacted target under `memories/`, `artifacts/`, or `core-zero/generated/` |
-| [`/context-status`](../kit/skills/context-status/SKILL.md) | Optional helper | Status/dashboard sync | Need project-wide feature visibility or next commands | Status report, `core-zero/generated/dashboard.html` |
-| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md) | Maintenance-only | `assess`, `create`, `improve`, `eval`, `doctor` | Harness indexes, generated references, or governance loops need repair | `core-zero/project/code-map.md`, eval reports |
-| [`/spec-adr`](../kit/skills/spec-adr/SKILL.md) | Conditional | ADR capture | A non-obvious technical decision is locked | ADR entry, `core-zero/project/architecture.md`, `memories/repo/adr-log.md` where applicable |
-| [`/code-review`](../kit/skills/code-review/SKILL.md) | Optional helper | Review | Manual review is requested or verification calls for deeper review | Review findings, usually feature-scoped |
-| [`/ponytail`](../kit/skills/ponytail/SKILL.md) | Optional helper | `lite`, `full` (default), `ultra` | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features | Advisory — no artifacts |
-| [`/technical-docs`](../kit/skills/technical-docs/SKILL.md) | Optional helper | `--mode api`, `--mode flow`, `--mode both` | Need grounded API docs or end-to-end flow docs | API docs, flow docs, technical narratives |
-| [`/codebase-documenter`](../kit/skills/codebase-documenter/SKILL.md) | Optional helper | Codebase documentation | Need broader repo onboarding or architecture documentation | README-style guides, architecture docs, setup docs |
-| [`/visualize`](../kit/skills/visualize/SKILL.md) | Optional helper, conditional for complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts |
-| [`/spec-testing-scenario`](../kit/skills/spec-testing-scenario/SKILL.md) | Optional helper | Manual testing scenarios | Need structured manual test guides covering happy/edge paths | `testing-scenarios.md` |
+| Skill                                                                    | Required?                                               | Modes                                             | Use when                                                                               | Primary artifacts                                                                                     |
+| ------------------------------------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [`/starter-init`](../kit/skills/starter-init/SKILL.md)                   | Required once per repo                                  | Greenfield path, brownfield path                  | First setup after installation                                                         | `core-zero/`, `core-zero/memories/`, `.gitignore`, project memory seeds                               |
+| [`/spec-research`](../kit/skills/spec-research/SKILL.md)                 | Conditional                                             | Research analysis                                 | Behavior is unknown, repo is brownfield, or root cause is unclear                      | `artifacts/features/<slug>/analysis.md`, `status.md`                                                  |
+| [`/spec-requirements`](../kit/skills/spec-requirements/SKILL.md)         | Required per feature                                    | Requirements authoring                            | Define what must be built and how it will be accepted                                  | `spec.md`, `status.md`                                                                                |
+| [`/spec-plan`](../kit/skills/spec-plan/SKILL.md)                         | Required per feature                                    | Planning                                          | Convert approved requirements into technical design and tasks                          | `plan.md`, `tasks.md`, `status.md`                                                                    |
+| [`/spec-implement`](../kit/skills/spec-implement/SKILL.md)               | Required per feature                                    | Task execution                                    | Implement approved tasks one at a time                                                 | Source changes, `tasks.md`, `status.md`, telemetry on failures                                        |
+| [`/harness-verify`](../kit/skills/harness-verify/SKILL.md)               | Required per feature                                    | Verification                                      | Prove implementation against tasks and spec                                            | `status.md`, verification output, `harness-telemetry.md`                                              |
+| [`/context-session`](../kit/skills/context-session/SKILL.md)             | Conditional                                             | `START`, `CHECKPOINT`, `END`                      | Resume, pause, or close long feature sessions                                          | `progress.md`, `handoff.md`, `session-extracts.md`                                                    |
+| [`/context-memory`](../kit/skills/context-memory/SKILL.md)               | Conditional                                             | Regular update, `--audit`                         | Promote evidence-backed lessons or audit memory health                                 | `core-zero/memories/repo/*`, `memory-audit.md`                                                        |
+| [`/context-compact`](../kit/skills/context-compact/SKILL.md)             | Conditional                                             | Target-file compaction                            | Memory files are oversized (thresholds: 100/200/3200 lines)                            | Compacted target under `core-zero/memories/`, `artifacts/`, or `core-zero/generated/`                 |
+| [`/context-status`](../kit/skills/context-status/SKILL.md)               | Optional helper                                         | Status/dashboard sync                             | Need project-wide feature visibility or next commands                                  | Status report, `core-zero/generated/dashboard.html`                                                   |
+| [`/harness-maintain`](../kit/skills/harness-maintain/SKILL.md)           | Maintenance-only                                        | `assess`, `create`, `improve`, `eval`, `doctor`   | Harness indexes, generated references, or governance loops need repair                 | `core-zero/project/code-map.md`, eval reports                                                         |
+| [`/spec-adr`](../kit/skills/spec-adr/SKILL.md)                           | Conditional                                             | ADR capture                                       | A non-obvious technical decision is locked                                             | ADR entry, `core-zero/project/architecture.md`, `core-zero/memories/repo/adr-log.md` where applicable |
+| [`/code-review`](../kit/skills/code-review/SKILL.md)                     | Optional helper                                         | Review                                            | Manual review is requested or verification calls for deeper review                     | Review findings, usually feature-scoped                                                               |
+| [`/ponytail`](../kit/skills/ponytail/SKILL.md)                           | Optional helper                                         | `lite`, `full` (default), `ultra`                 | Simplicity check — enforce YAGNI, trim bloat, prefer platform-native features          | Advisory — no artifacts                                                                               |
+| [`/technical-docs`](../kit/skills/technical-docs/SKILL.md)               | Optional helper                                         | `--mode api`, `--mode flow`, `--mode both`        | Need grounded API docs or end-to-end flow docs                                         | API docs, flow docs, technical narratives                                                             |
+| [`/codebase-documenter`](../kit/skills/codebase-documenter/SKILL.md)     | Optional helper                                         | Codebase documentation                            | Need broader repo onboarding or architecture documentation                             | README-style guides, architecture docs, setup docs                                                    |
+| [`/visualize`](../kit/skills/visualize/SKILL.md)                         | Optional helper, conditional for complex structure work | SVG, Mermaid, optional Mermaid render with `mmdc` | A diagram clarifies architecture, flow, sequence, state, ER, or agent/memory structure | `.svg`, `.mmd`, validated diagram artifacts                                                           |
+| [`/spec-testing-scenario`](../kit/skills/spec-testing-scenario/SKILL.md) | Optional helper                                         | Manual testing scenarios                          | Need structured manual test guides covering happy/edge paths                           | `testing-scenarios.md`                                                                                |
 
 ---
 
@@ -146,7 +146,7 @@ Run:
 /starter-init
 ```
 
-Required once per adopter repo. This prepares `core-zero/`, `memories/`, and baseline project memory. It has two practical paths:
+Required once per adopter repo. This prepares `core-zero/`, `core-zero/memories/`, and baseline project memory. It has two practical paths:
 
 - **Greenfield path:** bootstrap the harness and seed unknown project facts with `[UNKNOWN]`.
 - **Brownfield path:** inspect existing code/tests/CI enough to record baseline proof surfaces and project-specific memory.
@@ -173,11 +173,11 @@ Use `/spec-requirements` when the desired behavior can be specified. This is req
 
 Use `/context-session` only after the feature slug and `status.md` exist. It is not the command that creates a new feature.
 
-| Mode | Use when | Output |
-|---|---|---|
-| `START` | Starting a new day, switching branches, or opening a new chat window. | Readiness summary with loaded context, current phase, next task, blockers. |
-| `CHECKPOINT` | Pausing before a break or after meaningful progress. | Updated `progress.md` with session notes. |
-| `END` | Handoff to another developer/agent or closing a long session. | `handoff.md`, `progress.md` notes, and candidate `session-extracts.md` entries. |
+| Mode         | Use when                                                              | Output                                                                          |
+| ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `START`      | Starting a new day, switching branches, or opening a new chat window. | Readiness summary with loaded context, current phase, next task, blockers.      |
+| `CHECKPOINT` | Pausing before a break or after meaningful progress.                  | Updated `progress.md` with session notes.                                       |
+| `END`        | Handoff to another developer/agent or closing a long session.         | `handoff.md`, `progress.md` notes, and candidate `session-extracts.md` entries. |
 
 `/context-session END` is emphasized because it protects handoff state when chat history disappears. It is not the only context-session mode.
 
@@ -262,7 +262,7 @@ Use audit mode when the memory system itself needs inspection:
 Use compaction when memory files are too large:
 
 ```text
-/context-compact --file memories/repo/project-knowledge-base.md
+/context-compact --file core-zero/memories/repo/project-knowledge-base.md
 ```
 
 `/context-compact` reduces memory size while preserving active constraints. It should not delete live rules just to make a file shorter.
@@ -312,7 +312,7 @@ The "Harness" refers to the entire invisible scaffolding that keeps your AI agen
 - **Memory files** (where the AI stores its learned rules)
 - **Status dashboards** (like `dashboard.html` that tracks progress)
 - **Review templates** (what the AI uses to grade its own work)
-- **Directory structures** (like `artifacts/` or `memories/repo/`)
+- **Directory structures** (like `artifacts/` or `core-zero/memories/repo/`)
 
 Over time, as an AI agent builds more code, this background harness can get messy, outdated, or corrupted. `/harness-maintain` is an administrative skill to help you clean it up and keep the agent working smoothly. This is also called **Harness Engineering**.
 
@@ -332,27 +332,27 @@ Run `/harness-maintain [mode]` whenever you notice the AI getting confused or th
 
 ## 5. Which Skill Do I Use?
 
-| Situation | Use |
-|---|---|
-| First setup after install | `/starter-init` |
-| Existing behavior is unclear | `/spec-research` |
-| You can define desired behavior now | `/spec-requirements` |
-| Requirements are approved | `/spec-plan` |
-| A technical decision needs a durable record | `/spec-adr` |
-| Tasks are approved and ready | `/spec-implement` |
-| Work appears complete | `/harness-verify` |
-| You are resuming an existing feature | `/context-session START` |
-| You are pausing mid-feature | `/context-session CHECKPOINT` |
-| You are ending a long session | `/context-session END` |
-| There are durable lessons to promote | `/context-memory` |
-| Memory health needs inspection | `/context-memory --audit` |
-| Memory files are oversized | `/context-compact` |
-| You need active feature status | `/context-status` |
-| You need an implementation review | `/code-review` |
-| You need API or flow docs | `/technical-docs --mode api`, `--mode flow`, or `--mode both` |
-| You need repo onboarding docs | `/codebase-documenter` |
-| You need a diagram | `/visualize` |
-| The harness itself needs repair or evaluation | `/harness-maintain` |
+| Situation                                     | Use                                                           |
+| --------------------------------------------- | ------------------------------------------------------------- |
+| First setup after install                     | `/starter-init`                                               |
+| Existing behavior is unclear                  | `/spec-research`                                              |
+| You can define desired behavior now           | `/spec-requirements`                                          |
+| Requirements are approved                     | `/spec-plan`                                                  |
+| A technical decision needs a durable record   | `/spec-adr`                                                   |
+| Tasks are approved and ready                  | `/spec-implement`                                             |
+| Work appears complete                         | `/harness-verify`                                             |
+| You are resuming an existing feature          | `/context-session START`                                      |
+| You are pausing mid-feature                   | `/context-session CHECKPOINT`                                 |
+| You are ending a long session                 | `/context-session END`                                        |
+| There are durable lessons to promote          | `/context-memory`                                             |
+| Memory health needs inspection                | `/context-memory --audit`                                     |
+| Memory files are oversized                    | `/context-compact`                                            |
+| You need active feature status                | `/context-status`                                             |
+| You need an implementation review             | `/code-review`                                                |
+| You need API or flow docs                     | `/technical-docs --mode api`, `--mode flow`, or `--mode both` |
+| You need repo onboarding docs                 | `/codebase-documenter`                                        |
+| You need a diagram                            | `/visualize`                                                  |
+| The harness itself needs repair or evaluation | `/harness-maintain`                                           |
 
 ---
 

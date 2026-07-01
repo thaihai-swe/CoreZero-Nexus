@@ -72,8 +72,8 @@ The `Project Starter` pack bootstraps a repository for AI-assisted development b
 
 ### Key Files Touched
 - `AGENTS.md` (router entrypoint)
-- `memories/repo/*` (memory router and seed instruction files)
-- `memories/repo/project-knowledge-base.md` (high-risk area notes from archaeology sweep recorded here under `## Repository Overview`)
+- `core-zero/memories/repo/*` (memory router and seed instruction files)
+- `core-zero/memories/repo/project-knowledge-base.md` (high-risk area notes from archaeology sweep recorded here under `## Repository Overview`)
 - `core-zero/project/architecture.md` (durable architecture baseline)
 - `core-zero/project/*.md` adopter-owned docs seeded for refinement
 - `core-zero/generated/*` (dashboard artifacts)
@@ -101,11 +101,11 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 
 ### Key Files Touched
 - `MASTER_INDEX.md`
-- `memories/repo/core-policies.md`
-- `memories/repo/learned-heuristics.md`
-- `memories/repo/project-knowledge-base.md`
-- `memories/repo/harness-telemetry.md` (failure ledger with structured YAML trend summary)
-- `memories/domain/*` (domain-specific glossary trigger, patterns, boundaries, and spec)
+- `core-zero/memories/repo/core-policies.md`
+- `core-zero/memories/repo/learned-heuristics.md`
+- `core-zero/memories/repo/project-knowledge-base.md`
+- `core-zero/memories/repo/harness-telemetry.md` (failure ledger with structured YAML trend summary)
+- `core-zero/memories/domain/*` (domain-specific glossary trigger, patterns, boundaries, and spec)
 - `.corezero/sessions/<slug>/progress.md`
 - `.corezero/sessions/<slug>/handoff.md`
 - `artifacts/features/<slug>/session-extracts.md`
@@ -143,7 +143,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - `artifacts/features/<slug>/tasks.md`
 - `artifacts/features/<slug>/adr-*.md`
 - `artifacts/features/<slug>/testing-scenarios.md` (optional)
-- `memories/repo/adr-log.md`
+- `core-zero/memories/repo/adr-log.md`
 - [`core-zero/project/product-sense.md`](../kit/core-zero/project/product-sense.md)
 - [`core-zero/project/glossary.md`](../kit/core-zero/project/glossary.md)
 - [`core-zero/project/tech-stack.md`](../kit/core-zero/project/tech-stack.md)

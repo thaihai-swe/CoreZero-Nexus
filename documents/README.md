@@ -79,17 +79,17 @@ CoreZero operates across five distinct layers that separate concerns and maintai
 ├─────────────────────────────────────────────┤
 │  4. Artifact Layer (artifacts/features/)    │  Per-feature durable development state
 ├─────────────────────────────────────────────┤
-│  5. Memory Layer (memories/repo/ & domain/) │  Durable cross-session knowledge & domain constraints
+│  5. Memory Layer (core-zero/memories/repo/ & domain/) │  Durable cross-session knowledge & domain constraints
 └─────────────────────────────────────────────┘
 ```
 
 1. **Entrypoint Layer ([`AGENTS.md`](../kit/AGENTS.md)):** A minimal, high-level router (< 50 lines) that tells the agent where to find instructions for specific tasks, avoiding loading heavy skill configurations until needed.
 2. **Skill Layer ([`skills/`](../kit/skills/)):** Compressed, token-efficient contracts (`SKILL.md`) that detail workflows, core rules, warning red flags, stop conditions, and outputs for specific tasks.
-3. **Harness Layer ([`harness-config.md`](../kit/memories/repo/harness-config.md)):** The environment configuration structured around the 7-pillar **ETCLOVG** taxonomy, declaring verification command lists, paths, and live session limits/status.
+3. **Harness Layer ([`harness-config.md`](../kit/core-zero/memories/repo/harness-config.md)):** The environment configuration structured around the 7-pillar **ETCLOVG** taxonomy, declaring verification command lists, paths, and live session limits/status.
 4. **Artifact Layer (`artifacts/features/<slug>/`):** The isolated scratchpad for the active feature. It contains the feature status, locked specifications, task checkboxes, verification logs, and session progress trackers.
-5. **Memory Layer ([`memories/`](../kit/memories/)):** Separated into:
-    - **`repo/`** ([Durable repository-wide memory](../kit/memories/repo/)): constitution, heuristics, knowledge base, security policies.
-    - **`domain/`** ([Adopter-owned domain-specific templates](../kit/memories/domain/)): glossary, boundaries, patterns, and canonical specifications.
+5. **Memory Layer ([`core-zero/memories/`](../kit/core-zero/memories/)):** Separated into:
+    - **`repo/`** ([Durable repository-wide memory](../kit/core-zero/memories/repo/)): constitution, heuristics, knowledge base, security policies.
+    - **`domain/`** ([Adopter-owned domain-specific templates](../kit/core-zero/memories/domain/)): glossary, boundaries, patterns, and canonical specifications.
 
 ### 2. 6-Tier Context Assembly & Smart Routing
 
@@ -116,9 +116,9 @@ To conserve context window budget and prevent AI hallucination, the kit structur
 ```
 
 - **Trigger Loading (Tier 3):** Under [`MASTER_INDEX.md`](../kit/MASTER_INDEX.md), files in Tier 3 are loaded selectively based on query triggers defined in [`MASTER_INDEX.md`](../kit/MASTER_INDEX.md):
-    - **Knowledge:** Loads [`project-knowledge-base.md`](../kit/memories/repo/project-knowledge-base.md), architecture, and indexes when keywords like `architecture`, `pattern`, `stack`, or `domain` are matched.
-    - **Learned:** Loads [`learned-heuristics.md`](../kit/memories/repo/learned-heuristics.md) when keywords like `heuristic`, `recurring`, or `lesson` are matched.
-    - **Debug:** Loads [`harness-telemetry.md`](../kit/memories/repo/harness-telemetry.md) when keywords like `debug`, `failure`, or `root cause` are matched.
+    - **Knowledge:** Loads [`project-knowledge-base.md`](../kit/core-zero/memories/repo/project-knowledge-base.md), architecture, and indexes when keywords like `architecture`, `pattern`, `stack`, or `domain` are matched.
+    - **Learned:** Loads [`learned-heuristics.md`](../kit/core-zero/memories/repo/learned-heuristics.md) when keywords like `heuristic`, `recurring`, or `lesson` are matched.
+    - **Debug:** Loads [`harness-telemetry.md`](../kit/core-zero/memories/repo/harness-telemetry.md) when keywords like `debug`, `failure`, or `root cause` are matched.
 
 - **Confidence-Scored Loading:** If ≤ 2 keywords match, a partial-load is executed (loading only index/header files for context awareness). High-confidence matches (3+ keywords) trigger a full-load of all group files.
 
@@ -147,9 +147,9 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 #### Phase 1: Repository Bootstrapping ([`/starter-init`](../kit/skills/starter-init/SKILL.md))
 - Initializes the environment, parses dependencies, and registers targets.
-- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`core-zero/generated/*`, `memories/repo/harness-telemetry.md`) from version control.
+- **Gitignore Injection:** Excludes ephemeral generated artifacts and telemetry (`core-zero/generated/*`, `core-zero/memories/repo/harness-telemetry.md`) from version control.
 - **Greenfield Mode:** Prefills standard templates and triggers.
-- **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and records risk area notes into `memories/repo/project-knowledge-base.md`.
+- **Brownfield Mode (Phase A - Archaeology):** Runs a deep static sweep to identify code debt, dependency graphs, and records risk area notes into `core-zero/memories/repo/project-knowledge-base.md`.
 
 #### Phase 2: Session Initialization ([`/context-session START`](../kit/skills/context-session/SKILL.md))
 - Initiates the feature sandbox under a specific slug (e.g. `feature-abc`).
@@ -180,7 +180,7 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 #### Phase 7: Memory Promotion ([`/context-memory`](../kit/skills/context-memory/SKILL.md))
 - Closes out the session via `/context-session END` which distills lesson candidates into `session-extracts.md`.
-- Post-ship sync evaluates candidate lessons and promotes them to the durable instruction tier (`project-knowledge-base.md`, `learned-heuristics.md`, or domain packs under `memories/domain/`).
+- Post-ship sync evaluates candidate lessons and promotes them to the durable instruction tier (`project-knowledge-base.md`, `learned-heuristics.md`, or domain packs under `core-zero/memories/domain/`).
 
 ### 4. Operational & Specialist Skills
 

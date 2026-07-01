@@ -30,7 +30,7 @@ Suggested destination
 <!-- context-memory moves processed candidates here. Format: -->
 
 <!--
-- EXT-001 — promoted to memories/repo/learned-heuristics.md (LH-014). Rationale: pattern observed in 3+ sessions.
+- EXT-001 — promoted to core-zero/memories/repo/learned-heuristics.md (LH-014). Rationale: pattern observed in 3+ sessions.
 - EXT-002 — discarded. Rationale: feature-local, not generalizable.
 - EXT-003 — deferred. Rationale: needs one more confirming session before promotion.
 -->

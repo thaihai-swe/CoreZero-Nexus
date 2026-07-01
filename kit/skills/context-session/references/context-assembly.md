@@ -11,16 +11,16 @@ Load context from highest-signal to lowest-signal:
    - `MASTER_INDEX.md` — master context routing index and memory router (always loaded)
    - Purpose: locate the workflow contract, repo entry rules, and the memory map
 2. Repo Memory — Always
-   - `memories/repo/core-policies.md`
+   - `core-zero/memories/repo/core-policies.md`
    - Purpose: durable normative rules, security policy, and memory promotion thresholds needed every session
 3. Repo Memory — By Intent
    - Resolve by matching the active task against trigger keywords listed in `MASTER_INDEX.md`.
-   - Config group (`memories/repo/harness-config.md`) — loaded when the task touches setup, bootstrap, install, repository identity, commands, session defaults, lifecycle, or known limits.
+   - Config group (`core-zero/memories/repo/harness-config.md`) — loaded when the task touches setup, bootstrap, install, repository identity, commands, session defaults, lifecycle, or known limits.
 
    - Knowledge group (`project-knowledge-base.md`) — loaded when the task touches patterns, conventions, stack, or domain language.
    - Learned group (`learned-heuristics.md`) — loaded when the task echoes a heuristic trigger (recurring instinct, "we always/never", "last time").
    - Architecture group (`core-zero/project/architecture.md`, `core-zero/project/adr/index.md`, `core-zero/project/code-map.md`) — loaded when the task crosses module boundaries or the repo is unfamiliar.
-   - Debug group (`memories/repo/harness-telemetry.md`, prior `session-extracts.md`) — loaded only on debug, retro, failure, or post-mortem work.
+   - Debug group (`core-zero/memories/repo/harness-telemetry.md`, prior `session-extracts.md`) — loaded only on debug, retro, failure, or post-mortem work.
    - Purpose: durable knowledge, but loaded by relevance, not by default. Skip groups whose triggers do not match.
 4. Feature Artifacts
    - `status.md`, `handoff.md`, `progress.md`

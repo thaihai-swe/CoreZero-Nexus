@@ -10,8 +10,8 @@
 | `core-zero/project/code-map.md` | Generated map of code locations, file structures, counts, roots, and component domains. | Before any implementation task: new file, new route, new component. |
 | `core-zero/rules/*.md` | Per-domain coding and policy rules (security, simplicity, etc.). | When the active task touches a security-sensitive domain or when loading a specific rule set. |
 | `manifest.json` | Installation manifest listing kit-managed (overwrite) and adopter-owned (copyIfMissing/preserve) files. | When auditing or modifying the kit file structure or installation behavior. |
-| memories/repo/core-policies.md | Repo-wide normative rules (CC-* identifiers), security policy, and memory promotion thresholds. | Read at session start and before changing core policies or security rules. |
-| memories/repo/harness-config.md | Adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, lifecycle. | Load when the task touches setup, bootstrap, commands, session defaults, or lifecycle configuration. |
+| core-zero/memories/repo/core-policies.md | Repo-wide normative rules (CC-* identifiers), security policy, and memory promotion thresholds. | Read at session start and before changing core policies or security rules. |
+| core-zero/memories/repo/harness-config.md | Adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, lifecycle. | Load when the task touches setup, bootstrap, commands, session defaults, or lifecycle configuration. |
 
 ## 2. Memory Router
 
@@ -26,7 +26,7 @@
 
 ### Always (load every session)
 
-- `memories/repo/core-policies.md` — repo-wide normative rules (CC-* identifiers), security policy, memory promotion thresholds. Loaded every session.
+- `core-zero/memories/repo/core-policies.md` — repo-wide normative rules (CC-* identifiers), security policy, memory promotion thresholds. Loaded every session.
 
 ### By Intent — Config
 
@@ -34,7 +34,7 @@ Broad Intent Keywords: `setup`, `bootstrap`, `install`, `repository identity`, `
 
 *(Evaluate individually; do not block-load the group)*
 
-- `memories/repo/harness-config.md` — adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, delivery lifecycle, known limits.
+- `core-zero/memories/repo/harness-config.md` — adopter-tailored seed: repository identity, work tracking, artifact routing, verification commands, session defaults, delivery lifecycle, known limits.
 
 ### By Intent — Knowledge
 
@@ -42,8 +42,8 @@ Broad Intent Keywords: `architecture`, `pattern`, `convention`, `stack`, `module
 
 *(Evaluate files individually; do not block-load the group)*
 
-- `memories/repo/project-knowledge-base.md` — durable patterns, watchouts, project continuity facts.
-- `memories/repo/adr-log.md` — index of architecture decisions; load when the task touches prior decisions or architectural tradeoffs. *(Skip if the file does not exist yet.)*
+- `core-zero/memories/repo/project-knowledge-base.md` — durable patterns, watchouts, project continuity facts.
+- `core-zero/memories/repo/adr-log.md` — index of architecture decisions; load when the task touches prior decisions or architectural tradeoffs. *(Skip if the file does not exist yet.)*
 - `core-zero/project/architecture.md` — durable system structure, boundaries, integration seams.
 - `core-zero/project/product-sense.md` — product vision, target users, success metrics. Load on product/scoping work.
 - `core-zero/project/glossary.md` — shared vocabulary and naming conventions. Load when naming or terminology matters.
@@ -67,12 +67,12 @@ Broad Intent Keywords: `heuristic`, `instinct`, `recurring`, `lesson`, `we alway
 
 *(Evaluate files individually; do not block-load the group)*
 
-- `memories/repo/learned-heuristics.md` — evidence-backed instincts that improve future execution.
-- `memories/archive/deprecated-heuristics.md` — Cold storage for decayed LH-* heuristics. Not loaded into context by default.
+- `core-zero/memories/repo/learned-heuristics.md` — evidence-backed instincts that improve future execution.
+- `core-zero/memories/archive/deprecated-heuristics.md` — Cold storage for decayed LH-* heuristics. Not loaded into context by default.
 
 ### By Domain Packs
 
-Domain packs live in `memories/domain/`. Trigger keywords are declared in `glossary.md` frontmatter.
+Domain packs live in `core-zero/memories/domain/`. Trigger keywords are declared in `glossary.md` frontmatter.
 
 - **`glossary.md`:** Load whenever 1+ trigger keywords match (establishes baseline vocabulary).
 - **`boundaries.md`:** Load ONLY when the task involves cross-domain API calls, schema migrations, or multi-feature integration.
@@ -82,13 +82,13 @@ Domain packs live in `memories/domain/`. Trigger keywords are declared in `gloss
 - **No packs installed:** Skip this section entirely.
 
 Installed packs:
-- **example** (`memories/domain/`) — triggers: `example`, `sample`, `demo`, `template`, `walkthrough`. Worked-example pack shipped as a schema demo; replace with a real domain pack.
+- **example** (`core-zero/memories/domain/`) — triggers: `example`, `sample`, `demo`, `template`, `walkthrough`. Worked-example pack shipped as a schema demo; replace with a real domain pack.
 
 ### By Debug (load on debug, retro, or failure)
 
 Trigger keywords: `debug`, `failure`, `regression`, `incident`, `retro`, `flaky`, `why did`, `root cause`.
 
-- `memories/repo/harness-telemetry.jsonl` + `.md` — JSONL records written by `telemetry-collector.sh`, human view rendered by `telemetry-render.sh`. Triaged by `/harness-maintain`.
+- `core-zero/memories/repo/harness-telemetry.jsonl` + `.md` — JSONL records written by `telemetry-collector.sh`, human view rendered by `telemetry-render.sh`. Triaged by `/harness-maintain`.
 - `artifacts/features/<slug>/session-extracts.md` — per-feature distillation, candidate-only until triaged.
 
 ## 3. Phase × Guidance Matrix
@@ -136,7 +136,7 @@ Phase definitions (Mapped to the canonical 7-Phase Delivery Loop):
 
 Domain packs add project-specific semantic context to the memory router. Each pack captures the ubiquitous language, proven patterns, anti-patterns, and boundary rules for a specific business or technical domain.
 
-Domain packs live in `memories/domain/`. The memory router loads a pack when the active task's keywords match the pack's declared triggers.
+Domain packs live in `core-zero/memories/domain/`. The memory router loads a pack when the active task's keywords match the pack's declared triggers.
 
 > [!NOTE]
 > Domain packs represent context for a specific *bounded subdomain* within the app. They do not replace or duplicate project-wide documentation. Use `core-zero/project/glossary.md` for project-wide dictionary terms, `core-zero/project/architecture.md` for top-level component maps, and `core-zero/project/tech-stack.md` for global dependencies.
@@ -148,6 +148,6 @@ Domain packs live in `memories/domain/`. The memory router loads a pack when the
 - Once activated, use the Phase × Guidance Matrix to determine which files from the pack to load.
 - With 0 matches, the pack is skipped entirely.
 
-See `memories/domain/README.md` for the full file schema, creation steps, and lifecycle guidance.
+See `core-zero/memories/domain/README.md` for the full file schema, creation steps, and lifecycle guidance.
 
 

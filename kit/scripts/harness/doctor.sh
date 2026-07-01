@@ -10,7 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/_lib/root.sh"
 
 KIT_ROOT=$(resolve_repo_root) || {
-  echo "FAIL: Could not resolve kit root (no AGENTS.md + memories/repo/)"
+  echo "FAIL: Could not resolve kit root (no AGENTS.md + core-zero/memories/repo/)"
   exit 1
 }
 
@@ -26,14 +26,14 @@ echo ""
 echo "--- Check 2: Referenced sections exist ---"
 
 # ## Security Policy in core-policies.md
-if grep -q "^## Security Policy" "$KIT_ROOT/memories/repo/core-policies.md" 2>/dev/null; then
+if grep -q "^## Security Policy" "$KIT_ROOT/core-zero/memories/repo/core-policies.md" 2>/dev/null; then
   pass "core-policies.md has ## Security Policy"
 else
   fail "core-policies.md missing ## Security Policy"
 fi
 
 # # Harness Config in harness-config.md
-if grep -q "^# Harness Config" "$KIT_ROOT/memories/repo/harness-config.md" 2>/dev/null; then
+if grep -q "^# Harness Config" "$KIT_ROOT/core-zero/memories/repo/harness-config.md" 2>/dev/null; then
   pass "harness-config.md has # Harness Config"
 else
   fail "harness-config.md missing # Harness Config"
@@ -67,12 +67,12 @@ fi
 echo "--- Check 4: MASTER_INDEX.md routes exist ---"
 # Check specific files referenced in MASTER_INDEX.md
 for f in \
-  "memories/repo/core-policies.md" \
-  "memories/repo/harness-config.md" \
-  "memories/repo/project-knowledge-base.md" \
-  "memories/repo/adr-log.md" \
-  "memories/repo/learned-heuristics.md" \
-  "memories/repo/harness-telemetry.md" \
+  "core-zero/memories/repo/core-policies.md" \
+  "core-zero/memories/repo/harness-config.md" \
+  "core-zero/memories/repo/project-knowledge-base.md" \
+  "core-zero/memories/repo/adr-log.md" \
+  "core-zero/memories/repo/learned-heuristics.md" \
+  "core-zero/memories/repo/harness-telemetry.md" \
   "core-zero/rules/security.md" \
   "core-zero/rules/ponytail.md" \
   "core-zero/policies/code-design.md" \
@@ -94,7 +94,7 @@ check_threshold() {
   fi
   return 1
 }
-if grep -q "Memory Promotion Thresholds" "$KIT_ROOT/memories/repo/core-policies.md" && grep -qE "200.*3199|200–3199" "$KIT_ROOT/memories/repo/core-policies.md"; then
+if grep -q "Memory Promotion Thresholds" "$KIT_ROOT/core-zero/memories/repo/core-policies.md" && grep -qE "200.*3199|200–3199" "$KIT_ROOT/core-zero/memories/repo/core-policies.md"; then
   pass "core-policies.md has canonical thresholds table"
 else
   fail "core-policies.md missing canonical thresholds"
@@ -112,7 +112,7 @@ fi
 
 # --- Check 7: ADR status vocabulary is unified ---
 echo "--- Check 7: ADR status consistency ---"
-if grep -q "Rejected" "$KIT_ROOT/memories/repo/adr-log.md" 2>/dev/null; then
+if grep -q "Rejected" "$KIT_ROOT/core-zero/memories/repo/adr-log.md" 2>/dev/null; then
   fail "adr-log.md still has 'Rejected' status (should be Deprecated/Superseded)"
 else
   pass "adr-log.md status vocabulary clean"
@@ -246,7 +246,7 @@ fi
 # --- Check 13: Memory file size warnings (thresholds from core-policies.md) ---
 echo "--- Check 13: Memory file size warnings ---"
 # Read canonical thresholds from core-policies.md
-THRESHOLD_SRC="$KIT_ROOT/memories/repo/core-policies.md"
+THRESHOLD_SRC="$KIT_ROOT/core-zero/memories/repo/core-policies.md"
 PY_READ_THRESHOLDS=$(python3 -c "
 import re, sys
 text = open('$THRESHOLD_SRC').read()
@@ -264,11 +264,11 @@ print(f'{ew} {tb}')
 read early_warn threshold_breach <<< "$PY_READ_THRESHOLDS"
 mem_warn=0
 for mem_file in \
-  "memories/repo/core-policies.md" \
-  "memories/repo/learned-heuristics.md" \
-  "memories/repo/project-knowledge-base.md" \
-  "memories/repo/harness-config.md" \
-  "memories/repo/adr-log.md"; do
+  "core-zero/memories/repo/core-policies.md" \
+  "core-zero/memories/repo/learned-heuristics.md" \
+  "core-zero/memories/repo/project-knowledge-base.md" \
+  "core-zero/memories/repo/harness-config.md" \
+  "core-zero/memories/repo/adr-log.md"; do
   full_path="$KIT_ROOT/$mem_file"
   if [[ ! -f "$full_path" ]]; then
     continue
@@ -389,7 +389,7 @@ for entry in all_entries:
 uncovered = set()
 exclude_prefixes = ('node_modules/', '.git/', '__pycache__/', '.corezero/')
 # Runtime-generated paths that aren't expected to be in manifest
-runtime_paths = ('artifacts/', 'core-zero/generated/', 'memories/archive/')
+runtime_paths = ('artifacts/', 'core-zero/generated/', 'core-zero/memories/archive/')
 for dirpath, dirnames, filenames in os.walk(root):
     rel_dir = os.path.relpath(dirpath, root)
     if rel_dir == '.':
@@ -454,21 +454,20 @@ ref_pattern = re.compile(r'\`([a-zA-Z0-9_/.@-]+\.md)\s+##\s+([A-Za-z][A-Za-z0-9 
 
 # Known short-path mappings for bare filenames referenced in skills
 PATH_MAP = {
-    'core-policies.md': 'memories/repo/core-policies.md',
-    'harness-config.md': 'memories/repo/harness-config.md',
-    'learned-heuristics.md': 'memories/repo/learned-heuristics.md',
-    'project-knowledge-base.md': 'memories/repo/project-knowledge-base.md',
-    'harness-telemetry.md': 'memories/repo/harness-telemetry.md',
-    'adr-log.md': 'memories/repo/adr-log.md',
+    'core-policies.md': 'core-zero/memories/repo/core-policies.md',
+    'harness-config.md': 'core-zero/memories/repo/harness-config.md',
+    'learned-heuristics.md': 'core-zero/memories/repo/learned-heuristics.md',
+    'project-knowledge-base.md': 'core-zero/memories/repo/project-knowledge-base.md',
+    'harness-telemetry.md': 'core-zero/memories/repo/harness-telemetry.md',
+    'adr-log.md': 'core-zero/memories/repo/adr-log.md',
     'code-map.md': 'core-zero/project/code-map.md',
     'tech-stack.md': 'core-zero/project/tech-stack.md',
     'architecture.md': 'core-zero/project/architecture.md',
-    'glossary.md': 'memories/domain/glossary.md',
+    'glossary.md': 'core-zero/memories/domain/glossary.md',
     'ponytail.md': 'core-zero/rules/ponytail.md',
     'security.md': 'core-zero/rules/security.md',
     'code-design.md': 'core-zero/policies/code-design.md',
-    'spec-schema.json': 'core-zero/project/spec-schema.json',
-    'README.md': 'memories/domain/README.md',
+    'README.md': 'core-zero/memories/domain/README.md',
 }
 
 def resolve(ref_path, skill_dir_name):

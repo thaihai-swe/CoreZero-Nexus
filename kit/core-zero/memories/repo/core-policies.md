@@ -11,7 +11,7 @@
 
 ## Purpose
 
-This file stores the durable normative rules for maintaining the AI Agents Development Kit. Rules here are repo-wide, evidence-backed, and mandatory. Descriptive patterns and implementation facts belong in `memories/repo/project-knowledge-base.md`.
+This file stores the durable normative rules for maintaining the AI Agents Development Kit. Rules here are repo-wide, evidence-backed, and mandatory. Descriptive patterns and implementation facts belong in `core-zero/memories/repo/project-knowledge-base.md`.
 
 ## Normative Rules
 
@@ -25,7 +25,7 @@ Do not mark kit work complete from a plausible diff alone. A passing verificatio
 When information is unavailable, agents MUST mark it explicitly as `[UNKNOWN]`. Never fill gaps with plausible-sounding guesses. This applies to all artifacts: specs, plans, reviews, and memory files.
 
 ### CC-004 — Permission boundaries must be explicit
-Security-sensitive harness rules belong in `memories/repo/core-policies.md` `## Security Policy`. Do not scatter trust-boundary decisions across skill files or the knowledge base.
+Security-sensitive harness rules belong in `core-zero/memories/repo/core-policies.md` `## Security Policy`. Do not scatter trust-boundary decisions across skill files or the knowledge base.
 
 ### CC-005 — Prefer surgical updates
 Change only what is required by the stated task. No drive-by refactors, formatting churn, or unrelated cleanup. Touch only the files the task needs.

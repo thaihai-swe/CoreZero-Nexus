@@ -136,9 +136,9 @@ What problem are we solving, for whom, and why now?
 
 ## Related ADRs
 
-<!-- List ADR-NNN entries that shaped this spec. Link to memories/repo/adr-log.md. -->
+<!-- List ADR-NNN entries that shaped this spec. Link to core-zero/memories/repo/adr-log.md. -->
 
-- ADR-NNN: <description> (see `memories/repo/adr-log.md`)
+- ADR-NNN: <description> (see `core-zero/memories/repo/adr-log.md`)
 
 ## Notes
 

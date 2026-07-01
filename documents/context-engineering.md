@@ -63,12 +63,12 @@ flowchart TD
 
     subgraph Track2["2. Cross-Session Tools (Durable Local Repo)"]
         CS1["MASTER_INDEX.md (Router Index)"]
-        CS2["Repo Memories (memories/repo/)"]
+        CS2["Repo Memories (core-zero/memories/repo/)"]
         CS3["Feature Artifacts (status/plan/tasks)"]
     end
 
     subgraph Track3["3. Team Sharing (Domain & Exporter Surface)"]
-        TS1["Domain Packs (memories/domain/)"]
+        TS1["Domain Packs (core-zero/memories/domain/)"]
         TS2["Adopter-facing APIs & Docs"]
     end
 
@@ -85,7 +85,7 @@ flowchart TD
    - **Lifespan**: Persistent across sessions, versioned via Git.
 
 3. **Team Sharing (Domain & Exporter Surface):**
-   - **What**: Shared knowledge domain templates, boundaries, glossaries (`memories/domain/`), and system references that propagate to other developers and peer agent sessions.
+   - **What**: Shared knowledge domain templates, boundaries, glossaries (`core-zero/memories/domain/`), and system references that propagate to other developers and peer agent sessions.
    - **Lifespan**: Extremely durable, highly curated.
 
 ---
@@ -127,45 +127,45 @@ flowchart TB
 
 ### Tier Reference
 
-| Tier | Content | Load Strategy |
-|------|---------|---------------|
-| 1 | `AGENTS.md` + `MASTER_INDEX.md` (router) | Always — first thing loaded every session |
-| 2 | Always group: `core-policies.md` | Always — every session |
-| 3 | By-Intent groups: Knowledge / Learned / Domain Packs / Debug | Only when trigger keywords match the task |
-| 4 | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying |
-| 5 | Raw code — only files for the immediate task | JIT — just-in-time per task |
-| 6 | Transient logs, grep output, stack traces | On demand — summarize and evict quickly |
+| Tier | Content                                                           | Load Strategy                             |
+| ---- | ----------------------------------------------------------------- | ----------------------------------------- |
+| 1    | `AGENTS.md` + `MASTER_INDEX.md` (router)                          | Always — first thing loaded every session |
+| 2    | Always group: `core-policies.md`                                  | Always — every session                    |
+| 3    | By-Intent groups: Knowledge / Learned / Domain Packs / Debug      | Only when trigger keywords match the task |
+| 4    | Feature artifacts: `spec.md`, `plan.md`, `tasks.md`, `handoff.md` | Before editing or verifying               |
+| 5    | Raw code — only files for the immediate task                      | JIT — just-in-time per task               |
+| 6    | Transient logs, grep output, stack traces                         | On demand — summarize and evict quickly   |
 
 **Intent groups (Tier 3) — defined in `MASTER_INDEX.md`:**
 - **Knowledge** — loads when task touches `architecture`, `pattern`, `stack`, `domain`, `convention`, `module`, `api surface`, `bootstrap`, `skill`, `template`, `adr`, `decision` (loads PKB, `adr-log.md`, `core-zero/project/architecture.md`, `core-zero/project/code-map.md`)
 - **Learned** — loads when task echoes `heuristic`, `recurring`, `we always/never`, `last time`, `lesson` (loads `learned-heuristics.md`)
-- **Domain Packs** — loads when domain-pack glossary triggers match the task (`memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
+- **Domain Packs** — loads when domain-pack glossary triggers match the task (`core-zero/memories/domain/`). Low-confidence matches load `glossary.md` only; high-confidence matches load the full pack.
 - **Debug** — loads on `debug`, `failure`, `regression`, `retro`, `root cause`, `flaky`, `why did`, `incident` (loads `harness-telemetry.md` and per-feature `session-extracts.md`)
 
 ### Memory Files by Tier
 
 #### Instruction Tier — Human-Curated, Durable
-| File | Content | Update Frequency |
-|------|---------|-----------------|
-| `core-policies.md` | Normative repo-wide rules (CC-*), security boundaries, promotion thresholds | Rare — when tooling/policies change |
-| `project-knowledge-base.md` | Durable facts, conventions, patterns | As project evolves |
-| `learned-heuristics.md` | Evidence-backed execution patterns | After repeated observations |
-| `core-zero/project/architecture.md` | System boundaries, components, integration seams | When architecture changes |
-| `adr-log.md` | ADR index | Lazy-created on first ADR |
+| File                                | Content                                                                     | Update Frequency                    |
+| ----------------------------------- | --------------------------------------------------------------------------- | ----------------------------------- |
+| `core-policies.md`                  | Normative repo-wide rules (CC-*), security boundaries, promotion thresholds | Rare — when tooling/policies change |
+| `project-knowledge-base.md`         | Durable facts, conventions, patterns                                        | As project evolves                  |
+| `learned-heuristics.md`             | Evidence-backed execution patterns                                          | After repeated observations         |
+| `core-zero/project/architecture.md` | System boundaries, components, integration seams                            | When architecture changes           |
+| `adr-log.md`                        | ADR index                                                                   | Lazy-created on first ADR           |
 
 #### Auto Tier — Failure-Driven, Append-Only
-| File | Content | Written By |
-|------|---------|-----------|
+| File                   | Content                            | Written By                                                                    |
+| ---------------------- | ---------------------------------- | ----------------------------------------------------------------------------- |
 | `harness-telemetry.md` | Harness/Model/Spec failure entries | `/harness-maintain` Improve Mode, `/harness-verify`, `telemetry-collector.sh` |
 
 #### Extracted Tier — Per-Feature Candidates
-| File | Content | Written By |
-|------|---------|-----------|
+| File                                            | Content                                     | Written By                                               |
+| ----------------------------------------------- | ------------------------------------------- | -------------------------------------------------------- |
 | `artifacts/features/<slug>/session-extracts.md` | Session distillation — hypotheses not rules | `/context-session END`, `/harness-verify` post-ship sync |
 
 #### Router
-| File | Purpose |
-|------|---------|
+| File              | Purpose                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `MASTER_INDEX.md` | Always-loaded routing index. Declares Always / By-Intent / By-Debug / By-Domain groups. Sessions read this first. |
 
 ## Assembly Rules
@@ -239,7 +239,7 @@ To prevent this, the `/spec-implement` workflow enforces **Mandatory Context Evi
 2. **Analyze**: Parse the success or failure output to identify the root cause or confirm completion.
 3. **Summarize**: Record a 3-5 line high-level summary of the run in the active verification/task log (e.g. `tests passed` or `linter failed with syntax error in lines 12-14`).
 4. **Evict**: Immediately remove the raw terminal stderr/stdout from the active context window. Do not keep the raw command dump in subsequent turns.
-5. **Log Telemetry**: If the run failed, pipe the output to `telemetry-collector.sh` which appends it to `memories/repo/harness-telemetry.md` (removing it from the active session runtime).
+5. **Log Telemetry**: If the run failed, pipe the output to `telemetry-collector.sh` which appends it to `core-zero/memories/repo/harness-telemetry.md` (removing it from the active session runtime).
 
 ---
 
@@ -257,12 +257,12 @@ Compact context when:
 
 ## Compaction Strategies
 
-| Strategy | When | How |
-|----------|------|-----|
-| **Summarize** | Large tool output analyzed | Replace raw output with 3-5 line summary |
-| **Scope-narrow** | Full file loaded, only function needed | Drop to relevant section |
-| **Evict** | Previous task context no longer needed | Remove entirely |
-| **Promote** | Finding is durable | Write to memory/artifact, then evict source |
+| Strategy         | When                                   | How                                         |
+| ---------------- | -------------------------------------- | ------------------------------------------- |
+| **Summarize**    | Large tool output analyzed             | Replace raw output with 3-5 line summary    |
+| **Scope-narrow** | Full file loaded, only function needed | Drop to relevant section                    |
+| **Evict**        | Previous task context no longer needed | Remove entirely                             |
+| **Promote**      | Finding is durable                     | Write to memory/artifact, then evict source |
 
 ---
 
@@ -292,13 +292,13 @@ Checkpoint = update progress.md + apply compaction + verify context is lean.
 
 ## Anti-Patterns
 
-| Anti-Pattern | Why It's Bad | Instead |
-|--------------|-------------|---------|
-| Loading entire design.md for a single task | Wastes context budget | Load only the relevant section |
-| Keeping raw grep output after analysis | Noise dilutes signal | Summarize findings, evict raw output |
-| Loading all feature artifacts at once | Most aren't needed for the current task | Load JIT based on task dependencies |
-| Never checkpointing | Context grows until quality degrades | Checkpoint after each completed task |
-| Relying on chat history for state | Chat is volatile and gets truncated | Use progress.md as system of record |
+| Anti-Pattern                               | Why It's Bad                            | Instead                              |
+| ------------------------------------------ | --------------------------------------- | ------------------------------------ |
+| Loading entire design.md for a single task | Wastes context budget                   | Load only the relevant section       |
+| Keeping raw grep output after analysis     | Noise dilutes signal                    | Summarize findings, evict raw output |
+| Loading all feature artifacts at once      | Most aren't needed for the current task | Load JIT based on task dependencies  |
+| Never checkpointing                        | Context grows until quality degrades    | Checkpoint after each completed task |
+| Relying on chat history for state          | Chat is volatile and gets truncated     | Use progress.md as system of record  |
 
 ---
 
@@ -357,11 +357,11 @@ Knowledge flows from local feature execution upward into instruction-tier memory
 
 When a finding is identified in a feature folder (`session-extracts.md` or `harness-telemetry.md`), run `/context-memory` to initiate Extraction Triage:
 
-| Decision | Condition | Action |
-|----------|-----------|--------|
-| **Promote** | Repeated across 2+ features, evidence-backed, reusable | Write to Instruction Tier |
-| **Defer** | Promising but needs further confirmations | Retain in candidate log |
-| **Discard** | Feature-specific, obsolete, or incorrect | Discard with documented reason |
+| Decision    | Condition                                              | Action                         |
+| ----------- | ------------------------------------------------------ | ------------------------------ |
+| **Promote** | Repeated across 2+ features, evidence-backed, reusable | Write to Instruction Tier      |
+| **Defer**   | Promising but needs further confirmations              | Retain in candidate log        |
+| **Discard** | Feature-specific, obsolete, or incorrect               | Discard with documented reason |
 
 *Normative rules* (must/should) route to `core-policies.md`.
 *Descriptive facts* (uses/prefers) route to `project-knowledge-base.md` or `learned-heuristics.md`.
@@ -466,7 +466,7 @@ Domain packs extend the memory router with project-specific semantic context. Ea
 ### Where They Live
 
 ```
-memories/domain/
+core-zero/memories/domain/
 ├── glossary.md      — ubiquitous language + trigger keywords
 ├── patterns.md      — proven domain patterns
 ├── anti-patterns.md — failure modes to avoid
@@ -489,16 +489,16 @@ triggers: [billing, invoice, charge, stripe, subscription, refund, payment]
 
 ### Authoring a Pack
 
-1. Create `memories/domain/` with the required files.
+1. Create `core-zero/memories/domain/` with the required files.
 2. Declare triggers in `glossary.md` frontmatter.
 3. Register the pack in `MASTER_INDEX.md` under `## By Domain Packs`.
-4. See `memories/domain/README.md` for the full schema.
+4. See `core-zero/memories/domain/README.md` for the full schema.
 
 ### Lifecycle
 
 Domain packs are **adopter-owned** memory — the kit seeds the schema but not the content. During `/context-memory` Post-Ship Sync, promote durable patterns from `session-extracts.md` into the appropriate domain pack file.
 
-Brownfield artifacts under `memories/repo/project-knowledge-base.md ## Repository Overview` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `MASTER_INDEX.md`; sessions need to load them intentionally when relevant.
+Brownfield artifacts under `core-zero/memories/repo/project-knowledge-base.md ## Repository Overview` are separate from domain packs. As of the current kit revision, they are produced by `/starter-init` (Phase A) but are not yet auto-routed by `MASTER_INDEX.md`; sessions need to load them intentionally when relevant.
 
 > **MVC Tool — `scripts/context-loader.py`**: Provides programmatic enforcement of the MVC rule. Run `python3 scripts/context-loader.py <file> --mode summary` to extract the `## Index` section plus ~60 content lines (or first 30 lines if no Index exists), preserving context budget without agent interpretation. Use `--section <H2 title>` to load a single named section.
 
@@ -529,14 +529,14 @@ The MVC principle is backed by three layers that work together to load only what
 
 The `## 3. Phase × Guidance Matrix` section is a 5-column table. The first column is the source file (with glob support via `*`). Columns 2–5 are the four delivery-loop phases (Spec / Plan / Implement / Verify). Each cell is one of `Must`, `Should`, or `Skip`, with an optional brace annotation `{## Sec1, ## Sec2}` to load only specific H2 sections of a file.
 
-| Source | Spec | Plan | Implement | Verify |
-|---|---|---|---|---|---|
-| `core-policies.md` | Must {## Purpose, ## Normative Rules} | Must {## Amendment Rules, ## Release Guardrails} | Must {## Normative Rules, ## Security Policy} | Must {## Memory Promotion Thresholds, ## Security Policy} |
-| `harness-config.md` | Skip | Should {## Artifact Routing, ## Verification Commands} | Should {## Verification Commands, ## Session Defaults} | Skip |
-| `core-zero/project/architecture.md` | Should | Should | Skip | Should |
-| `core-zero/rules/*.md` | Skip | Should | Must | Should |
+| Source                              | Spec                                  | Plan                                                   | Implement                                              | Verify                                                    |
+| ----------------------------------- | ------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------ | --------------------------------------------------------- |  |
+| `core-policies.md`                  | Must {## Purpose, ## Normative Rules} | Must {## Amendment Rules, ## Release Guardrails}       | Must {## Normative Rules, ## Security Policy}          | Must {## Memory Promotion Thresholds, ## Security Policy} |
+| `harness-config.md`                 | Skip                                  | Should {## Artifact Routing, ## Verification Commands} | Should {## Verification Commands, ## Session Defaults} | Skip                                                      |
+| `core-zero/project/architecture.md` | Should                                | Should                                                 | Skip                                                   | Should                                                    |
+| `core-zero/rules/*.md`              | Skip                                  | Should                                                 | Must                                                   | Should                                                    |
 
-Short names (e.g. `core-policies.md`) are resolved to paths under `memories/repo/` by `_path_for_source()` in `context_engine.py`. Expressions with `*` are expanded as globs against the repo root. Entries with parenthetical suffixes like `(on language/domain match)` are parsed and the condition is dropped — the condition must be enforced by the caller.
+Short names (e.g. `core-policies.md`) are resolved to paths under `core-zero/memories/repo/` by `_path_for_source()` in `context_engine.py`. Expressions with `*` are expanded as globs against the repo root. Entries with parenthetical suffixes like `(on language/domain match)` are parsed and the condition is dropped — the condition must be enforced by the caller.
 
 ### Layer 2: context_engine.py (the engine)
 
@@ -548,7 +548,7 @@ Located at `kit/scripts/core/context_engine.py`. Exposes class `ContextEngine`. 
 3. Parses every `| \`...\` | ... |` table row in that section.
 4. Filters to the column matching the requested phase (`spec`/`plan`/`implement`/`verify`).
 5. Drops `Skip` rows, keeps `Must` and `Should`.
-6. Resolves short names via `_path_for_source()` (line 142): maps `core-policies.md` → `memories/repo/core-policies.md`, `domain/glossary.md` → `memories/domain/glossary.md`, `core-zero/rules/*.md` → expanded glob. Returns `None` for entries like `session-extracts.md` (not auto-loaded).
+6. Resolves short names via `_path_for_source()` (line 142): maps `core-policies.md` → `core-zero/memories/repo/core-policies.md`, `domain/glossary.md` → `core-zero/memories/domain/glossary.md`, `core-zero/rules/*.md` → expanded glob. Returns `None` for entries like `session-extracts.md` (not auto-loaded).
 7. Returns list of `(resolved_path, tier, sections_or_none)` tuples — section lists from `{## Sec1, ## Sec2}` annotations are parsed via `parse_tier()`.
 
 **Tier protection** — `TIER_BOOST` (line 137):
@@ -595,7 +595,7 @@ python3 kit/scripts/context-loader.py --route plan --mode summary
 python3 kit/scripts/context-loader.py core-zero/rules/ponytail.md --mode compress
 
 # Section extract: load a single H2 section
-python3 kit/scripts/context-loader.py --section "Security Policy" memories/repo/core-policies.md
+python3 kit/scripts/context-loader.py --section "Security Policy" core-zero/memories/repo/core-policies.md
 
 # Bulk: load multiple files scored against intent, capped at 5000 tokens
 python3 kit/scripts/context-loader.py --intent "api auth" --budget 5000 file1.md file2.md

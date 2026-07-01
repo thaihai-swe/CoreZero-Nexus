@@ -52,7 +52,7 @@ When appending, classify the candidate so triage is fast:
 
 ### Session Start
 
-1. **Memory Size Sweep**: Before loading any context, run `wc -l memories/repo/*.md 2>/dev/null` and surface any file ≥100 lines as an early warning. Do not block on this — report it alongside the readiness summary and suggest `/context-compact` if needed.
+1. **Memory Size Sweep**: Before loading any context, run `wc -l core-zero/memories/repo/*.md 2>/dev/null` and surface any file ≥100 lines as an early warning. Do not block on this — report it alongside the readiness summary and suggest `/context-compact` if needed.
 2. Slug Check: If multiple features exist, run `/context-status` first to select the active slug.
    First-run path: If `.corezero/sessions/<slug>/` does not exist, create it. If `.corezero/sessions/<slug>/progress.md` does not yet exist (first session after `/spec-requirements` created the slug), create it from `references/progress-template.md` before loading context. Skip the Resumption step (Step 4) and go directly to Step 5 (Report & Log).
 2. Context Load: Load minimum required context per `references/context-assembly.md` and `references/session-start-flow.md`. When reading `MASTER_INDEX.md`, strictly obey the Confidence-Scored Loading rule: if ≤2 keywords match a group, perform a partial-load (load only the index/header file for that group). Only load the full group for high-confidence matches (3+ keywords).
@@ -75,13 +75,13 @@ When appending, classify the candidate so triage is fast:
 
 ## Stop Conditions
 
-- `starter-init` has not been run (no `AGENTS.md` or `memories/repo/harness-config.md` present).
+- `starter-init` has not been run (no `AGENTS.md` or `core-zero/memories/repo/harness-config.md` present).
 - No feature slug is selected or `artifacts/features/<slug>/status.md` does not exist yet. In plain terms: status.md does not exist yet for this feature. Route to `/spec-requirements` when requirements can be defined directly, or `/spec-research` when brownfield behavior or root cause is unknown.
-- At session start, if running the test command from `memories/repo/harness-config.md` `## Verification Commands` exits non-zero: surface the broken baseline to the user and stop. Do not load feature context over a broken build. Session Honesty requires surfacing this, not hiding it.
+- At session start, if running the test command from `core-zero/memories/repo/harness-config.md` `## Verification Commands` exits non-zero: surface the broken baseline to the user and stop. Do not load feature context over a broken build. Session Honesty requires surfacing this, not hiding it.
 
 ## Preconditions
 
-- Required files: `AGENTS.md`, `memories/repo/core-policies.md`.
+- Required files: `AGENTS.md`, `core-zero/memories/repo/core-policies.md`.
 - Required feature state: Existing `artifacts/features/<slug>/status.md` created by `/spec-requirements` or `/spec-research`.
 - Phase sets: Manages lifecycle across existing feature phases.
 

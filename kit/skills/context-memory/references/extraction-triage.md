@@ -4,7 +4,7 @@ When processing extracted-tier or auto-tier memory entries:
 
 1. Locate candidate sources:
    - Per-feature: `artifacts/features/<slug>/session-extracts.md` (extracted tier)
-   - Repo-level: `memories/repo/harness-telemetry.md` (auto tier)
+   - Repo-level: `core-zero/memories/repo/harness-telemetry.md` (auto tier)
 2. Process each pending candidate in order:
    - Read the candidate's category, confidence, and evidence
    - Decide: promote, defer, or discard

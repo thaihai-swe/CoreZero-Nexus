@@ -23,7 +23,7 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ## Read First
 
-- `memories/repo/core-policies.md` and `memories/repo/project-knowledge-base.md`
+- `core-zero/memories/repo/core-policies.md` and `core-zero/memories/repo/project-knowledge-base.md`
 - Root config and package/build files (`package.json`, `pom.xml`, etc.).
 - References: `references/templates.md`, `references/best-practices.md`, `references/diagram-patterns.md`, `../_shared/doc-conventions.md`, and `../_shared/diagram-catalog.md`.
 
@@ -31,7 +31,7 @@ Produces a multi-file Markdown documentation set (README, ARCHITECTURE, COMPONEN
 
 ### Inputs
 - Repository root path and project structure
-- `memories/repo/core-policies.md` and `memories/repo/project-knowledge-base.md`
+- `core-zero/memories/repo/core-policies.md` and `core-zero/memories/repo/project-knowledge-base.md`
 
 ### Outputs
 - Multi-file documentation set: README.md, ARCHITECTURE.md, COMPONENTS.md, DEVELOPMENT.md, DEPLOYMENT.md, CONTRIBUTING.md

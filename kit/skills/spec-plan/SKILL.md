@@ -13,7 +13,7 @@ next_skill: 'spec-implement'
 Converts an approved spec into a concrete execution strategy. Produces `plan.md` (which explicitly defines the Technical Design first) and `tasks.md` in `artifacts/features/<slug>/`. Tasks are derived from the design portion of the plan. It answers: how will we build this safely, and what task does implementation start with?
 
 ## I/O Hand-off Protocol
-- Reads: `artifacts/features/<slug>/spec.md`, `memories/repo/harness-telemetry.md`, `core-zero/rules/ponytail.md`.
+- Reads: `artifacts/features/<slug>/spec.md`, `core-zero/memories/repo/harness-telemetry.md`, `core-zero/rules/ponytail.md`.
 - Writes: `artifacts/features/<slug>/plan.md`, `artifacts/features/<slug>/tasks.md`, `artifacts/features/<slug>/status.md`.
 - Next Skill: `/spec-implement`
 

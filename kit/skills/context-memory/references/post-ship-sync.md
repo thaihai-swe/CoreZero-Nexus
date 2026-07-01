@@ -9,7 +9,7 @@ The scope of the sweep is determined by the size and complexity of the change:
 
 Procedure (Moderate and above):
 
-1. Read `MASTER_INDEX.md` to enumerate the current memory file set. If `MASTER_INDEX.md` is missing, recreate it from the kit source by re-running `scripts/install.sh <target> --dry-run` to inspect the default, or manually create a minimal `MASTER_INDEX.md` with `## 1. Context Indexes` and the always-load group (`memories/repo/core-policies.md`).
+1. Read `MASTER_INDEX.md` to enumerate the current memory file set. If `MASTER_INDEX.md` is missing, recreate it from the kit source by re-running `scripts/install.sh <target> --dry-run` to inspect the default, or manually create a minimal `MASTER_INDEX.md` with `## 1. Context Indexes` and the always-load group (`core-zero/memories/repo/core-policies.md`).
 2. Read the feature artifacts: `spec.md`, `plan.md`, `review.md`, `session-extracts.md`, and any `adr-*.md` files under `artifacts/features/<slug>/`.
 3. For each memory file in `MASTER_INDEX.md`, decide one of:
    - Update — apply the diff (route through the matching skill section: constitution, security policy, learned heuristics, PKB, architecture, observability log).
@@ -17,7 +17,7 @@ Procedure (Moderate and above):
    - Skipped — (Domain pack files only) if the file's granular load condition (e.g., cross-domain API work for `boundaries.md`) was not met during the feature lifecycle, it can be marked Skipped without a distinct reason.
 3a. Domain Boundary Update (only if the feature touched a tracked domain):
     - Check whether the feature changed a domain's ownership, integration contract, or invariants by reviewing `spec.md`'s `## Current Context` → `Impacted boundaries`.
-    - If yes: open `memories/domain/boundaries.md` (or the relevant named domain pack). Edit the `## Owns`, `## Does Not Own`, `## Integration Contracts`, or `## Invariants` sections directly to reflect the post-feature state. Append one row to `## Change Log` with today's date, the feature slug, and a plain-English summary of what changed.
+    - If yes: open `core-zero/memories/domain/boundaries.md` (or the relevant named domain pack). Edit the `## Owns`, `## Does Not Own`, `## Integration Contracts`, or `## Invariants` sections directly to reflect the post-feature state. Append one row to `## Change Log` with today's date, the feature slug, and a plain-English summary of what changed.
     - If no: mark the domain files `Untouched: feature did not affect domain boundaries or invariants`.
 4. Heuristic Distillation & Deduplication: When sweeping `learned-heuristics.md`, analyze the file contents before appending any new candidate. Compare new candidates against existing heuristics. If a candidate overlaps, has identical triggers, or addresses the same codebase boundary, do not add a duplicate rule. Instead, merge the lessons, increment the existing heuristic's `recurrence-count`, and distill the text to keep it concise, active-voice, and evidence-grounded.
 5. Run promotion-threshold check: for each updated file, compare against the thresholds in `core-policies.md` (lines, distinct subtopics, artifact references). If a file crosses a threshold, add it to the `## Promotion Watchlist` section in `skills/context-memory/SKILL.md` and write a one-paragraph promotion proposal to `artifacts/features/<slug>/promotions.md`. Promotion itself requires user approval — never split a file unprompted.

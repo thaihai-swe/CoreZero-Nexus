@@ -781,7 +781,7 @@
                         <div class="tier-content">
                             <strong>Knowledge &amp; Heuristics</strong>
                             <span><code>project-knowledge-base.md</code>, <code>learned-heuristics.md</code>,
-                                <code>memories/domain/</code> — durable facts, patterns, evidence-backed
+                                <code>core-zero/memories/domain/</code> — durable facts, patterns, evidence-backed
                                 instincts.</span>
                         </div>
                         <div class="tier-load">Loaded on keyword match</div>
@@ -904,13 +904,13 @@ core-zero/policies/
   code-design.md
 core-zero/rules/
   *.md
-memories/repo/
+core-zero/memories/repo/
   core-policies.md
   project-knowledge-base.md
   learned-heuristics.md
   harness-telemetry.md
   adr-log.md
-memories/domain/
+core-zero/memories/domain/
   README.md
   glossary.md
   patterns.md
@@ -1009,7 +1009,7 @@ artifacts/features/</code></pre>
                                 </td>
                             </tr>
                             <tr>
-                                <td><code>memories/domain/*</code></td>
+                                <td><code>core-zero/memories/domain/*</code></td>
                                 <td>Instruction</td>
                                 <td>Adopter-owned bounded-context packs: glossary, patterns, anti-patterns, boundaries
                                 </td>
@@ -1086,7 +1086,7 @@ artifacts/features/</code></pre>
                                 <td><strong>Instruction</strong></td>
                                 <td><code>core-policies.md</code>, <code>learned-heuristics.md</code>,
                                     <code>project-knowledge-base.md</code>, <code>adr-log.md</code>,
-                                    <code>memories/domain/*</code>, <code>core-zero/project/architecture.md</code>
+                                    <code>core-zero/memories/domain/*</code>, <code>core-zero/project/architecture.md</code>
                                 </td>
                                 <td><code>/context-memory</code> + user</td>
                                 <td>Promoted from candidates; demoted via CC-* amendment, never silently deleted</td>
@@ -1149,7 +1149,7 @@ artifacts/features/</code></pre>
                     </div>
                     <div class="metric-card">
                         <strong>By Domain Packs</strong>
-                        <p><code>memories/domain/&lt;name&gt;/*</code> &mdash; single keyword match activates the pack.
+                        <p><code>core-zero/memories/domain/&lt;name&gt;/*</code> &mdash; single keyword match activates the pack.
                         </p>
                     </div>
                 </div>
@@ -1840,7 +1840,7 @@ artifacts/features/</code></pre>
   | bash -s -- /path/to/your/project</code></pre>
                 <p class="node-desc">The installer copies <code>skills/</code>, <code>scripts/</code>,
                     <code>core-zero/</code>,
-                    and seeds the memory router and starter memory. It preserves existing <code>memories/repo/</code>
+                    and seeds the memory router and starter memory. It preserves existing <code>core-zero/memories/repo/</code>
                     and
                     <code>artifacts/</code> content.
                 </p>
@@ -2154,7 +2154,7 @@ artifacts/features/</code></pre>
                 <ol>
                     <li>Read <code>AGENTS.md</code> — priority rules and entrypoint</li>
                     <li>Read <code>MASTER_INDEX.md</code> — context routing and memory locations</li>
-                    <li>Read <code>memories/repo/core-policies.md</code> — constitution and guards</li>
+                    <li>Read <code>core-zero/memories/repo/core-policies.md</code> — constitution and guards</li>
                     <li>Load by-intent memory based on task keywords</li>
                     <li>Read feature artifacts for the active slug</li>
                     <li>Read source code JIT as the task requires</li>
@@ -2287,7 +2287,7 @@ artifacts/features/</code></pre>
                     You need only the target repository and an AI agent runtime.</p>
 
                 <h4>Does the kit overwrite my existing files?</h4>
-                <p class="node-desc">No. The installer has a <code>preserve</code> list: <code>memories/repo/</code> and
+                <p class="node-desc">No. The installer has a <code>preserve</code> list: <code>core-zero/memories/repo/</code> and
                     <code>artifacts/</code> are never overwritten. All other files use <code>overwrite</code> or
                     <code>copyIfMissing</code> strategies explicitly declared in <code>manifest.json</code>.
                 </p>

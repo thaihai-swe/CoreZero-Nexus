@@ -16,7 +16,7 @@ Skills are loaded just-in-time when invoked. The agent reads the relevant `SKILL
 
 ### 3. Memory as Shared State
 
-All clients share the same memory layer (`memories/repo/`). This means:
+All clients share the same memory layer (`core-zero/memories/repo/`). This means:
 - Constitution rules apply regardless of which client is used
 - Security policy is enforced uniformly
 - Knowledge base is available to all agents
@@ -25,7 +25,7 @@ All clients share the same memory layer (`memories/repo/`). This means:
 ## Multi-Client Projects
 
 When multiple clients work on the same project:
-- All share the same `memories/repo/` (single source of truth)
+- All share the same `core-zero/memories/repo/` (single source of truth)
 - All share the same `artifacts/features/` (durable state)
 - Handoffs work across clients (handoff.md is client-agnostic)
 - The harness config captures commands that work for all clients
@@ -79,13 +79,13 @@ providers:
 
 ### Skills that benefit
 
-| Skill | Capability intents used | Benefit |
-|-------|------------------------|---------|
-| `spec-research` | [1] Explore / query, [2] Symbol context | Architecture exploration and finding execution flows |
-| `spec-plan` | [3] Impact — upstream callers | Blast radius analysis before designing changes |
-| `spec-implement` | [2] Symbol context | Dependency awareness during implementation |
-| `harness-verify` | [6] Detect changed symbols | Verify no unexpected side effects |
-| `code-review` | [2] Symbol context, [6] Detect changes | Call chain audit + diff-to-symbol mapping |
+| Skill            | Capability intents used                 | Benefit                                              |
+| ---------------- | --------------------------------------- | ---------------------------------------------------- |
+| `spec-research`  | [1] Explore / query, [2] Symbol context | Architecture exploration and finding execution flows |
+| `spec-plan`      | [3] Impact — upstream callers           | Blast radius analysis before designing changes       |
+| `spec-implement` | [2] Symbol context                      | Dependency awareness during implementation           |
+| `harness-verify` | [6] Detect changed symbols              | Verify no unexpected side effects                    |
+| `code-review`    | [2] Symbol context, [6] Detect changes  | Call chain audit + diff-to-symbol mapping            |
 
 The kit works identically without any code intelligence provider — it is additive, not required. When a provider is installed, `AGENTS.md` activates its `Never Do` rules (e.g. never edit without impact analysis first).
 

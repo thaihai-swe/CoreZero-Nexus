@@ -48,7 +48,7 @@ The kit enforces environment control and architectural boundaries using the form
 
 ### E. Observability (Telemetry & Audit)
 - **Definition**: The collection of execution paths, command histories, and failures for analysis and improvement.
-- **Implementation**: System logs gate errors via `kit/scripts/harness/telemetry-collector.sh` to populate `memories/repo/harness-telemetry.md`, enabling self-improving Garbage Collection (GC) loops.
+- **Implementation**: System logs gate errors via `kit/scripts/harness/telemetry-collector.sh` to populate `core-zero/memories/repo/harness-telemetry.md`, enabling self-improving Garbage Collection (GC) loops.
 
 ### F. Verification (Mechanical Gates)
 - **Definition**: The objective proof systems that validate implementation correctness without agent excuses.
@@ -82,13 +82,13 @@ The self-improving loop relies on a structured **Garbage Collection (GC) Loop** 
 
 Harness readiness is evaluated on a 1-5 scale using `/harness-maintain assess`:
 
-| Score | Status | Characteristics |
-|---|---|---|
-| **1 — Speculative** | Unstable | No specs; agent writes code directly; no automated testing gates. |
-| **2 — Documented** | Vulnerable | Architecture/glossaries exist; requirements manual; tests exist but bypassable. |
-| **3 — Standard** | Reliable | Features have locked specs, task lists, and mechanical verify gates. |
-| **4 — Bounded** | Controlled | Strict task scopes; JIT context loading; security policies and FinOps limits enforced. |
-| **5 — Optimized** | Self-Improving | Active GC loops; automated regression checks; failure-driven auto-upgrades. |
+| Score               | Status         | Characteristics                                                                        |
+| ------------------- | -------------- | -------------------------------------------------------------------------------------- |
+| **1 — Speculative** | Unstable       | No specs; agent writes code directly; no automated testing gates.                      |
+| **2 — Documented**  | Vulnerable     | Architecture/glossaries exist; requirements manual; tests exist but bypassable.        |
+| **3 — Standard**    | Reliable       | Features have locked specs, task lists, and mechanical verify gates.                   |
+| **4 — Bounded**     | Controlled     | Strict task scopes; JIT context loading; security policies and FinOps limits enforced. |
+| **5 — Optimized**   | Self-Improving | Active GC loops; automated regression checks; failure-driven auto-upgrades.            |
 
 ---
 
@@ -119,12 +119,12 @@ The verification gate uses split evaluator passes — each targeting a different
 
 ### Split Evaluator Modes
 
-| Pass | What It Checks | Failure Class |
-|---|---|---|
-| **1. Mechanical Gate** | `gate-runner.sh` exit codes; evidence is fresh from current session | Code doesn't compile, tests fail, lint errors |
-| **2. Alignment Audit** | Every `AC-*` from `spec.md` maps to delivered code; detects missing, ghost, or misaligned behavior | Spec drift, scope creep, dropped requirements |
-| **3. Adversarial & Security** | Auth enforcement, input validation, secret handling, trust boundaries, prompt-injection defence, data privacy | Security vulnerabilities, permission gaps |
-| **4. Continuity & Context** | Handoff artifact complete, progress log accurate, no orphaned tasks, context tiers correct, stale context evicted | Amnesia, context corruption, lost state |
+| Pass                          | What It Checks                                                                                                    | Failure Class                                 |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| **1. Mechanical Gate**        | `gate-runner.sh` exit codes; evidence is fresh from current session                                               | Code doesn't compile, tests fail, lint errors |
+| **2. Alignment Audit**        | Every `AC-*` from `spec.md` maps to delivered code; detects missing, ghost, or misaligned behavior                | Spec drift, scope creep, dropped requirements |
+| **3. Adversarial & Security** | Auth enforcement, input validation, secret handling, trust boundaries, prompt-injection defence, data privacy     | Security vulnerabilities, permission gaps     |
+| **4. Continuity & Context**   | Handoff artifact complete, progress log accurate, no orphaned tasks, context tiers correct, stale context evicted | Amnesia, context corruption, lost state       |
 
 ### Verification Gate Flow
 

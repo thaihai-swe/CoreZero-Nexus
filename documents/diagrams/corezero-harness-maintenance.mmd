@@ -11,7 +11,7 @@ flowchart TD
     ASSESS --> ASSESS_WORK["Score (1-5) against 6 subsystems<br/>Generate harness-assessment.md"]:::assess
 
     MODE -->|Improve Mode| IMPROVE["Improve Mode<br/>(Observability triage)"]:::improve
-    IMPROVE --> IMPROVE_WORK["Read memories/repo/harness-telemetry.md<br/>Apply durable fixes to constitution / config"]:::improve
+    IMPROVE --> IMPROVE_WORK["Read core-zero/memories/repo/harness-telemetry.md<br/>Apply durable fixes to constitution / config"]:::improve
 
     MODE -->|Eval Mode| EVAL["Eval Mode<br/>(Split evaluation)"]:::assess
     EVAL --> EVAL_WORK["Run split evaluator passes<br/>Generate feature execution eval-report.md"]:::assess

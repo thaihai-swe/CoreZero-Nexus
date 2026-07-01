@@ -11,7 +11,7 @@ CoreZero solves this by replacing conversational coding with a strict **Autonomo
 ## 1. The Core Differentiators: Why the Kit is Powerful
 
 ### A. The Circuit Breaker & Telemetry System
-The kit prevents "vibe coding" and infinite retry loops. Every time an agent fails a mechanical test during implementation, the failure is logged to `memories/repo/harness-telemetry.md` as an Observation (`OBS-NNN`).
+The kit prevents "vibe coding" and infinite retry loops. Every time an agent fails a mechanical test during implementation, the failure is logged to `core-zero/memories/repo/harness-telemetry.md` as an Observation (`OBS-NNN`).
 If an agent fails **two consecutive times** on the same task, the **Circuit Breaker trips**. The agent is mechanically locked out of the `Implementing` phase and forced to route back to `/spec-plan` to rethink its architectural approach. It cannot blindly guess its way to a passing test.
 
 ### B. 100% Traceability Audits

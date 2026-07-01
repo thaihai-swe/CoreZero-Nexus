@@ -17,7 +17,7 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 ## Read First
 
 - PR description and diff
-- `memories/repo/core-policies.md` (code standards, naming, principles, security boundaries, and sensitive paths)
+- `core-zero/memories/repo/core-policies.md` (code standards, naming, principles, security boundaries, and sensitive paths)
 - `core-zero/rules/ponytail.md` (simplicity, anti-abstraction, and verifiable increments)
 - Style guides under `core-zero/rules/`
 
@@ -30,7 +30,7 @@ Use this skill to perform code reviews based on Google's Engineering Practices. 
 
 ### Inputs
 - PR description, diff, and linked issues
-- `memories/repo/core-policies.md` (code standards, security policy)
+- `core-zero/memories/repo/core-policies.md` (code standards, security policy)
 - `core-zero/rules/` style guides
 
 ### Outputs
@@ -78,7 +78,7 @@ Code review completes in the same session it is invoked. Do not defer reviews or
    - Check functionality and edge cases.
 4. Test Adequacy: Verify tests are meaningful (assert behavior, not just line coverage). Check for races, missing edge cases, and assertion correctness.
 5. Naming, Style, Comments: Apply `rules/` style guides or local consistency. Verify comments explain *why*, not *what*.
-6. Security Lens: Check every changed file against `memories/repo/core-policies.md` `## Security Policy`. Flag any modification to security-sensitive paths. See Stop Conditions for escalation.
+6. Security Lens: Check every changed file against `core-zero/memories/repo/core-policies.md` `## Security Policy`. Flag any modification to security-sensitive paths. See Stop Conditions for escalation.
 7. Verdict: Write structured outcome: overall verdict, mandatory changes (must-fix), optional suggestions (`Nit:`/`Optional:`), and positive callouts for notable improvements.
 
 ## Review Checklist

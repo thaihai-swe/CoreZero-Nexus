@@ -17,7 +17,7 @@ next_skill: 'spec-plan'
 Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found) `requirements-review.md` in `artifacts/features/<slug>/`. This skill aligns the team on what is being built and how it will be verified.
 
 ## I/O Hand-off Protocol
-- Reads: `artifacts/features/<slug>/analysis.md` (if exists), `artifacts/features/<slug>/status.md`, `memories/repo/adr-log.md`, domain packs.
+- Reads: `artifacts/features/<slug>/analysis.md` (if exists), `artifacts/features/<slug>/status.md`, `core-zero/memories/repo/adr-log.md`, domain packs.
 - Writes: `artifacts/features/<slug>/spec.md`, `artifacts/features/<slug>/status.md`, `artifacts/features/<slug>/proposal.md`, optional `artifacts/features/<slug>/requirements-review.md`.
 - Next Skill: `/spec-plan`
 
@@ -33,10 +33,10 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found
 2. Intake & Routing: Classify input type (`new_spec`, `spec_slice`, `change_request`, `new_initiative`, `maintenance`, `harness_improvement`) and risk flags in `status.md` per `references/intake.md`.
     - System Spec Mode: If the request is cross-cutting or system-wide, switch to System Spec Mode. Output target becomes `core-zero/system-specs/<name>.md`.
 3. Context Alignment:
-    - Domain Pack Scan: If any keyword from the feature description matches a domain pack trigger in `memories/domain/<name>/glossary.md` frontmatter, you MUST load that pack before writing the spec and note it in `status.md`.
+    - Domain Pack Scan: If any keyword from the feature description matches a domain pack trigger in `core-zero/memories/domain/<name>/glossary.md` frontmatter, you MUST load that pack before writing the spec and note it in `status.md`.
     - Analysis Check: Read `artifacts/features/<slug>/analysis.md` (if exists) and record open research questions.
-    - Domain Spec Check: If `memories/repo/domain-specs.md` exists, read relevant domain specs.
-    - ADR Conflict Check: Load `memories/repo/adr-log.md`. Verify the proposed spec does not contradict locked decisions. If a contradiction exists, insert `[ADR CONFLICT: ADR-NNN — <decision summary>]` and block Handoff.
+    - Domain Spec Check: If `core-zero/memories/repo/domain-specs.md` exists, read relevant domain specs.
+    - ADR Conflict Check: Load `core-zero/memories/repo/adr-log.md`. Verify the proposed spec does not contradict locked decisions. If a contradiction exists, insert `[ADR CONFLICT: ADR-NNN — <decision summary>]` and block Handoff.
 4. Clarification (Grilling Phase): Do NOT guess missing details. Engage in a relentless interview (Socratic refinement) to resolve decision trees and eliminate ambiguity before writing the spec. Never just mark items as `[UNKNOWN]` and move on. Ask batch clarifying questions with recommended answers per `references/grilling-waves.md`. If answers remain contradictory after 2 rounds, write `[UNRESOLVED: <description>]` and stop.
 5. Complexity Classification: Evaluate the scope of the work and update `status.md` with one of the following:
     - Simple: One area of the codebase, no new integrations, no data model changes, clear spec.
@@ -47,7 +47,7 @@ Create or refine `status.md`, `proposal.md`, `spec.md`, and (if issues are found
 7. Spec Authoring: Draft `spec.md` (`what` & `why`) using `references/spec-template.md`. Record key gray-area design/UX choices. Define testable, observable acceptance criteria (AC-*) using strict markdown checklists or Gherkin. Specify verification surfaces (unit, integration, manual check).
    - Simple: The spec.md serves as the single alignment doc.
    - Complex: If uncertainty is high during spec authoring, trigger `/spec-research`.
-    - AC Protocol: Every AC MUST have a verification command or script reference. Use `bash scripts/harness/gate-runner.sh ...` as the proof mechanism.
+     - AC Protocol: Every AC MUST have a verification command or script reference. Use `bash scripts/harness/gate-runner.sh ...` as the proof mechanism.
     - NFR-AC Linkage: Every non-functional requirement (performance, security, scalability) MUST link to at least one AC. Add a `Linked ACs:` field after each NFR block in the spec.
     - Gherkin ACs: When using Gherkin format, every scenario MUST include all three clauses (Given, When, Then). Avoid non-deterministic Then clauses (e.g., "it works", "the system should") — each Then MUST be an observable assertion.
 8. Completeness Check: Ensure NO `[NEEDS CLARIFICATION]`, `[UNRESOLVED]`, or `[ADR CONFLICT]` tags remain. Conduct a requirements review using `references/requirements-review-template.md`. Only create `requirements-review.md` if issues or gaps are found; do NOT create the artifact if the review passes.

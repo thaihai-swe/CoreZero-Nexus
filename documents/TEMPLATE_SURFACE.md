@@ -30,7 +30,7 @@ When installed into an empty project directory, the shipped folder structure loo
 │   │   ├── code-intelligence.md  # Code intel provider config + capability mapping (Adopter-owned seed)
 │   │   ├── code-map.md           # Adopter-owned seed
 │   │   ├── glossary.md           # Adopter-owned seed
-│   │   ├── harness-config.yaml   # Phase precondition config (overwrite; not memories/repo/harness-config.md)
+│   │   ├── harness-config.yaml   # Phase precondition config (overwrite; not core-zero/memories/repo/harness-config.md)
 │   │   ├── product-sense.md      # Adopter-owned seed
 │   │   ├── project-constraints.md # Adopter-owned seed
 │   │   ├── spec-schema.json      # JSON schema (overwrite)
@@ -41,7 +41,7 @@ When installed into an empty project directory, the shipped folder structure loo
 │   │   ├── python.md             # Python conventions
 │   │   └── security.md           # Security rules
 │   └── index.html                # Documentation portal
-├── memories/
+├── core-zero/memories/
 │   ├── domain/                   # Domain context packs
 │   │   ├── README.md             # Pack schema
 │   │   └── example/              # Example pack
