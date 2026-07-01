@@ -148,6 +148,7 @@ sessions need to load them deliberately when a feature touches brownfield risk a
 - [`core-zero/project/glossary.md`](../kit/core-zero/project/glossary.md)
 - [`core-zero/project/tech-stack.md`](../kit/core-zero/project/tech-stack.md)
 - [`core-zero/project/project-constraints.md`](../kit/core-zero/project/project-constraints.md)
+- [`core-zero/project/code-intelligence.md`](../kit/core-zero/project/code-intelligence.md)
 
 ---
 

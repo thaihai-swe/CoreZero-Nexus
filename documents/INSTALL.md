@@ -31,12 +31,11 @@ After install:
 
 1. Read `kit-map.md` to understand the command layers
 2. Read `skills-guide.md` for the shipped command roster
-3. (Optional but recommended) Install and index GitNexus for code-aware context:
-   ```bash
-   npm install -g gitnexus
-   cd /path/to/project && gitnexus analyze && gitnexus setup
-   ```
-   GitNexus exposes a knowledge graph (deps, call chains, clusters) via MCP. The kit auto-detects it — `AGENTS.md` prefers `gitnexus context` / `gitnexus impact` before reading source files. See [agent-capabilities.md](https://github.com/abhigyanpatwari/GitNexus) for details.
+3. (Optional) Install a code intelligence provider for code-aware AI context:
+   * **GitNexus** — `npm install -g gitnexus && gitnexus analyze && gitnexus setup`
+   * **codebase-memory-mcp** — download the binary from the releases page and configure in your MCP client
+
+   After installation, set `active_provider` and `enabled: true` in `core-zero/project/code-intelligence.md`. This file maps **capability intents** (explore, impact, symbol context, …) to the provider's concrete tool calls using the numbered intent index. See `documents/integrations.md` for full setup steps and MCP configuration for each provider.
 4. Run `/starter-init`
 5. Continue with `/spec-research` or `/spec-requirements`
 6. Use `/context-status`, `/harness-maintain`, and `/spec-adr` when governance or multi-feature coordination work needs them

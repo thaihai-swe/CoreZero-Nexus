@@ -71,7 +71,7 @@ Canonical threshold ladder. All skills and reference files quote this section by
 | Lines | State | Action |
 |-------|-------|--------|
 | < 100 | Healthy | No action |
-| 100–199 | Early warning | Open promotion proposal at `artifacts/features/<slug>/promotions.md` per `MASTER_INDEX.md` `## Promotion Watchlist` |
+| 100–199 | Early warning | Open promotion proposal at `artifacts/features/<slug>/promotions.md` per `skills/context-memory/SKILL.md ## Promotion Watchlist` |
 | 200–3199 | Threshold breach | Compaction required before new appends; proposal must be reviewed by user |
 | >= 3200 | Hard cap | Block all appends; split or compact mandatory |
 
@@ -80,7 +80,7 @@ Additional triggers:
 - Artifact references: 5 or more `artifacts/features/<slug>/` files cite the same slice of one memory file → open promotion proposal.
 
 Actions:
-- Structural promotion (split/extract/retire): add the file to `## Promotion Watchlist` in `MASTER_INDEX.md` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`. Promotion requires user approval.
+- Structural promotion (split/extract/retire): add the file to `skills/context-memory/SKILL.md ## Promotion Watchlist` and write a one-paragraph proposal to `artifacts/features/<slug>/promotions.md`. Promotion requires user approval.
 - Compaction (shrink in-place): handled by `/context-compact`. See `skills/context-compact/SKILL.md` for the full safety protocol and eligible target files.
 
 ## Active Session Limits & FinOps Guardrails

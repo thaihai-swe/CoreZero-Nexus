@@ -72,6 +72,18 @@ The kit uses three durability tiers for persistent memory. Each tier has a diffe
 | TASK- | `tasks.md` | Implementation tasks |
 | REQ-/AC- | `spec.md` | Requirements and acceptance criteria |
 
+## Promotion Watchlist
+
+The promotion watchlist tracks memory files flagged for structural action (split, extract, or retire). The watchlist is maintained here because `/context-memory` is the writer — it scans for threshold breaches during post-ship sync. `/context-compact` reads it to abort compaction when the file needs splitting instead.
+
+| File | Proposal | Proposed action | Date | Status |
+|------|----------|-----------------|------|--------|
+| (path to file) | `artifacts/features/<slug>/promotions.md` | split / extract / retire | YYYY-MM-DD | open / approved / done |
+
+- **open**: proposal submitted, awaiting review.
+- **approved**: user approved the action; `/context-compact` or manual split may proceed.
+- **done**: action completed; row retained for audit trail.
+
 ## Audit Mode
 
 ### Usage
@@ -85,7 +97,7 @@ Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
 2. Domain pack trigger relevance — for every pack under `memories/domain/`, read trigger keywords from `glossary.md` frontmatter and grep the codebase for occurrences. Flag triggers with zero matches as candidates for removal or rewording.
 3. Memory-to-code accuracy — sample referenced paths, file names, and module roots from `project-knowledge-base.md`, `memories/repo/harness-config.md`, and `MASTER_INDEX.md` and confirm each still exists. Flag stale references.
 4. Domain pack usage — read `harness-telemetry.md` (when populated) and `artifacts/features/*/session-extracts.md` for pack-load events; list packs not loaded in any recent session.
-5. Promotion watchlist sync — compare files flagged in checks 1–4 against `MASTER_INDEX.md` `## Promotion Watchlist`. Surface drift in either direction.
+5. Promotion watchlist sync — compare files flagged in checks 1–4 against the `## Promotion Watchlist` section in this file. Surface drift in either direction.
 6. Heuristic Decay Scan — mechanically assess LH-* citation recency:
    a. Scan all `artifacts/features/*/status.md` for `## Current Phase: Done`. Sort by the date field. Take the last 3 completed features (and track the last 5 for the archive threshold).
    b. `grep -rEoh "LH-[0-9]+"` across those features' `tasks.md`, `progress.md`, and `plan.md`. Build a hit-count map per LH-* ID.
@@ -95,6 +107,7 @@ Invoke with `/context-memory --audit` (or pass `audit` as the subcommand).
       - Zero citations in last 3 features AND `Last reviewed` < 1 month → leave alone (grace period, too early to tell).
       - Zero citations in last 5 features AND `Last reviewed` > 1 month → flag Archive candidate in the audit report.
    d. No edits — report only. Matches existing audit philosophy.
+7. Tech-stack drift check — compare package names and versions declared in `core-zero/project/tech-stack.md` against what is currently present in package manifests on disk (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pyproject.toml`, etc.). Flag any dependency listed in `tech-stack.md` that no longer appears in any manifest (removed), and any dependency present in a manifest that is not listed in `tech-stack.md` (undocumented). Mechanical only — do not interpret whether the change is intentional.
 
 ### Output
 Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `core-zero/generated/memory-audit.md` (global). Sections:
@@ -104,8 +117,9 @@ Write a structured Markdown report to `artifacts/features/<slug>/memory-audit.md
 - `## Trigger Drift` — domain packs with stale or unmatched triggers
 - `## Stale References` — paths and identifiers that no longer exist
 - `## Unused Packs` — domain packs with zero recent loads
-- `## Watchlist Sync` — proposed updates to `MASTER_INDEX.md` `## Promotion Watchlist`
+- `## Watchlist Sync` — proposed updates to the `## Promotion Watchlist` section in this file
 - `## Decay Findings` — table of LH-* ID, hit count (last 3/5), Last reviewed date, status (Active/Fading/Archive candidate), suggested action.
+- `## Tech-Stack Drift` — table of dependency, declared in tech-stack.md (yes/no), present in manifest (yes/no), suggested action (update doc / investigate removal).
 
 ### Core Rules — Audit Mode
 - Mechanical only — count lines, grep keywords, stat paths. Do not interpret content.

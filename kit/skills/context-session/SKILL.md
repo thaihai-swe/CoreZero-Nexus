@@ -51,7 +51,9 @@ When appending, classify the candidate so triage is fast:
 ## Workflow
 
 ### Session Start
-1. Slug Check: If multiple features exist, run `/context-status` first to select the active slug.
+
+1. **Memory Size Sweep**: Before loading any context, run `wc -l memories/repo/*.md 2>/dev/null` and surface any file ≥100 lines as an early warning. Do not block on this — report it alongside the readiness summary and suggest `/context-compact` if needed.
+2. Slug Check: If multiple features exist, run `/context-status` first to select the active slug.
    First-run path: If `.corezero/sessions/<slug>/` does not exist, create it. If `.corezero/sessions/<slug>/progress.md` does not yet exist (first session after `/spec-requirements` created the slug), create it from `references/progress-template.md` before loading context. Skip the Resumption step (Step 4) and go directly to Step 5 (Report & Log).
 2. Context Load: Load minimum required context per `references/context-assembly.md` and `references/session-start-flow.md`. When reading `MASTER_INDEX.md`, strictly obey the Confidence-Scored Loading rule: if ≤2 keywords match a group, perform a partial-load (load only the index/header file for that group). Only load the full group for high-confidence matches (3+ keywords).
 3. Resumption: Identify current phase, next task/artifact, and blockers. Read `.corezero/sessions/<slug>/handoff.md` if it exists to pick up from the previous session.

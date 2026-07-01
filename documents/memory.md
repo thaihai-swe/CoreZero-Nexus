@@ -133,7 +133,7 @@ Security candidates always escalate immediately regardless of repetition count.
 
 ### Promotion Thresholds (from `core-policies.md`)
 
-A memory file approaching the thresholds in `core-policies.md` `## Memory Promotion Thresholds` is added to `MASTER_INDEX.md ## Promotion Watchlist`:
+A memory file approaching the thresholds in `core-policies.md` `## Memory Promotion Thresholds` is added to `skills/context-memory/SKILL.md ## Promotion Watchlist`:
 - File length thresholds (100-line Early Warning, 200-line Threshold Breach, 3200-line Hard Cap)
 - 3+ distinct H2 subtopics covering separable concerns
 - 5+ feature artifacts citing the same slice
@@ -286,6 +286,7 @@ Files under `memories/`, `core-zero/project/`, and `core-zero/policies/` are upd
 | File | Created By | Updated By |
 |------|-----------|------------|
 | `architecture.md` | `/starter-init` | `/context-memory`, adopter |
+| `code-intelligence.md` | `/starter-init` | Adopter |
 | `code-map.md` | `/starter-init` | `/harness-maintain` |
 | `agent-capabilities.md` | `/starter-init` | Adopter |
 | `glossary.md` | `/starter-init` | `/context-memory` |

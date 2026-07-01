@@ -213,6 +213,7 @@ This is the layout created in a downstream project after running the installer s
 │   │   ├── adr/                 # ADR registry
 │   │   ├── agent-capabilities.md
 │   │   ├── architecture.md
+│   │   ├── code-intelligence.md
 │   │   ├── code-map.md
 │   │   ├── glossary.md
 │   │   ├── harness-config.yaml

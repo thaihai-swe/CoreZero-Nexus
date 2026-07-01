@@ -27,6 +27,7 @@ When installed into an empty project directory, the shipped folder structure loo
 │   │   │   └── 0001-example.md
 │   │   ├── agent-capabilities.md # Adopter-owned seed
 │   │   ├── architecture.md       # Adopter-owned seed
+│   │   ├── code-intelligence.md  # Code intel provider config + capability mapping (Adopter-owned seed)
 │   │   ├── code-map.md           # Adopter-owned seed
 │   │   ├── glossary.md           # Adopter-owned seed
 │   │   ├── harness-config.yaml   # Phase precondition config (overwrite; not memories/repo/harness-config.md)

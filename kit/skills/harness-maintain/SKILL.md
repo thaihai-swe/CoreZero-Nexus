@@ -42,6 +42,7 @@ When invoking this skill, you must specify one of the following modes:
 3. Create missing placeholder files if they were accidentally deleted.
 
 ### 3. Improve Mode (`improve`)
+0. **Pre-flight insights**: Run `bash scripts/harness/telemetry-insights.sh` and read the output. Use the top recurring failure types and high-risk entries as the priority queue for steps below. Skip entries flagged as `(none)`.
 1. Read `memories/repo/harness-telemetry.md` `## Entries`.
 2. Find all `open` entries (OBS-*) where `promotion_candidate: true`.
 3. For each candidate, draft a new rule or heuristic that would prevent the failure.

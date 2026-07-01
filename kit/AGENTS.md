@@ -2,48 +2,43 @@
 
 This file is the agent entrypoint and instruction router for this repository. Read it every session before any other file.
 
-<!-- gitnexus:start -->
-## # GitNexus — Code Intelligence
-Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+<!-- code-intelligence:start -->
+## Code Intelligence (optional MCP companion)
 
-> If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
+**Skip this entire section if `core-zero/project/code-intelligence.md` has `active_provider: none` or no provider with `enabled: true`.** The kit operates fully without it.
 
-### Always Do
+If a provider is active, read `core-zero/project/code-intelligence.md` to resolve the concrete tool call for each capability intent. Use the numbered capability index in that file to look up the right function.
 
-- MUST run impact analysis before editing any symbol. Before modifying a function, class, or method, run `gitnexus_impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
-- MUST run `gitnexus_detect_changes()` before committing to verify your changes only affect expected symbols and execution flows.
-- MUST warn the user if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
-- When exploring unfamiliar code, use `gitnexus_query({query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
-- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `gitnexus_context({name: "symbolName"})`.
+### Always Do (when provider is active)
 
-### Never Do
+- MUST run **[3] Impact — upstream callers** before editing any symbol. Report blast radius (direct callers, affected processes, risk level) to the user before proceeding.
+- MUST also check **[4] Impact — downstream deps** for any change that touches a shared utility or interface.
+- MUST run **[6] Detect changed symbols** before committing to verify changes only touch expected symbols.
+- MUST warn the user and STOP if impact analysis returns HIGH or CRITICAL risk.
+- When exploring unfamiliar code, prefer **[1] Explore / query concept** over grepping files.
+- When you need full context on a symbol, use **[2] Symbol context**.
+- When asked "what does this file do?", use **[5] Summarize file or module** before reading the file.
 
-- NEVER edit a function, class, or method without first running `gitnexus_impact` on it.
-- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
-- NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
-- NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
+### Never Do (when provider is active)
 
-### Resources
+- NEVER edit a symbol without first running **[3] upstream impact analysis** on it.
+- NEVER rename symbols with find-and-replace — use **[7] Safe rename**. If the provider marks it N/A, use the Fallback Rules below.
+- NEVER commit without running **[6] Detect changed symbols**.
+- NEVER ignore HIGH or CRITICAL impact warnings.
 
-| Resource | Use for |
-|----------|---------|
-| `gitnexus://repo/chatbot-with-data/context` | Codebase overview, check index freshness |
-| `gitnexus://repo/chatbot-with-data/clusters` | All functional areas |
-| `gitnexus://repo/chatbot-with-data/processes` | All execution flows |
-| `gitnexus://repo/chatbot-with-data/process/{name}` | Step-by-step execution trace |
+### Fallback Rules (when provider is active but a capability is unavailable)
 
-### CLI
+| Situation                            | Action                                                             |
+|--------------------------------------|--------------------------------------------------------------------|
+| Capability is `N/A` for this provider | Use `grep -rn`, `git log --follow`, or read the file directly    |
+| Index is stale                        | Re-run the setup command once; if it fails, proceed without tool  |
+| Tool unavailable or times out         | Skip call; note `[CI tool unavailable]` in task summary           |
 
-| Task | Read this skill file |
-|------|---------------------|
-| Understand architecture / "How does X work?" | `<agent-config-dir>/skills/gitnexus/gitnexus-exploring/SKILL.md` |
-| Blast radius / "What breaks if I change X?" | `<agent-config-dir>/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
-| Trace bugs / "Why is X failing?" | `<agent-config-dir>/skills/gitnexus/gitnexus-debugging/SKILL.md` |
-| Rename / extract / split / refactor | `<agent-config-dir>/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
-| Tools, resources, schema reference | `<agent-config-dir>/skills/gitnexus/gitnexus-guide/SKILL.md` |
-| Index, status, clean, wiki CLI commands | `<agent-config-dir>/skills/gitnexus/gitnexus-cli/SKILL.md` |
+### Skill Files
 
-<!-- gitnexus:end -->
+Resolve skill file paths from `code-intelligence.md` → "Skill Files" section for the active provider.
+
+<!-- code-intelligence:end -->
 
 ## 0. Priority Rules
 
@@ -74,7 +69,7 @@ When a rule uses one of these keywords, treat it with the corresponding weight.
 For every task, follow this loop:
 
 1. Understand the goal. Identify the real success condition in repository-specific terms.
-2. Inspect before building. Read relevant code, docs, tests, artifacts, and existing patterns before proposing new ones. If `gitnexus` MCP tools are available, prefer `gitnexus context` / `gitnexus impact` for codebase awareness before reading source files directly.
+2. Inspect before building. Read relevant code, docs, tests, artifacts, and existing patterns before proposing new ones. If a code intelligence MCP tool is available (see `core-zero/project/code-intelligence.md`), prefer the **symbol context** and **impact analysis** capabilities for codebase awareness before reading source files directly.
 3. Plan the smallest safe change. Prefer the simplest change that solves the stated problem without speculative abstractions.
 4. Implement surgically. Change only what is required and match the project’s existing style.
 5. Verify. Run the most relevant available checks and read their output.

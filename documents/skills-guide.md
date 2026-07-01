@@ -16,7 +16,7 @@ Use this guide after installing the kit into an adopter repository.
 4. Run `/starter-init` to bootstrap the repo-specific harness state.
 5. Start the first feature with `/spec-requirements` when the goal is clear, or `/spec-research` when existing behavior needs investigation first.
 
-6. *(Optional)* Install GitNexus for code-aware AI context: `npm install -g gitnexus && gitnexus analyze && gitnexus setup`. See `documents/integrations.md` for OpenCode MCP config.
+6. *(Optional)* Install a code intelligence provider (GitNexus or codebase-memory-mcp) for code-aware AI context. After installing, enable it in `core-zero/project/code-intelligence.md`. See `documents/integrations.md` for setup and MCP configuration.
 
 ---
 
@@ -117,6 +117,72 @@ A complete feature delivery lifecycle follows a structured chronological sequenc
 
 ---
 
+## Skill Routing Graph
+
+The graph below is derived from the `next_skill` field in each skill's YAML frontmatter. Skills with `next_skill: ''` are terminal — they complete a phase and return control to the user. The graph includes re-entry edges: `harness-verify` routes back to `spec-implement` on gate failure (< 2 failures) or `spec-requirements` when the AC array is missing.
+
+```mermaid
+flowchart TD
+    subgraph Bootstrap
+        SI[starter-init]
+    end
+
+    subgraph Research
+        SR[spec-research]
+    end
+
+    subgraph Spec
+        SRQ[spec-requirements]
+        SADR[spec-adr]
+    end
+
+    subgraph Plan
+        SP[spec-plan]
+        STS[spec-testing-scenario]
+    end
+
+    subgraph Implement
+        SIMP[spec-implement]
+    end
+
+    subgraph Verify
+        HV[harness-verify]
+        CR[code-review]
+    end
+
+    subgraph Memory
+        CS[context-session]
+        CM[context-memory]
+        CC[context-compact]
+        CST[context-status]
+        HM[harness-maintain]
+    end
+
+    subgraph Utilities
+        PT[ponytail]
+        TD[technical-docs]
+        CD[codebase-documenter]
+        VIZ[visualize]
+    end
+
+    SI --> SR
+    SR --> SRQ
+    SRQ --> SP
+    SP --> SIMP
+    STS --> SIMP
+    SIMP --> HV
+    HV -->|"align fail → retry"| SIMP
+    HV -->|"no ACs → retreat"| SRQ
+    HV --> CST
+    CST --> HM
+    HM --> SADR
+    CS --> CM
+    CM --> CC
+    CC --> CST
+```
+
+---
+
 ## Session Flow
 
 Use `/context-session` only after a feature slug and `artifacts/features/<slug>/status.md` already exist.
@@ -168,7 +234,7 @@ Run `/context-memory --audit` to produce a structured report of memory system he
 - Domain pack trigger keyword relevance against the current codebase
 - Stale references in memory files (paths or identifiers that no longer exist)
 - Unused domain packs (no recent load events in telemetry or session extracts)
-- Drift between findings and `MASTER_INDEX.md` `## Promotion Watchlist`
+- Drift between findings and `skills/context-memory/SKILL.md ## Promotion Watchlist`
 
 Output is written to `artifacts/features/<slug>/memory-audit.md` (feature-scoped) or `core-zero/generated/memory-audit.md` (global). The audit produces a report only — promotions and rewrites stay manual or route through a regular `/context-memory` or `/context-compact` invocation.
 

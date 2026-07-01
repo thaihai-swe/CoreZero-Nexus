@@ -190,7 +190,7 @@ Files are monitored against a canonical line-count ladder to prevent unbounded g
 | 800–1199 | Threshold breach | Compaction required before new appends |
 | ≥ 1200 | Hard cap | Block all appends; split or compact mandatory |
 
-Structural promotion (split / extract / retire) requires user approval and is tracked on the `MASTER_INDEX.md` Promotion Watchlist.
+Structural promotion (split / extract / retire) requires user approval and is tracked on the `skills/context-memory/SKILL.md ## Promotion Watchlist`.
 
 ---
 

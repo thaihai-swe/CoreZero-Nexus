@@ -1,23 +1,31 @@
 phases:
-  - name: Spec Approved
+  - name: Spec
     preconditions:
       - artifact: spec.md
         check: exists
-  - name: Plan Approved
+      - artifact: features/<slug>/status.md
+        check: exists
+  - name: Plan
+    preconditions:
+      - artifact: spec.md
+        check: exists
+      - artifact: plan.md
+        check: exists
+      - artifact: tasks.md
+        check: exists
+  - name: Implement
     preconditions:
       - artifact: plan.md
         check: exists
       - artifact: tasks.md
         check: exists
-  - name: Implementing
+  - name: Verify
     preconditions:
-      - artifact: plan.md
+      - artifact: spec.md
         check: exists
       - artifact: tasks.md
         check: exists
-  - name: Verifying
-    preconditions:
-      - artifact: tasks.md
+      - artifact: features/<slug>/alignment-audit.md
         check: exists
 
 gates:

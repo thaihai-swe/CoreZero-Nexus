@@ -37,7 +37,7 @@ Do not invoke this skill for:
 Before compacting, read:
 - The target file in full.
 - `memories/repo/core-policies.md ## Memory Promotion Thresholds` — for current line-count thresholds and promotion proposal rules.
-- `MASTER_INDEX.md ## 5. Promotion Watchlist` — to check if the file is already flagged for promotion (splitting). If it is, stop and ask the user whether to compact or promote instead.
+- `skills/context-memory/SKILL.md ## Promotion Watchlist` — to check if the file is already flagged for promotion (splitting). If it is, stop and ask the user whether to compact or promote instead.
 
 ## Workflow
 
@@ -45,7 +45,7 @@ Before compacting, read:
 
 1. Count lines in the target file: `wc -l <file>`.
 2. If lines < 100: stop. The file is not oversized. Report this and exit.
-3. If the file is already in `MASTER_INDEX.md ## 5. Promotion Watchlist`: stop. Compaction is the wrong tool — the file needs to be *split*, not compressed. Surface this to the user.
+3. If the file is already in `skills/context-memory/SKILL.md ## Promotion Watchlist`: stop. Compaction is the wrong tool — the file needs to be *split*, not compressed. Surface this to the user.
 4. Otherwise: proceed.
 
 ### Step 2 — Pre-Compaction Snapshot (MANDATORY)

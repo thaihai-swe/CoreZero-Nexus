@@ -78,6 +78,7 @@ These docs are copied to adopter repositories for customization (`copyIfMissing`
 | [`project/architecture.md`](../kit/core-zero/project/architecture.md) | System structure, component boundaries | `/spec-research`, `/spec-plan` |
 | [`project/code-map.md`](../kit/core-zero/project/code-map.md) | Codebase map, module index | `/spec-research`, `/spec-implement` |
 | [`project/agent-capabilities.md`](../kit/core-zero/project/agent-capabilities.md) | Agent capability inventory | `/harness-maintain`, `/starter-init` |
+| [`project/code-intelligence.md`](../kit/core-zero/project/code-intelligence.md) | Code intelligence provider config + capability intent mapping | `/starter-init`, all CI-consuming skills |
 | [`project/product-sense.md`](../kit/core-zero/project/product-sense.md) | Product vision, users, metrics | `/spec-requirements`, `/spec-research` |
 | [`project/project-constraints.md`](../kit/core-zero/project/project-constraints.md) | Budgets, compliance, security | `/spec-requirements`, `/harness-verify` |
 | [`project/glossary.md`](../kit/core-zero/project/glossary.md) | Shared vocabulary | `/spec-requirements`, `/spec-implement` |

@@ -30,18 +30,24 @@ When multiple clients work on the same project:
 - Handoffs work across clients (handoff.md is client-agnostic)
 - The harness config captures commands that work for all clients
 
-## Companion: GitNexus (optional)
+## Code Intelligence Providers (optional)
 
-[GitNexus](https://github.com/abhigyanpatwari/GitNexus) indexes any codebase into a knowledge graph and exposes it via MCP. When available, it gives CoreZero agents deep code-aware context — call chains, dependency maps, blast radius analysis — without manual file reading.
+CoreZero skills use **capability intents** instead of hard-coded tool names. When a skill needs to understand an execution flow, it asks for **[1] Explore / query concept**; before editing a symbol, it asks for **[3] Impact — upstream callers**. This allows the kit to work with any code intelligence MCP provider.
 
-### Setup
+The mapping from capability intents to concrete tool calls lives in `core-zero/project/code-intelligence.md`. Set `active_provider` there to your chosen provider (or `none` to skip entirely — the kit works fully without it).
+
+### GitNexus (primary example)
+
+[GitNexus](https://github.com/abhigyanpatwari/GitNexus) indexes any codebase into a knowledge graph and exposes it via MCP. It supports all 11 capability intents natively.
+
+#### Setup
 
 ```bash
 npm install -g gitnexus
 cd /path/to/your/repo && gitnexus analyze && gitnexus setup
 ```
 
-### OpenCode MCP config
+#### OpenCode MCP config
 
 Add to `~/.config/opencode/config.json`:
 
@@ -56,17 +62,32 @@ Add to `~/.config/opencode/config.json`:
 }
 ```
 
+#### Activation
+
+In `core-zero/project/code-intelligence.md`, set:
+
+```yaml
+active_provider: gitnexus
+providers:
+  gitnexus:
+    enabled: true
+```
+
+### codebase-memory-mcp (alternative)
+
+[codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) is a lightweight alternative covering 8 of 11 capability intents. Setup: download the binary, configure in your MCP client, then index the repo. See `core-zero/project/code-intelligence.md` for the full capability mapping table.
+
 ### Skills that benefit
 
-| Skill | GitNexus tool used | Why |
-|-------|-------------------|-----|
-| `spec-research` | `context`, `query` | Architecture exploration and finding execution flows |
-| `spec-plan` | `impact` | Blast radius analysis before designing changes |
-| `spec-implement` | `context` | Dependency awareness during implementation |
-| `harness-verify` | `impact` | Verify no unexpected side effects |
-| `code-review` | `context`, `detect_changes` | Call chain audit + diff-to-symbol mapping |
+| Skill | Capability intents used | Benefit |
+|-------|------------------------|---------|
+| `spec-research` | [1] Explore / query, [2] Symbol context | Architecture exploration and finding execution flows |
+| `spec-plan` | [3] Impact — upstream callers | Blast radius analysis before designing changes |
+| `spec-implement` | [2] Symbol context | Dependency awareness during implementation |
+| `harness-verify` | [6] Detect changed symbols | Verify no unexpected side effects |
+| `code-review` | [2] Symbol context, [6] Detect changes | Call chain audit + diff-to-symbol mapping |
 
-The kit works identically without GitNexus — it is additive, not required.
+The kit works identically without any code intelligence provider — it is additive, not required. When a provider is installed, `AGENTS.md` activates its `Never Do` rules (e.g. never edit without impact analysis first).
 
 ## Golden Config Pattern
 

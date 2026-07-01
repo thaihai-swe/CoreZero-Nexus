@@ -7,7 +7,7 @@
 | **Solo Pilot** | One developer, one feature | `starter-init`, `spec-requirements`, `spec-plan`, `spec-implement`, `harness-verify` | 1-2 weeks |
 | **Team Trial** | Small team, 2-3 features | Guided pack flow across Starter, Context, Spec, and Harness | 2-4 weeks |
 | **Full Adoption** | Entire team, all new features | Full pack workflow + harness assessment | Ongoing |
-| **Advanced** | Governance, evaluation, multi-team | Advanced Pack templates + eval mode + optional GitNexus knowledge graph | Mature teams |
+| **Advanced** | Governance, evaluation, multi-team | Advanced Pack templates + eval mode + optional code intelligence provider | Mature teams |
 
 ## Starting Small
 
@@ -41,13 +41,17 @@ The kit adapts to work size:
 
 The `/spec-requirements` skill triages automatically. You don't need to declare the profile upfront.
 
-## Optional: GitNexus Companion Tool
+## Optional: Code Intelligence Provider
 
-For teams that want deeper code-aware AI context, install [GitNexus](https://github.com/abhigyanpatwari/GitNexus) alongside the kit. It provides call-chain resolution, impact analysis, and dependency mapping that CoreZero skills can leverage via MCP.
+For teams that want deeper code-aware AI context, install a code intelligence MCP provider. CoreZero skills use **capability intents** (explore, impact, symbol context, …) that resolve to the active provider's concrete tools via `core-zero/project/code-intelligence.md`.
 
-Setup: `npm install -g gitnexus && gitnexus analyze && gitnexus setup`
+Supported providers:
+- **GitNexus** — full capability support. Setup: `npm install -g gitnexus && gitnexus analyze && gitnexus setup`
+- **codebase-memory-mcp** — lightweight alternative (8 of 11 intents). See `documents/integrations.md` for setup.
 
-The kit works identically without it — GitNexus is additive, not required.
+After installing, set `active_provider` and `enabled: true` in `core-zero/project/code-intelligence.md`.
+
+The kit works identically without it — code intelligence is additive, not required.
 
 ## Common Adoption Pitfalls
 

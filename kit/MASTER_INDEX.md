@@ -47,7 +47,7 @@ Broad Intent Keywords: `architecture`, `pattern`, `convention`, `stack`, `module
 - `core-zero/project/architecture.md` — durable system structure, boundaries, integration seams.
 - `core-zero/project/product-sense.md` — product vision, target users, success metrics. Load on product/scoping work.
 - `core-zero/project/glossary.md` — shared vocabulary and naming conventions. Load when naming or terminology matters.
-- `core-zero/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations. If gitnexus is listed under Development Tools, the project's code graph is available via MCP.
+- `core-zero/project/tech-stack.md` — dependencies, APIs, tools, conventions. Load before adding deps or touching integrations. Also read `core-zero/project/code-intelligence.md` to see which code intelligence MCP provider is active and how to call its tools.
 - `core-zero/project/project-constraints.md` — budgets, compliance, deploy, security constraints. Load when constraints bound the change.
 - `core-zero/project/code-map.md` — generated map of code locations.
 
@@ -113,7 +113,7 @@ The Always group loads every session. This matrix says what to **add** at each p
 | `domain/boundaries.md` (on match) | Should | Should | Skip | Should |
 | `domain/patterns.md` (on match) | Skip | Should | Must | Skip |
 | `domain/anti-patterns.md` (on match) | Skip | Skip | Skip | Must |
-| `gitnexus` MCP (if installed) | Should | Should | Should | Should | — Use `gitnexus query` / `gitnexus impact` / `gitnexus context` during research and before planning changes. If not installed, skip. |
+| Code intelligence MCP (if installed) | Should | Should | Should | Should | — Read `core-zero/project/code-intelligence.md` to resolve tool names for **explore/query**, **impact analysis**, and **symbol context**. Use during research and before planning changes. If not installed, skip. |
 | `harness-telemetry.md` | Skip | Skip | Skip | Should |
 | Prior `session-extracts.md` | Skip | Should | Skip | Skip |
 
@@ -150,14 +150,4 @@ Domain packs live in `memories/domain/`. The memory router loads a pack when the
 
 See `memories/domain/README.md` for the full file schema, creation steps, and lifecycle guidance.
 
-## 5. Promotion Watchlist
 
-Files flagged for structural action (split, extract, or retire) when they exceed the thresholds in `core-policies.md ## Memory Promotion Thresholds`. Written by `/context-memory` post-ship sync; read by `/context-compact` to abort if a file is flagged for splitting rather than compaction.
-
-| File | Proposal | Proposed action | Date | Status |
-|------|----------|-----------------|------|--------|
-| (path to file) | artifacts/features/<slug>/promotions.md | split / extract / retire | YYYY-MM-DD | open / approved / done |
-
-- **open**: proposal submitted, awaiting review.
-- **approved**: user approved the action; `/context-compact` or manual split may proceed.
-- **done**: action completed; row retained for audit trail.

@@ -9,60 +9,60 @@
 ## Languages & Runtimes
 
 | Language | Version | Purpose | Package Manager |
-|----------|---------|---------|-----------------|
-| | | | |
+| -------- | ------- | ------- | --------------- |
+|          |         |         |                 |
 
 ## Frameworks
 
 | Framework | Version | Purpose | Docs |
-|-----------|---------|---------|------|
-| | | | |
+| --------- | ------- | ------- | ---- |
+|           |         |         |      |
 
 ## Key Dependencies
 
 | Package | Version | Purpose | Notes |
-|---------|---------|---------|-------|
-| | | | |
+| ------- | ------- | ------- | ----- |
+|         |         |         |       |
 
 ## Internal Libraries & Utilities
 
 <!-- Project-specific utilities that agents should reuse rather than reinvent. -->
 
 | Module | Path | Purpose | Key Exports |
-|--------|------|---------|-------------|
-| | | | |
+| ------ | ---- | ------- | ----------- |
+|        |      |         |             |
 
 ## External APIs
 
 | API | Base URL | Auth | Rate Limit | SDK |
-|-----|----------|------|------------|-----|
-| | | | | |
+| --- | -------- | ---- | ---------- | --- |
+|     |          |      |            |     |
 
 ## Databases & Storage
 
 | Store | Type | Purpose | Access Pattern |
-|-------|------|---------|----------------|
-| | | | |
+| ----- | ---- | ------- | -------------- |
+|       |      |         |                |
 
 ## Infrastructure & Services
 
 | Service | Provider | Purpose | Config Location |
-|---------|----------|---------|-----------------|
-| | | | |
+| ------- | -------- | ------- | --------------- |
+|         |          |         |                 |
 
 ## Development Tools
 
-| Tool | Purpose | Config File | Key Commands |
-|------|---------|-------------|--------------|
-| gitnexus | Optional code knowledge graph — indexes deps, call chains, and clusters for AI code-aware context | `.gitnexusrc` | `npx gitnexus analyze`, `npx gitnexus mcp` |
+| Tool                  | Purpose                                                                                                                  | Config File                                                      | Key Commands               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | -------------------------- |
+| Code intelligence MCP | Optional code knowledge graph — provides explore, impact, context, and rename capabilities for for AI code-aware context | provider-specific (see `core-zero/project/code-intelligence.md`) | See `code-intelligence.md` |
 
 ## Environment Variables
 
 <!-- List required env vars without values. Reference .env.example if it exists. -->
 
 | Variable | Purpose | Required | Default |
-|----------|---------|----------|---------|
-| | | | |
+| -------- | ------- | -------- | ------- |
+|          |         |          |         |
 
 ## Version Pinning Policy
 
